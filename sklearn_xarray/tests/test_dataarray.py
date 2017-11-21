@@ -102,8 +102,10 @@ class ReshapingEstimator(BaseEstimator):
 
         I = [slice(None)]*X.ndim
         for i in range(len(self.new_shape)):
-            if self.new_shape[i] >= 0:
+            if self.new_shape[i] > 0:
                 I[i] = range(self.new_shape[i])
+            elif self.new_shape[i] == 0:
+                I[i] = 0
 
         return X[tuple(I)]
 
@@ -135,15 +137,15 @@ def test_reshaping_estimator():
     assert_allclose(yp, y)
 
 
-# def test_reshaping_estimator_singleton():
-#     X = xr.DataArray(
-#         np.random.random((100, 10)), dims=['sample', 'feature'])
-#     estimator = BaseEstimatorWrapper(
-#         ReshapingEstimator(new_shape=(-1, 1)), reshapes='feature')
-#     estimator.fit(X, X)
-#     y = X[:, 0]
-#     yp = estimator.predict(X)
-#     assert_allclose(yp, y)
+def test_reshaping_estimator_singleton():
+    X = xr.DataArray(
+        np.random.random((100, 10)), dims=['sample', 'feature'])
+    estimator = BaseEstimatorWrapper(
+        ReshapingEstimator(new_shape=(-1, 0)), reshapes='feature')
+    estimator.fit(X, X)
+    y = X[:, 0]
+    yp = estimator.predict(X)
+    assert_allclose(yp, y)
 
 
 def test_ndim_reshaping_estimator():

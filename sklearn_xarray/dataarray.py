@@ -13,7 +13,7 @@ class BaseEstimatorWrapper(BaseEstimator):
     Parameters
     ----------
     estimator : sklearn estimator
-    reshapes : str
+    reshapes : str or dict
         The dimension reshaped by this estimator
     """
     def __init__(self, estimator=None, reshapes=None):
