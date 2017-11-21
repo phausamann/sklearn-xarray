@@ -7,7 +7,7 @@ environment:
     # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
     # /E:ON and /V:ON options are not enabled in the batch script interpreter
     # See: http://stackoverflow.com/a/13751649/163740
-    CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\ci_scripts\\appveyor\\run_with_env.cmd"
+    CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\build_tools\\appveyor\\run_with_env.cmd"
     WHEELHOUSE_UPLOADER_USERNAME: sklearn
     WHEELHOUSE_UPLOADER_SECRET:
       secure: XzK+Mi6Ba5frV2B/jHq7h4aD8/nox9SsI3T8Kub1L2XNevRSIurUEry3PdWESzRY

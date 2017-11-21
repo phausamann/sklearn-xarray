@@ -25,16 +25,16 @@ class BaseEstimatorWrapper(BaseEstimator):
 
         Parameters
         ----------
-        X : xarray.DataArray
+        X : xarray DataArray
             The input array.
 
         Returns
         -------
-        coords_t : dict
+        coords_new : dict
             The array's coords after transformation/prediction.
         """
 
-        coords_t = dict()
+        coords_new = dict()
 
         # dict syntax
         if hasattr(self.reshapes, 'items'):
@@ -43,35 +43,69 @@ class BaseEstimatorWrapper(BaseEstimator):
                 for c in X.coords:
                     old_dims_in_c = [x for x in X[c].dims if x in old_dims]
                     if any(old_dims_in_c) and c not in old_dims:
-                        c_t = X[c].isel(**{d : 0 for d in old_dims_in_c})
+                        c_t = X[c].isel(**{d: 0 for d in old_dims_in_c})
                         new_dims = [d for d in X[c].dims if d not in old_dims]
-                        coords_t[c] = (new_dims, c_t.drop(old_dims_in_c))
+                        coords_new[c] = (new_dims, c_t.drop(old_dims_in_c))
                     elif c not in old_dims:
-                        coords_t[c] = X[c]
+                        coords_new[c] = X[c]
 
         # string syntax
         else:
             # drop the reshaped dimension
             for c in X.coords:
                 if self.reshapes in X[c].dims and c != self.reshapes:
-                    c_t = X[c].isel(**{self.reshapes : 0})
+                    c_t = X[c].isel(**{self.reshapes: 0})
                     new_dims = [d for d in X[c].dims if d != self.reshapes]
-                    coords_t[c] = (new_dims, c_t.drop(self.reshapes))
+                    coords_new[c] = (new_dims, c_t.drop(self.reshapes))
                 elif c != self.reshapes:
-                    coords_t[c] = X[c]
+                    coords_new[c] = X[c]
 
-        return coords_t
+        return coords_new
+
+    def _predict(self, X):
+        """ Predict with `self.estimator` and update dims.
+
+        Parameters
+        ----------
+        X : xarray DataArray
+            The input array.
+
+        Returns
+        -------
+        yp: array-like
+            The predicted output.
+        dims_new : dict
+            The array's dims after prediction.
+        """
+
+        yp = self.estimator.predict(X)
+        dims_new = list(X.dims)
+
+        # dict syntax
+        if hasattr(self.reshapes, 'items'):
+            for new_dim, old_dims in self.reshapes.items():
+                for d in old_dims:
+                    dims_new.remove(d)
+                # only if new_dim is not singleton after prediction
+                if yp.ndim == X.ndim-len(old_dims)+1:
+                    dims_new.append(new_dim)
+
+        else:
+            # handle the case that dimension is singleton after prediction
+            if yp.ndim < X.ndim:
+                dims_new.remove(self.reshapes)
+
+        return yp, dims_new
 
     def fit(self, X, y=None):
         """ A wrapper around the fitting function.
 
         Parameters
         ----------
-        X : xarray.DataArray
+        X : xarray DataArray
             The training input samples.
-        y : xarray.DataArray
-            The target values (class labels in classification, real numbers in
-            regression).
+        y : xarray DataArray
+            The target values.
 
         Returns
         -------
@@ -97,13 +131,13 @@ class BaseEstimatorWrapper(BaseEstimator):
 
         Parameters
         ----------
-        X : xarray.DataArray
+        X : xarray DataArray
             The input samples.
 
         Returns
         -------
-        y : xarray.DataArray
-            Returns :math:`x^2` where :math:`x` is the first column of `X`.
+        y : xarray DataArray
+            Returns prediction of estimator.
         """
 
         if X.ndim < 3:
@@ -111,10 +145,11 @@ class BaseEstimatorWrapper(BaseEstimator):
 
         if self.estimator is not None:
             if self.reshapes is not None:
-                return xr.DataArray(
-                    self.estimator.predict(X), coords=self._update_coords(X))
+                data, dims = self._predict(X)
+                coords = self._update_coords(X)
+                return xr.DataArray(data, coords=coords, dims=dims)
             else:
                 return xr.DataArray(
-                    self.estimator.predict(X), coords=X.coords)
+                    self.estimator.predict(X), coords=X.coords, dims=X.dims)
         else:
             return X
