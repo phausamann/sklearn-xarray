@@ -1,5 +1,5 @@
-from .dataarray import BaseEstimatorWrapper
+from .dataarray import (EstimatorWrapper, TransformerWrapper)
 
 from . import dataarray
 
-__all__ = ['BaseEstimatorWrapper', 'dataarray']
+__all__ = ['EstimatorWrapper', 'TransformerWrapper', 'dataarray']
