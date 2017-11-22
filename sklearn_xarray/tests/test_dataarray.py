@@ -4,7 +4,8 @@ from xarray.testing import assert_equal, assert_allclose
 
 from sklearn.base import BaseEstimator, TransformerMixin
 
-from sklearn_xarray import EstimatorWrapper, TransformerWrapper
+from sklearn_xarray.dataarray import (
+    EstimatorWrapper, TransformerWrapper)
 
 
 class DummyEstimator(BaseEstimator):
@@ -67,6 +68,7 @@ class ReshapingEstimator(BaseEstimator, TransformerMixin):
 
 
 def test_dummy_estimator():
+
     X = xr.DataArray(
         np.random.random((100, 10)),
         coords={'sample': range(100), 'feature': range(10)},

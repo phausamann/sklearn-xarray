@@ -1,6 +1,7 @@
 """
-This is a module to be used as a reference for building other modules
+`sklearn_xarray.dataarray.wrappers`
 """
+
 import numpy as np
 import xarray as xr
 from sklearn.base import BaseEstimator, TransformerMixin
@@ -13,9 +14,16 @@ class EstimatorWrapper(BaseEstimator):
     Parameters
     ----------
     estimator : sklearn estimator
-        The estimator this instance wraps around.
+        The estimator instance this instance wraps around.
     reshapes : str or dict, optional
-        The dimension reshaped by this estimator.
+        The dimension(s) reshaped by this estimator. Any coordinates in the
+        DataArray along these dimensions will be dropped. If the estimator drops
+        this dimension (e.g. a binary classifier returning a 1D vector), the
+        dimension itself will also be dropped.
+
+        You can specify multiple dimensions mapping to multiple new dimensions
+        with a dict whose items are lists of reshaped dimensions, e.g.
+        {'new_feature': ['feature_1', 'feature_2'], ...}
     """
 
     def __init__(self, estimator=None, reshapes=None):
@@ -43,15 +51,30 @@ class EstimatorWrapper(BaseEstimator):
 
         # dict syntax
         if hasattr(self.reshapes, 'items'):
+
+            # check if new dims are dropped by estimator
+            all_old_dims = []
+            for _, old_dims in self.reshapes.items():
+                all_old_dims += old_dims
+
+            if X_out.ndim == X_in.ndim-len(all_old_dims)+len(self.reshapes):
+                drop_new_dims = False
+            elif X_out.ndim == X_in.ndim-len(all_old_dims):
+                drop_new_dims = True
+            else:
+                raise ValueError(
+                    'Inconsistent dimensions returned by estimator')
+
+            # get new dims
             for new_dim, old_dims in self.reshapes.items():
                 for d in old_dims:
                     dims_new.remove(d)
-                # only if new_dim is not singleton after prediction
-                if X_out.ndim == X_in.ndim-len(old_dims)+1:
+                if not drop_new_dims:
                     dims_new.append(new_dim)
 
+        # string syntax
         else:
-            # handle the case that dimension is singleton after prediction
+            # check if dim is dropped by estimator
             if X_out.ndim < X_in.ndim:
                 dims_new.remove(self.reshapes)
 

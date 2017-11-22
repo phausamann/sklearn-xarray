@@ -1,6 +1,6 @@
-from sklearn.utils.estimator_checks import (
-    check_estimator, check_transformer_general)
-from sklearn_xarray import (EstimatorWrapper, TransformerWrapper)
+from sklearn.utils.estimator_checks import check_estimator
+from sklearn_xarray.dataarray import (
+    EstimatorWrapper, TransformerWrapper)
 
 
 def test_estimator():
