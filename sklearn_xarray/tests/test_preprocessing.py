@@ -4,7 +4,7 @@ from xarray.testing import assert_equal, assert_allclose
 
 from sklearn_xarray.preprocessing import (
     preprocess, transpose, split, segment, resample, concatenate, featurize,
-    sanitize, reduce
+    sanitize, reduce, Splitter
 )
 
 
@@ -14,7 +14,8 @@ def test_preprocess():
 
     X_da = xr.DataArray(
         np.random.random((100, 10)),
-        coords={'sample': range(100), 'feature': range(10)}
+        coords={'sample': range(100), 'feature': range(10)},
+        dims=('sample', 'feature')
     )
 
     Xt_da_gt = X_da
@@ -59,7 +60,8 @@ def test_transpose():
 
     X_da = xr.DataArray(
         np.random.random((100, 10)),
-        coords={'sample': range(100), 'feature': range(10)}
+        coords={'sample': range(100), 'feature': range(10)},
+        dims=('sample', 'feature')
     )
 
     Xt_da = transpose(X_da, order=['feature', 'sample'])
@@ -78,30 +80,44 @@ def test_transpose():
 
 def test_split():
 
+    # test on DataArray with number of samples multiple of new length
     X_da = xr.DataArray(
         np.random.random((100, 10)),
-        coords={'sample': range(100), 'feature': range(10)}
+        coords={'sample': range(100), 'feature': range(10)},
+        dims=('sample', 'feature')
     )
 
-    Xt_da = split(
-        X_da, new_dim='split_sample', new_len=10, reduce_index='subsample')
+    estimator = Splitter(
+        new_dim='split_sample', new_len=10, reduce_index='subsample',
+        keep_coords_as='sample_coord'
+    )
 
+    Xt_da = estimator.fit_transform(X_da)
+
+    Xt_da = estimator.inverse_transform(Xt_da)
+
+    assert_allclose(X_da, Xt_da)
+
+    # test on Dataset with number of samples NOT multiple of new length
     X_ds = xr.Dataset(
         {'var': (['sample', 'feature'], np.random.random((100, 10)))},
         coords={'sample': range(100), 'feature': range(10)}
     )
 
     Xt_ds = split(
-        X_ds, new_dim='split_sample', new_len=10, reduce_index='head')
+        X_ds, new_dim='split_sample', new_len=7, reduce_index='head',
+        new_index_func=None
+    )
 
-    #TODO: check result
+    assert Xt_ds['var'].shape == (10, 14, 7)
 
 
 def test_segment():
 
     X_da = xr.DataArray(
         np.random.random((100, 10)),
-        coords={'sample': range(100), 'feature': range(10)}
+        coords={'sample': range(100), 'feature': range(10)},
+        dims=('sample', 'feature')
     )
 
     Xt_da = segment(
@@ -126,7 +142,8 @@ def test_resample():
     X_da = xr.DataArray(
         np.random.random((100, 10)),
         coords={'sample': pd.timedelta_range(0, periods=100, freq='10ms'),
-                'feature': range(10)}
+                'feature': range(10)},
+        dims=('sample', 'feature')
     )
 
     Xt_da = resample(X_da, freq='20ms')
@@ -159,7 +176,8 @@ def test_featurize():
 
     X_da = xr.DataArray(
         np.random.random((100, 10, 10)),
-        coords={'sample': range(100), 'feat_1': range(10), 'feat_2': range(10)}
+        coords={'sample': range(100), 'feat_1': range(10), 'feat_2': range(10)},
+        dims=('sample', 'feat_1', 'feat_2')
     )
 
     Xt_da = featurize(X_da)
@@ -182,6 +200,7 @@ def test_sanitize():
     X_da = xr.DataArray(
         np.random.random((100, 10)),
         coords={'sample': range(100), 'feature': range(10)},
+        dims=('sample', 'feature')
     )
 
     X_da[0, 0] = np.nan
@@ -204,7 +223,8 @@ def test_reduce():
 
     X_da = xr.DataArray(
         np.random.random((100, 10)),
-        coords={'sample': range(100), 'feature': range(10)}
+        coords={'sample': range(100), 'feature': range(10)},
+        dims=('sample', 'feature')
     )
 
     Xt_da = reduce(X_da)

@@ -150,6 +150,25 @@ class Transposer(BaseTransformer):
 
         return X.transpose(*self.order)
 
+    def inverse_transform(self, X, y=None):
+        """
+
+        Parameters
+        ----------
+        X : xarray DataArray or Dataset
+            The input data.
+        y : None
+            For compatibility.
+
+        Returns
+        -------
+        Xt: xarray DataArray or Dataset
+            The transformed data.
+        """
+
+        raise NotImplementedError(
+            'inverse_transform has not yet been implemented for this estimator')
+
 
 def transpose(X, groupby=None, group_dim='sample', **kwargs):
     """ Reorders data dimensions.
@@ -192,16 +211,22 @@ class Splitter(BaseTransformer):
     new_index_func : function
         A function that takes `new_len` as a parameter and returns a vector of
         length `new_len` to be used as the indices for the new dimension.
+    keep_coords_as : str or None
+        If set, the coordinate of the split dimension will be kept as a
+        separate coordinate with this name. This allows `inverse_transform`
+        to reconstruct the original coordinate.
     """
 
     def __init__(self, dim='sample', new_dim=None, new_len=None,
-                 reduce_index='subsample', new_index_func=np.arange):
+                 reduce_index='subsample', new_index_func=np.arange,
+                 keep_coords_as=None):
 
         self.dim = dim
         self.new_dim = new_dim
         self.new_len = new_len
         self.reduce_index = reduce_index
         self.new_index_func = new_index_func
+        self.keep_coords_as = keep_coords_as
 
     def transform(self, X, y=None):
         """ Split X along some dimension.
@@ -234,14 +259,19 @@ class Splitter(BaseTransformer):
         tmp_dim = 'tmp'
 
         # reduce indices of original dimension
+        trimmed_len = (len(Xt[self.dim])//self.new_len)*self.new_len
         if self.reduce_index == 'subsample':
-            dim_idx = np.arange(0, len(Xt[self.dim]), self.new_len)[:-2]
+            dim_idx = np.arange(0, trimmed_len, self.new_len)
         elif self.reduce_index == 'head':
-            dim_idx = np.arange(len(Xt[self.dim]) // self.new_len)
+            dim_idx = np.arange(trimmed_len // self.new_len)
         else:
             raise KeyError('Unrecognized mode for index reduction')
 
         dim_coords = Xt[self.dim][dim_idx]
+
+        # keep the original coord if desired
+        if self.keep_coords_as is not None:
+            Xt.coords[self.keep_coords_as] = Xt[self.dim]
 
         # get indices of new dimension
         if self.new_index_func is None:
@@ -253,14 +283,49 @@ class Splitter(BaseTransformer):
         index = pd.MultiIndex.from_product((dim_coords, new_dim_coords),
                                            names=(tmp_dim, self.new_dim))
 
-        # trim length and reshape
+        # trim length, reshape and move new dimension to the end
         Xt = Xt.isel(**{self.dim: slice(len(index))})
         Xt = Xt.assign(**{self.dim: index}).unstack(self.dim)
+        Xt = Xt.rename({tmp_dim: self.dim})
+        Xt = Xt.transpose(*(tuple(X.dims) + (self.new_dim,)))
 
         if self.type_ == 'DataArray':
             Xt = Xt['tmp_var'].rename(X.name)
 
-        return Xt.rename({tmp_dim: self.dim})
+        return Xt
+
+    def inverse_transform(self, X, y=None):
+        """ Undo the split.
+
+        Parameters
+        ----------
+        X : xarray DataArray or Dataset
+            The input data.
+        y : None
+            For compatibility.
+
+        Returns
+        -------
+        Xt: xarray DataArray or Dataset
+            The transformed data.
+        """
+
+        check_is_fitted(self, ['type_'])
+
+        # temporary dimension name
+        tmp_dim = 'tmp'
+
+        Xt = X.stack(**{tmp_dim: (self.dim, self.new_dim)})
+
+        if self.keep_coords_as is not None:
+            Xt[tmp_dim] = Xt[self.keep_coords_as]
+            Xt = Xt.drop(self.keep_coords_as)
+
+        # tranpose to original dimensions
+        Xt = Xt.rename({tmp_dim: self.dim})
+        Xt = Xt.transpose(*(tuple(d for d in X.dims if d != self.new_dim)))
+
+        return Xt
 
 
 def split(X, groupby=None, group_dim='sample', **kwargs):
@@ -427,6 +492,25 @@ class Segmenter(BaseTransformer):
 
             return xr.DataArray(x_t, coords=coords_t, dims=new_dims)
 
+    def inverse_transform(self, X, y=None):
+        """
+
+        Parameters
+        ----------
+        X : xarray DataArray or Dataset
+            The input data.
+        y : None
+            For compatibility.
+
+        Returns
+        -------
+        Xt: xarray DataArray or Dataset
+            The transformed data.
+        """
+
+        raise NotImplementedError(
+            'inverse_transform has not yet been implemented for this estimator')
+
 
 def segment(X, groupby=None, group_dim='sample', **kwargs):
     """ Segments X along some dimension.
@@ -537,6 +621,25 @@ class Resampler(BaseTransformer):
             # combine to new array
             return xr.DataArray(x_t, coords=coords_t, dims=X.dims)
 
+    def inverse_transform(self, X, y=None):
+        """
+
+        Parameters
+        ----------
+        X : xarray DataArray or Dataset
+            The input data.
+        y : None
+            For compatibility.
+
+        Returns
+        -------
+        Xt: xarray DataArray or Dataset
+            The transformed data.
+        """
+
+        raise NotImplementedError(
+            'inverse_transform has not yet been implemented for this estimator')
+
 
 def resample(X, groupby=None, group_dim='sample', **kwargs):
     """ Resamples along some dimension.
@@ -616,6 +719,25 @@ class Concatenator(BaseTransformer):
             X_list = [X[v] for v in X.data_vars if v not in self.variables]
             X_list.append(Xt.to_dataset(name=self.new_var))
             return xr.merge(X_list)
+
+    def inverse_transform(self, X, y=None):
+        """
+
+        Parameters
+        ----------
+        X : xarray DataArray or Dataset
+            The input data.
+        y : None
+            For compatibility.
+
+        Returns
+        -------
+        Xt: xarray DataArray or Dataset
+            The transformed data.
+        """
+
+        raise NotImplementedError(
+            'inverse_transform has not yet been implemented for this estimator')
 
 
 def concatenate(X, groupby=None, group_dim='sample', **kwargs):
@@ -701,6 +823,25 @@ class Featurizer(BaseTransformer):
         else:
             return X
 
+    def inverse_transform(self, X, y=None):
+        """
+
+        Parameters
+        ----------
+        X : xarray DataArray or Dataset
+            The input data.
+        y : None
+            For compatibility.
+
+        Returns
+        -------
+        Xt: xarray DataArray or Dataset
+            The transformed data.
+        """
+
+        raise NotImplementedError(
+            'inverse_transform has not yet been implemented for this estimator')
+
 
 def featurize(X, groupby=None, group_dim='sample', **kwargs):
     """ Stacks all dimensions and variables except for sample dimension.
@@ -766,6 +907,25 @@ class Sanitizer(BaseTransformer):
 
         return X.isel(**{self.dim: np.logical_not(idx_nan)})
 
+    def inverse_transform(self, X, y=None):
+        """
+
+        Parameters
+        ----------
+        X : xarray DataArray or Dataset
+            The input data.
+        y : None
+            For compatibility.
+
+        Returns
+        -------
+        Xt: xarray DataArray or Dataset
+            The transformed data.
+        """
+
+        raise NotImplementedError(
+            'inverse_transform cannot be implemented for this estimator')
+
 
 def sanitize(X, groupby=None, group_dim='sample', **kwargs):
     """ Removes elements containing NaNs.
@@ -822,6 +982,25 @@ class Reducer(BaseTransformer):
         """
 
         return X.reduce(self.func, dim=self.dim)
+
+    def inverse_transform(self, X, y=None):
+        """
+
+        Parameters
+        ----------
+        X : xarray DataArray or Dataset
+            The input data.
+        y : None
+            For compatibility.
+
+        Returns
+        -------
+        Xt: xarray DataArray or Dataset
+            The transformed data.
+        """
+
+        raise NotImplementedError(
+            'inverse_transform cannot be implemented for this estimator')
 
 
 def reduce(X, groupby=None, group_dim='sample', **kwargs):
