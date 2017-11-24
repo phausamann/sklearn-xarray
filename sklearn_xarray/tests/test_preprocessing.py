@@ -44,7 +44,7 @@ def test_groupwise():
     coord_2 = list(range(10))*10
 
     X_ds = xr.Dataset(
-        {'var_1' : (['sample', 'feature'], np.random.random((100, 10)))},
+        {'var_1': (['sample', 'feature'], np.random.random((100, 10)))},
         coords={'sample': range(100), 'feature': range(10),
                 'coord_1': (['sample'], coord_1),
                 'coord_2': (['sample'], coord_2)}
@@ -54,9 +54,16 @@ def test_groupwise():
     Xt_ds = preprocess(X_ds, scale, groupby='coord_1')
 
     # test newly defined estimator
-    Xt_ds2 = split(X_ds, new_dim='split_sample', new_len=5, groupby='coord_1')
+    Xt_ds2, estimator = split(
+        X_ds, new_dim='split_sample', new_len=5, groupby='coord_1',
+        keep_coords_as='initial_sample', return_estimator=True
+    )
 
     assert Xt_ds2.var_1.shape == (19, 10, 5)
+
+    Xt_ds2 = estimator.inverse_transform(Xt_ds2)
+
+    assert Xt_ds2.var_1.shape == (95, 10)
 
 
 def test_transpose():
@@ -187,7 +194,8 @@ def test_concatenate():
     Xt_ds2 = concatenate(
         X_ds, variables=['var_1', 'var_2'], new_index_func=np.arange)
 
-    #TODO: check result
+    assert Xt_ds2.Feature.shape == (100, 20)
+    npt.assert_equal(Xt_ds2.feature.values, np.arange(20))
 
 
 def test_featurize():
@@ -225,6 +233,8 @@ def test_sanitize():
 
     Xt_da = sanitize(X_da)
 
+    xrt.assert_allclose(X_da[1:], Xt_da)
+
     X_ds = xr.Dataset(
         {'var_1': (['sample', 'feature'], np.random.random((100, 10)))},
         coords={'sample': range(100), 'feature': range(10)}
@@ -234,7 +244,7 @@ def test_sanitize():
 
     Xt_ds = sanitize(X_ds)
 
-    #TODO: check result
+    xrt.assert_allclose(X_ds.isel(sample=range(1, 100)), Xt_ds)
 
 
 def test_reduce():

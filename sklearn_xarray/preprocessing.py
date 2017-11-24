@@ -13,7 +13,7 @@ from sklearn.utils.validation import check_is_fitted
 from .utils import get_group_indices
 
 
-def preprocess(X, function, groupby=None, group_dim='sample', **kwargs):
+def preprocess(X, function, groupby=None, group_dim='sample', **fit_params):
     """ Wraps preprocessing functions from sklearn for use with xarray types.
 
     Parameters
@@ -43,13 +43,13 @@ def preprocess(X, function, groupby=None, group_dim='sample', **kwargs):
         Xt = X
 
     if groupby is None:
-        Xt = Xt.apply(function, **kwargs)
+        Xt = Xt.apply(function, **fit_params)
     else:
-        group_idx = get_group_indices(X, groupby)
+        group_idx = get_group_indices(X, groupby, group_dim)
         Xt_list = []
         for i in group_idx:
             x = Xt.isel(**{group_dim: i})
-            Xt_list.append(x.apply(function, **kwargs))
+            Xt_list.append(x.apply(function, **fit_params))
         Xt = xr.concat(Xt_list, dim=group_dim)
 
     if was_array:
@@ -61,18 +61,13 @@ def preprocess(X, function, groupby=None, group_dim='sample', **kwargs):
 class BaseTransformer(BaseEstimator, TransformerMixin):
     """ Base class for transformers. """
 
-    def _transform_groupwise(self, X, groupby, group_dim='sample'):
+    def _transform_groupwise(self, X):
         """ Call the `transform` function on groups of data.
 
         Parameters
         ----------
         X : xarray DataArray or Dataset
             The input data.
-        groupby : str or list
-            Name of coordinate or list of coordinates by which the groups are
-            determined.
-        group_dim : str, optional
-            Name of dimension along which the groups are indexed.
 
         Returns
         -------
@@ -80,26 +75,21 @@ class BaseTransformer(BaseEstimator, TransformerMixin):
             The transformed data.
         """
 
-        group_idx = get_group_indices(X, groupby)
+        group_idx = get_group_indices(X, self.groupby, self.group_dim)
         Xt_list = []
         for i in group_idx:
-            x = X.isel(**{group_dim: i})
-            Xt_list.append(self.transform(x))
+            x = X.isel(**{self.group_dim: i})
+            Xt_list.append(self.transform(x, groupwise=True))
 
-        return xr.concat(Xt_list, dim=group_dim)
+        return xr.concat(Xt_list, dim=self.group_dim)
 
-    def _inverse_transform_groupwise(self, X, groupby, group_dim='sample'):
+    def _inverse_transform_groupwise(self, X):
         """ Call the `inverse_transform` function on groups of data.
 
         Parameters
         ----------
         X : xarray DataArray or Dataset
             The input data.
-        groupby : str or list
-            Name of coordinate or list of coordinates by which the groups are
-            determined.
-        group_dim : str, optional
-            Name of dimension along which the groups are indexed.
 
         Returns
         -------
@@ -107,15 +97,15 @@ class BaseTransformer(BaseEstimator, TransformerMixin):
             The transformed data.
         """
 
-        group_idx = get_group_indices(X, groupby)
+        group_idx = get_group_indices(X, self.groupby, self.group_dim)
         Xt_list = []
         for i in group_idx:
-            x = X.isel(**{group_dim: i})
-            Xt_list.append(self.inverse_transform(x))
+            x = X.isel(**{self.group_dim: i})
+            Xt_list.append(self.inverse_transform(x, groupwise=True))
 
-        return xr.concat(Xt_list, dim=group_dim)
+        return xr.concat(Xt_list, dim=self.group_dim)
 
-    def fit(self, X, y=None, **kwargs):
+    def fit(self, X, y=None, **fit_params):
         """ Fit estimator to data.
 
         Parameters
@@ -139,8 +129,7 @@ class BaseTransformer(BaseEstimator, TransformerMixin):
 
         return self
 
-    def fit_transform(self, X, y=None, groupby=None, group_dim='sample',
-                      **kwargs):
+    def fit_transform(self, X, y=None, **fit_params):
         """ Fit to data, then transform it.
 
         Fits transformer to X and y with optional parameters kwargs
@@ -161,12 +150,10 @@ class BaseTransformer(BaseEstimator, TransformerMixin):
 
         if y is None:
             # fit method of arity 1 (unsupervised transformation)
-            return self.fit(X, **kwargs).transform(
-                X, groupby=groupby, group_dim=group_dim)
+            return self.fit(X, **fit_params).transform(X)
         else:
             # fit method of arity 2 (supervised transformation)
-            return self.fit(X, y, **kwargs).transform(
-                X, groupby=groupby, group_dim=group_dim)
+            return self.fit(X, y, **fit_params).transform(X)
 
 
 class Transposer(BaseTransformer):
@@ -176,13 +163,21 @@ class Transposer(BaseTransformer):
     ----------
     order : list or tuple
         The new order of the dimensions.
+    groupby : str or list, optional
+        Name of coordinate or list of coordinates by which the groups are
+        determined.
+    group_dim : str, optional
+        Name of dimension along which the groups are indexed.
     """
 
-    def __init__(self, order=None):
+    def __init__(self, order=None, groupby=None, group_dim='sample'):
 
         self.order = order
 
-    def fit(self, X, y=None, **kwargs):
+        self.groupby = groupby
+        self.group_dim = group_dim
+
+    def fit(self, X, y=None, **fit_params):
         """ Fit the estimator.
 
         Parameters
@@ -198,26 +193,21 @@ class Transposer(BaseTransformer):
             The estimator itself.
         """
 
-        super().fit(X, y, **kwargs)
+        super().fit(X, y, **fit_params)
 
         self.initial_order_ = X.dims
 
         return self
 
-    def transform(self, X, y=None, groupby=None, group_dim='sample'):
+    def transform(self, X, groupwise=False):
         """ Reorder data dimensions.
 
         Parameters
         ----------
         X : xarray DataArray or Dataset
             The input data.
-        y : None
-            For compatibility.
-        groupby : str or list, optional
-            Name of coordinate or list of coordinates by which the groups are
-            determined.
-        group_dim : str, optional
-            Name of dimension along which the groups are indexed.
+        groupwise : bool
+            Whether this method was called from a groupwise context.
 
         Returns
         -------
@@ -227,8 +217,8 @@ class Transposer(BaseTransformer):
 
         check_is_fitted(self, ['type_', 'initial_order_'])
 
-        if groupby is not None:
-            return self._transform_groupwise(X, groupby, group_dim)
+        if not groupwise and self.groupby is not None:
+            return self._transform_groupwise(X)
 
         if self.order is None:
             return X.transpose()
@@ -238,20 +228,15 @@ class Transposer(BaseTransformer):
                     'The elements in `order` must match the dimensions of X.')
             return X.transpose(*self.order)
 
-    def inverse_transform(self, X, y=None, groupby=None, group_dim='sample'):
+    def inverse_transform(self, X, groupwise=False):
         """ Undo reordering.
 
         Parameters
         ----------
         X : xarray DataArray or Dataset
             The input data.
-        y : None
-            For compatibility.
-        groupby : str or list, optional
-            Name of coordinate or list of coordinates by which the groups are
-            determined.
-        group_dim : str, optional
-            Name of dimension along which the groups are indexed.
+        groupwise : bool
+            Whether this method was called from a groupwise context.
 
         Returns
         -------
@@ -261,8 +246,8 @@ class Transposer(BaseTransformer):
 
         check_is_fitted(self, ['type_', 'initial_order_'])
 
-        if groupby is not None:
-            return self._inverse_transform_groupwise(X, groupby, group_dim)
+        if not groupwise and self.groupby is not None:
+            return self._inverse_transform_groupwise(X)
 
         if self.order is None:
             return X.transpose()
@@ -273,19 +258,13 @@ class Transposer(BaseTransformer):
             return X.transpose(*self.initial_order_)
 
 
-def transpose(X, groupby=None, group_dim='sample', return_estimator=False,
-              **kwargs):
+def transpose(X, return_estimator=False, **fit_params):
     """ Reorders data dimensions.
 
     Parameters
     ----------
     X : xarray DataArray or Dataset
         The input data.
-    groupby : str or list, optional
-        Name of coordinate or list of coordinates by which the groups are
-        determined.
-    group_dim : str, optional
-        Name of dimension along which the groups are indexed.
     return_estimator : bool
         Whether to return the fitted estimator along with the transformed data.
 
@@ -295,10 +274,9 @@ def transpose(X, groupby=None, group_dim='sample', return_estimator=False,
         The transformed data.
     """
 
-    estimator = Transposer(**kwargs)
+    estimator = Transposer(**fit_params)
 
-    Xt = estimator.fit_transform(
-            X, groupby=groupby, group_dim=group_dim, **kwargs)
+    Xt = estimator.fit_transform(X)
 
     if return_estimator:
         return Xt, estimator
@@ -329,11 +307,16 @@ class Splitter(BaseTransformer):
         If set, the coordinate of the split dimension will be kept as a
         separate coordinate with this name. This allows `inverse_transform`
         to reconstruct the original coordinate.
+    groupby : str or list, optional
+        Name of coordinate or list of coordinates by which the groups are
+        determined.
+    group_dim : str, optional
+        Name of dimension along which the groups are indexed.
     """
 
     def __init__(self, dim='sample', new_dim=None, new_len=None,
                  reduce_index='subsample', new_index_func=np.arange,
-                 keep_coords_as=None):
+                 keep_coords_as=None, groupby=None, group_dim='sample'):
 
         self.dim = dim
         self.new_dim = new_dim
@@ -342,20 +325,18 @@ class Splitter(BaseTransformer):
         self.new_index_func = new_index_func
         self.keep_coords_as = keep_coords_as
 
-    def transform(self, X, y=None, groupby=None, group_dim='sample'):
+        self.groupby = groupby
+        self.group_dim = group_dim
+
+    def transform(self, X, groupwise=False):
         """ Splits X along some dimension.
 
         Parameters
         ----------
         X : xarray DataArray or Dataset
             The input data.
-        y : None
-            For compatibility.
-        groupby : str or list, optional
-            Name of coordinate or list of coordinates by which the groups are
-            determined.
-        group_dim : str, optional
-            Name of dimension along which the groups are indexed.
+        groupwise : bool
+            Whether this method was called from a groupwise context.
 
         Returns
         -------
@@ -365,8 +346,8 @@ class Splitter(BaseTransformer):
 
         check_is_fitted(self, ['type_'])
 
-        if groupby is not None:
-            return self._transform_groupwise(X, groupby, group_dim)
+        if not groupwise and self.groupby is not None:
+            return self._transform_groupwise(X)
 
         if self.type_ == 'DataArray':
             Xt = X.to_dataset(name='tmp_var')
@@ -422,20 +403,15 @@ class Splitter(BaseTransformer):
 
         return Xt
 
-    def inverse_transform(self, X, y=None, groupby=None, group_dim='sample'):
+    def inverse_transform(self, X, groupwise=False):
         """ Undo the split.
 
         Parameters
         ----------
         X : xarray DataArray or Dataset
             The input data.
-        y : None
-            For compatibility.
-        groupby : str or list, optional
-            Name of coordinate or list of coordinates by which the groups are
-            determined.
-        group_dim : str, optional
-            Name of dimension along which the groups are indexed.
+        groupwise : bool
+            Whether this method was called from a groupwise context.
 
         Returns
         -------
@@ -445,8 +421,8 @@ class Splitter(BaseTransformer):
 
         check_is_fitted(self, ['type_'])
 
-        if groupby is not None:
-            return self._inverse_transform_groupwise(X, groupby, group_dim)
+        if not groupwise and self.groupby is not None:
+            return self._inverse_transform_groupwise(X)
 
         # temporary dimension name
         tmp_dim = 'tmp'
@@ -459,24 +435,27 @@ class Splitter(BaseTransformer):
 
         # tranpose to original dimensions
         Xt = Xt.rename({tmp_dim: self.dim})
-        Xt = Xt.transpose(*(tuple(d for d in X.dims if d != self.new_dim)))
+        if self.type_ == 'Dataset':
+            # we have to transpose each variable individually
+            for v in X.data_vars:
+                old_dims = list(X[v].dims)
+                old_dims.remove(self.new_dim)
+                Xt[v] = Xt[v].transpose(*old_dims)
+        else:
+            old_dims = list(X.dims)
+            old_dims.remove(self.new_dim)
+            Xt = Xt.transpose(*old_dims)
 
         return Xt
 
 
-def split(X, groupby=None, group_dim='sample', return_estimator=False,
-          **kwargs):
+def split(X, return_estimator=False, **fit_params):
     """ Splits X along some dimension.
 
     Parameters
     ----------
     X : xarray DataArray or Dataset
         The input data.
-    groupby : str or list, optional
-        Name of coordinate or list of coordinates by which the groups are
-        determined.
-    group_dim : str, optional
-        Name of dimension along which the groups are indexed.
     return_estimator : bool
         Whether to return the fitted estimator along with the transformed data.
 
@@ -486,10 +465,9 @@ def split(X, groupby=None, group_dim='sample', return_estimator=False,
         The transformed data.
     """
 
-    estimator = Splitter(**kwargs)
+    estimator = Splitter(**fit_params)
 
-    Xt = estimator.fit_transform(
-            X, groupby=groupby, group_dim=group_dim, **kwargs)
+    Xt = estimator.fit_transform(X)
 
     if return_estimator:
         return Xt, estimator
@@ -519,10 +497,16 @@ class Segmenter(BaseTransformer):
     new_index_func : function
         A function that takes `new_len` as a parameter and returns a vector of
         length `new_len` to be used as the indices for the new dimension.
+    groupby : str or list, optional
+        Name of coordinate or list of coordinates by which the groups are
+        determined.
+    group_dim : str, optional
+        Name of dimension along which the groups are indexed.
     """
 
     def __init__(self, dim='sample', new_dim=None, new_len=None, step=None,
-                 reduce_index='subsample', new_index_func=np.arange):
+                 reduce_index='subsample', new_index_func=np.arange,
+                 groupby=None, group_dim='sample'):
 
         self.dim = dim
         self.new_dim = new_dim
@@ -530,6 +514,9 @@ class Segmenter(BaseTransformer):
         self.step = step
         self.reduce_index = reduce_index
         self.new_index_func = new_index_func
+
+        self.groupby = groupby
+        self.group_dim = group_dim
 
     def _segment_array(self, arr, step, new_len, axis):
         """ Segment an array along some axis.
@@ -566,20 +553,15 @@ class Segmenter(BaseTransformer):
 
         return arr_new
 
-    def transform(self, X, y=None, groupby=None, group_dim='sample'):
+    def transform(self, X, groupwise=False):
         """ Segments X along some dimension.
 
         Parameters
         ----------
         X : xarray DataArray or Dataset
             The input data.
-        y : None
-            For compatibility.
-        groupby : str or list, optional
-            Name of coordinate or list of coordinates by which the groups are
-            determined.
-        group_dim : str, optional
-            Name of dimension along which the groups are indexed.
+        groupwise : bool
+            Whether this method was called from a groupwise context.
 
         Returns
         -------
@@ -589,8 +571,8 @@ class Segmenter(BaseTransformer):
 
         check_is_fitted(self, ['type_'])
 
-        if groupby is not None:
-            return self._transform_groupwise(X, groupby, group_dim)
+        if not groupwise and self.groupby is not None:
+            return self._transform_groupwise(X)
 
         if None in (self.new_dim, self.new_len):
             raise ValueError('Name and length of new dimension must be '
@@ -647,20 +629,15 @@ class Segmenter(BaseTransformer):
 
             return xr.DataArray(x_t, coords=coords_t, dims=new_dims)
 
-    def inverse_transform(self, X, y=None, groupby=None, group_dim='sample'):
+    def inverse_transform(self, X, groupwise=False):
         """
 
         Parameters
         ----------
         X : xarray DataArray or Dataset
             The input data.
-        y : None
-            For compatibility.
-        groupby : str or list, optional
-            Name of coordinate or list of coordinates by which the groups are
-            determined.
-        group_dim : str, optional
-            Name of dimension along which the groups are indexed.
+        groupwise : bool
+            Whether this method was called from a groupwise context.
 
         Returns
         -------
@@ -672,19 +649,13 @@ class Segmenter(BaseTransformer):
             'inverse_transform has not yet been implemented for this estimator')
 
 
-def segment(X, groupby=None, group_dim='sample', return_estimator=False,
-            **kwargs):
+def segment(X, return_estimator=False, **fit_params):
     """ Segments X along some dimension.
 
     Parameters
     ----------
     X : xarray DataArray or Dataset
         The input data.
-    groupby : str or list, optional
-        Name of coordinate or list of coordinates by which the groups are
-        determined.
-    group_dim : str, optional
-        Name of dimension along which the groups are indexed.
     return_estimator : bool
         Whether to return the fitted estimator along with the transformed data.
 
@@ -694,10 +665,9 @@ def segment(X, groupby=None, group_dim='sample', return_estimator=False,
         The transformed data.
     """
 
-    estimator = Segmenter(**kwargs)
+    estimator = Segmenter(**fit_params)
 
-    Xt = estimator.fit_transform(
-            X, groupby=groupby, group_dim=group_dim, **kwargs)
+    Xt = estimator.fit_transform(X)
 
     if return_estimator:
         return Xt, estimator
@@ -714,15 +684,24 @@ class Resampler(BaseTransformer):
         Frequency after resampling.
     dim : str
         Name of the dimension along which to resample.
+    groupby : str or list, optional
+        Name of coordinate or list of coordinates by which the groups are
+        determined.
+    group_dim : str, optional
+        Name of dimension along which the groups are indexed.
     """
 
-    def __init__(self, freq=None, dim='sample'):
+    def __init__(self, freq=None, dim='sample', groupby=None,
+                 group_dim='sample'):
 
         self.freq = freq
         self.dim = dim
 
-    def transform(self, X, y=None, groupby=None, group_dim='sample'):
-        """ Resamples along some dimension.
+        self.groupby = groupby
+        self.group_dim = group_dim
+
+    def fit(self, X, y=None, **fit_params):
+        """ Fit the estimator.
 
         Parameters
         ----------
@@ -730,11 +709,31 @@ class Resampler(BaseTransformer):
             The input data.
         y : None
             For compatibility.
-        groupby : str or list, optional
-            Name of coordinate or list of coordinates by which the groups are
-            determined.
-        group_dim : str, optional
-            Name of dimension along which the groups are indexed.
+
+        Returns
+        -------
+        self :
+            The estimator itself.
+        """
+
+        super().fit(X, y, **fit_params)
+
+        if hasattr(X[self.dim], 'freq'):
+            self.initial_freq_ = X[self.dim].freq
+        else:
+            self.initial_freq_ = None
+
+        return self
+
+    def transform(self, X, groupwise=False):
+        """ Resamples along some dimension.
+
+        Parameters
+        ----------
+        X : xarray DataArray or Dataset
+            The input data.
+        groupwise : bool
+            Whether this method was called from a groupwise context.
 
         Returns
         -------
@@ -745,22 +744,22 @@ class Resampler(BaseTransformer):
         import scipy.signal as sig
         from fractions import Fraction
 
-        check_is_fitted(self, ['type_'])
+        check_is_fitted(self, ['type_', 'initial_freq_'])
 
-        if groupby is not None:
-            return self._transform_groupwise(X, groupby, group_dim)
+        if not groupwise and self.groupby is not None:
+            return self._transform_groupwise(X)
 
         if self.freq is None:
             return X
 
         # resample coordinates along resampling dimension
         # TODO: warn if timestamps are not monotonous
-        Xt = X[self.dim].to_dataframe().resample(rule=self.freq).first()
+        Xt_dim = X[self.dim].to_dataframe().resample(rule=self.freq).first()
 
         coords_t = dict()
         for c in X.coords:
             if self.dim in X[c].dims:
-                coords_t[c] = (X[c].dims, Xt[c])
+                coords_t[c] = (X[c].dims, Xt_dim[c])
             else:
                 coords_t[c] = X[c]
 
@@ -782,7 +781,7 @@ class Resampler(BaseTransformer):
                     v_t = sig.resample_poly(X[v], num, den, axis=axis)
                     # trim the results because the length might be greater
                     I = [slice(None)] * v_t.ndim
-                    I[axis] = np.arange(len(Xt[self.dim]))
+                    I[axis] = np.arange(len(Xt_dim[self.dim]))
                     vars_t[v] = (X[v].dims, v_t[tuple(I)])
 
             # combine to new dataset
@@ -795,25 +794,20 @@ class Resampler(BaseTransformer):
                 x_t = sig.resample_poly(X, num, den, axis=axis)
                 # trim the results because the length might be greater
                 I = [slice(None)] * x_t.ndim
-                I[axis] = np.arange(len(Xt[self.dim]))
+                I[axis] = np.arange(len(Xt_dim[self.dim]))
 
             # combine to new array
             return xr.DataArray(x_t, coords=coords_t, dims=X.dims)
 
-    def inverse_transform(self, X, y=None, groupby=None, group_dim='sample'):
+    def inverse_transform(self, X, groupwise=False):
         """
 
         Parameters
         ----------
         X : xarray DataArray or Dataset
             The input data.
-        y : None
-            For compatibility.
-        groupby : str or list, optional
-            Name of coordinate or list of coordinates by which the groups are
-            determined.
-        group_dim : str, optional
-            Name of dimension along which the groups are indexed.
+        groupwise : bool
+            Whether this method was called from a groupwise context.
 
         Returns
         -------
@@ -825,19 +819,13 @@ class Resampler(BaseTransformer):
             'inverse_transform has not yet been implemented for this estimator')
 
 
-def resample(X, groupby=None, group_dim='sample', return_estimator=False,
-             **kwargs):
+def resample(X, return_estimator=False, **fit_params):
     """ Resamples along some dimension.
 
     Parameters
     ----------
     X : xarray DataArray or Dataset
         The input data.
-    groupby : str or list, optional
-        Name of coordinate or list of coordinates by which the groups are
-        determined.
-    group_dim : str, optional
-        Name of dimension along which the groups are indexed.
     return_estimator : bool
         Whether to return the fitted estimator along with the transformed data.
 
@@ -847,10 +835,9 @@ def resample(X, groupby=None, group_dim='sample', return_estimator=False,
         The transformed data.
     """
 
-    estimator = Resampler(**kwargs)
+    estimator = Resampler(**fit_params)
 
-    Xt = estimator.fit_transform(
-            X, groupby=groupby, group_dim=group_dim, **kwargs)
+    Xt = estimator.fit_transform(X)
 
     if return_estimator:
         return Xt, estimator
@@ -877,11 +864,16 @@ class Concatenator(BaseTransformer):
         index for that dimension.
     return_array: bool
         Whether to return a DataArray when a Dataset was passed.
+    groupby : str or list, optional
+        Name of coordinate or list of coordinates by which the groups are
+        determined.
+    group_dim : str, optional
+        Name of dimension along which the groups are indexed.
     """
 
     def __init__(self, dim='feature', new_dim=None, variables=None,
                  new_var='Feature', new_index_func=None,
-                 return_array=False):
+                 return_array=False, groupby=None, group_dim='sample'):
 
         self.dim = dim
         self.new_dim = new_dim
@@ -890,20 +882,18 @@ class Concatenator(BaseTransformer):
         self.new_index_func = new_index_func
         self.return_array = return_array
 
-    def transform(self, X, y=None, groupby=None, group_dim='sample'):
+        self.groupby = groupby
+        self.group_dim = group_dim
+
+    def transform(self, X, groupwise=False):
         """ Concatenates variables along a dimension.
 
         Parameters
         ----------
         X : xarray Dataset
             The input data.
-        y : None
-            For compatibility.
-        groupby : str or list, optional
-            Name of coordinate or list of coordinates by which the groups are
-            determined.
-        group_dim : str, optional
-            Name of dimension along which the groups are indexed.
+        groupwise : bool
+            Whether this method was called from a groupwise context.
 
         Returns
         -------
@@ -913,8 +903,8 @@ class Concatenator(BaseTransformer):
 
         check_is_fitted(self, ['type_'])
 
-        if groupby is not None:
-            return self._transform_groupwise(X, groupby, group_dim)
+        if not groupwise and self.groupby is not None:
+            return self._transform_groupwise(X)
 
         if self.type_ == 'DataArray':
             raise ValueError('The Concatenator can only be applied to Datasets')
@@ -950,20 +940,15 @@ class Concatenator(BaseTransformer):
             else:
                 return xr.merge(X_list)
 
-    def inverse_transform(self, X, y=None, groupby=None, group_dim='sample'):
+    def inverse_transform(self, X, groupwise=False):
         """
 
         Parameters
         ----------
         X : xarray DataArray or Dataset
             The input data.
-        y : None
-            For compatibility.
-        groupby : str or list, optional
-            Name of coordinate or list of coordinates by which the groups are
-            determined.
-        group_dim : str, optional
-            Name of dimension along which the groups are indexed.
+        groupwise : bool
+            Whether this method was called from a groupwise context.
 
         Returns
         -------
@@ -975,19 +960,13 @@ class Concatenator(BaseTransformer):
             'inverse_transform has not yet been implemented for this estimator')
 
 
-def concatenate(X, groupby=None, group_dim='sample', return_estimator=False,
-                **kwargs):
+def concatenate(X, return_estimator=False, **fit_params):
     """ Concatenates variables along a dimension.
 
     Parameters
     ----------
     X : xarray DataArray or Dataset
         The input data.
-    groupby : str or list, optional
-        Name of coordinate or list of coordinates by which the groups are
-        determined.
-    group_dim : str, optional
-        Name of dimension along which the groups are indexed.
     return_estimator : bool
         Whether to return the fitted estimator along with the transformed data.
 
@@ -997,10 +976,9 @@ def concatenate(X, groupby=None, group_dim='sample', return_estimator=False,
         The transformed data.
     """
 
-    estimator = Concatenator(**kwargs)
+    estimator = Concatenator(**fit_params)
 
-    Xt = estimator.fit_transform(
-            X, groupby=groupby, group_dim=group_dim, **kwargs)
+    Xt = estimator.fit_transform(X)
 
     if return_estimator:
         return Xt, estimator
@@ -1023,10 +1001,16 @@ class Featurizer(BaseTransformer):
         Order of dimension stacking.
     return_array: bool
         Whether to return a DataArray when a Dataset was passed.
+    groupby : str or list, optional
+        Name of coordinate or list of coordinates by which the groups are
+        determined.
+    group_dim : str, optional
+        Name of dimension along which the groups are indexed.
     """
 
     def __init__(self, sample_dim='sample', feature_dim='feature',
-                 var_name='Features', order=None, return_array=False):
+                 var_name='Features', order=None, return_array=False,
+                 groupby=None, group_dim='sample'):
 
         self.sample_dim = sample_dim
         self.feature_dim = feature_dim
@@ -1034,20 +1018,18 @@ class Featurizer(BaseTransformer):
         self.order = order
         self.return_array = return_array
 
-    def transform(self, X, y=None, groupby=None, group_dim='sample'):
+        self.groupby = groupby
+        self.group_dim = group_dim
+
+    def transform(self, X, groupwise=False):
         """ Stacks all dimensions and variables except for sample dimension.
 
         Parameters
         ----------
         X : xarray DataArray or Dataset
             The input data.
-        y : None
-            For compatibility.
-        groupby : str or list, optional
-            Name of coordinate or list of coordinates by which the groups are
-            determined.
-        group_dim : str, optional
-            Name of dimension along which the groups are indexed.
+        groupwise : bool
+            Whether this method was called from a groupwise context.
 
         Returns
         -------
@@ -1057,8 +1039,8 @@ class Featurizer(BaseTransformer):
 
         check_is_fitted(self, ['type_'])
 
-        if groupby is not None:
-            return self._transform_groupwise(X, groupby, group_dim)
+        if not groupwise and self.groupby is not None:
+            return self._transform_groupwise(X)
 
         # convert to DataArray if necessary
         if self.type_ == 'Dataset':
@@ -1080,20 +1062,15 @@ class Featurizer(BaseTransformer):
         else:
             return X
 
-    def inverse_transform(self, X, y=None, groupby=None, group_dim='sample'):
+    def inverse_transform(self, X, groupwise=False):
         """
 
         Parameters
         ----------
         X : xarray DataArray or Dataset
             The input data.
-        y : None
-            For compatibility.
-        groupby : str or list, optional
-            Name of coordinate or list of coordinates by which the groups are
-            determined.
-        group_dim : str, optional
-            Name of dimension along which the groups are indexed.
+        groupwise : bool
+            Whether this method was called from a groupwise context.
 
         Returns
         -------
@@ -1105,19 +1082,13 @@ class Featurizer(BaseTransformer):
             'inverse_transform has not yet been implemented for this estimator')
 
 
-def featurize(X, groupby=None, group_dim='sample', return_estimator=False,
-              **kwargs):
+def featurize(X, return_estimator=False, **fit_params):
     """ Stacks all dimensions and variables except for sample dimension.
 
     Parameters
     ----------
     X : xarray DataArray or Dataset
         The input data.
-    groupby : str or list, optional
-        Name of coordinate or list of coordinates by which the groups are
-        determined.
-    group_dim : str, optional
-        Name of dimension along which the groups are indexed.
     return_estimator : bool
         Whether to return the fitted estimator along with the transformed data.
 
@@ -1127,10 +1098,9 @@ def featurize(X, groupby=None, group_dim='sample', return_estimator=False,
         The transformed data.
     """
 
-    estimator = Featurizer(**kwargs)
+    estimator = Featurizer(**fit_params)
 
-    Xt = estimator.fit_transform(
-            X, groupby=groupby, group_dim=group_dim, **kwargs)
+    Xt = estimator.fit_transform(X)
 
     if return_estimator:
         return Xt, estimator
@@ -1144,27 +1114,30 @@ class Sanitizer(BaseTransformer):
     Parameters
     ----------
     dim : str
-        Name of the sample dimension
+        Name of the sample dimension.
+    groupby : str or list, optional
+        Name of coordinate or list of coordinates by which the groups are
+        determined.
+    group_dim : str, optional
+        Name of dimension along which the groups are indexed.
     """
 
-    def __init__(self, dim='sample'):
+    def __init__(self, dim='sample', groupby=None, group_dim='sample'):
 
         self.dim = dim
 
-    def transform(self, X, y=None, groupby=None, group_dim='sample'):
+        self.groupby = groupby
+        self.group_dim = group_dim
+
+    def transform(self, X, groupwise=False):
         """ Removes elements containing NaNs.
 
         Parameters
         ----------
         X : xarray DataArray or Dataset
             The input data.
-        y : None
-            For compatibility.
-        groupby : str or list, optional
-            Name of coordinate or list of coordinates by which the groups are
-            determined.
-        group_dim : str, optional
-            Name of dimension along which the groups are indexed.
+        groupwise : bool
+            Whether this method was called from a groupwise context.
 
         Returns
         -------
@@ -1174,8 +1147,8 @@ class Sanitizer(BaseTransformer):
 
         check_is_fitted(self, ['type_'])
 
-        if groupby is not None:
-            return self._transform_groupwise(X, groupby, group_dim)
+        if not groupwise and self.groupby is not None:
+            return self._transform_groupwise(X)
 
         idx_nan = np.zeros(len(X[self.dim]), dtype=bool)
 
@@ -1190,20 +1163,15 @@ class Sanitizer(BaseTransformer):
 
         return X.isel(**{self.dim: np.logical_not(idx_nan)})
 
-    def inverse_transform(self, X, y=None, groupby=None, group_dim='sample'):
+    def inverse_transform(self, X, groupwise=False):
         """
 
         Parameters
         ----------
         X : xarray DataArray or Dataset
             The input data.
-        y : None
-            For compatibility.
-        groupby : str or list, optional
-            Name of coordinate or list of coordinates by which the groups are
-            determined.
-        group_dim : str, optional
-            Name of dimension along which the groups are indexed.
+        groupwise : bool
+            Whether this method was called from a groupwise context.
 
         Returns
         -------
@@ -1215,19 +1183,13 @@ class Sanitizer(BaseTransformer):
             'inverse_transform cannot be implemented for this estimator')
 
 
-def sanitize(X, groupby=None, group_dim='sample', return_estimator=False,
-             **kwargs):
+def sanitize(X, return_estimator=False, **fit_params):
     """ Removes elements containing NaNs.
 
     Parameters
     ----------
     X : xarray DataArray or Dataset
         The input data.
-    groupby : str or list, optional
-        Name of coordinate or list of coordinates by which the groups are
-        determined.
-    group_dim : str, optional
-        Name of dimension along which the groups are indexed.
     return_estimator : bool
         Whether to return the fitted estimator along with the transformed data.
 
@@ -1237,10 +1199,9 @@ def sanitize(X, groupby=None, group_dim='sample', return_estimator=False,
         The transformed data.
     """
 
-    estimator = Sanitizer(**kwargs)
+    estimator = Sanitizer(**fit_params)
 
-    Xt = estimator.fit_transform(
-            X, groupby=groupby, group_dim=group_dim, **kwargs)
+    Xt = estimator.fit_transform(X)
 
     if return_estimator:
         return Xt, estimator
@@ -1257,27 +1218,31 @@ class Reducer(BaseTransformer):
         Name of the dimension.
     func : function
         Reduction function.
+    groupby : str or list, optional
+        Name of coordinate or list of coordinates by which the groups are
+        determined.
+    group_dim : str, optional
+        Name of dimension along which the groups are indexed.
     """
 
-    def __init__(self, dim='feature', func=np.linalg.norm):
+    def __init__(self, dim='feature', func=np.linalg.norm, groupby=None,
+                 group_dim='sample'):
 
         self.dim = dim
         self.func = func
 
-    def transform(self, X, y=None, groupby=None, group_dim='sample'):
+        self.groupby = groupby
+        self.group_dim = group_dim
+
+    def transform(self, X, groupwise=False):
         """ Reduces data along some dimension.
 
         Parameters
         ----------
         X : xarray DataArray or Dataset
             The input data.
-        y : None
-            For compatibility.
-        groupby : str or list, optional
-            Name of coordinate or list of coordinates by which the groups are
-            determined.
-        group_dim : str, optional
-            Name of dimension along which the groups are indexed.
+        groupwise : bool
+            Whether this method was called from a groupwise context.
 
         Returns
         -------
@@ -1287,25 +1252,20 @@ class Reducer(BaseTransformer):
 
         check_is_fitted(self, ['type_'])
 
-        if groupby is not None:
-            return self._transform_groupwise(X, groupby, group_dim)
+        if not groupwise and self.groupby is not None:
+            return self._transform_groupwise(X)
 
         return X.reduce(self.func, dim=self.dim)
 
-    def inverse_transform(self, X, y=None, groupby=None, group_dim='sample'):
+    def inverse_transform(self, X, groupwise=False):
         """
 
         Parameters
         ----------
         X : xarray DataArray or Dataset
             The input data.
-        y : None
-            For compatibility.
-        groupby : str or list, optional
-            Name of coordinate or list of coordinates by which the groups are
-            determined.
-        group_dim : str, optional
-            Name of dimension along which the groups are indexed.
+        groupwise : bool
+            Whether this method was called from a groupwise context.
 
         Returns
         -------
@@ -1317,19 +1277,13 @@ class Reducer(BaseTransformer):
             'inverse_transform cannot be implemented for this estimator')
 
 
-def reduce(X, groupby=None, group_dim='sample', return_estimator=False,
-           **kwargs):
+def reduce(X, return_estimator=False, **fit_params):
     """ Reduces data along some dimension.
 
     Parameters
     ----------
     X : xarray DataArray or Dataset
         The input data.
-    groupby : str or list, optional
-        Name of coordinate or list of coordinates by which the groups are
-        determined.
-    group_dim : str, optional
-        Name of dimension along which the groups are indexed.
     return_estimator : bool
         Whether to return the fitted estimator along with the transformed data.
 
@@ -1339,10 +1293,9 @@ def reduce(X, groupby=None, group_dim='sample', return_estimator=False,
         The transformed data.
     """
 
-    estimator = Reducer(**kwargs)
+    estimator = Reducer(**fit_params)
 
-    Xt = estimator.fit_transform(
-            X, groupby=groupby, group_dim=group_dim, **kwargs)
+    Xt = estimator.fit_transform(X)
 
     if return_estimator:
         return Xt, estimator

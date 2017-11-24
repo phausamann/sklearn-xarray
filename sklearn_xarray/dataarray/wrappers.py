@@ -143,7 +143,7 @@ class EstimatorWrapper(BaseEstimator):
 
         return yp, dims_new
 
-    def fit(self, X, y=None):
+    def fit(self, X, y=None, **fit_params):
         """ A wrapper around the fitting function.
 
         Parameters
@@ -163,11 +163,13 @@ class EstimatorWrapper(BaseEstimator):
             if X.ndim < 3:
                 check_array(X)
         else:
+            if hasattr(y, 'assign_to'):
+                y = y.assign_to(X)
             if not hasattr(X, 'ndim') or X.ndim < 3:
                 check_X_y(X, y, multi_output=True)
 
         if self.estimator is not None:
-            self.estimator.fit(X, y)
+            self.estimator.fit(X, y, **fit_params)
 
         return self
 
@@ -265,3 +267,29 @@ class TransformerWrapper(EstimatorWrapper):
                     self.estimator.transform(X), coords=X.coords, dims=X.dims)
         else:
             return xr.DataArray(X_arr)
+
+    def fit_transform(self, X, y=None, **fit_params):
+        """ Fit to data, then transform it.
+
+        Fits transformer to X and y with optional parameters kwargs
+        and returns a transformed version of X.
+
+        Parameters
+        ----------
+        X : xarray DataArray or Dataset
+            The training set.
+        y : xarray DataArray or Dataset
+            The target values.
+
+        Returns
+        -------
+        X_new : xarray DataArray or Dataset
+            The transformed data.
+        """
+
+        if y is None:
+            # fit method of arity 1 (unsupervised transformation)
+            return self.fit(X, **fit_params).transform(X)
+        else:
+            # fit method of arity 2 (supervised transformation)
+            return self.fit(X, y, **fit_params).transform(X)
