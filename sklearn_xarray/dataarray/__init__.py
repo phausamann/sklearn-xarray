@@ -1,3 +1,4 @@
-from .wrappers import (EstimatorWrapper, TransformerWrapper)
+from .wrappers import (
+    EstimatorWrapper, TransformerWrapper, ClassifierWrapper)
 
-__all__ = ['EstimatorWrapper', 'TransformerWrapper']
+__all__ = ['EstimatorWrapper', 'TransformerWrapper', 'ClassifierWrapper']

@@ -20,12 +20,15 @@ def preprocess(X, function, groupby=None, group_dim='sample', **fit_params):
     ----------
     X : xarray DataArray or Dataset
         The input data.
+
     function : function
         The function to apply to the data. Note that this function cannot
         change the shape of the data.
+
     groupby : str or list, optional
         Name of coordinate or list of coordinates by which the groups are
         determined.
+
     group_dim : str, optional
         Name of dimension along which the groups are indexed.
 
@@ -112,6 +115,7 @@ class BaseTransformer(BaseEstimator, TransformerMixin):
         ----------
         X : xarray DataArray or Dataset
             Training set.
+
         y : xarray DataArray or Dataset
             Target values.
 
@@ -139,6 +143,7 @@ class BaseTransformer(BaseEstimator, TransformerMixin):
         ----------
         X : xarray DataArray or Dataset
             The training set.
+
         y : xarray DataArray or Dataset
             The target values.
 
@@ -163,9 +168,11 @@ class Transposer(BaseTransformer):
     ----------
     order : list or tuple
         The new order of the dimensions.
+
     groupby : str or list, optional
         Name of coordinate or list of coordinates by which the groups are
         determined.
+
     group_dim : str, optional
         Name of dimension along which the groups are indexed.
     """
@@ -184,6 +191,7 @@ class Transposer(BaseTransformer):
         ----------
         X : xarray DataArray or Dataset
             The input data.
+
         y : None
             For compatibility.
 
@@ -206,6 +214,7 @@ class Transposer(BaseTransformer):
         ----------
         X : xarray DataArray or Dataset
             The input data.
+
         groupwise : bool
             Whether this method was called from a groupwise context.
 
@@ -235,6 +244,7 @@ class Transposer(BaseTransformer):
         ----------
         X : xarray DataArray or Dataset
             The input data.
+
         groupwise : bool
             Whether this method was called from a groupwise context.
 
@@ -265,6 +275,7 @@ def transpose(X, return_estimator=False, **fit_params):
     ----------
     X : xarray DataArray or Dataset
         The input data.
+
     return_estimator : bool
         Whether to return the fitted estimator along with the transformed data.
 
@@ -291,25 +302,32 @@ class Splitter(BaseTransformer):
     ----------
     dim : str
         Name of the dimension along which to split.
+
     new_dim : str
-        Name of the newly added dimension
+        Name of the newly added dimension.
+
     new_len : int
         Length of the newly added dimension.
+
     reduce_index : str
         How to reduce the index of the split dimension.
         'head' : Take the first `n` values where `n` is the length of the
             dimension after splitting.
         'subsample' : Take every `new_len`th value.
+
     new_index_func : function
         A function that takes `new_len` as a parameter and returns a vector of
         length `new_len` to be used as the indices for the new dimension.
+
     keep_coords_as : str or None
         If set, the coordinate of the split dimension will be kept as a
         separate coordinate with this name. This allows `inverse_transform`
         to reconstruct the original coordinate.
+
     groupby : str or list, optional
         Name of coordinate or list of coordinates by which the groups are
         determined.
+
     group_dim : str, optional
         Name of dimension along which the groups are indexed.
     """
@@ -410,6 +428,7 @@ class Splitter(BaseTransformer):
         ----------
         X : xarray DataArray or Dataset
             The input data.
+
         groupwise : bool
             Whether this method was called from a groupwise context.
 
@@ -456,6 +475,7 @@ def split(X, return_estimator=False, **fit_params):
     ----------
     X : xarray DataArray or Dataset
         The input data.
+
     return_estimator : bool
         Whether to return the fitted estimator along with the transformed data.
 
@@ -482,24 +502,31 @@ class Segmenter(BaseTransformer):
     ----------
     dim : str
         Name of the dimension along which to split.
+
     new_dim : str
-        Name of the newly added dimension
+        Name of the newly added dimension.
+
     new_len : int
         Length of the newly added dimension.
+
     step: int
         Number of values between the start of a segment and the next one.
+
     reduce_index : str
         How to reduce the index of the split dimension.
         'head' : Take the first `n` values where `n` is the length of the
             dimension after segmenting.
         'subsample' : Take the values corresponding to the first element of
             every segment.
+
     new_index_func : function
         A function that takes `new_len` as a parameter and returns a vector of
         length `new_len` to be used as the indices for the new dimension.
+
     groupby : str or list, optional
         Name of coordinate or list of coordinates by which the groups are
         determined.
+
     group_dim : str, optional
         Name of dimension along which the groups are indexed.
     """
@@ -525,10 +552,13 @@ class Segmenter(BaseTransformer):
         ----------
         arr : array-like
             The input array.
+
         step : int
             The step length.
+
         new_len : int
             The segment length.
+
         axis : int
             The axis along which to segment
 
@@ -560,6 +590,7 @@ class Segmenter(BaseTransformer):
         ----------
         X : xarray DataArray or Dataset
             The input data.
+
         groupwise : bool
             Whether this method was called from a groupwise context.
 
@@ -636,6 +667,7 @@ class Segmenter(BaseTransformer):
         ----------
         X : xarray DataArray or Dataset
             The input data.
+
         groupwise : bool
             Whether this method was called from a groupwise context.
 
@@ -656,6 +688,7 @@ def segment(X, return_estimator=False, **fit_params):
     ----------
     X : xarray DataArray or Dataset
         The input data.
+
     return_estimator : bool
         Whether to return the fitted estimator along with the transformed data.
 
@@ -682,11 +715,14 @@ class Resampler(BaseTransformer):
     ----------
     freq : str
         Frequency after resampling.
+
     dim : str
         Name of the dimension along which to resample.
+
     groupby : str or list, optional
         Name of coordinate or list of coordinates by which the groups are
         determined.
+
     group_dim : str, optional
         Name of dimension along which the groups are indexed.
     """
@@ -707,6 +743,7 @@ class Resampler(BaseTransformer):
         ----------
         X : xarray DataArray or Dataset
             The input data.
+
         y : None
             For compatibility.
 
@@ -732,6 +769,7 @@ class Resampler(BaseTransformer):
         ----------
         X : xarray DataArray or Dataset
             The input data.
+
         groupwise : bool
             Whether this method was called from a groupwise context.
 
@@ -806,6 +844,7 @@ class Resampler(BaseTransformer):
         ----------
         X : xarray DataArray or Dataset
             The input data.
+
         groupwise : bool
             Whether this method was called from a groupwise context.
 
@@ -826,6 +865,7 @@ def resample(X, return_estimator=False, **fit_params):
     ----------
     X : xarray DataArray or Dataset
         The input data.
+
     return_estimator : bool
         Whether to return the fitted estimator along with the transformed data.
 
@@ -852,21 +892,28 @@ class Concatenator(BaseTransformer):
     ----------
     dim : str
         Name of the dimension along which to concatenate the Dataset.
+
     new_dim : str
         New name of the dimension, if desired.
+
     variables : list or tuple
         Names of the variables to concatenate, default all.
+
     new_var :
         Name of the new variable created by the concatenation.
+
     new_index_func : function
         A function that takes the length of the concatenated dimension as a
         parameter and returns a vector of this length to be used as the
         index for that dimension.
+
     return_array: bool
         Whether to return a DataArray when a Dataset was passed.
+
     groupby : str or list, optional
         Name of coordinate or list of coordinates by which the groups are
         determined.
+
     group_dim : str, optional
         Name of dimension along which the groups are indexed.
     """
@@ -892,6 +939,7 @@ class Concatenator(BaseTransformer):
         ----------
         X : xarray Dataset
             The input data.
+
         groupwise : bool
             Whether this method was called from a groupwise context.
 
@@ -947,6 +995,7 @@ class Concatenator(BaseTransformer):
         ----------
         X : xarray DataArray or Dataset
             The input data.
+
         groupwise : bool
             Whether this method was called from a groupwise context.
 
@@ -967,6 +1016,7 @@ def concatenate(X, return_estimator=False, **fit_params):
     ----------
     X : xarray DataArray or Dataset
         The input data.
+
     return_estimator : bool
         Whether to return the fitted estimator along with the transformed data.
 
@@ -993,17 +1043,23 @@ class Featurizer(BaseTransformer):
     ----------
     sample_dim : str
         Name of the sample dimension.
+
     feature_dim : str
         Name of the feature dimension.
+
     var_name : str
-        Name of the new variable (for Datasets)
+        Name of the new variable (for Datasets).
+
     order : list or tuple
         Order of dimension stacking.
+
     return_array: bool
         Whether to return a DataArray when a Dataset was passed.
+
     groupby : str or list, optional
         Name of coordinate or list of coordinates by which the groups are
         determined.
+
     group_dim : str, optional
         Name of dimension along which the groups are indexed.
     """
@@ -1028,6 +1084,7 @@ class Featurizer(BaseTransformer):
         ----------
         X : xarray DataArray or Dataset
             The input data.
+
         groupwise : bool
             Whether this method was called from a groupwise context.
 
@@ -1069,6 +1126,7 @@ class Featurizer(BaseTransformer):
         ----------
         X : xarray DataArray or Dataset
             The input data.
+
         groupwise : bool
             Whether this method was called from a groupwise context.
 
@@ -1089,6 +1147,7 @@ def featurize(X, return_estimator=False, **fit_params):
     ----------
     X : xarray DataArray or Dataset
         The input data.
+
     return_estimator : bool
         Whether to return the fitted estimator along with the transformed data.
 
@@ -1115,9 +1174,11 @@ class Sanitizer(BaseTransformer):
     ----------
     dim : str
         Name of the sample dimension.
+
     groupby : str or list, optional
         Name of coordinate or list of coordinates by which the groups are
         determined.
+
     group_dim : str, optional
         Name of dimension along which the groups are indexed.
     """
@@ -1136,6 +1197,7 @@ class Sanitizer(BaseTransformer):
         ----------
         X : xarray DataArray or Dataset
             The input data.
+
         groupwise : bool
             Whether this method was called from a groupwise context.
 
@@ -1170,6 +1232,7 @@ class Sanitizer(BaseTransformer):
         ----------
         X : xarray DataArray or Dataset
             The input data.
+
         groupwise : bool
             Whether this method was called from a groupwise context.
 
@@ -1190,6 +1253,7 @@ def sanitize(X, return_estimator=False, **fit_params):
     ----------
     X : xarray DataArray or Dataset
         The input data.
+
     return_estimator : bool
         Whether to return the fitted estimator along with the transformed data.
 
@@ -1216,11 +1280,14 @@ class Reducer(BaseTransformer):
     ----------
     dim : str
         Name of the dimension.
+
     func : function
         Reduction function.
+
     groupby : str or list, optional
         Name of coordinate or list of coordinates by which the groups are
         determined.
+
     group_dim : str, optional
         Name of dimension along which the groups are indexed.
     """
@@ -1241,6 +1308,7 @@ class Reducer(BaseTransformer):
         ----------
         X : xarray DataArray or Dataset
             The input data.
+
         groupwise : bool
             Whether this method was called from a groupwise context.
 
@@ -1264,6 +1332,7 @@ class Reducer(BaseTransformer):
         ----------
         X : xarray DataArray or Dataset
             The input data.
+
         groupwise : bool
             Whether this method was called from a groupwise context.
 
@@ -1284,6 +1353,7 @@ def reduce(X, return_estimator=False, **fit_params):
     ----------
     X : xarray DataArray or Dataset
         The input data.
+
     return_estimator : bool
         Whether to return the fitted estimator along with the transformed data.
 

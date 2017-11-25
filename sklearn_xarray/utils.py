@@ -13,10 +13,12 @@ def convert_to_ndarray(X, new_dim_last=True, new_dim_name='variable'):
     ----------
     X : xarray DataArray or Dataset
         The input data.
+
     new_dim_last : bool
+        TODO
 
     new_dim_name : str
-
+        TODO
 
     Returns
     -------
@@ -46,9 +48,11 @@ def get_group_indices(X, groupby, group_dim=None):
     ----------
     X : xarray DataArray or Dataset
         The data structure for which to determine the indices.
+
     groupby : str or list
         Name of coordinate or list of coordinates by which the groups are
         determined.
+
     group_dim : str or None, optional
         Name of dimension along which the groups are indexed.
 

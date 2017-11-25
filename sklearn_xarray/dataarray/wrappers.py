@@ -15,6 +15,7 @@ class EstimatorWrapper(BaseEstimator):
     ----------
     estimator : sklearn estimator
         The estimator instance this instance wraps around.
+
     reshapes : str or dict, optional
         The dimension(s) reshaped by this estimator. Any coordinates in the
         DataArray along these dimensions will be dropped. If the estimator drops
@@ -38,6 +39,7 @@ class EstimatorWrapper(BaseEstimator):
         ----------
         X_in : xarray DataArray
             The input array.
+
         X_out : xarray DataArray
             The output array.
 
@@ -134,6 +136,7 @@ class EstimatorWrapper(BaseEstimator):
         -------
         yp: array-like
             The predicted output.
+
         dims_new : dict
             The array's dims after prediction.
         """
@@ -150,6 +153,7 @@ class EstimatorWrapper(BaseEstimator):
         ----------
         X : xarray DataArray
             The training input samples.
+
         y : xarray DataArray
             The target values.
 
@@ -160,11 +164,14 @@ class EstimatorWrapper(BaseEstimator):
         """
 
         if y is None:
+            # somewhat hacky
             if X.ndim < 3:
                 check_array(X)
         else:
+            # if y is a Target, assign it to X.
             if hasattr(y, 'assign_to'):
                 y = y.assign_to(X)
+            # somewhat hacky
             if not hasattr(X, 'ndim') or X.ndim < 3:
                 check_X_y(X, y, multi_output=True)
 
@@ -211,6 +218,7 @@ class TransformerWrapper(EstimatorWrapper):
     ----------
     estimator : sklearn estimator
         The estimator this instance wraps around.
+
     reshapes : str or dict, optional
         The dimension reshaped by this estimator.
     """
@@ -229,6 +237,7 @@ class TransformerWrapper(EstimatorWrapper):
         -------
         Xt: array-like
             The transformed output.
+
         dims_new : dict
             The array's dims after transformation.
         """
@@ -278,6 +287,7 @@ class TransformerWrapper(EstimatorWrapper):
         ----------
         X : xarray DataArray or Dataset
             The training set.
+
         y : xarray DataArray or Dataset
             The target values.
 
@@ -293,3 +303,48 @@ class TransformerWrapper(EstimatorWrapper):
         else:
             # fit method of arity 2 (supervised transformation)
             return self.fit(X, y, **fit_params).transform(X)
+
+
+class ClassifierWrapper(EstimatorWrapper):
+    """ A wrapper around sklearn classifiers compatible with xarray DataArrays.
+
+    Parameters
+    ----------
+    estimator : sklearn estimator
+        The estimator this instance wraps around.
+
+    reshapes : str or dict, optional
+        The dimension reshaped by this estimator.
+    """
+
+    # TODO: check if it's possible to inherit from ClassifierMixin
+
+    def score(self, X, y, sample_weight=None):
+        """
+
+        Parameters
+        ----------
+        X : xarray DataArray or Dataset
+            The training set.
+
+        y : xarray DataArray or Dataset
+            The target values.
+
+        sample_weight : array-like, shape = [n_samples], optional
+            Sample weights.
+
+        Returns
+        -------
+        score : float
+            Mean accuracy of self.predict(X) wrt. y.
+        """
+
+        # TODO: replace with `is_target`?
+        if hasattr(y, 'assign_to'):
+            y = y.assign_to(X)
+
+        # TODO: this is only for check_estimator comaptibility...
+        if self.estimator is not None:
+            return self.estimator.score(X, y, sample_weight)
+        else:
+            return 0
