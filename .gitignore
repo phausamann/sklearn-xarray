@@ -1,5 +1,8 @@
 .idea/
 data/
+doc/modules/
+doc/_build/
+doc/auto_examples/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

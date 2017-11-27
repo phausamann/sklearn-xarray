@@ -219,6 +219,6 @@ def test_wrap():
     from sklearn.linear_model import LinearRegression
     from sklearn.svm import SVC
 
-    wrap(StandardScaler())
-    wrap(SVC())
-    wrap(LinearRegression())
+    assert isinstance(wrap(StandardScaler()), TransformerWrapper)
+    assert isinstance(wrap(SVC()), ClassifierWrapper)
+    assert isinstance(wrap(LinearRegression()), RegressorWrapper)

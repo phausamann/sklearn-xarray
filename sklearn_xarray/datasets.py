@@ -1,8 +1,28 @@
 """ `sklearn_xarray.datasets` """
 
 import os, urllib, tarfile
+import numpy as np
 import pandas as pd
 import xarray as xr
+
+
+def load_dummy_dataarray():
+    """ Load a DataArray for demonstration purposes. """
+
+    return xr.DataArray(
+        np.random.random((100, 10)),
+        coords={'sample': range(100), 'feature': range(10)},
+        dims=('sample', 'feature')
+    )
+
+
+def load_dummy_dataset():
+    """ Load a Dataset for demonstration purposes. """
+
+    return xr.Dataset(
+        {'var_1' : (['sample', 'feature'], np.random.random((100, 10)))},
+        coords={'sample': range(100), 'feature': range(10)}
+    )
 
 
 def load_wisdm(url='http://www.cis.fordham.edu/wisdm/includes/'

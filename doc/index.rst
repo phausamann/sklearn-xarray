@@ -1,27 +1,30 @@
-.. project-template documentation master file, created by
-   sphinx-quickstart on Mon Jan 18 14:44:12 2016.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. documentation master
 
-Welcome to sklearn-template's documentation!
-============================================
+sklearn-xarray: Using scikit-learn with xarray
+==============================================
 
-This project is a reference implementation to anyone who wishes to develop
-scikit-learn compatible classes. It comes with a `template` module which
-contains a single estimator with unit tests.
+sklearn-xarray combines the metadata-managing power of xarray with the machine
+learning and model selection tools of scikit-learn. The package contains
+wrappers that allow the user to apply scikit-learn estimators to xarray types
+while keeping the metadata mostly intact.
 
+=============
+Documentation
+=============
 
     .. toctree::
-       :maxdepth: 2
-       
-       api
-       auto_examples/index
-       ...
+       :maxdepth: 1
 
-See the `README <https://github.com/vighneshbirodkar/project-template/blob/master/README.md>`_
-for more information.
+       content/intro
+       content/installation
+       content/wrappers
+       content/target
+       content/crossval
+       content/preprocessing
 
+       content/api
 
+==================
 Indices and tables
 ==================
 

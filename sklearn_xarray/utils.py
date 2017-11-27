@@ -5,7 +5,7 @@
 
 import numpy as np
 
-from target import Target
+from .target import Target
 
 
 def is_dataarray(X, require_attrs=None):
@@ -71,7 +71,7 @@ def is_target(X, require_attrs=None):
         The object to be checked.
 
     require_attrs : list of str, optional
-        The attributes the object has to have in order to pass as a Dataset.
+        The attributes the object has to have in order to pass as a Target.
 
     Returns
     -------
@@ -121,7 +121,7 @@ def convert_to_ndarray(X, new_dim_last=True, new_dim_name='variable'):
 
 
 def get_group_indices(X, groupby, group_dim=None):
-    """
+    """ Get logical index vectors for each group.
 
     Parameters
     ----------

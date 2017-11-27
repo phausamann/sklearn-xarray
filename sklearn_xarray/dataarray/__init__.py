@@ -1,9 +1,11 @@
 from .wrappers import (
-    wrap, TransformerWrapper, RegressorWrapper, ClassifierWrapper
+    wrap, EstimatorWrapper, TransformerWrapper, RegressorWrapper,
+    ClassifierWrapper
 )
 
 __all__ = [
     'wrap',
+    'EstimatorWrapper'
     'TransformerWrapper',
     'RegressorWrapper',
     'ClassifierWrapper'

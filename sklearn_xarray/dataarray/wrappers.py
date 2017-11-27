@@ -7,7 +7,7 @@ import xarray as xr
 from sklearn.base import clone, BaseEstimator, TransformerMixin
 from sklearn.utils.validation import check_X_y, check_array, check_is_fitted
 
-from utils import is_target, is_dataarray
+from ..utils import is_target, is_dataarray
 
 
 def wrap(estimator, reshapes=None):
@@ -26,7 +26,7 @@ def wrap(estimator, reshapes=None):
 
         You can specify multiple dimensions mapping to multiple new dimensions
         with a dict whose items are lists of reshaped dimensions, e.g.
-        {'new_feature': ['feature_1', 'feature_2'], ...}
+        ``{'new_feature': ['feature_1', 'feature_2'], ...}``
 
     Returns
     -------
@@ -51,8 +51,6 @@ def wrap(estimator, reshapes=None):
             raise ValueError('Could not determine type')
 
 
-
-
 class EstimatorWrapper(BaseEstimator):
     """ A wrapper around sklearn estimators compatible with xarray DataArrays.
 
@@ -69,7 +67,7 @@ class EstimatorWrapper(BaseEstimator):
 
         You can specify multiple dimensions mapping to multiple new dimensions
         with a dict whose items are lists of reshaped dimensions, e.g.
-        {'new_feature': ['feature_1', 'feature_2'], ...}
+        ``{'new_feature': ['feature_1', 'feature_2'], ...}``
     """
 
     def __init__(self, estimator=None, reshapes=None, **kwargs):
