@@ -21,6 +21,7 @@ Documentation
        content/target
        content/crossval
        content/preprocessing
+       content/cv_gs
 
        content/api
 

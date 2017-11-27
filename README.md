@@ -24,5 +24,3 @@ well as a variety of new transformers that work on xarray types.
 The example `examples/activity_recognition.py` demonstrates how to use the 
 package for cross-validated grid search for an activity recognition task. The 
 example is also present as a jupyter notebook.
-
-## Known issues

@@ -24,8 +24,18 @@ sklearn for use with a ``DataArray``::
     X = load_dummy_dataarray()
     Xt = da.wrap(StandardScaler()).fit_transform(X)
 
-The data in the array is scaled, but the coordinates and dimensions have not
-changed::
+The ``wrap`` function will try to guess the type of the estimator it wraps
+and return an object with the corresponding methods for each type of estimator
+(e.g. ``predict`` for classifiers and regressors).
+
+.. note::
+
+    xarray references axes by name rather than by order. Therefore, you can
+    specify the ``sample_dim`` parameter of the wrapper to refer to the
+    dimension in your data that represents the samples.
+
+When we run the example, we see that he data in the array is scaled, but the
+coordinates and dimensions have not changed::
 
     In[]: X
     Out[]:
@@ -56,7 +66,31 @@ changed::
       * feature  (feature) int32 0 1 2 3 4 5 6 7 8 9
 
 
+=====
 Estimators changing the shape of the data
-*****************************************
+=====
 
+Many sklearn estimators will change the number of features during
+transformation or prediction. In this case, the coordinates along the feature
+dimension no longer correspond to those of the original array. Therefore, the
+wrapper will omit the coordinates along this dimension. You can specify which
+dimension is changed with the ``reshapes`` parameter::
+
+    from sklearn.decomposition import PCA
+
+    Xt = da.wrap(PCA(n_components=5), reshapes='feature').fit_transform(X)
+
+    In[]: Xt
+    Out[]:
+    <xarray.DataArray (sample: 100, feature: 5)>
+    array([[ 0.438773, -0.100947,  0.106754,  0.236872, -0.128751],
+           [-0.40433 , -0.580941,  0.588425, -0.305739, -0.120676],
+           [ 0.343535, -0.334365,  0.659667,  0.111196,  0.308099],
+           ...,
+           [ 0.519982,  0.38072 ,  0.133793, -0.064086,  0.108029],
+           [-0.099056, -0.086161, -0.115271, -0.053594, -0.736321],
+           [-0.358513, -0.327132, -0.635314, -0.310221, -0.017318]])
+    Coordinates:
+      * sample   (sample) int32 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 ...
+    Dimensions without coordinates: feature
 
