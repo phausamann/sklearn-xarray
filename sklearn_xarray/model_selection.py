@@ -23,7 +23,7 @@ class CrossValidatorWrapper(object):
         self.dim = dim
         self.groupby = groupby
 
-    def get_n_splits(self, X, y=None, groups=None):
+    def get_n_splits(self, X=None, y=None, groups=None):
         """ Returns the number of splitting iterations in the cross-validator.
 
         Parameters
@@ -74,6 +74,7 @@ class CrossValidatorWrapper(object):
             from .utils import get_group_indices
             groups = np.zeros(len(X[self.dim]))
             group_idx = get_group_indices(X, self.groupby, self.dim)
-            for i in range(len(group_idx)): groups[group_idx[i]] = i
+            for i in range(len(group_idx)):
+                groups[group_idx[i]] = i
 
         return self.cross_validator.split(X[self.dim], y=y, groups=groups)

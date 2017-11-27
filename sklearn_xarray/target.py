@@ -7,42 +7,35 @@ class Target(object):
 
     Parameters
     ----------
-    coord : str
+    coord : str or None
+        The coordinate that holds the data of the target. If None, the target
+        will be the entire DataArray/Dataset.
 
-    transformer : sklearn transformer
+    transformer : sklearn transformer or None
+        Transforms the coordinate into an sklearn compatible target
+        representation. If None, the target will be used as-is.
 
-    lazy : bool
+    lazy : bool, optinonal
         If true, the target coordinate is only transformed by the transformer
         when needed. The transformer can implement a `get_transformed_shape`
         method that returns the shape after the transformation of the provided
         coordinate without actually transforming the data.
 
-    dims : list
+    dim : str
+
 
     """
 
-    def __init__(self, coord=None, transformer=None, lazy=False, dims=None):
+    def __init__(self, coord=None, transformer=None, lazy=False, dim=None):
 
         self.coord = coord
         self.transformer = transformer
         self.lazy = lazy
-        self.dims = dims
+        self.dim = dim
 
         self.values = None
 
     def __getitem__(self, key):
-        """
-
-        Parameters
-        ----------
-        key :
-
-
-        Returns
-        -------
-        item :
-
-        """
 
         import copy
 
@@ -58,19 +51,13 @@ class Target(object):
 
         return new_obj
 
+
+    def __call__(self, X):
+
+        return self.assign_to(X)
+
+
     def __array__(self, dtype=None):
-        """
-
-        Parameters
-        ----------
-        dtype :
-
-
-        Returns
-        -------
-        arr: numpy ndarray
-
-        """
 
         self._check_assigned()
 
@@ -131,9 +118,9 @@ class Target(object):
         else:
             self.values = convert_to_ndarray(X)
 
-        if self.dims is not None:
+        if self.dim is not None:
             for d in self.values.dims:
-                if d in self.dims:
+                if d != self.dim:
                     self.values = self.values.isel(**{d: 0})
 
         if not self.lazy and self.transformer is not None:

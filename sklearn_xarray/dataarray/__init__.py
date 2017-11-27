@@ -1,4 +1,10 @@
 from .wrappers import (
-    EstimatorWrapper, TransformerWrapper, ClassifierWrapper)
+    wrap, TransformerWrapper, RegressorWrapper, ClassifierWrapper
+)
 
-__all__ = ['EstimatorWrapper', 'TransformerWrapper', 'ClassifierWrapper']
+__all__ = [
+    'wrap',
+    'TransformerWrapper',
+    'RegressorWrapper',
+    'ClassifierWrapper'
+]

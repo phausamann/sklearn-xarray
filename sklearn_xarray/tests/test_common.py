@@ -1,18 +1,21 @@
 from sklearn.utils.estimator_checks import check_estimator
 from sklearn_xarray.dataarray import (
-    EstimatorWrapper, TransformerWrapper, ClassifierWrapper)
-
-
-# TODO: The test should probably be performed on wrapped sklearn estimators.
-
-
-def test_estimator():
-    return check_estimator(EstimatorWrapper)
+    TransformerWrapper, ClassifierWrapper, RegressorWrapper)
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
+from sklearn.svm import SVC
 
 
 def test_transformer():
-    return check_estimator(TransformerWrapper)
+    return check_estimator(
+        TransformerWrapper(StandardScaler()))
 
 
 def test_classifier():
-    return check_estimator(ClassifierWrapper)
+    return check_estimator(
+        ClassifierWrapper(SVC(), reshapes='dim_1'))
+
+
+def test_regressor():
+    return check_estimator(
+        RegressorWrapper(LinearRegression(), reshapes='dim_1'))

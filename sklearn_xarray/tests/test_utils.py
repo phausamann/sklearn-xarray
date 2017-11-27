@@ -3,7 +3,43 @@ import xarray as xr
 
 import numpy.testing as npt
 
-from sklearn_xarray.utils import (convert_to_ndarray, get_group_indices)
+from sklearn_xarray.utils import (
+    is_dataarray, is_dataset, is_target, convert_to_ndarray,  get_group_indices)
+
+from sklearn_xarray import Target
+
+
+def test_is_dataarray():
+
+    X_da = xr.DataArray(np.random.random((100, 10)))
+
+    assert is_dataarray(X_da)
+
+    X_not_a_da = np.random.random((100, 10))
+
+    assert not is_dataarray(X_not_a_da)
+
+
+def test_is_dataset():
+
+    X_ds = xr.Dataset({'var_1': 1})
+
+    assert is_dataset(X_ds)
+
+    X_not_a_ds = np.random.random((100, 10))
+
+    assert not is_dataarray(X_not_a_ds)
+
+
+def test_is_target():
+
+    target = Target()
+
+    assert is_target(target)
+
+    not_a_target = 1
+
+    assert not is_target(not_a_target)
 
 
 def test_convert_to_ndarray():

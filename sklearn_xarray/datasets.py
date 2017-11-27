@@ -8,7 +8,7 @@ import xarray as xr
 def load_wisdm(url='http://www.cis.fordham.edu/wisdm/includes/'
                   'datasets/latest/WISDM_ar_latest.tar.gz',
                file='WISDM_ar_v1.1/WISDM_ar_v1.1_raw.txt',
-               folder='../data/', tmp_file='widsm.tar.gz'):
+               folder='data/', tmp_file='widsm.tar.gz'):
     """ Load the WISDM activity recognition dataset.
 
     Parameters

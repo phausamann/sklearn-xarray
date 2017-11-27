@@ -66,13 +66,13 @@ cv = CrossValidatorWrapper(
 gs = GridSearchCV(
     pl, cv=cv, verbose=3, param_grid={
         'splitter__new_len': [30, 60],
-        'mlp__estimator__hidden_layer_sizes': [(100,), (100, 50)]
+        'mlp__hidden_layer_sizes': [(100,), (100, 50)]
     })
 
 # The label to classify is the activity which we convert to a binary
 # representation for the classification.
 
-y = Target('activity', LabelBinarizer(), dims=['feature']).assign_to(X)
+y = Target('activity', LabelBinarizer(), dim='sample')(X)
 
 # Finally, we run the grid search.
 
