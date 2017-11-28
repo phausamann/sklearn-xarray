@@ -10,12 +10,6 @@ selection tools of scikit-learn. The package contains wrappers that allow the
 user to apply scikit-learn estimators to xarray types without losing their
 labels.
 
-## Features
-
-The package also contains wrappers that allow for groupwise application of
-preprocessing steps and for estimators to change the number of samples as 
-well as a variety of new transformers that work on xarray types.
-
 ## Installation
     $ git clone https://github.com/phausamann/sklearn-xarray.git
     $ cd sklearn-xarray
