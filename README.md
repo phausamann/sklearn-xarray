@@ -1,14 +1,11 @@
 [![CircleCI](https://circleci.com/gh/phausamann/sklearn-xarray.svg?style=svg)](https://circleci.com/gh/phausamann/sklearn-xarray)
 [![Build Status](https://travis-ci.org/phausamann/sklearn-xarray.svg?branch=master)](https://travis-ci.org/phausamann/sklearn-xarray)
 [![Coverage Status](https://coveralls.io/repos/github/phausamann/sklearn-xarray/badge.svg?branch=master)](https://coveralls.io/github/phausamann/sklearn-xarray?branch=master)
+[![Build status](https://ci.appveyor.com/api/projects/status/qe6ytlg0ja2mqcxr/branch/master?svg=true)](https://ci.appveyor.com/project/phausamann/sklearn-xarray/branch/master)
 
 # sklearn-xarray
 
-xarray integration with scikit-learn
-
-## Overview
-
-**sklearn-xarray** is an open-source python package that combines the
+sklearn-xarray is an open-source python package that combines the
 n-dimensional labeled arrays of xarray with the machine learning and model
 selection tools of scikit-learn. The package contains wrappers that allow the
 user to apply scikit-learn estimators to xarray types without losing their
