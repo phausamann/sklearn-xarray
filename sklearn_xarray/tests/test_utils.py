@@ -44,9 +44,12 @@ def test_is_target():
 
 def test_convert_to_ndarray():
 
+    from collections import OrderedDict
+
     X_ds = xr.Dataset(
-        {'var_1': (['sample', 'feature'], np.random.random((100, 10))),
-         'var_2': (['sample', 'feature'], np.random.random((100, 10)))},
+        OrderedDict([
+            ('var_1', (['sample', 'feature'], np.random.random((100, 10)))),
+            ('var_2', (['sample', 'feature'], np.random.random((100, 10))))]),
         coords={'sample': range(100), 'feature': range(10)}
     )
 

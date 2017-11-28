@@ -1,4 +1,4 @@
-""" `sklearn_xarray.datasets` """
+""" ``sklearn_xarray.data`` """
 
 import os, urllib, tarfile
 import numpy as np

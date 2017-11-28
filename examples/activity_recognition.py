@@ -21,7 +21,7 @@ import sklearn_xarray.dataarray as da
 from sklearn_xarray import Target
 from sklearn_xarray.preprocessing import (Splitter, Sanitizer, Featurizer)
 from sklearn_xarray.model_selection import CrossValidatorWrapper
-from sklearn_xarray.datasets import load_wisdm
+from sklearn_xarray.data import load_wisdm
 
 from sklearn.preprocessing import StandardScaler, LabelBinarizer
 from sklearn.neural_network import MLPClassifier

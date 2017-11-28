@@ -3,10 +3,11 @@
 sklearn-xarray: Using scikit-learn with xarray
 ==============================================
 
-sklearn-xarray combines the metadata-managing power of xarray with the machine
-learning and model selection tools of scikit-learn. The package contains
-wrappers that allow the user to apply scikit-learn estimators to xarray types
-while keeping the metadata mostly intact.
+**sklearn-xarray** is an open-source python package that combines the
+n-dimensional labeled arrays of xarray with the machine learning and model
+selection tools of scikit-learn. The package contains wrappers that allow the
+user to apply scikit-learn estimators to xarray types without losing their
+labels.
 
 =============
 Documentation
@@ -19,10 +20,10 @@ Documentation
        content/installation
        content/wrappers
        content/target
-       content/crossval
-       content/preprocessing
-       content/cv_gs
+       content/transformers
+       content/pipeline
 
+       auto_examples/index
        content/api
 
 ==================

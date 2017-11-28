@@ -1,14 +1,15 @@
 """
-`sklearn_xarray.dataarray.wrappers`
+`sklearn_xarray.dataaset.wrappers`
 """
 
 import numpy as np
 import xarray as xr
+import six
 from sklearn.base import TransformerMixin
 from sklearn.utils.validation import check_X_y, check_array, check_is_fitted
 
 from ..common.wrappers import _CommonEstimatorWrapper
-from ..utils import is_target, is_dataarray
+from ..utils import is_target, is_dataset
 
 
 def wrap(estimator, reshapes=None, sample_dim=None, compat=False):
@@ -21,7 +22,7 @@ def wrap(estimator, reshapes=None, sample_dim=None, compat=False):
 
     reshapes : str or dict, optional
         The dimension(s) reshaped by this estimator. Any coordinates in the
-        DataArray along these dimensions will be dropped. If the estimator drops
+        Dataset along these dimensions will be dropped. If the estimator drops
         this dimension (e.g. a binary classifier returning a 1D vector), the
         dimension itself will also be dropped.
 
@@ -69,7 +70,7 @@ def wrap(estimator, reshapes=None, sample_dim=None, compat=False):
 
 
 class EstimatorWrapper(_CommonEstimatorWrapper):
-    """ A wrapper around sklearn estimators compatible with xarray DataArrays.
+    """ A wrapper around sklearn estimators compatible with xarray Datasets.
 
     Parameters
     ----------
@@ -78,7 +79,7 @@ class EstimatorWrapper(_CommonEstimatorWrapper):
 
     reshapes : str or dict, optional
         The dimension(s) reshaped by this estimator. Any coordinates in the
-        DataArray along these dimensions will be dropped. If the estimator drops
+        Dataset along these dimensions will be dropped. If the estimator drops
         this dimension (e.g. a binary classifier returning a 1D vector), the
         dimension itself will also be dropped.
 
@@ -110,10 +111,10 @@ class EstimatorWrapper(_CommonEstimatorWrapper):
 
         Parameters
         ----------
-        X : xarray DataArray
+        X : xarray Dataset
             The training input samples.
 
-        y : xarray DataArray
+        y : xarray Dataset
             The target values.
 
         Returns
@@ -124,16 +125,14 @@ class EstimatorWrapper(_CommonEstimatorWrapper):
         if self.estimator is None:
             raise ValueError('You must specify an estimator instance to wrap.')
 
-        if not is_dataarray(X):
-            if y is None:
-                X = check_array(X)
-            else:
-                X, y = check_X_y(X, y, multi_output=True)
+        if not is_dataset(X):
+            raise ValueError('X must be a Dataset.')
 
         if is_target(y):
             y = y(X)
 
-        self.estimator_ = self._fit(X, y, **fit_params)
+        self.estimator_dict_ = {
+            v: self._fit(X[v], y, **fit_params) for v in X.data_vars}
 
         return self
 
@@ -145,28 +144,33 @@ class _ImplementsPredictMixin(_CommonEstimatorWrapper):
 
         Parameters
         ----------
-        X : xarray DataArray
+        X : xarray Dataset
             The input samples.
 
         Returns
         -------
-        y : xarray DataArray
+        y : xarray Dataset
             The predicted output.
         """
 
-        check_is_fitted(self, ['estimator_'])
+        check_is_fitted(self, ['estimator_dict_'])
 
-        if not is_dataarray(X):
+        if not is_dataset(X):
             # TODO: check if we need to handle the case when this fails
-            X = xr.DataArray(X)
+            X = xr.Dataset(X)
 
         if self.reshapes is not None:
-            data, dims = self._predict(self.estimator_, X)
+            data_vars = dict()
+            for v, e in six.iteritems(self.estimator_dict_):
+                yp_v, dims = self._predict(e, X[v])
+                data_vars[v] = (dims, yp_v)
             coords = self._update_coords(X)
-            return xr.DataArray(data, coords=coords, dims=dims)
+            return xr.Dataset(data_vars, coords=coords)
         else:
-            return xr.DataArray(
-                self.estimator_.predict(X), coords=X.coords, dims=X.dims)
+            data_vars = {
+                v: (X[v].dims, e.predict(X[v]))
+                for v, e in six.iteritems(self.estimator_dict_)}
+            return xr.Dataset(data_vars, coords=X.coords)
 
 
 class _ImplementsTransformMixin(_CommonEstimatorWrapper, TransformerMixin):
@@ -176,28 +180,33 @@ class _ImplementsTransformMixin(_CommonEstimatorWrapper, TransformerMixin):
 
         Parameters
         ----------
-        X : xarray DataArray
+        X : xarray Dataset
             The input samples.
 
         Returns
         -------
-        y : xarray DataArray
+        y : xarray Dataset
             The transformed output.
         """
 
-        check_is_fitted(self, ['estimator_'])
+        check_is_fitted(self, ['estimator_dict_'])
 
-        if not is_dataarray(X):
+        if not is_dataset(X):
             # TODO: check if we need to handle the case when this fails
-            X = xr.DataArray(X)
+            X = xr.Dataset(X)
 
         if self.reshapes is not None:
-            data, dims = self._transform(self.estimator_, X)
+            data_vars = dict()
+            for v, e in six.iteritems(self.estimator_dict_):
+                yp_v, dims = self._transform(e, X[v])
+                data_vars[v] = (dims, yp_v)
             coords = self._update_coords(X)
-            return xr.DataArray(data, coords=coords, dims=dims)
+            return xr.Dataset(data_vars, coords=coords)
         else:
-            return xr.DataArray(
-                self.estimator_.transform(X), coords=X.coords, dims=X.dims)
+            data_vars = {
+                v: (X[v].dims, e.transform(X[v]))
+                for v, e in six.iteritems(self.estimator_dict_)}
+            return xr.Dataset(data_vars, coords=X.coords)
 
 
 class _ImplementsScoreMixin(_CommonEstimatorWrapper):
@@ -207,10 +216,10 @@ class _ImplementsScoreMixin(_CommonEstimatorWrapper):
 
         Parameters
         ----------
-        X : xarray DataArray or Dataset
+        X : xarray Dataset or Dataset
             The training set.
 
-        y : xarray DataArray or Dataset
+        y : xarray Dataset or Dataset
             The target values.
 
         sample_weight : array-like, shape = [n_samples], optional
@@ -222,16 +231,21 @@ class _ImplementsScoreMixin(_CommonEstimatorWrapper):
             Score of self.predict(X) wrt. y.
         """
 
-        check_is_fitted(self, ['estimator_'])
+        check_is_fitted(self, ['estimator_dict_'])
 
         if is_target(y):
             y = y(X)
 
-        return self.estimator_.score(X, y, sample_weight)
+        score_list = [
+            e.score(X[v], y, sample_weight)
+            for v, e in six.iteritems(self.estimator_dict_)
+        ]
+
+        return np.mean(score_list)
 
 
 class TransformerWrapper(EstimatorWrapper, _ImplementsTransformMixin):
-    """ A wrapper around sklearn transformers compatible with xarray DataArrays.
+    """ A wrapper around sklearn transformers compatible with xarray Datasets.
 
     Parameters
     ----------
@@ -245,7 +259,7 @@ class TransformerWrapper(EstimatorWrapper, _ImplementsTransformMixin):
 
 class RegressorWrapper(
     EstimatorWrapper, _ImplementsPredictMixin, _ImplementsScoreMixin):
-    """ A wrapper around sklearn regressors compatible with xarray DataArrays.
+    """ A wrapper around sklearn regressors compatible with xarray Datasets.
 
     Parameters
     ----------
@@ -260,7 +274,7 @@ class RegressorWrapper(
 
 class ClassifierWrapper(
     EstimatorWrapper, _ImplementsPredictMixin, _ImplementsScoreMixin):
-    """ A wrapper around sklearn classifiers compatible with xarray DataArrays.
+    """ A wrapper around sklearn classifiers compatible with xarray Datasets.
 
     Parameters
     ----------

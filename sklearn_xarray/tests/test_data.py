@@ -1,5 +1,4 @@
-import os
-from sklearn_xarray.datasets import (
+from sklearn_xarray.data import (
     load_dummy_dataarray, load_dummy_dataset, load_wisdm)
 
 

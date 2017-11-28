@@ -56,7 +56,6 @@ class Target(object):
 
         return self.assign_to(X)
 
-
     def __array__(self, dtype=None):
 
         self._check_assigned()

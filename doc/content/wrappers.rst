@@ -18,7 +18,7 @@ First, we look at a basic example that shows how to wrap an estimator from
 sklearn for use with a ``DataArray``::
 
     import sklearn_xarray.dataarray as da
-    from sklearn_xarray.datasets import load_dummy_dataarray
+    from sklearn_xarray.data import load_dummy_dataarray
     from sklearn.preprocessing import StandardScaler
 
     X = load_dummy_dataarray()
@@ -37,7 +37,7 @@ and return an object with the corresponding methods for each type of estimator
 When we run the example, we see that he data in the array is scaled, but the
 coordinates and dimensions have not changed::
 
-    In[]: X
+    In []: X
     Out[]:
     <xarray.DataArray (sample: 100, feature: 10)>
     array([[ 0.565986,  0.196107,  0.935981, ...,  0.702356,  0.806494,  0.801178],
@@ -51,7 +51,7 @@ coordinates and dimensions have not changed::
       * sample   (sample) int32 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 ...
       * feature  (feature) int32 0 1 2 3 4 5 6 7 8 9
 
-    In[]: Xt
+    In []: Xt
     Out[]:
     <xarray.DataArray (sample: 100, feature: 10)>
     array([[ 0.128639, -0.947769,  1.625452, ...,  0.525571,  1.07678 ,  1.062118],
@@ -80,7 +80,7 @@ dimension is changed with the ``reshapes`` parameter::
 
     Xt = da.wrap(PCA(n_components=5), reshapes='feature').fit_transform(X)
 
-    In[]: Xt
+    In []: Xt
     Out[]:
     <xarray.DataArray (sample: 100, feature: 5)>
     array([[ 0.438773, -0.100947,  0.106754,  0.236872, -0.128751],
@@ -93,4 +93,42 @@ dimension is changed with the ``reshapes`` parameter::
     Coordinates:
       * sample   (sample) int32 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 ...
     Dimensions without coordinates: feature
+
+
+====
+Accessing fitted estimators
+====
+
+The ``estimator`` attribute of the wrapper will always hold the unfitted
+estimator that was passed initially. After calling ``fit`` the fitted estimator
+will be stored in the ``estimator_`` attribute::
+
+    wrapper = da.wrap(StandardScaler())
+    wrapper.fit(X)
+
+    In []: wrapper.estimator_.mean_
+    Out[]:
+    array([ 0.46156856,  0.47165326,  0.48397815,  0.48958361,  0.4730579 ,
+            0.522414  ,  0.46496134,  0.52299264,  0.48772645,  0.49043086])
+
+
+=====
+Wrapping estimators for Datasets
+=====
+
+The syntax for Datasets is mostly the same as for DataArrays, only that it
+uses the ``dataset`` module. Note that the wrapper will fit one estimator for
+each variable in the Dataset. The fitted estimators are stored in the
+attribute ``estimator_dict_``::
+
+    import sklearn_xarray.dataset as ds
+    from sklearn_xarray.data import load_dummy_dataset
+    from sklearn.preprocessing import StandardScaler
+
+    X = load_dummy_dataset()
+    wrapper = ds.wrap(StandardScaler())
+    wrapper.fit(X)
+
+    In []: wrapper.estimator_dict_
+    Out[]: {'var_1': StandardScaler(copy=True, with_mean=True, with_std=True)}
 

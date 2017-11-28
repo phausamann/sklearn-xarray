@@ -3,6 +3,8 @@ The `sklearn_xarray.preprocessing` module contains various preprocessing
 methods that work on xarray DataArrays and Datasets.
 """
 
+from __future__ import division
+
 import numpy as np
 import pandas as pd
 import xarray as xr
@@ -65,20 +67,7 @@ class BaseTransformer(BaseEstimator, TransformerMixin):
     """ Base class for transformers. """
 
     def _call_groupwise(self, function, X, y=None):
-        """ Call a function function on groups of data.
-
-        Parameters
-        ----------
-        X : xarray DataArray or Dataset
-            The input data.
-        y : Target or xarray DataArray or Dataset
-            The target data.
-
-        Returns
-        -------
-        Xt : xarray DataArray or Dataset
-            The predicted/transformed data.
-        """
+        """ Call a function function on groups of data. """
 
         group_idx = get_group_indices(X, self.groupby, self.group_dim)
         Xt_list = []
@@ -194,25 +183,14 @@ class Transposer(BaseTransformer):
             The estimator itself.
         """
 
-        super().fit(X, y, **fit_params)
+        super(Transposer, self).fit(X, y, **fit_params)
 
         self.initial_order_ = X.dims
 
         return self
 
     def _transform(self, X):
-        """ Reorder data dimensions.
-
-        Parameters
-        ----------
-        X : xarray DataArray or Dataset
-            The input data.
-
-        Returns
-        -------
-        Xt : xarray DataArray or Dataset
-            The transformed data.
-        """
+        """ Transform. """
 
         check_is_fitted(self, ['initial_order_'])
 
@@ -225,18 +203,7 @@ class Transposer(BaseTransformer):
             return X.transpose(*self.order)
 
     def _inverse_transform(self, X):
-        """ Undo reordering.
-
-        Parameters
-        ----------
-        X : xarray DataArray or Dataset
-            The input data.
-
-        Returns
-        -------
-        Xt : xarray DataArray or Dataset
-            The transformed data.
-        """
+        """ Reverse transform. """
 
         check_is_fitted(self, ['initial_order_'])
 
@@ -328,18 +295,7 @@ class Splitter(BaseTransformer):
         self.group_dim = group_dim
 
     def _transform(self, X):
-        """ Splits X along some dimension.
-
-        Parameters
-        ----------
-        X : xarray DataArray or Dataset
-            The input data.
-
-        Returns
-        -------
-        Xt : xarray DataArray or Dataset
-            The transformed data.
-        """
+        """ Transform. """
 
         if self.type_ == 'DataArray':
             Xt = X.to_dataset(name='tmp_var')
@@ -396,18 +352,7 @@ class Splitter(BaseTransformer):
         return Xt
 
     def _inverse_transform(self, X):
-        """ Undo the split.
-
-        Parameters
-        ----------
-        X : xarray DataArray or Dataset
-            The input data.
-
-        Returns
-        -------
-        Xt: xarray DataArray or Dataset
-            The transformed data.
-        """
+        """ Reverse transform. """
 
         # temporary dimension name
         tmp_dim = 'tmp'
@@ -512,27 +457,7 @@ class Segmenter(BaseTransformer):
         self.group_dim = group_dim
 
     def _segment_array(self, arr, step, new_len, axis):
-        """ Segment an array along some axis.
-
-        Parameters
-        ----------
-        arr : array-like
-            The input array.
-
-        step : int
-            The step length.
-
-        new_len : int
-            The segment length.
-
-        axis : int
-            The axis along which to segment
-
-        Returns
-        -------
-        arr_new: array-like
-            The segmented array.
-        """
+        """ Segment an array along some axis. """
 
         new_shape = list(arr.shape)
         new_shape[axis] = (new_shape[axis] - new_len + step) // step
@@ -550,18 +475,7 @@ class Segmenter(BaseTransformer):
         return arr_new
 
     def _transform(self, X):
-        """ Segments X along some dimension.
-
-        Parameters
-        ----------
-        X : xarray DataArray or Dataset
-            The input data.
-
-        Returns
-        -------
-        Xt : xarray DataArray or Dataset
-            The transformed data.
-        """
+        """ Transform. """
 
         if None in (self.new_dim, self.new_len):
             raise ValueError('Name and length of new dimension must be '
@@ -619,18 +533,7 @@ class Segmenter(BaseTransformer):
             return xr.DataArray(x_t, coords=coords_t, dims=new_dims)
 
     def _inverse_transform(self, X):
-        """
-
-        Parameters
-        ----------
-        X : xarray DataArray or Dataset
-            The input data.
-
-        Returns
-        -------
-        Xt: xarray DataArray or Dataset
-            The transformed data.
-        """
+        """ Reverse transform. """
 
         raise NotImplementedError(
             'inverse_transform has not yet been implemented for this estimator')
@@ -708,7 +611,7 @@ class Resampler(BaseTransformer):
             The estimator itself.
         """
 
-        super().fit(X, y, **fit_params)
+        super(Resampler, self).fit(X, y, **fit_params)
 
         if hasattr(X[self.dim], 'freq'):
             self.initial_freq_ = X[self.dim].freq
@@ -718,18 +621,7 @@ class Resampler(BaseTransformer):
         return self
 
     def _transform(self, X):
-        """ Resamples along some dimension.
-
-        Parameters
-        ----------
-        X : xarray DataArray or Dataset
-            The input data.
-
-        Returns
-        -------
-        Xt : xarray DataArray or Dataset
-            The transformed data.
-        """
+        """ Transform. """
 
         import scipy.signal as sig
         from fractions import Fraction
@@ -787,18 +679,7 @@ class Resampler(BaseTransformer):
             return xr.DataArray(x_t, coords=coords_t, dims=X.dims)
 
     def _inverse_transform(self, X):
-        """
-
-        Parameters
-        ----------
-        X : xarray DataArray or Dataset
-            The input data.
-
-        Returns
-        -------
-        Xt: xarray DataArray or Dataset
-            The transformed data.
-        """
+        """ Reverse transform. """
 
         raise NotImplementedError(
             'inverse_transform has not yet been implemented for this estimator')
@@ -879,18 +760,7 @@ class Concatenator(BaseTransformer):
         self.group_dim = group_dim
 
     def _transform(self, X):
-        """ Concatenates variables along a dimension.
-
-        Parameters
-        ----------
-        X : xarray Dataset
-            The input data.
-
-        Returns
-        -------
-        Xt : xarray DataArray or Dataset
-            The transformed data.
-        """
+        """ Transform. """
 
         if self.type_ == 'DataArray':
             raise ValueError('The Concatenator can only be applied to Datasets')
@@ -927,18 +797,7 @@ class Concatenator(BaseTransformer):
                 return xr.merge(X_list)
 
     def _inverse_transform(self, X):
-        """
-
-        Parameters
-        ----------
-        X : xarray DataArray or Dataset
-            The input data.
-
-        Returns
-        -------
-        Xt: xarray DataArray or Dataset
-            The transformed data.
-        """
+        """ Reverse transform. """
 
         raise NotImplementedError(
             'inverse_transform has not yet been implemented for this estimator')
@@ -1013,18 +872,7 @@ class Featurizer(BaseTransformer):
         self.group_dim = group_dim
 
     def _transform(self, X):
-        """ Stacks all dimensions and variables except for sample dimension.
-
-        Parameters
-        ----------
-        X : xarray DataArray or Dataset
-            The input data.
-
-        Returns
-        -------
-        Xt : xarray DataArray or Dataset
-            The transformed data.
-        """
+        """ Transform. """
 
         # convert to DataArray if necessary
         if self.type_ == 'Dataset':
@@ -1047,18 +895,7 @@ class Featurizer(BaseTransformer):
             return X
 
     def _inverse_transform(self, X):
-        """
-
-        Parameters
-        ----------
-        X : xarray DataArray or Dataset
-            The input data.
-
-        Returns
-        -------
-        Xt: xarray DataArray or Dataset
-            The transformed data.
-        """
+        """ Reverse transform. """
 
         raise NotImplementedError(
             'inverse_transform has not yet been implemented for this estimator')
@@ -1115,18 +952,7 @@ class Sanitizer(BaseTransformer):
         self.group_dim = group_dim
 
     def _transform(self, X):
-        """ Removes elements containing NaNs.
-
-        Parameters
-        ----------
-        X : xarray DataArray or Dataset
-            The input data.
-
-        Returns
-        -------
-        Xt : xarray DataArray or Dataset
-            The transformed data.
-        """
+        """ Transform. """
 
         idx_nan = np.zeros(len(X[self.dim]), dtype=bool)
 
@@ -1142,18 +968,7 @@ class Sanitizer(BaseTransformer):
         return X.isel(**{self.dim: np.logical_not(idx_nan)})
 
     def _inverse_transform(self, X):
-        """
-
-        Parameters
-        ----------
-        X : xarray DataArray or Dataset
-            The input data.
-
-        Returns
-        -------
-        Xt: xarray DataArray or Dataset
-            The transformed data.
-        """
+        """ Reverse transform. """
 
         raise NotImplementedError(
             'inverse_transform cannot be implemented for this estimator')
@@ -1215,34 +1030,12 @@ class Reducer(BaseTransformer):
         self.group_dim = group_dim
 
     def _transform(self, X):
-        """ Reduces data along some dimension.
-
-        Parameters
-        ----------
-        X : xarray DataArray or Dataset
-            The input data.
-
-        Returns
-        -------
-        Xt : xarray DataArray or Dataset
-            The transformed data.
-        """
+        """ Transform. """
 
         return X.reduce(self.func, dim=self.dim)
 
     def _inverse_transform(self, X):
-        """
-
-        Parameters
-        ----------
-        X : xarray DataArray or Dataset
-            The input data.
-
-        Returns
-        -------
-        Xt: xarray DataArray or Dataset
-            The transformed data.
-        """
+        """ Reverse transform. """
 
         raise NotImplementedError(
             'inverse_transform cannot be implemented for this estimator')
