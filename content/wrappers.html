@@ -1,0 +1,370 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Wrappers for sklearn estimators &mdash; sklearn-xarray 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="sklearn-xarray 0.1.0 documentation" href="../index.html"/>
+        <link rel="next" title="Using coordinates as targets" href="target.html"/>
+        <link rel="prev" title="Installation" href="installation.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> sklearn-xarray
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Wrappers for sklearn estimators</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#wrapping-estimators-for-dataarrays">Wrapping estimators for DataArrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#estimators-changing-the-shape-of-the-data">Estimators changing the shape of the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#accessing-fitted-estimators">Accessing fitted estimators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#wrapping-estimators-for-datasets">Wrapping estimators for Datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="target.html">Using coordinates as targets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformers.html">Custom transformers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipelining and cross-validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">General examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">sklearn-xarray</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Wrappers for sklearn estimators</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/content/wrappers.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="wrappers-for-sklearn-estimators">
+<h1>Wrappers for sklearn estimators<a class="headerlink" href="#wrappers-for-sklearn-estimators" title="Permalink to this headline">¶</a></h1>
+<p>sklearn-xarray provides wrappers that let you use sklearn estimators on
+xarray DataArrays and Datasets. The goal is to provide a seamless integration
+of both packages by only applying estimator methods on the raw data while
+metadata (coordinates in xarray) remains untouched whereever possible.</p>
+<p>There are two different kinds of wrappers for the two principal data types in
+xarray: <code class="docutils literal"><span class="pre">DataArray</span></code> and <code class="docutils literal"><span class="pre">Dataset</span></code>. Each kind of wrapper has its own module,
+<code class="docutils literal"><span class="pre">sklearn_xarray.dataarray</span></code> and <code class="docutils literal"><span class="pre">sklearn_xarray.dataset</span></code>.</p>
+<div class="section" id="wrapping-estimators-for-dataarrays">
+<h2>Wrapping estimators for DataArrays<a class="headerlink" href="#wrapping-estimators-for-dataarrays" title="Permalink to this headline">¶</a></h2>
+<p>First, we look at a basic example that shows how to wrap an estimator from
+sklearn for use with a <code class="docutils literal"><span class="pre">DataArray</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn_xarray.dataarray</span> <span class="k">as</span> <span class="nn">da</span>
+<span class="kn">from</span> <span class="nn">sklearn_xarray.data</span> <span class="k">import</span> <span class="n">load_dummy_dataarray</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">load_dummy_dataarray</span><span class="p">()</span>
+<span class="n">Xt</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">())</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">wrap</span></code> function will try to guess the type of the estimator it wraps
+and return an object with the corresponding methods for each type of estimator
+(e.g. <code class="docutils literal"><span class="pre">predict</span></code> for classifiers and regressors).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">xarray references axes by name rather than by order. Therefore, you can
+specify the <code class="docutils literal"><span class="pre">sample_dim</span></code> parameter of the wrapper to refer to the
+dimension in your data that represents the samples.</p>
+</div>
+<p>When we run the example, we see that he data in the array is scaled, but the
+coordinates and dimensions have not changed:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[]:</span> <span class="n">X</span>
+<span class="n">Out</span><span class="p">[]:</span>
+<span class="o">&lt;</span><span class="n">xarray</span><span class="o">.</span><span class="n">DataArray</span> <span class="p">(</span><span class="n">sample</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="n">feature</span><span class="p">:</span> <span class="mi">10</span><span class="p">)</span><span class="o">&gt;</span>
+<span class="n">array</span><span class="p">([[</span> <span class="mf">0.565986</span><span class="p">,</span>  <span class="mf">0.196107</span><span class="p">,</span>  <span class="mf">0.935981</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span>  <span class="mf">0.702356</span><span class="p">,</span>  <span class="mf">0.806494</span><span class="p">,</span>  <span class="mf">0.801178</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.551611</span><span class="p">,</span>  <span class="mf">0.277749</span><span class="p">,</span>  <span class="mf">0.27546</span> <span class="p">,</span> <span class="o">...</span><span class="p">,</span>  <span class="mf">0.646887</span><span class="p">,</span>  <span class="mf">0.616391</span><span class="p">,</span>  <span class="mf">0.227552</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.451261</span><span class="p">,</span>  <span class="mf">0.205744</span><span class="p">,</span>  <span class="mf">0.60436</span> <span class="p">,</span> <span class="o">...</span><span class="p">,</span>  <span class="mf">0.426333</span><span class="p">,</span>  <span class="mf">0.008449</span><span class="p">,</span>  <span class="mf">0.763937</span><span class="p">],</span>
+       <span class="o">...</span><span class="p">,</span>
+       <span class="p">[</span> <span class="mf">0.019217</span><span class="p">,</span>  <span class="mf">0.112844</span><span class="p">,</span>  <span class="mf">0.894421</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span>  <span class="mf">0.675889</span><span class="p">,</span>  <span class="mf">0.4957</span>  <span class="p">,</span>  <span class="mf">0.740349</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.542255</span><span class="p">,</span>  <span class="mf">0.053288</span><span class="p">,</span>  <span class="mf">0.483674</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span>  <span class="mf">0.481905</span><span class="p">,</span>  <span class="mf">0.064586</span><span class="p">,</span>  <span class="mf">0.843511</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.607809</span><span class="p">,</span>  <span class="mf">0.425632</span><span class="p">,</span>  <span class="mf">0.702882</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span>  <span class="mf">0.521591</span><span class="p">,</span>  <span class="mf">0.315032</span><span class="p">,</span>  <span class="mf">0.4258</span>  <span class="p">]])</span>
+<span class="n">Coordinates</span><span class="p">:</span>
+  <span class="o">*</span> <span class="n">sample</span>   <span class="p">(</span><span class="n">sample</span><span class="p">)</span> <span class="n">int32</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">10</span> <span class="mi">11</span> <span class="mi">12</span> <span class="mi">13</span> <span class="mi">14</span> <span class="mi">15</span> <span class="mi">16</span> <span class="mi">17</span> <span class="mi">18</span> <span class="o">...</span>
+  <span class="o">*</span> <span class="n">feature</span>  <span class="p">(</span><span class="n">feature</span><span class="p">)</span> <span class="n">int32</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span>
+
+<span class="n">In</span> <span class="p">[]:</span> <span class="n">Xt</span>
+<span class="n">Out</span><span class="p">[]:</span>
+<span class="o">&lt;</span><span class="n">xarray</span><span class="o">.</span><span class="n">DataArray</span> <span class="p">(</span><span class="n">sample</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="n">feature</span><span class="p">:</span> <span class="mi">10</span><span class="p">)</span><span class="o">&gt;</span>
+<span class="n">array</span><span class="p">([[</span> <span class="mf">0.128639</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.947769</span><span class="p">,</span>  <span class="mf">1.625452</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span>  <span class="mf">0.525571</span><span class="p">,</span>  <span class="mf">1.07678</span> <span class="p">,</span>  <span class="mf">1.062118</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.077973</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.673463</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.631625</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span>  <span class="mf">0.321261</span><span class="p">,</span>  <span class="mf">0.408263</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.942871</span><span class="p">],</span>
+       <span class="p">[</span><span class="o">-</span><span class="mf">0.275702</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.91539</span> <span class="p">,</span>  <span class="mf">0.492264</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.491108</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.729624</span><span class="p">,</span>  <span class="mf">0.931952</span><span class="p">],</span>
+       <span class="o">...</span><span class="p">,</span>
+       <span class="p">[</span><span class="o">-</span><span class="mf">1.7984</span>  <span class="p">,</span> <span class="o">-</span><span class="mf">1.227519</span><span class="p">,</span>  <span class="mf">1.483434</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span>  <span class="mf">0.428084</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.016158</span><span class="p">,</span>  <span class="mf">0.849506</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.045001</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.427621</span><span class="p">,</span>  <span class="mf">0.079865</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.286418</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.532214</span><span class="p">,</span>  <span class="mf">1.210086</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.27604</span> <span class="p">,</span> <span class="o">-</span><span class="mf">0.176596</span><span class="p">,</span>  <span class="mf">0.828923</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.140244</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.651494</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.249936</span><span class="p">]])</span>
+<span class="n">Coordinates</span><span class="p">:</span>
+  <span class="o">*</span> <span class="n">sample</span>   <span class="p">(</span><span class="n">sample</span><span class="p">)</span> <span class="n">int32</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">10</span> <span class="mi">11</span> <span class="mi">12</span> <span class="mi">13</span> <span class="mi">14</span> <span class="mi">15</span> <span class="mi">16</span> <span class="mi">17</span> <span class="mi">18</span> <span class="o">...</span>
+  <span class="o">*</span> <span class="n">feature</span>  <span class="p">(</span><span class="n">feature</span><span class="p">)</span> <span class="n">int32</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="estimators-changing-the-shape-of-the-data">
+<h2>Estimators changing the shape of the data<a class="headerlink" href="#estimators-changing-the-shape-of-the-data" title="Permalink to this headline">¶</a></h2>
+<p>Many sklearn estimators will change the number of features during
+transformation or prediction. In this case, the coordinates along the feature
+dimension no longer correspond to those of the original array. Therefore, the
+wrapper will omit the coordinates along this dimension. You can specify which
+dimension is changed with the <code class="docutils literal"><span class="pre">reshapes</span></code> parameter:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="k">import</span> <span class="n">PCA</span>
+
+<span class="n">Xt</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span> <span class="n">reshapes</span><span class="o">=</span><span class="s1">&#39;feature&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[]:</span> <span class="n">Xt</span>
+<span class="n">Out</span><span class="p">[]:</span>
+<span class="o">&lt;</span><span class="n">xarray</span><span class="o">.</span><span class="n">DataArray</span> <span class="p">(</span><span class="n">sample</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="n">feature</span><span class="p">:</span> <span class="mi">5</span><span class="p">)</span><span class="o">&gt;</span>
+<span class="n">array</span><span class="p">([[</span> <span class="mf">0.438773</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.100947</span><span class="p">,</span>  <span class="mf">0.106754</span><span class="p">,</span>  <span class="mf">0.236872</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.128751</span><span class="p">],</span>
+       <span class="p">[</span><span class="o">-</span><span class="mf">0.40433</span> <span class="p">,</span> <span class="o">-</span><span class="mf">0.580941</span><span class="p">,</span>  <span class="mf">0.588425</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.305739</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.120676</span><span class="p">],</span>
+       <span class="p">[</span> <span class="mf">0.343535</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.334365</span><span class="p">,</span>  <span class="mf">0.659667</span><span class="p">,</span>  <span class="mf">0.111196</span><span class="p">,</span>  <span class="mf">0.308099</span><span class="p">],</span>
+       <span class="o">...</span><span class="p">,</span>
+       <span class="p">[</span> <span class="mf">0.519982</span><span class="p">,</span>  <span class="mf">0.38072</span> <span class="p">,</span>  <span class="mf">0.133793</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.064086</span><span class="p">,</span>  <span class="mf">0.108029</span><span class="p">],</span>
+       <span class="p">[</span><span class="o">-</span><span class="mf">0.099056</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.086161</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.115271</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.053594</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.736321</span><span class="p">],</span>
+       <span class="p">[</span><span class="o">-</span><span class="mf">0.358513</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.327132</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.635314</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.310221</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.017318</span><span class="p">]])</span>
+<span class="n">Coordinates</span><span class="p">:</span>
+  <span class="o">*</span> <span class="n">sample</span>   <span class="p">(</span><span class="n">sample</span><span class="p">)</span> <span class="n">int32</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">10</span> <span class="mi">11</span> <span class="mi">12</span> <span class="mi">13</span> <span class="mi">14</span> <span class="mi">15</span> <span class="mi">16</span> <span class="mi">17</span> <span class="mi">18</span> <span class="o">...</span>
+<span class="n">Dimensions</span> <span class="n">without</span> <span class="n">coordinates</span><span class="p">:</span> <span class="n">feature</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="accessing-fitted-estimators">
+<h2>Accessing fitted estimators<a class="headerlink" href="#accessing-fitted-estimators" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal"><span class="pre">estimator</span></code> attribute of the wrapper will always hold the unfitted
+estimator that was passed initially. After calling <code class="docutils literal"><span class="pre">fit</span></code> the fitted estimator
+will be stored in the <code class="docutils literal"><span class="pre">estimator_</span></code> attribute:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">wrapper</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">())</span>
+<span class="n">wrapper</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[]:</span> <span class="n">wrapper</span><span class="o">.</span><span class="n">estimator_</span><span class="o">.</span><span class="n">mean_</span>
+<span class="n">Out</span><span class="p">[]:</span>
+<span class="n">array</span><span class="p">([</span> <span class="mf">0.46156856</span><span class="p">,</span>  <span class="mf">0.47165326</span><span class="p">,</span>  <span class="mf">0.48397815</span><span class="p">,</span>  <span class="mf">0.48958361</span><span class="p">,</span>  <span class="mf">0.4730579</span> <span class="p">,</span>
+        <span class="mf">0.522414</span>  <span class="p">,</span>  <span class="mf">0.46496134</span><span class="p">,</span>  <span class="mf">0.52299264</span><span class="p">,</span>  <span class="mf">0.48772645</span><span class="p">,</span>  <span class="mf">0.49043086</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="wrapping-estimators-for-datasets">
+<h2>Wrapping estimators for Datasets<a class="headerlink" href="#wrapping-estimators-for-datasets" title="Permalink to this headline">¶</a></h2>
+<p>The syntax for Datasets is mostly the same as for DataArrays, only that it
+uses the <code class="docutils literal"><span class="pre">dataset</span></code> module. Note that the wrapper will fit one estimator for
+each variable in the Dataset. The fitted estimators are stored in the
+attribute <code class="docutils literal"><span class="pre">estimator_dict_</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn_xarray.dataset</span> <span class="k">as</span> <span class="nn">ds</span>
+<span class="kn">from</span> <span class="nn">sklearn_xarray.data</span> <span class="k">import</span> <span class="n">load_dummy_dataset</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">load_dummy_dataset</span><span class="p">()</span>
+<span class="n">wrapper</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">())</span>
+<span class="n">wrapper</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[]:</span> <span class="n">wrapper</span><span class="o">.</span><span class="n">estimator_dict_</span>
+<span class="n">Out</span><span class="p">[]:</span> <span class="p">{</span><span class="s1">&#39;var_1&#39;</span><span class="p">:</span> <span class="n">StandardScaler</span><span class="p">(</span><span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_mean</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_std</span><span class="o">=</span><span class="kc">True</span><span class="p">)}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="target.html" class="btn btn-neutral float-right" title="Using coordinates as targets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="installation.html" class="btn btn-neutral" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Peter Hausamann.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

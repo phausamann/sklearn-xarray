@@ -1,0 +1,329 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Model Selection &mdash; sklearn-xarray 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="sklearn-xarray 0.1.0 documentation" href="../../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> sklearn-xarray
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">Wrappers for sklearn estimators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../target.html">Using coordinates as targets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../transformers.html">Custom transformers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pipeline.html">Pipelining and cross-validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">General examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">sklearn-xarray</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+      <li>Model Selection</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/content/api/model_selection.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-sklearn_xarray.model_selection">
+<span id="model-selection"></span><h1>Model Selection<a class="headerlink" href="#module-sklearn_xarray.model_selection" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="sklearn_xarray.model_selection.CrossValidatorWrapper">
+<em class="property">class </em><code class="descclassname">sklearn_xarray.model_selection.</code><code class="descname">CrossValidatorWrapper</code><span class="sig-paren">(</span><em>cross_validator</em>, <em>dim='sample'</em>, <em>groupby=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/model_selection.html#CrossValidatorWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.model_selection.CrossValidatorWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrap an sklearn cross validator for use with xarray.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>cross_validator</strong> : sklearn cross validator</p>
+<blockquote>
+<div><p>TODO</p>
+</div></blockquote>
+<p><strong>dim</strong> : str</p>
+<blockquote>
+<div><p>TODO</p>
+</div></blockquote>
+<p><strong>groupby</strong> : str or list</p>
+<blockquote class="last">
+<div><p>TODO</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="sklearn_xarray.model_selection.CrossValidatorWrapper.get_n_splits">
+<code class="descname">get_n_splits</code><span class="sig-paren">(</span><em>X=None</em>, <em>y=None</em>, <em>groups=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/model_selection.html#CrossValidatorWrapper.get_n_splits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.model_selection.CrossValidatorWrapper.get_n_splits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of splitting iterations in the cross-validator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : object</p>
+<blockquote>
+<div><p>Always ignored, exists for compatibility.</p>
+</div></blockquote>
+<p><strong>y</strong> : object</p>
+<blockquote>
+<div><p>Always ignored, exists for compatibility.</p>
+</div></blockquote>
+<p><strong>groups</strong> : object</p>
+<blockquote>
+<div><p>Always ignored, exists for compatibility.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>n_splits</strong> : int</p>
+<blockquote class="last">
+<div><p>Returns the number of splitting iterations in the cross-validator.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="sklearn_xarray.model_selection.CrossValidatorWrapper.split">
+<code class="descname">split</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>groups=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/model_selection.html#CrossValidatorWrapper.split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.model_selection.CrossValidatorWrapper.split" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate indices to split data into training and test set.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : xarray DataArray or Dataset</p>
+<blockquote>
+<div><p>Training data, where n_samples is the number of samples
+and n_features is the number of features.</p>
+</div></blockquote>
+<p><strong>y</strong> : array-like, shape (n_samples,)</p>
+<blockquote>
+<div><p>The target variable for supervised learning problems.</p>
+</div></blockquote>
+<p><strong>groups</strong> : array-like, with shape (n_samples,), optional</p>
+<blockquote>
+<div><p>Group labels for the samples used while splitting the dataset into
+train/test set.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>train</strong> : ndarray</p>
+<blockquote>
+<div><p>The training set indices for that split.</p>
+</div></blockquote>
+<p><strong>test</strong> : ndarray</p>
+<blockquote class="last">
+<div><p>The testing set indices for that split.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Peter Hausamann.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

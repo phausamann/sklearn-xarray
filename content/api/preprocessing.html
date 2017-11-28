@@ -1,0 +1,963 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Preprocessing &mdash; sklearn-xarray 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="sklearn-xarray 0.1.0 documentation" href="../../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> sklearn-xarray
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrappers.html">Wrappers for sklearn estimators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../target.html">Using coordinates as targets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../transformers.html">Custom transformers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pipeline.html">Pipelining and cross-validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">General examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">sklearn-xarray</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+      <li>Preprocessing</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/content/api/preprocessing.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-sklearn_xarray.preprocessing">
+<span id="preprocessing"></span><h1>Preprocessing<a class="headerlink" href="#module-sklearn_xarray.preprocessing" title="Permalink to this headline">¶</a></h1>
+<p>The <cite>sklearn_xarray.preprocessing</cite> module contains various preprocessing
+methods that work on xarray DataArrays and Datasets.</p>
+<dl class="class">
+<dt id="sklearn_xarray.preprocessing.BaseTransformer">
+<em class="property">class </em><code class="descclassname">sklearn_xarray.preprocessing.</code><code class="descname">BaseTransformer</code><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#BaseTransformer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.BaseTransformer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for transformers.</p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="sklearn_xarray.preprocessing.BaseTransformer.fit">
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#BaseTransformer.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.BaseTransformer.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit estimator to data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : xarray DataArray or Dataset</p>
+<blockquote>
+<div><p>Training set.</p>
+</div></blockquote>
+<p><strong>y</strong> : xarray DataArray or Dataset</p>
+<blockquote>
+<div><p>Target values.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">self:</p>
+<blockquote class="last">
+<div><p>The estimator itself.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="sklearn_xarray.preprocessing.BaseTransformer.inverse_transform">
+<code class="descname">inverse_transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#BaseTransformer.inverse_transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.BaseTransformer.inverse_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reverse the transformation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : xarray DataArray or Dataset</p>
+<blockquote>
+<div><p>The input data.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Xt</strong> : xarray DataArray or Dataset</p>
+<blockquote class="last">
+<div><p>The transformed data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="sklearn_xarray.preprocessing.BaseTransformer.transform">
+<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#BaseTransformer.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.BaseTransformer.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform input data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : xarray DataArray or Dataset</p>
+<blockquote>
+<div><p>The input data.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Xt</strong> : xarray DataArray or Dataset</p>
+<blockquote class="last">
+<div><p>The transformed data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sklearn_xarray.preprocessing.Concatenator">
+<em class="property">class </em><code class="descclassname">sklearn_xarray.preprocessing.</code><code class="descname">Concatenator</code><span class="sig-paren">(</span><em>dim='feature'</em>, <em>new_dim=None</em>, <em>variables=None</em>, <em>new_var='Feature'</em>, <em>new_index_func=None</em>, <em>return_array=False</em>, <em>groupby=None</em>, <em>group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Concatenator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Concatenator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Concatenates variables along a dimension.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>dim</strong> : str</p>
+<blockquote>
+<div><p>Name of the dimension along which to concatenate the Dataset.</p>
+</div></blockquote>
+<p><strong>new_dim</strong> : str</p>
+<blockquote>
+<div><p>New name of the dimension, if desired.</p>
+</div></blockquote>
+<p><strong>variables</strong> : list or tuple</p>
+<blockquote>
+<div><p>Names of the variables to concatenate, default all.</p>
+</div></blockquote>
+<p><strong>new_var :</strong></p>
+<blockquote>
+<div><p>Name of the new variable created by the concatenation.</p>
+</div></blockquote>
+<p><strong>new_index_func</strong> : function</p>
+<blockquote>
+<div><p>A function that takes the length of the concatenated dimension as a
+parameter and returns a vector of this length to be used as the
+index for that dimension.</p>
+</div></blockquote>
+<p><strong>return_array: bool</strong></p>
+<blockquote>
+<div><p>Whether to return a DataArray when a Dataset was passed.</p>
+</div></blockquote>
+<p><strong>groupby</strong> : str or list, optional</p>
+<blockquote>
+<div><p>Name of coordinate or list of coordinates by which the groups are
+determined.</p>
+</div></blockquote>
+<p><strong>group_dim</strong> : str, optional</p>
+<blockquote class="last">
+<div><p>Name of dimension along which the groups are indexed.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="sklearn_xarray.preprocessing.Featurizer">
+<em class="property">class </em><code class="descclassname">sklearn_xarray.preprocessing.</code><code class="descname">Featurizer</code><span class="sig-paren">(</span><em>sample_dim='sample'</em>, <em>feature_dim='feature'</em>, <em>var_name='Features'</em>, <em>order=None</em>, <em>return_array=False</em>, <em>groupby=None</em>, <em>group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Featurizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Featurizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stacks all dimensions and variables except for sample dimension.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sample_dim</strong> : str</p>
+<blockquote>
+<div><p>Name of the sample dimension.</p>
+</div></blockquote>
+<p><strong>feature_dim</strong> : str</p>
+<blockquote>
+<div><p>Name of the feature dimension.</p>
+</div></blockquote>
+<p><strong>var_name</strong> : str</p>
+<blockquote>
+<div><p>Name of the new variable (for Datasets).</p>
+</div></blockquote>
+<p><strong>order</strong> : list or tuple</p>
+<blockquote>
+<div><p>Order of dimension stacking.</p>
+</div></blockquote>
+<p><strong>return_array: bool</strong></p>
+<blockquote>
+<div><p>Whether to return a DataArray when a Dataset was passed.</p>
+</div></blockquote>
+<p><strong>groupby</strong> : str or list, optional</p>
+<blockquote>
+<div><p>Name of coordinate or list of coordinates by which the groups are
+determined.</p>
+</div></blockquote>
+<p><strong>group_dim</strong> : str, optional</p>
+<blockquote class="last">
+<div><p>Name of dimension along which the groups are indexed.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="sklearn_xarray.preprocessing.Reducer">
+<em class="property">class </em><code class="descclassname">sklearn_xarray.preprocessing.</code><code class="descname">Reducer</code><span class="sig-paren">(</span><em>dim='feature'</em>, <em>func=&lt;function norm&gt;</em>, <em>groupby=None</em>, <em>group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Reducer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Reducer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reduces data along some dimension.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>dim</strong> : str</p>
+<blockquote>
+<div><p>Name of the dimension.</p>
+</div></blockquote>
+<p><strong>func</strong> : function</p>
+<blockquote>
+<div><p>Reduction function.</p>
+</div></blockquote>
+<p><strong>groupby</strong> : str or list, optional</p>
+<blockquote>
+<div><p>Name of coordinate or list of coordinates by which the groups are
+determined.</p>
+</div></blockquote>
+<p><strong>group_dim</strong> : str, optional</p>
+<blockquote class="last">
+<div><p>Name of dimension along which the groups are indexed.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="sklearn_xarray.preprocessing.Resampler">
+<em class="property">class </em><code class="descclassname">sklearn_xarray.preprocessing.</code><code class="descname">Resampler</code><span class="sig-paren">(</span><em>freq=None</em>, <em>dim='sample'</em>, <em>groupby=None</em>, <em>group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Resampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Resampler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resamples along some dimension.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>freq</strong> : str</p>
+<blockquote>
+<div><p>Frequency after resampling.</p>
+</div></blockquote>
+<p><strong>dim</strong> : str</p>
+<blockquote>
+<div><p>Name of the dimension along which to resample.</p>
+</div></blockquote>
+<p><strong>groupby</strong> : str or list, optional</p>
+<blockquote>
+<div><p>Name of coordinate or list of coordinates by which the groups are
+determined.</p>
+</div></blockquote>
+<p><strong>group_dim</strong> : str, optional</p>
+<blockquote class="last">
+<div><p>Name of dimension along which the groups are indexed.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="sklearn_xarray.preprocessing.Resampler.fit">
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Resampler.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Resampler.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the estimator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : xarray DataArray or Dataset</p>
+<blockquote>
+<div><p>The input data.</p>
+</div></blockquote>
+<p><strong>y</strong> : None</p>
+<blockquote>
+<div><p>For compatibility.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">self :</p>
+<blockquote class="last">
+<div><p>The estimator itself.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sklearn_xarray.preprocessing.Sanitizer">
+<em class="property">class </em><code class="descclassname">sklearn_xarray.preprocessing.</code><code class="descname">Sanitizer</code><span class="sig-paren">(</span><em>dim='sample'</em>, <em>groupby=None</em>, <em>group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Sanitizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Sanitizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes elements containing NaNs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>dim</strong> : str</p>
+<blockquote>
+<div><p>Name of the sample dimension.</p>
+</div></blockquote>
+<p><strong>groupby</strong> : str or list, optional</p>
+<blockquote>
+<div><p>Name of coordinate or list of coordinates by which the groups are
+determined.</p>
+</div></blockquote>
+<p><strong>group_dim</strong> : str, optional</p>
+<blockquote class="last">
+<div><p>Name of dimension along which the groups are indexed.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="sklearn_xarray.preprocessing.Segmenter">
+<em class="property">class </em><code class="descclassname">sklearn_xarray.preprocessing.</code><code class="descname">Segmenter</code><span class="sig-paren">(</span><em>dim='sample'</em>, <em>new_dim=None</em>, <em>new_len=None</em>, <em>step=None</em>, <em>reduce_index='subsample'</em>, <em>new_index_func=&lt;built-in function arange&gt;</em>, <em>groupby=None</em>, <em>group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Segmenter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Segmenter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Segments X along some dimension.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>dim</strong> : str</p>
+<blockquote>
+<div><p>Name of the dimension along which to split.</p>
+</div></blockquote>
+<p><strong>new_dim</strong> : str</p>
+<blockquote>
+<div><p>Name of the newly added dimension.</p>
+</div></blockquote>
+<p><strong>new_len</strong> : int</p>
+<blockquote>
+<div><p>Length of the newly added dimension.</p>
+</div></blockquote>
+<p><strong>step: int</strong></p>
+<blockquote>
+<div><p>Number of values between the start of a segment and the next one.</p>
+</div></blockquote>
+<p><strong>reduce_index</strong> : str</p>
+<blockquote>
+<div><p>How to reduce the index of the split dimension.
+‘head’ : Take the first <cite>n</cite> values where <cite>n</cite> is the length of the</p>
+<blockquote>
+<div><p>dimension after segmenting.</p>
+</div></blockquote>
+<dl class="docutils">
+<dt>‘subsample’ <span class="classifier-delimiter">:</span> <span class="classifier">Take the values corresponding to the first element of</span></dt>
+<dd><p class="first last">every segment.</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>new_index_func</strong> : function</p>
+<blockquote>
+<div><p>A function that takes <cite>new_len</cite> as a parameter and returns a vector of
+length <cite>new_len</cite> to be used as the indices for the new dimension.</p>
+</div></blockquote>
+<p><strong>groupby</strong> : str or list, optional</p>
+<blockquote>
+<div><p>Name of coordinate or list of coordinates by which the groups are
+determined.</p>
+</div></blockquote>
+<p><strong>group_dim</strong> : str, optional</p>
+<blockquote class="last">
+<div><p>Name of dimension along which the groups are indexed.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="sklearn_xarray.preprocessing.Splitter">
+<em class="property">class </em><code class="descclassname">sklearn_xarray.preprocessing.</code><code class="descname">Splitter</code><span class="sig-paren">(</span><em>dim='sample'</em>, <em>new_dim=None</em>, <em>new_len=None</em>, <em>reduce_index='subsample'</em>, <em>new_index_func=&lt;built-in function arange&gt;</em>, <em>keep_coords_as=None</em>, <em>groupby=None</em>, <em>group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Splitter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Splitter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Splits X along some dimension.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>dim</strong> : str</p>
+<blockquote>
+<div><p>Name of the dimension along which to split.</p>
+</div></blockquote>
+<p><strong>new_dim</strong> : str</p>
+<blockquote>
+<div><p>Name of the newly added dimension.</p>
+</div></blockquote>
+<p><strong>new_len</strong> : int</p>
+<blockquote>
+<div><p>Length of the newly added dimension.</p>
+</div></blockquote>
+<p><strong>reduce_index</strong> : str</p>
+<blockquote>
+<div><p>How to reduce the index of the split dimension.
+‘head’ : Take the first <cite>n</cite> values where <cite>n</cite> is the length of the</p>
+<blockquote>
+<div><p>dimension after splitting.</p>
+</div></blockquote>
+<p>‘subsample’ : Take every <a href="#id1"><span class="problematic" id="id2">`</span></a>new_len`th value.</p>
+</div></blockquote>
+<p><strong>new_index_func</strong> : function</p>
+<blockquote>
+<div><p>A function that takes <cite>new_len</cite> as a parameter and returns a vector of
+length <cite>new_len</cite> to be used as the indices for the new dimension.</p>
+</div></blockquote>
+<p><strong>keep_coords_as</strong> : str or None</p>
+<blockquote>
+<div><p>If set, the coordinate of the split dimension will be kept as a
+separate coordinate with this name. This allows <cite>inverse_transform</cite>
+to reconstruct the original coordinate.</p>
+</div></blockquote>
+<p><strong>groupby</strong> : str or list, optional</p>
+<blockquote>
+<div><p>Name of coordinate or list of coordinates by which the groups are
+determined.</p>
+</div></blockquote>
+<p><strong>group_dim</strong> : str, optional</p>
+<blockquote class="last">
+<div><p>Name of dimension along which the groups are indexed.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="sklearn_xarray.preprocessing.Transposer">
+<em class="property">class </em><code class="descclassname">sklearn_xarray.preprocessing.</code><code class="descname">Transposer</code><span class="sig-paren">(</span><em>order=None</em>, <em>groupby=None</em>, <em>group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Transposer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Transposer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reorders data dimensions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>order</strong> : list or tuple</p>
+<blockquote>
+<div><p>The new order of the dimensions.</p>
+</div></blockquote>
+<p><strong>groupby</strong> : str or list, optional</p>
+<blockquote>
+<div><p>Name of coordinate or list of coordinates by which the groups are
+determined.</p>
+</div></blockquote>
+<p><strong>group_dim</strong> : str, optional</p>
+<blockquote class="last">
+<div><p>Name of dimension along which the groups are indexed.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="sklearn_xarray.preprocessing.Transposer.fit">
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Transposer.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Transposer.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the estimator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : xarray DataArray or Dataset</p>
+<blockquote>
+<div><p>The input data.</p>
+</div></blockquote>
+<p><strong>y</strong> : None</p>
+<blockquote>
+<div><p>For compatibility.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">self :</p>
+<blockquote class="last">
+<div><p>The estimator itself.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="sklearn_xarray.preprocessing.concatenate">
+<code class="descclassname">sklearn_xarray.preprocessing.</code><code class="descname">concatenate</code><span class="sig-paren">(</span><em>X</em>, <em>return_estimator=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#concatenate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.concatenate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Concatenates variables along a dimension.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : xarray DataArray or Dataset</p>
+<blockquote>
+<div><p>The input data.</p>
+</div></blockquote>
+<p><strong>return_estimator</strong> : bool</p>
+<blockquote>
+<div><p>Whether to return the fitted estimator along with the transformed data.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Xt</strong> : xarray DataArray or Dataset</p>
+<blockquote class="last">
+<div><p>The transformed data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sklearn_xarray.preprocessing.featurize">
+<code class="descclassname">sklearn_xarray.preprocessing.</code><code class="descname">featurize</code><span class="sig-paren">(</span><em>X</em>, <em>return_estimator=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#featurize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.featurize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stacks all dimensions and variables except for sample dimension.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : xarray DataArray or Dataset</p>
+<blockquote>
+<div><p>The input data.</p>
+</div></blockquote>
+<p><strong>return_estimator</strong> : bool</p>
+<blockquote>
+<div><p>Whether to return the fitted estimator along with the transformed data.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Xt</strong> : xarray DataArray or Dataset</p>
+<blockquote class="last">
+<div><p>The transformed data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sklearn_xarray.preprocessing.preprocess">
+<code class="descclassname">sklearn_xarray.preprocessing.</code><code class="descname">preprocess</code><span class="sig-paren">(</span><em>X</em>, <em>function</em>, <em>groupby=None</em>, <em>group_dim='sample'</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#preprocess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.preprocess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wraps preprocessing functions from sklearn for use with xarray types.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : xarray DataArray or Dataset</p>
+<blockquote>
+<div><p>The input data.</p>
+</div></blockquote>
+<p><strong>function</strong> : function</p>
+<blockquote>
+<div><p>The function to apply to the data. Note that this function cannot
+change the shape of the data.</p>
+</div></blockquote>
+<p><strong>groupby</strong> : str or list, optional</p>
+<blockquote>
+<div><p>Name of coordinate or list of coordinates by which the groups are
+determined.</p>
+</div></blockquote>
+<p><strong>group_dim</strong> : str, optional</p>
+<blockquote>
+<div><p>Name of dimension along which the groups are indexed.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Xt</strong> : xarray DataArray or Dataset</p>
+<blockquote class="last">
+<div><p>The transformed data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sklearn_xarray.preprocessing.reduce">
+<code class="descclassname">sklearn_xarray.preprocessing.</code><code class="descname">reduce</code><span class="sig-paren">(</span><em>X</em>, <em>return_estimator=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#reduce"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.reduce" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reduces data along some dimension.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : xarray DataArray or Dataset</p>
+<blockquote>
+<div><p>The input data.</p>
+</div></blockquote>
+<p><strong>return_estimator</strong> : bool</p>
+<blockquote>
+<div><p>Whether to return the fitted estimator along with the transformed data.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Xt</strong> : xarray DataArray or Dataset</p>
+<blockquote class="last">
+<div><p>The transformed data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sklearn_xarray.preprocessing.resample">
+<code class="descclassname">sklearn_xarray.preprocessing.</code><code class="descname">resample</code><span class="sig-paren">(</span><em>X</em>, <em>return_estimator=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#resample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.resample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resamples along some dimension.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : xarray DataArray or Dataset</p>
+<blockquote>
+<div><p>The input data.</p>
+</div></blockquote>
+<p><strong>return_estimator</strong> : bool</p>
+<blockquote>
+<div><p>Whether to return the fitted estimator along with the transformed data.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Xt</strong> : xarray DataArray or Dataset</p>
+<blockquote class="last">
+<div><p>The transformed data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sklearn_xarray.preprocessing.sanitize">
+<code class="descclassname">sklearn_xarray.preprocessing.</code><code class="descname">sanitize</code><span class="sig-paren">(</span><em>X</em>, <em>return_estimator=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#sanitize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.sanitize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes elements containing NaNs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : xarray DataArray or Dataset</p>
+<blockquote>
+<div><p>The input data.</p>
+</div></blockquote>
+<p><strong>return_estimator</strong> : bool</p>
+<blockquote>
+<div><p>Whether to return the fitted estimator along with the transformed data.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Xt</strong> : xarray DataArray or Dataset</p>
+<blockquote class="last">
+<div><p>The transformed data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sklearn_xarray.preprocessing.segment">
+<code class="descclassname">sklearn_xarray.preprocessing.</code><code class="descname">segment</code><span class="sig-paren">(</span><em>X</em>, <em>return_estimator=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#segment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.segment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Segments X along some dimension.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : xarray DataArray or Dataset</p>
+<blockquote>
+<div><p>The input data.</p>
+</div></blockquote>
+<p><strong>return_estimator</strong> : bool</p>
+<blockquote>
+<div><p>Whether to return the fitted estimator along with the transformed data.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Xt</strong> : xarray DataArray or Dataset</p>
+<blockquote class="last">
+<div><p>The transformed data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sklearn_xarray.preprocessing.split">
+<code class="descclassname">sklearn_xarray.preprocessing.</code><code class="descname">split</code><span class="sig-paren">(</span><em>X</em>, <em>return_estimator=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.split" title="Permalink to this definition">¶</a></dt>
+<dd><p>Splits X along some dimension.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : xarray DataArray or Dataset</p>
+<blockquote>
+<div><p>The input data.</p>
+</div></blockquote>
+<p><strong>return_estimator</strong> : bool</p>
+<blockquote>
+<div><p>Whether to return the fitted estimator along with the transformed data.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Xt</strong> : xarray DataArray or Dataset</p>
+<blockquote class="last">
+<div><p>The transformed data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sklearn_xarray.preprocessing.transpose">
+<code class="descclassname">sklearn_xarray.preprocessing.</code><code class="descname">transpose</code><span class="sig-paren">(</span><em>X</em>, <em>return_estimator=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#transpose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.transpose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reorders data dimensions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : xarray DataArray or Dataset</p>
+<blockquote>
+<div><p>The input data.</p>
+</div></blockquote>
+<p><strong>return_estimator</strong> : bool</p>
+<blockquote>
+<div><p>Whether to return the fitted estimator along with the transformed data.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Xt</strong> : xarray DataArray or Dataset</p>
+<blockquote class="last">
+<div><p>The transformed data.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Peter Hausamann.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
