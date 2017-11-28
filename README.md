@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/phausamann/sklearn-xarray.svg?style=svg)](https://circleci.com/gh/phausamann/sklearn-xarray)
+
 # sklearn-xarray
 
 xarray integration with scikit-learn
