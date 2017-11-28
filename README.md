@@ -1,4 +1,5 @@
 [![CircleCI](https://circleci.com/gh/phausamann/sklearn-xarray.svg?style=svg)](https://circleci.com/gh/phausamann/sklearn-xarray)
+[![Build Status](https://travis-ci.org/phausamann/sklearn-xarray.svg?branch=master)](https://travis-ci.org/phausamann/sklearn-xarray)
 [![Coverage Status](https://coveralls.io/repos/github/phausamann/sklearn-xarray/badge.svg?branch=master)](https://coveralls.io/github/phausamann/sklearn-xarray?branch=master)
 
 # sklearn-xarray
