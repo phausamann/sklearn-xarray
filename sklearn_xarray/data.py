@@ -1,6 +1,13 @@
 """ ``sklearn_xarray.data`` """
 
-import os, urllib, tarfile
+import os
+import tarfile
+
+try:
+    import urllib.request as ul
+except ImportError:
+    import urllib as ul
+
 import numpy as np
 import pandas as pd
 import xarray as xr
@@ -53,7 +60,7 @@ def load_wisdm(url='http://www.cis.fordham.edu/wisdm/includes/'
     """
 
     if not os.path.isfile(os.path.join(folder, file)):
-        urllib.request.urlretrieve(url, tmp_file)
+        ul.urlretrieve(url, tmp_file)
         tar = tarfile.open(tmp_file)
         tar.extractall(folder)
         tar.close()
