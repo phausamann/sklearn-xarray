@@ -11,7 +11,7 @@ environment:
     WHEELHOUSE_UPLOADER_USERNAME: sklearn
     WHEELHOUSE_UPLOADER_SECRET:
       secure: XzK+Mi6Ba5frV2B/jHq7h4aD8/nox9SsI3T8Kub1L2XNevRSIurUEry3PdWESzRY
-    MODULE: skltemplate
+    MODULE: sklearn_xarray
     PROJECT_NAME: sklearn-xarray
     CLOUD_STORAGE: CLOUDFILES
     CLOUD_CONTATINER: sklearn-xarray-trial
@@ -52,7 +52,7 @@ install:
   - rmdir C:\\cygwin /s /q
 
   # Install the build and runtime dependencies of the project.
-  - conda install --quiet --yes numpy scipy cython nose scikit-learn wheel
+  - conda install --quiet --yes numpy scipy cython nose scikit-learn wheel xarray
   - pip install wheelhouse_uploader nose-timer
   - "%CMD_IN_ENV% python setup.py bdist_wheel bdist_wininst"
   - ps: "ls dist"
@@ -70,11 +70,11 @@ artifacts:
   - path: dist\*
 
 
-on_success:
+#on_success:
   # Upload the generated wheel package to Rackspace
   # On Windows, Apache Libcloud cannot find a standard CA cert bundle so we
   # disable the ssl checks.
-  - "python -m wheelhouse_uploader upload provider=%CLOUD_STORAGE% --no-ssl-check --local-folder=dist %CLOUD_CONTAINER%"
+  #- "python -m wheelhouse_uploader upload provider=%CLOUD_STORAGE% --no-ssl-check --local-folder=dist %CLOUD_CONTAINER%"
 
 
 test_script:

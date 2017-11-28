@@ -13,5 +13,5 @@ sklearn-xarray tries to establish a bridge between the two packages that
 allows the user to integrate xarray data types into the scikit-learn
 framework with minor overhead.
 
-.. _scikit-learn: https://scikit-learn.org/stable/
-.. _xarray: https://xarray.pydata.org
+.. _scikit-learn: http://scikit-learn.org/stable/
+.. _xarray: http://xarray.pydata.org

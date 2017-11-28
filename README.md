@@ -15,11 +15,21 @@ user to apply scikit-learn estimators to xarray types without losing their
 labels.
 
 ## Installation
+
+For now, the package has to be installed from source:
+
     $ git clone https://github.com/phausamann/sklearn-xarray.git
     $ cd sklearn-xarray
     $ python setup.py install
     
 ## Example
+
 The example `examples/activity_recognition.py` demonstrates how to use the 
 package for cross-validated grid search for an activity recognition task. The 
 example is also present as a jupyter notebook.
+
+
+## Documentation
+
+The package documentation can be found at 
+https://phausamann.github.io/sklearn-xarray/

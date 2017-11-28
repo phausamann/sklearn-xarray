@@ -23,7 +23,6 @@ Documentation
        content/transformers
        content/pipeline
 
-       auto_examples/index
        content/api
 
 ==================
