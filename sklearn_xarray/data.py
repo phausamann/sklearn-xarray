@@ -1,13 +1,5 @@
 """ ``sklearn_xarray.data`` """
 
-import os
-import tarfile
-
-try:
-    import urllib.request as ul
-except ImportError:
-    import urllib as ul
-
 import numpy as np
 import pandas as pd
 import xarray as xr
@@ -32,10 +24,49 @@ def load_dummy_dataset():
     )
 
 
-def load_wisdm(url='http://www.cis.fordham.edu/wisdm/includes/'
-                  'datasets/latest/WISDM_ar_latest.tar.gz',
-               file='WISDM_ar_v1.1/WISDM_ar_v1.1_raw.txt',
-               folder='data/', tmp_file='widsm.tar.gz'):
+def load_digits_dataarray(load_images=False):
+    """ Load a the 'digits' dataset from sklearn as a DataArray.
+
+    Parameters
+    ----------
+    load_images : bool, optional
+        If true, the DataArray will contain the two-dimensional images as
+        data instead of the vectorized samples.
+    """
+
+    from sklearn.datasets import load_digits
+
+    if load_images:
+
+        bunch = load_digits()
+        data = bunch.images
+
+        return xr.DataArray(
+            data,
+            coords={'sample': range(data.shape[0]),
+                    'row': range(data.shape[1]),
+                    'col': range(data.shape[2]),
+                    'digit': (['sample'], bunch.target)},
+            dims=('sample', 'row', 'col')
+        )
+
+    else:
+
+        data, target = load_digits(return_X_y=True)
+
+        return xr.DataArray(
+            data,
+            coords={'sample': range(data.shape[0]),
+                    'feature': range(data.shape[1]),
+                    'digit': (['sample'], target)},
+            dims=('sample', 'feature')
+        )
+
+
+def load_wisdm_dataarray(url='http://www.cis.fordham.edu/wisdm/includes/'
+                             'datasets/latest/WISDM_ar_latest.tar.gz',
+                         file='WISDM_ar_v1.1/WISDM_ar_v1.1_raw.txt',
+                         folder='data/', tmp_file='widsm.tar.gz'):
     """ Load the WISDM activity recognition dataset.
 
     Parameters
@@ -58,6 +89,15 @@ def load_wisdm(url='http://www.cis.fordham.edu/wisdm/includes/'
         The loaded dataset.
 
     """
+
+    import os
+    import tarfile
+
+    # this is necessary for Python 2.7 compatibility
+    try:
+        import urllib.request as ul
+    except ImportError:
+        import urllib as ul
 
     if not os.path.isfile(os.path.join(folder, file)):
         ul.urlretrieve(url, tmp_file)

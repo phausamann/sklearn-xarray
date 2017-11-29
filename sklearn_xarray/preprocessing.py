@@ -1,5 +1,5 @@
 """
-The `sklearn_xarray.preprocessing` module contains various preprocessing
+The ``sklearn_xarray.preprocessing`` module contains various preprocessing
 methods that work on xarray DataArrays and Datasets.
 """
 

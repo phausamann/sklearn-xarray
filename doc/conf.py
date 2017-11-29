@@ -47,8 +47,8 @@ extensions = [
     'numpydoc',
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
-    'sphinx_gallery.gen_gallery'
-
+    'sphinx_gallery.gen_gallery',
+    'sphinx.ext.autosummary'
 ]
 
 # pngmath / imgmath compatibility layer for different sphinx versions
@@ -116,7 +116,7 @@ exclude_patterns = ['_build']
 
 # If true, the current module name will be prepended to all description
 # unit titles (such as .. function::).
-#add_module_names = True
+add_module_names = False
 
 # If true, sectionauthor and moduleauthor directives will be shown in the
 # output. They are ignored by default.

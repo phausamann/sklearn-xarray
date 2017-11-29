@@ -18,24 +18,24 @@ environment:
 
   matrix:
     - PYTHON: "C:\\Python27"
-      PYTHON_VERSION: "2.7.8"
+      PYTHON_VERSION: "2.7.14"
       PYTHON_ARCH: "32"
       MINICONDA: "C:\\Miniconda"
 
     - PYTHON: "C:\\Python27-x64"
-      PYTHON_VERSION: "2.7.8"
+      PYTHON_VERSION: "2.7.14"
       PYTHON_ARCH: "64"
       MINICONDA: "C:\\Miniconda-x64"
 
-    - PYTHON: "C:\\Python35"
-      PYTHON_VERSION: "3.5.0"
+    - PYTHON: "C:\\Python36"
+      PYTHON_VERSION: "3.6.1"
       PYTHON_ARCH: "32"
-      MINICONDA: "C:\\Miniconda35"
+      MINICONDA: "C:\\Miniconda36"
 
     - PYTHON: "C:\\Python35-x64"
-      PYTHON_VERSION: "3.5.0"
+      PYTHON_VERSION: "3.6.1"
       PYTHON_ARCH: "64"
-      MINICONDA: "C:\\Miniconda35-x64"
+      MINICONDA: "C:\\Miniconda36-x64"
 
 install:
   # Miniconda is pre-installed in the worker build

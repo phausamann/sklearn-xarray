@@ -10,9 +10,9 @@ There are two different kinds of wrappers for the two principal data types in
 xarray: ``DataArray`` and ``Dataset``. Each kind of wrapper has its own module,
 ``sklearn_xarray.dataarray`` and ``sklearn_xarray.dataset``.
 
-=====
+
 Wrapping estimators for DataArrays
-=====
+----------------------------------
 
 First, we look at a basic example that shows how to wrap an estimator from
 sklearn for use with a ``DataArray``::
@@ -32,7 +32,9 @@ and return an object with the corresponding methods for each type of estimator
 
     xarray references axes by name rather than by order. Therefore, you can
     specify the ``sample_dim`` parameter of the wrapper to refer to the
-    dimension in your data that represents the samples.
+    dimension in your data that represents the samples. By default, the
+    wrapper will assume that the first dimension in the array is the sample
+    dimension.
 
 When we run the example, we see that he data in the array is scaled, but the
 coordinates and dimensions have not changed::
@@ -66,9 +68,8 @@ coordinates and dimensions have not changed::
       * feature  (feature) int32 0 1 2 3 4 5 6 7 8 9
 
 
-=====
 Estimators changing the shape of the data
-=====
+-----------------------------------------
 
 Many sklearn estimators will change the number of features during
 transformation or prediction. In this case, the coordinates along the feature
@@ -94,10 +95,12 @@ dimension is changed with the ``reshapes`` parameter::
       * sample   (sample) int32 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 ...
     Dimensions without coordinates: feature
 
+.. todo::
+    reshapes dict
 
-====
+
 Accessing fitted estimators
-====
+---------------------------
 
 The ``estimator`` attribute of the wrapper will always hold the unfitted
 estimator that was passed initially. After calling ``fit`` the fitted estimator
@@ -112,9 +115,8 @@ will be stored in the ``estimator_`` attribute::
             0.522414  ,  0.46496134,  0.52299264,  0.48772645,  0.49043086])
 
 
-=====
 Wrapping estimators for Datasets
-=====
+--------------------------------
 
 The syntax for Datasets is mostly the same as for DataArrays, only that it
 uses the ``dataset`` module. Note that the wrapper will fit one estimator for

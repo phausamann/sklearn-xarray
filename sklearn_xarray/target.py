@@ -1,3 +1,5 @@
+"""``sklearn_xarray.target``"""
+
 import numpy as np
 import xarray as xr
 
@@ -51,10 +53,24 @@ class Target(object):
 
         return new_obj
 
-
     def __call__(self, X):
 
         return self.assign_to(X)
+
+    def __str__(self):
+
+        if self.values is None:
+            if self.coord is None:
+                return 'Unassigned sklearn_xarray.Target without coordinate.'
+            else:
+                return 'Unassigned sklearn_xarray.Target with coordinate "' + \
+                       self.coord + '".'
+        else:
+            return 'sklearn_xarray.Target with data:\n' + self.values.__str__()
+
+    def __repr__(self):
+
+        return self.__str__()
 
     def __array__(self, dtype=None):
 
