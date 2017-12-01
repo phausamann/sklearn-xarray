@@ -263,7 +263,7 @@ class Splitter(BaseTransformer):
             dimension after splitting.
         'subsample' : Take every `new_len`th value.
 
-    new_index_func : function
+    new_index_func : callable
         A function that takes `new_len` as a parameter and returns a vector of
         length `new_len` to be used as the indices for the new dimension.
 
@@ -430,9 +430,14 @@ class Segmenter(BaseTransformer):
         'subsample' : Take the values corresponding to the first element of
             every segment.
 
-    new_index_func : function
+    new_index_func : callable
         A function that takes `new_len` as a parameter and returns a vector of
         length `new_len` to be used as the indices for the new dimension.
+
+    keep_coords_as : str or None
+        If set, the coordinate of the split dimension will be kept as a
+        separate coordinate with this name. This allows `inverse_transform`
+        to reconstruct the original coordinate.
 
     groupby : str or list, optional
         Name of coordinate or list of coordinates by which the groups are
@@ -442,9 +447,11 @@ class Segmenter(BaseTransformer):
         Name of dimension along which the groups are indexed.
     """
 
+    # TODO: put step calculation in fit()?
+
     def __init__(self, dim='sample', new_dim=None, new_len=None, step=None,
                  reduce_index='subsample', new_index_func=np.arange,
-                 groupby=None, group_dim='sample'):
+                 keep_coords_as=None, groupby=None, group_dim='sample'):
 
         self.dim = dim
         self.new_dim = new_dim
@@ -452,35 +459,57 @@ class Segmenter(BaseTransformer):
         self.step = step
         self.reduce_index = reduce_index
         self.new_index_func = new_index_func
+        self.keep_coords_as = keep_coords_as
 
         self.groupby = groupby
         self.group_dim = group_dim
 
-    def _segment_array(self, arr, step, new_len, axis):
+    def _segment_array(self, arr, axis):
         """ Segment an array along some axis. """
 
+        if self.step is None:
+            step = self.new_len
+        else:
+            step = self.step
+
         new_shape = list(arr.shape)
-        new_shape[axis] = (new_shape[axis] - new_len + step) // step
-        new_shape.append(new_len)
+        new_shape[axis] = (new_shape[axis] - self.new_len + step) // step
+        new_shape.append(self.new_len)
         arr_new = np.tile(arr.flatten()[0], new_shape)
 
         idx_old = [slice(None)] * arr.ndim
         idx_new = [slice(None)] * len(new_shape)
 
         for n in range(new_shape[axis]):
-            idx_old[axis] = n * step + np.arange(new_len)
+            idx_old[axis] = n * step + np.arange(self.new_len)
             idx_new[axis] = n
             arr_new[tuple(idx_new)] = arr[idx_old].T
 
         return arr_new
 
-    def _transform_var(self, X, step):
+    def _rebuild_array(self, arr, axis):
+        """ Rebuild an array along some axis. """
+
+        if self.step is None:
+            step = self.new_len
+        else:
+            step = self.step
+
+        old_shape = list(arr.shape)
+        old_shape[axis] = old_shape[axis] * step + self.new_len - step
+        old_shape = old_shape[:-2]
+        arr_old = np.tile(arr.flatten()[0], old_shape)
+
+        return arr_old
+
+
+    def _transform_var(self, X):
         """ Transform a single variable. """
 
         if self.dim in X.dims:
             new_dims = list(X.dims) + [self.new_dim]
             var_t = self._segment_array(
-                X.values, step, self.new_len, tuple(X.dims).index(self.dim))
+                X.values, tuple(X.dims).index(self.dim))
         else:
             new_dims = X.dims
             var_t = X
@@ -490,18 +519,38 @@ class Segmenter(BaseTransformer):
     def _update_coords(self, X, step):
         """ Update coordinates. """
 
+        if self.step is None:
+            step = self.new_len
+        else:
+            step = self.step
+
         # get indices of new dimension
         if self.new_index_func is None:
             new_dim_coords = X[self.dim][:self.new_len]
         else:
             new_dim_coords = self.new_index_func(self.new_len)
 
-        coords_t = {self.new_dim: new_dim_coords}
+        # reduce indices of original dimension
+        if self.reduce_index == 'subsample':
+            dim_idx = np.arange(
+                0, (len(X[self.dim]) - self.new_len + 1), step)
+        elif self.reduce_index == 'head':
+            dim_idx = np.arange(
+                (len(X[self.dim]) - self.new_len + step) // step)
+        else:
+            raise KeyError('Unrecognized mode for index reduction')
+
+        # assign coordinates
+        coords_t = {
+            self.dim: X[self.dim].values[dim_idx],
+            self.new_dim: new_dim_coords
+        }
+
         for c in X.coords:
             if c != self.dim and self.dim in X[c].dims:
-                new_dims = list(X.dims) + [self.new_dim]
-                coords_t[c] = (list(X[c].dims) + [self.new_dim],
-                    self._segment_array(X[c].values, step, self.new_len,
+                new_dims = list(X[c].dims) + [self.new_dim]
+                coords_t[c] = (new_dims,
+                    self._segment_array(X[c].values,
                                         tuple(X[c].dims).index(self.dim)))
 
         return coords_t
@@ -518,24 +567,19 @@ class Segmenter(BaseTransformer):
         else:
             step = self.step
 
-        # reduce indices of original dimension
-        if self.reduce_index == 'subsample':
-            dim_idx = np.arange(0, (len(X[self.dim]) - self.new_len + 1), step)
-        elif self.reduce_index == 'head':
-            dim_idx = np.arange(
-                (len(X[self.dim]) - self.new_len + step) // step)
-        else:
-            raise KeyError('Unrecognized mode for index reduction')
+        # keep the original coord if desired
+        if self.keep_coords_as is not None:
+            X.coords[self.keep_coords_as] = X[self.dim]
 
         if self.type_ == 'Dataset':
             vars_t = dict()
             for v in X.data_vars:
-                vars_t[v] = self._transform_var(X[v], step)
+                vars_t[v] = self._transform_var(X[v])
             coords_t = self._update_coords(X, step)
             return xr.Dataset(vars_t, coords=coords_t)
 
         else:
-            new_dims, var_t = self._transform_var(X, step)
+            new_dims, var_t = self._transform_var(X)
             coords_t = self._update_coords(X, step)
             return xr.DataArray(var_t, coords=coords_t, dims=new_dims)
 

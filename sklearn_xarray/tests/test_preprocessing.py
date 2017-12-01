@@ -154,10 +154,13 @@ def test_segment():
                             np.tile('Test', (100, 10)))}
     )
 
-    Xt_ds = segment(
-        X_ds, new_dim='split_sample', new_len=10, step=5, reduce_index='head')
+    Xt_ds, estimator = segment(
+        X_ds, new_dim='split_sample', new_len=10, step=5,
+        reduce_index='head', return_estimator=True)
 
     assert Xt_ds.coord_1.shape == (19, 10, 10)
+
+    # xrt.assert_allclose(estimator.inverse_transform(Xt_ds), X_ds)
 
 
 def test_resample():
