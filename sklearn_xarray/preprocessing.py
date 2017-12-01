@@ -462,7 +462,7 @@ class Segmenter(BaseTransformer):
         new_shape = list(arr.shape)
         new_shape[axis] = (new_shape[axis] - new_len + step) // step
         new_shape.append(new_len)
-        arr_new = np.zeros(new_shape)
+        arr_new = np.tile(arr.flatten()[0], new_shape)
 
         idx_old = [slice(None)] * arr.ndim
         idx_new = [slice(None)] * len(new_shape)
@@ -473,6 +473,38 @@ class Segmenter(BaseTransformer):
             arr_new[tuple(idx_new)] = arr[idx_old].T
 
         return arr_new
+
+    def _transform_var(self, X, step):
+        """ Transform a single variable. """
+
+        if self.dim in X.dims:
+            new_dims = list(X.dims) + [self.new_dim]
+            var_t = self._segment_array(
+                X.values, step, self.new_len, tuple(X.dims).index(self.dim))
+        else:
+            new_dims = X.dims
+            var_t = X
+
+        return (new_dims, var_t)
+
+    def _update_coords(self, X, step):
+        """ Update coordinates. """
+
+        # get indices of new dimension
+        if self.new_index_func is None:
+            new_dim_coords = X[self.dim][:self.new_len]
+        else:
+            new_dim_coords = self.new_index_func(self.new_len)
+
+        coords_t = {self.new_dim: new_dim_coords}
+        for c in X.coords:
+            if c != self.dim and self.dim in X[c].dims:
+                new_dims = list(X.dims) + [self.new_dim]
+                coords_t[c] = (list(X[c].dims) + [self.new_dim],
+                    self._segment_array(X[c].values, step, self.new_len,
+                                        tuple(X[c].dims).index(self.dim)))
+
+        return coords_t
 
     def _transform(self, X):
         """ Transform. """
@@ -495,42 +527,17 @@ class Segmenter(BaseTransformer):
         else:
             raise KeyError('Unrecognized mode for index reduction')
 
-        # get indices of new dimension
-        if self.new_index_func is None:
-            new_dim_coords = X[self.dim][:self.new_len]
-        else:
-            new_dim_coords = self.new_index_func(self.new_len)
-
         if self.type_ == 'Dataset':
-
             vars_t = dict()
             for v in X.data_vars:
-                if self.dim in X[v].dims:
-                    new_dims = list(X[v].dims) + [self.new_dim]
-                    xv_t = self._segment_array(X[v].values, step, self.new_len,
-                                               X[v].dims.index(self.dim))
-                    vars_t[v] = (new_dims, xv_t)
-
-            coords_t = {self.new_dim: new_dim_coords}
-            for c in X.coords:
-                if self.dim in X[c].dims:
-                    coords_t[c] = (X[c].dims, X[c].isel(**{self.dim: dim_idx}))
-
+                vars_t[v] = self._transform_var(X[v], step)
+            coords_t = self._update_coords(X, step)
             return xr.Dataset(vars_t, coords=coords_t)
 
         else:
-
-            if self.dim in X.dims:
-                new_dims = list(X.dims) + [self.new_dim]
-                x_t = self._segment_array(X.values, step, self.new_len,
-                                           X.dims.index(self.dim))
-
-            coords_t = {self.new_dim: new_dim_coords}
-            for c in X.coords:
-                if self.dim in X[c].dims:
-                    coords_t[c] = (X[c].dims, X[c].isel(**{self.dim: dim_idx}))
-
-            return xr.DataArray(x_t, coords=coords_t, dims=new_dims)
+            new_dims, var_t = self._transform_var(X, step)
+            coords_t = self._update_coords(X, step)
+            return xr.DataArray(var_t, coords=coords_t, dims=new_dims)
 
     def _inverse_transform(self, X):
         """ Reverse transform. """
@@ -668,12 +675,11 @@ class Resampler(BaseTransformer):
 
         else:
 
-            if self.dim in X.dims:
-                axis = X.dims.index(self.dim)
-                x_t = sig.resample_poly(X, num, den, axis=axis)
-                # trim the results because the length might be greater
-                I = [slice(None)] * x_t.ndim
-                I[axis] = np.arange(len(Xt_dim[self.dim]))
+            axis = X.dims.index(self.dim)
+            x_t = sig.resample_poly(X, num, den, axis=axis)
+            # trim the results because the length might be greater
+            I = [slice(None)] * x_t.ndim
+            I[axis] = np.arange(len(Xt_dim[self.dim]))
 
             # combine to new array
             return xr.DataArray(x_t, coords=coords_t, dims=X.dims)

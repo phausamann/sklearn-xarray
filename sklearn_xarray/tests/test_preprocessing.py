@@ -135,7 +135,9 @@ def test_segment():
 
     X_da = xr.DataArray(
         np.random.random((100, 10)),
-        coords={'sample': range(100), 'feature': range(10)},
+        coords={'sample': range(100), 'feature': range(10),
+                'coord_1': (['sample', 'feature'],
+                            np.tile('Test', (100, 10)))},
         dims=('sample', 'feature')
     )
 
@@ -143,15 +145,19 @@ def test_segment():
         X_da, new_dim='split_sample', new_len=10, step=5,
         reduce_index='subsample')
 
+    assert Xt_da.coord_1.shape == (19, 10, 10)
+
     X_ds = xr.Dataset(
         {'var_1': (['sample', 'feature'], np.random.random((100, 10)))},
-        coords={'sample': range(100), 'feature': range(10)}
+        coords={'sample': range(100), 'feature': range(10),
+                'coord_1': (['sample', 'feature'],
+                            np.tile('Test', (100, 10)))}
     )
 
     Xt_ds = segment(
         X_ds, new_dim='split_sample', new_len=10, step=5, reduce_index='head')
 
-    #TODO: check result
+    assert Xt_ds.coord_1.shape == (19, 10, 10)
 
 
 def test_resample():
