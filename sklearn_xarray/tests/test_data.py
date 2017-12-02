@@ -3,6 +3,8 @@ from sklearn_xarray.data import (
     load_wisdm_dataarray
 )
 
+import os
+from sklearn_xarray import ROOT_DIR
 
 def test_load_dummy_dataarray():
 
@@ -23,4 +25,4 @@ def test_load_digits_dataarray():
 
 def test_load_wisdm_dataarray():
 
-    X = load_wisdm_dataarray()
+    X = load_wisdm_dataarray(folder=os.path.join(ROOT_DIR, '../data'))

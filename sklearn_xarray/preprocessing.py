@@ -472,14 +472,17 @@ class Segmenter(BaseTransformer):
         else:
             step = self.step
 
+        # calculated shape after transformation and create empty array
         new_shape = list(arr.shape)
         new_shape[axis] = (new_shape[axis] - self.new_len + step) // step
         new_shape.append(self.new_len)
-        arr_new = np.tile(arr.flatten()[0], new_shape)
+        arr_new = np.zeros(new_shape, dtype=arr.dtype)
 
+        # setup up indices
         idx_old = [slice(None)] * arr.ndim
         idx_new = [slice(None)] * len(new_shape)
 
+        # loop over axis
         for n in range(new_shape[axis]):
             idx_old[axis] = n * step + np.arange(self.new_len)
             idx_new[axis] = n
@@ -495,13 +498,24 @@ class Segmenter(BaseTransformer):
         else:
             step = self.step
 
+        # calculated shape before transformation and create empty array
         old_shape = list(arr.shape)
         old_shape[axis] = old_shape[axis] * step + self.new_len - step
-        old_shape = old_shape[:-2]
-        arr_old = np.tile(arr.flatten()[0], old_shape)
+        old_shape = old_shape[:-1]
+        arr_old = np.zeros(old_shape, dtype=arr.dtype)
+
+        # setup up indices
+        idx_old = [slice(None)] * len(old_shape)
+        idx_new = [slice(None)] * arr.ndim
+
+        # loop over axis
+        for n in range(arr.shape[axis]):
+            idx_old[axis] = n * step + np.arange(self.new_len)
+            idx_new[axis] = n
+            # TODO: mean of overlapping values?
+            arr_old[tuple(idx_old)] = arr[idx_new].T
 
         return arr_old
-
 
     def _transform_var(self, X):
         """ Transform a single variable. """
@@ -514,9 +528,23 @@ class Segmenter(BaseTransformer):
             new_dims = X.dims
             var_t = X
 
-        return (new_dims, var_t)
+        return new_dims, var_t
 
-    def _update_coords(self, X, step):
+    def _inverse_transform_var(self, X):
+        """ Inverse transform a single variable. """
+
+        if self.dim in X.dims:
+            new_dims = list(X.dims)
+            new_dims.remove(self.new_dim)
+            var_t = self._rebuild_array(
+                X.values, tuple(X.dims).index(self.dim))
+        else:
+            new_dims = X.dims
+            var_t = X
+
+        return new_dims, var_t
+
+    def _update_coords(self, X):
         """ Update coordinates. """
 
         if self.step is None:
@@ -541,7 +569,7 @@ class Segmenter(BaseTransformer):
             raise KeyError('Unrecognized mode for index reduction')
 
         # assign coordinates
-        coords_t = {
+        coords_new = {
             self.dim: X[self.dim].values[dim_idx],
             self.new_dim: new_dim_coords
         }
@@ -549,11 +577,36 @@ class Segmenter(BaseTransformer):
         for c in X.coords:
             if c != self.dim and self.dim in X[c].dims:
                 new_dims = list(X[c].dims) + [self.new_dim]
-                coords_t[c] = (new_dims,
+                coords_new[c] = (new_dims,
                     self._segment_array(X[c].values,
                                         tuple(X[c].dims).index(self.dim)))
+            elif c != self.dim:
+                coords_new[c] = (X[c].dims, X[c])
 
-        return coords_t
+        return coords_new
+
+    def _restore_coords(self, X):
+
+        # restore original coord
+        coords_old = {
+            self.dim: self._rebuild_array(
+                X[self.keep_coords_as].values,
+                tuple(X[self.keep_coords_as].dims).index(self.dim))
+        }
+
+        X = X.drop(self.keep_coords_as)
+
+        for c in X.coords:
+            if c not in (self.dim, self.new_dim) and self.dim in X[c].dims:
+                new_dims = list(X[c].dims)
+                new_dims.remove(self.new_dim)
+                coords_old[c] = (new_dims,
+                    self._rebuild_array(X[c].values,
+                                        tuple(X[c].dims).index(self.dim)))
+            elif c not in (self.dim, self.new_dim):
+                coords_old[c] = (X[c].dims, X[c])
+
+        return coords_old
 
     def _transform(self, X):
         """ Transform. """
@@ -562,32 +615,48 @@ class Segmenter(BaseTransformer):
             raise ValueError('Name and length of new dimension must be '
                              'specified')
 
-        if self.step is None:
-            step = self.new_len
-        else:
-            step = self.step
+        Xt = X.copy()
 
         # keep the original coord if desired
         if self.keep_coords_as is not None:
-            X.coords[self.keep_coords_as] = X[self.dim]
+            Xt.coords[self.keep_coords_as] = Xt[self.dim]
 
         if self.type_ == 'Dataset':
             vars_t = dict()
-            for v in X.data_vars:
-                vars_t[v] = self._transform_var(X[v])
-            coords_t = self._update_coords(X, step)
+            for v in Xt.data_vars:
+                vars_t[v] = self._transform_var(Xt[v])
+            coords_t = self._update_coords(Xt)
             return xr.Dataset(vars_t, coords=coords_t)
 
         else:
-            new_dims, var_t = self._transform_var(X)
-            coords_t = self._update_coords(X, step)
+            new_dims, var_t = self._transform_var(Xt)
+            coords_t = self._update_coords(Xt)
             return xr.DataArray(var_t, coords=coords_t, dims=new_dims)
 
     def _inverse_transform(self, X):
         """ Reverse transform. """
 
-        raise NotImplementedError(
-            'inverse_transform has not yet been implemented for this estimator')
+        if None in (self.new_dim, self.new_len):
+            raise ValueError('Name and length of new dimension must be '
+                             'specified')
+
+        if self.keep_coords_as is None:
+            raise ValueError('keep_coords_as must be specified in order for '
+                             'inverse_transform to work.')
+
+        Xt = X.copy()
+
+        if self.type_ == 'Dataset':
+            vars_it = dict()
+            for v in Xt.data_vars:
+                vars_it[v] = self._inverse_transform_var(Xt[v])
+            coords_it = self._restore_coords(Xt)
+            return xr.Dataset(vars_it, coords=coords_it)
+
+        else:
+            new_dims, var_it = self._inverse_transform_var(Xt)
+            coords_it = self._restore_coords(Xt)
+            return xr.DataArray(var_it, coords=coords_it, dims=new_dims)
 
 
 def segment(X, return_estimator=False, **fit_params):

@@ -92,12 +92,7 @@ def load_wisdm_dataarray(url='http://www.cis.fordham.edu/wisdm/includes/'
 
     import os
     import tarfile
-
-    # this is necessary for Python 2.7 compatibility
-    try:
-        import urllib.request as ul
-    except ImportError:
-        import urllib as ul
+    import six.moves.urllib.request as ul
 
     if not os.path.isfile(os.path.join(folder, file)):
         ul.urlretrieve(url, tmp_file)
