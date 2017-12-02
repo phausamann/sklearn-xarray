@@ -23,7 +23,7 @@ def preprocess(X, function, groupby=None, group_dim='sample', **fit_params):
     X : xarray DataArray or Dataset
         The input data.
 
-    function : function
+    function : callable
         The function to apply to the data. Note that this function cannot
         change the shape of the data.
 
@@ -144,7 +144,7 @@ class BaseTransformer(BaseEstimator, TransformerMixin):
 
 
 class Transposer(BaseTransformer):
-    """ Reorders data dimensions.
+    """ Reorder data dimensions.
 
     Parameters
     ----------
@@ -244,7 +244,7 @@ def transpose(X, return_estimator=False, **fit_params):
 
 
 class Splitter(BaseTransformer):
-    """ Splits X along some dimension.
+    """ Split along some dimension.
 
     Parameters
     ----------
@@ -407,7 +407,7 @@ def split(X, return_estimator=False, **fit_params):
 
 
 class Segmenter(BaseTransformer):
-    """ Segments X along some dimension.
+    """ Split into segments along some dimension.
 
     Parameters
     ----------
@@ -687,7 +687,7 @@ def segment(X, return_estimator=False, **fit_params):
 
 
 class Resampler(BaseTransformer):
-    """ Resamples along some dimension.
+    """ Resample along some dimension.
 
     Parameters
     ----------
@@ -832,7 +832,7 @@ def resample(X, return_estimator=False, **fit_params):
 
 
 class Concatenator(BaseTransformer):
-    """ Concatenates variables along a dimension.
+    """ Concatenate variables along a dimension.
 
     Parameters
     ----------
@@ -950,7 +950,7 @@ def concatenate(X, return_estimator=False, **fit_params):
 
 
 class Featurizer(BaseTransformer):
-    """ Stacks all dimensions and variables except for sample dimension.
+    """ Stack all dimensions and variables except for sample dimension.
 
     Parameters
     ----------
@@ -1048,7 +1048,7 @@ def featurize(X, return_estimator=False, **fit_params):
 
 
 class Sanitizer(BaseTransformer):
-    """ Removes elements containing NaNs.
+    """ Remove elements containing NaNs.
 
     Parameters
     ----------
@@ -1121,7 +1121,7 @@ def sanitize(X, return_estimator=False, **fit_params):
 
 
 class Reducer(BaseTransformer):
-    """ Reduces data along some dimension.
+    """ Reduce data along some dimension.
 
     Parameters
     ----------

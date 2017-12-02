@@ -12,7 +12,7 @@ from ..utils import is_target, is_dataarray
 
 
 def wrap(estimator, reshapes=None, sample_dim=None, compat=False):
-    """ Wrap an sklearn estimators by guessing its type.
+    """ Wrap an sklearn estimator for xarray DataArrays by guessing its type.
 
     Parameters
     ----------

@@ -1,9 +1,11 @@
 Using coordinates as targets
 ============================
 
+.. py:currentmodule:: sklearn_xarray.target
+
 With sklearn-xarray you can easily point an sklearn estimator to a
 coordinate in an xarray DataArray or Dataset in order to use it as a target
-for supervised learning. This is achieved with a ``Target`` object::
+for supervised learning. This is achieved with a :py:class:`Target` object::
 
     import sklearn_xarray.dataarray as da
     from sklearn_xarray import Target
@@ -77,7 +79,7 @@ object implementing the sklearn transformer interface)::
 Indexing
 --------
 
-A ``Target`` object can be indexed in the same way as the underlying
+A :py:class:`Target` object can be indexed in the same way as the underlying
 coordinate and interfaces with ``numpy`` by providing an ``__array__``
 attribute which returns ``numpy.array()`` of the (transformed) coordinate.
 
