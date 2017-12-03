@@ -19,12 +19,13 @@ class Target(object):
 
     lazy : bool, optinonal
         If true, the target coordinate is only transformed by the transformer
-        when needed. The transformer can implement a `get_transformed_shape`
+        when needed. The transformer can implement a ``get_transformed_shape``
         method that returns the shape after the transformation of the provided
         coordinate without actually transforming the data.
 
-    dim : str
-
+    dim : str, optional
+        When set, multi-dimensional coordinates will be reduced to this
+        dimension.
 
     """
 
@@ -102,7 +103,7 @@ class Target(object):
 
     @property
     def ndim(self):
-        """ The shape of the transformed target. """
+        """ The number of dimensions of the transformed target. """
 
         self._check_assigned()
 

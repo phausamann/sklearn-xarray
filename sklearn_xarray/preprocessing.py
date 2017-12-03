@@ -259,17 +259,18 @@ class Splitter(BaseTransformer):
 
     reduce_index : str
         How to reduce the index of the split dimension.
-        'head' : Take the first `n` values where `n` is the length of the
-            dimension after splitting.
-        'subsample' : Take every `new_len`th value.
+
+        - ``'head'`` : Take the first `n` values where `n` is the length of the
+          dimension after splitting.
+        - ``'subsample'`` : Take every ``new_len`` th value.
 
     new_index_func : callable
-        A function that takes `new_len` as a parameter and returns a vector of
-        length `new_len` to be used as the indices for the new dimension.
+        A function that takes ``new_len`` as a parameter and returns a vector of
+        length ``new_len`` to be used as the indices for the new dimension.
 
     keep_coords_as : str or None
         If set, the coordinate of the split dimension will be kept as a
-        separate coordinate with this name. This allows `inverse_transform`
+        separate coordinate with this name. This allows ``inverse_transform``
         to reconstruct the original coordinate.
 
     groupby : str or list, optional
@@ -425,18 +426,19 @@ class Segmenter(BaseTransformer):
 
     reduce_index : str
         How to reduce the index of the split dimension.
-        'head' : Take the first `n` values where `n` is the length of the
-            dimension after segmenting.
-        'subsample' : Take the values corresponding to the first element of
-            every segment.
+
+        - ``'head'`` : Take the first `n` values where `n` is the length of the
+          dimension after segmenting.
+        - ``'subsample'`` : Take the values corresponding to the first element
+          of every segment.
 
     new_index_func : callable
-        A function that takes `new_len` as a parameter and returns a vector of
-        length `new_len` to be used as the indices for the new dimension.
+        A function that takes ``new_len`` as a parameter and returns a vector of
+        length ``new_len`` to be used as the indices for the new dimension.
 
     keep_coords_as : str or None
         If set, the coordinate of the split dimension will be kept as a
-        separate coordinate with this name. This allows `inverse_transform`
+        separate coordinate with this name. This allows ``inverse_transform``
         to reconstruct the original coordinate.
 
     groupby : str or list, optional

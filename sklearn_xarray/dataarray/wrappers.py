@@ -1,5 +1,5 @@
 """
-`sklearn_xarray.dataarray.wrappers`
+``sklearn_xarray.dataarray.wrappers``
 """
 
 import numpy as np
@@ -34,7 +34,7 @@ def wrap(estimator, reshapes=None, sample_dim=None, compat=False):
         the wrapper will assume that this is the first dimension in the array.
 
     compat : bool, optional
-        If True, ``set`_params``/``get_params`` will only use the wrapper's
+        If True, ``set_params``/``get_params`` will only use the wrapper's
         actual parameters and not those of the wrapped estimator. This might
         be necessary when the estimator defines parameters with the same name
         as the wrapper.

@@ -1,3 +1,7 @@
+"""
+``sklearn_xarray.dataaset``
+"""
+
 from .wrappers import (
     wrap, EstimatorWrapper, TransformerWrapper, RegressorWrapper,
     ClassifierWrapper
