@@ -1,6 +1,6 @@
 .. -*- mode: rst -*-
 
-|Travis|_ |AppVeyor|_ |Coverage|_ |CircleCI|_
+|Travis|_ |AppVeyor|_ |Coverage|_ |CircleCI|_ |PyPI|_
 
 .. |Travis| image:: https://travis-ci.org/phausamann/sklearn-xarray.svg?branch=master
 .. _Travis: https://travis-ci.org/phausamann/sklearn-xarray
@@ -13,6 +13,9 @@
 
 .. |CircleCI| image:: https://circleci.com/gh/phausamann/sklearn-xarray.svg?style=shield&circle-token=:circle-token
 .. _CircleCI: https://circleci.com/gh/phausamann/sklearn-xarray
+
+.. |PyPI| image:: https://badge.fury.io/py/sklearn-xarray.svg
+.. _PyPI: https://badge.fury.io/py/sklearn-xarray
 
 sklearn-xarray
 ==============
