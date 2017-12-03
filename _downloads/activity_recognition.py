@@ -21,7 +21,7 @@ import sklearn_xarray.dataarray as da
 from sklearn_xarray import Target
 from sklearn_xarray.preprocessing import (Splitter, Sanitizer, Featurizer)
 from sklearn_xarray.model_selection import CrossValidatorWrapper
-from sklearn_xarray.data import load_wisdm
+from sklearn_xarray.data import load_wisdm_dataarray
 
 from sklearn.preprocessing import StandardScaler, LabelBinarizer
 from sklearn.neural_network import MLPClassifier
@@ -31,7 +31,7 @@ from sklearn.pipeline import Pipeline
 
 # First, we load the dataset.
 
-X = load_wisdm()
+X = load_wisdm_dataarray()
 
 # Then we define a pipeline with various preprocessing steps and a classifier.
 #

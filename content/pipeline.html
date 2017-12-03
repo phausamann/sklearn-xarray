@@ -38,8 +38,8 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="sklearn-xarray 0.1.0 documentation" href="../index.html"/>
-        <link rel="next" title="API Reference" href="api.html"/>
-        <link rel="prev" title="Custom transformers" href="transformers.html"/> 
+        <link rel="next" title="Custom transformers" href="transformers.html"/>
+        <link rel="prev" title="Using coordinates as targets" href="target.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -97,12 +97,12 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wrappers.html">Wrappers for sklearn estimators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="target.html">Using coordinates as targets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="transformers.html">Custom transformers</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Pipelining and cross-validation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#integration-with-sklearn-pipelines">Integration with sklearn pipelines</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#cross-validated-grid-search">Cross-validated grid search</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="transformers.html">Custom transformers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
 </ul>
 
@@ -171,12 +171,62 @@
 <h1>Pipelining and cross-validation<a class="headerlink" href="#pipelining-and-cross-validation" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="integration-with-sklearn-pipelines">
 <h2>Integration with sklearn pipelines<a class="headerlink" href="#integration-with-sklearn-pipelines" title="Permalink to this headline">¶</a></h2>
+<p>Wrapped estimators can be used in sklearn pipelines without any additional
+overhead:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn_xarray.dataarray</span> <span class="k">as</span> <span class="nn">da</span>
+<span class="kn">from</span> <span class="nn">sklearn_xarray</span> <span class="k">import</span> <span class="n">Target</span>
+<span class="kn">from</span> <span class="nn">sklearn_xarray.data</span> <span class="k">import</span> <span class="n">load_digits_dataarray</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="k">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="k">import</span> <span class="n">PCA</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model.logistic</span> <span class="k">import</span> <span class="n">LogisticRegression</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">load_digits_dataarray</span><span class="p">()</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">Target</span><span class="p">(</span><span class="n">coord</span><span class="o">=</span><span class="s1">&#39;digit&#39;</span><span class="p">)(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+    <span class="p">(</span><span class="s1">&#39;pca&#39;</span><span class="p">,</span> <span class="n">da</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">50</span><span class="p">),</span> <span class="n">reshapes</span><span class="o">=</span><span class="s1">&#39;feature&#39;</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s1">&#39;cls&#39;</span><span class="p">,</span> <span class="n">da</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">LogisticRegression</span><span class="p">(),</span> <span class="n">reshapes</span><span class="o">=</span><span class="s1">&#39;feature&#39;</span><span class="p">))</span>
+<span class="p">])</span>
+
+<span class="n">pipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[]:</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[]:</span> <span class="mf">0.99053978853644964</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="cross-validated-grid-search">
 <h2>Cross-validated grid search<a class="headerlink" href="#cross-validated-grid-search" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This feature is currently only available for DataArrays.</p>
+</div>
+<p>The module <a class="reference internal" href="api/model_selection.html#module-sklearn_xarray.model_selection" title="sklearn_xarray.model_selection"><code class="xref py py-mod docutils literal"><span class="pre">sklearn_xarray.model_selection</span></code></a> contains the
+<a class="reference internal" href="api/model_selection.html#sklearn_xarray.model_selection.CrossValidatorWrapper" title="sklearn_xarray.model_selection.CrossValidatorWrapper"><code class="xref py py-class docutils literal"><span class="pre">CrossValidatorWrapper</span></code></a> class that wraps a cross-validator instance
+from <code class="docutils literal"><span class="pre">sklearn.model_selection</span></code>. With such a wrapped cross-validator, it is
+possible to use xarray data types with a <code class="docutils literal"><span class="pre">GridSearchCV</span></code> estimator:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn_xarray.model_selection</span> <span class="k">import</span> <span class="n">CrossValidatorWrapper</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">GridSearchCV</span><span class="p">,</span> <span class="n">KFold</span>
+
+<span class="n">cv</span> <span class="o">=</span> <span class="n">CrossValidatorWrapper</span><span class="p">(</span><span class="n">KFold</span><span class="p">())</span>
+
+<span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+    <span class="p">(</span><span class="s1">&#39;pca&#39;</span><span class="p">,</span> <span class="n">da</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">PCA</span><span class="p">(),</span> <span class="n">reshapes</span><span class="o">=</span><span class="s1">&#39;feature&#39;</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s1">&#39;cls&#39;</span><span class="p">,</span> <span class="n">da</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">LogisticRegression</span><span class="p">(),</span> <span class="n">reshapes</span><span class="o">=</span><span class="s1">&#39;feature&#39;</span><span class="p">))</span>
+<span class="p">])</span>
+
+<span class="n">gridsearch</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span>
+    <span class="n">param_grid</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;pca__n_components&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">60</span><span class="p">]})</span>
+
+<span class="n">gridsearch</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[]:</span> <span class="n">gridsearch</span><span class="o">.</span><span class="n">best_params_</span>
+<span class="n">Out</span><span class="p">[]:</span> <span class="p">{</span><span class="s1">&#39;pca__n_components&#39;</span><span class="p">:</span> <span class="mi">40</span><span class="p">}</span>
+
+<span class="n">In</span> <span class="p">[]:</span> <span class="n">gridsearch</span><span class="o">.</span><span class="n">best_score_</span>
+<span class="n">Out</span><span class="p">[]:</span> <span class="mf">0.92209237618252649</span>
+</pre></div>
 </div>
 </div>
 </div>
@@ -191,10 +241,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="api.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="transformers.html" class="btn btn-neutral float-right" title="Custom transformers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="transformers.html" class="btn btn-neutral" title="Custom transformers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="target.html" class="btn btn-neutral" title="Using coordinates as targets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

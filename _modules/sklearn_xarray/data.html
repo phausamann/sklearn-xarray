@@ -96,8 +96,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../content/installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../content/wrappers.html">Wrappers for sklearn estimators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../content/target.html">Using coordinates as targets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../content/transformers.html">Custom transformers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../content/pipeline.html">Pipelining and cross-validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../content/transformers.html">Custom transformers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../content/api.html">API Reference</a></li>
 </ul>
 
@@ -165,14 +165,6 @@
   <h1>Source code for sklearn_xarray.data</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot; ``sklearn_xarray.data`` &quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">tarfile</span>
-
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">urllib.request</span> <span class="k">as</span> <span class="nn">ul</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">urllib</span> <span class="k">as</span> <span class="nn">ul</span>
-
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
@@ -197,10 +189,63 @@
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="load_wisdm"><a class="viewcode-back" href="../../content/api/data.html#sklearn_xarray.data.load_wisdm">[docs]</a><span class="k">def</span> <span class="nf">load_wisdm</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;http://www.cis.fordham.edu/wisdm/includes/&#39;</span>
-                  <span class="s1">&#39;datasets/latest/WISDM_ar_latest.tar.gz&#39;</span><span class="p">,</span>
-               <span class="n">file</span><span class="o">=</span><span class="s1">&#39;WISDM_ar_v1.1/WISDM_ar_v1.1_raw.txt&#39;</span><span class="p">,</span>
-               <span class="n">folder</span><span class="o">=</span><span class="s1">&#39;data/&#39;</span><span class="p">,</span> <span class="n">tmp_file</span><span class="o">=</span><span class="s1">&#39;widsm.tar.gz&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="load_digits_dataarray"><a class="viewcode-back" href="../../content/api/data.html#sklearn_xarray.data.load_digits_dataarray">[docs]</a><span class="k">def</span> <span class="nf">load_digits_dataarray</span><span class="p">(</span><span class="n">load_images</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nan_probability</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Load a the &#39;digits&#39; dataset from sklearn as a DataArray.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    load_images : bool, optional</span>
+<span class="sd">        If true, the DataArray will contain the two-dimensional images as</span>
+<span class="sd">        data instead of the vectorized samples.</span>
+
+<span class="sd">    nan_probability : float between 0 and 1</span>
+<span class="sd">        The probability with which a sample is injected with NaN values. For</span>
+<span class="sd">        demonstration purposes only.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">load_digits</span>
+
+    <span class="k">if</span> <span class="n">load_images</span><span class="p">:</span>
+
+        <span class="n">bunch</span> <span class="o">=</span> <span class="n">load_digits</span><span class="p">()</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">bunch</span><span class="o">.</span><span class="n">images</span>
+
+        <span class="k">if</span> <span class="n">nan_probability</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">nan_probability</span><span class="p">:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+        <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
+            <span class="n">data</span><span class="p">,</span>
+            <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                    <span class="s1">&#39;row&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                    <span class="s1">&#39;col&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
+                    <span class="s1">&#39;digit&#39;</span><span class="p">:</span> <span class="p">([</span><span class="s1">&#39;sample&#39;</span><span class="p">],</span> <span class="n">bunch</span><span class="o">.</span><span class="n">target</span><span class="p">)},</span>
+            <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;sample&#39;</span><span class="p">,</span> <span class="s1">&#39;row&#39;</span><span class="p">,</span> <span class="s1">&#39;col&#39;</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">load_digits</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">nan_probability</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">nan_probability</span><span class="p">:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+        <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
+            <span class="n">data</span><span class="p">,</span>
+            <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                    <span class="s1">&#39;feature&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                    <span class="s1">&#39;digit&#39;</span><span class="p">:</span> <span class="p">([</span><span class="s1">&#39;sample&#39;</span><span class="p">],</span> <span class="n">target</span><span class="p">)},</span>
+            <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;sample&#39;</span><span class="p">,</span> <span class="s1">&#39;feature&#39;</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="load_wisdm_dataarray"><a class="viewcode-back" href="../../content/api/data.html#sklearn_xarray.data.load_wisdm_dataarray">[docs]</a><span class="k">def</span> <span class="nf">load_wisdm_dataarray</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;http://www.cis.fordham.edu/wisdm/includes/&#39;</span>
+                             <span class="s1">&#39;datasets/latest/WISDM_ar_latest.tar.gz&#39;</span><span class="p">,</span>
+                         <span class="n">file</span><span class="o">=</span><span class="s1">&#39;WISDM_ar_v1.1/WISDM_ar_v1.1_raw.txt&#39;</span><span class="p">,</span>
+                         <span class="n">folder</span><span class="o">=</span><span class="s1">&#39;data/&#39;</span><span class="p">,</span> <span class="n">tmp_file</span><span class="o">=</span><span class="s1">&#39;widsm.tar.gz&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Load the WISDM activity recognition dataset.</span>
 
 <span class="sd">    Parameters</span>
@@ -223,6 +268,10 @@
 <span class="sd">        The loaded dataset.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="kn">import</span> <span class="nn">tarfile</span>
+    <span class="kn">import</span> <span class="nn">six.moves.urllib.request</span> <span class="k">as</span> <span class="nn">ul</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">file</span><span class="p">)):</span>
         <span class="n">ul</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">tmp_file</span><span class="p">)</span>

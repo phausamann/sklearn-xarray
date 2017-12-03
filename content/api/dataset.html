@@ -37,7 +37,8 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="sklearn-xarray 0.1.0 documentation" href="../../index.html"/> 
+    <link rel="top" title="sklearn-xarray 0.1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="API Reference" href="../api.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -90,14 +91,35 @@
               
             
             
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../wrappers.html">Wrappers for sklearn estimators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../target.html">Using coordinates as targets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../transformers.html">Custom transformers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pipeline.html">Pipelining and cross-validation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../transformers.html">Custom transformers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api.html#dataarray-wrappers">DataArray wrappers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#dataset-wrappers">Dataset wrappers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#target">Target</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#pre-processing">Pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#model-selection">Model selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#utility-functions">Utility functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#datasets">Datasets</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#list-of-modules">List of modules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="dataarray.html">DataArray</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Dataset</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="target.html">Target</a></li>
+<li class="toctree-l3"><a class="reference internal" href="preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="model_selection.html">Model Selection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html">Utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html">Data</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
             
@@ -142,6 +164,8 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
+          <li><a href="../api.html">API Reference</a> &raquo;</li>
+        
       <li>Dataset</li>
     
     
@@ -166,8 +190,8 @@
 <span class="target" id="module-sklearn_xarray.dataset"></span><p><code class="docutils literal"><span class="pre">sklearn_xarray.dataaset</span></code></p>
 <dl class="function">
 <dt id="sklearn_xarray.dataset.wrap">
-<code class="descclassname">sklearn_xarray.dataset.</code><code class="descname">wrap</code><span class="sig-paren">(</span><em>estimator</em>, <em>reshapes=None</em>, <em>sample_dim=None</em>, <em>compat=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/dataset/wrappers.html#wrap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.dataset.wrap" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrap an sklearn estimators by guessing its type.</p>
+<code class="descname">wrap</code><span class="sig-paren">(</span><em>estimator</em>, <em>reshapes=None</em>, <em>sample_dim=None</em>, <em>compat=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/dataset/wrappers.html#wrap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.dataset.wrap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrap an sklearn estimator for xarray Datasets by guessing its type.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -193,7 +217,7 @@ the wrapper will assume that this is the first dimension in the array.</p>
 </div></blockquote>
 <p><strong>compat</strong> : bool, optional</p>
 <blockquote>
-<div><p>If True, <code class="docutils literal"><span class="pre">set`_params</span></code>/<code class="docutils literal"><span class="pre">get_params</span></code> will only use the wrapper’s
+<div><p>If True, <code class="docutils literal"><span class="pre">set_params</span></code>/<code class="docutils literal"><span class="pre">get_params</span></code> will only use the wrapper’s
 actual parameters and not those of the wrapped estimator. This might
 be necessary when the estimator defines parameters with the same name
 as the wrapper.</p>
@@ -209,7 +233,7 @@ as the wrapper.</p>
 
 <dl class="class">
 <dt id="sklearn_xarray.dataset.RegressorWrapper">
-<em class="property">class </em><code class="descclassname">sklearn_xarray.dataset.</code><code class="descname">RegressorWrapper</code><span class="sig-paren">(</span><em>estimator=None</em>, <em>reshapes=None</em>, <em>sample_dim=None</em>, <em>compat=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/dataset/wrappers.html#RegressorWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.dataset.RegressorWrapper" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descname">RegressorWrapper</code><span class="sig-paren">(</span><em>estimator=None</em>, <em>reshapes=None</em>, <em>sample_dim=None</em>, <em>compat=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/dataset/wrappers.html#RegressorWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.dataset.RegressorWrapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>A wrapper around sklearn regressors compatible with xarray Datasets.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -228,11 +252,34 @@ as the wrapper.</p>
 </tbody>
 </table>
 <p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">fit</span></code>(X[,&nbsp;y])</td>
+<td>A wrapper around the fitting function.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_params</span></code>([deep])</td>
+<td>Get parameters for this estimator.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">predict</span></code>(X)</td>
+<td>A wrapper around the prediction function.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">score</span></code>(X,&nbsp;y[,&nbsp;sample_weight])</td>
+<td>Returns the score of the prediction.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">set_params</span></code>(**params)</td>
+<td>Set the parameters of this estimator.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="class">
 <dt id="sklearn_xarray.dataset.ClassifierWrapper">
-<em class="property">class </em><code class="descclassname">sklearn_xarray.dataset.</code><code class="descname">ClassifierWrapper</code><span class="sig-paren">(</span><em>estimator=None</em>, <em>reshapes=None</em>, <em>sample_dim=None</em>, <em>compat=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/dataset/wrappers.html#ClassifierWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.dataset.ClassifierWrapper" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descname">ClassifierWrapper</code><span class="sig-paren">(</span><em>estimator=None</em>, <em>reshapes=None</em>, <em>sample_dim=None</em>, <em>compat=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/dataset/wrappers.html#ClassifierWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.dataset.ClassifierWrapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>A wrapper around sklearn classifiers compatible with xarray Datasets.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -251,6 +298,29 @@ as the wrapper.</p>
 </tbody>
 </table>
 <p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">fit</span></code>(X[,&nbsp;y])</td>
+<td>A wrapper around the fitting function.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_params</span></code>([deep])</td>
+<td>Get parameters for this estimator.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">predict</span></code>(X)</td>
+<td>A wrapper around the prediction function.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">score</span></code>(X,&nbsp;y[,&nbsp;sample_weight])</td>
+<td>Returns the score of the prediction.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">set_params</span></code>(**params)</td>
+<td>Set the parameters of this estimator.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>

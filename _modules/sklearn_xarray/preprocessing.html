@@ -96,8 +96,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../content/installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../content/wrappers.html">Wrappers for sklearn estimators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../content/target.html">Using coordinates as targets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../content/transformers.html">Custom transformers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../content/pipeline.html">Pipelining and cross-validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../content/transformers.html">Custom transformers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../content/api.html">API Reference</a></li>
 </ul>
 
@@ -164,7 +164,7 @@
             
   <h1>Source code for sklearn_xarray.preprocessing</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">The `sklearn_xarray.preprocessing` module contains various preprocessing</span>
+<span class="sd">The ``sklearn_xarray.preprocessing`` module contains various preprocessing</span>
 <span class="sd">methods that work on xarray DataArrays and Datasets.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -188,7 +188,7 @@
 <span class="sd">    X : xarray DataArray or Dataset</span>
 <span class="sd">        The input data.</span>
 
-<span class="sd">    function : function</span>
+<span class="sd">    function : callable</span>
 <span class="sd">        The function to apply to the data. Note that this function cannot</span>
 <span class="sd">        change the shape of the data.</span>
 
@@ -309,7 +309,7 @@
 
 
 <div class="viewcode-block" id="Transposer"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.Transposer">[docs]</a><span class="k">class</span> <span class="nc">Transposer</span><span class="p">(</span><span class="n">BaseTransformer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Reorders data dimensions.</span>
+    <span class="sd">&quot;&quot;&quot; Reorder data dimensions.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -409,7 +409,7 @@
 
 
 <div class="viewcode-block" id="Splitter"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.Splitter">[docs]</a><span class="k">class</span> <span class="nc">Splitter</span><span class="p">(</span><span class="n">BaseTransformer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Splits X along some dimension.</span>
+    <span class="sd">&quot;&quot;&quot; Split along some dimension.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -424,17 +424,18 @@
 
 <span class="sd">    reduce_index : str</span>
 <span class="sd">        How to reduce the index of the split dimension.</span>
-<span class="sd">        &#39;head&#39; : Take the first `n` values where `n` is the length of the</span>
-<span class="sd">            dimension after splitting.</span>
-<span class="sd">        &#39;subsample&#39; : Take every `new_len`th value.</span>
 
-<span class="sd">    new_index_func : function</span>
-<span class="sd">        A function that takes `new_len` as a parameter and returns a vector of</span>
-<span class="sd">        length `new_len` to be used as the indices for the new dimension.</span>
+<span class="sd">        - ``&#39;head&#39;`` : Take the first `n` values where `n` is the length of the</span>
+<span class="sd">          dimension after splitting.</span>
+<span class="sd">        - ``&#39;subsample&#39;`` : Take every ``new_len`` th value.</span>
+
+<span class="sd">    new_index_func : callable</span>
+<span class="sd">        A function that takes ``new_len`` as a parameter and returns a vector of</span>
+<span class="sd">        length ``new_len`` to be used as the indices for the new dimension.</span>
 
 <span class="sd">    keep_coords_as : str or None</span>
 <span class="sd">        If set, the coordinate of the split dimension will be kept as a</span>
-<span class="sd">        separate coordinate with this name. This allows `inverse_transform`</span>
+<span class="sd">        separate coordinate with this name. This allows ``inverse_transform``</span>
 <span class="sd">        to reconstruct the original coordinate.</span>
 
 <span class="sd">    groupby : str or list, optional</span>
@@ -572,7 +573,7 @@
 
 
 <div class="viewcode-block" id="Segmenter"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.Segmenter">[docs]</a><span class="k">class</span> <span class="nc">Segmenter</span><span class="p">(</span><span class="n">BaseTransformer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Segments X along some dimension.</span>
+    <span class="sd">&quot;&quot;&quot; Split into segments along some dimension.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -590,14 +591,20 @@
 
 <span class="sd">    reduce_index : str</span>
 <span class="sd">        How to reduce the index of the split dimension.</span>
-<span class="sd">        &#39;head&#39; : Take the first `n` values where `n` is the length of the</span>
-<span class="sd">            dimension after segmenting.</span>
-<span class="sd">        &#39;subsample&#39; : Take the values corresponding to the first element of</span>
-<span class="sd">            every segment.</span>
 
-<span class="sd">    new_index_func : function</span>
-<span class="sd">        A function that takes `new_len` as a parameter and returns a vector of</span>
-<span class="sd">        length `new_len` to be used as the indices for the new dimension.</span>
+<span class="sd">        - ``&#39;head&#39;`` : Take the first `n` values where `n` is the length of the</span>
+<span class="sd">          dimension after segmenting.</span>
+<span class="sd">        - ``&#39;subsample&#39;`` : Take the values corresponding to the first element</span>
+<span class="sd">          of every segment.</span>
+
+<span class="sd">    new_index_func : callable</span>
+<span class="sd">        A function that takes ``new_len`` as a parameter and returns a vector of</span>
+<span class="sd">        length ``new_len`` to be used as the indices for the new dimension.</span>
+
+<span class="sd">    keep_coords_as : str or None</span>
+<span class="sd">        If set, the coordinate of the split dimension will be kept as a</span>
+<span class="sd">        separate coordinate with this name. This allows ``inverse_transform``</span>
+<span class="sd">        to reconstruct the original coordinate.</span>
 
 <span class="sd">    groupby : str or list, optional</span>
 <span class="sd">        Name of coordinate or list of coordinates by which the groups are</span>
@@ -607,9 +614,11 @@
 <span class="sd">        Name of dimension along which the groups are indexed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="c1"># TODO: put step calculation in fit()?</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="s1">&#39;sample&#39;</span><span class="p">,</span> <span class="n">new_dim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">new_len</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">reduce_index</span><span class="o">=</span><span class="s1">&#39;subsample&#39;</span><span class="p">,</span> <span class="n">new_index_func</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">,</span>
-                 <span class="n">groupby</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group_dim</span><span class="o">=</span><span class="s1">&#39;sample&#39;</span><span class="p">):</span>
+                 <span class="n">keep_coords_as</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groupby</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group_dim</span><span class="o">=</span><span class="s1">&#39;sample&#39;</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="n">dim</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">new_dim</span> <span class="o">=</span> <span class="n">new_dim</span>
@@ -617,27 +626,154 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">=</span> <span class="n">step</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reduce_index</span> <span class="o">=</span> <span class="n">reduce_index</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">new_index_func</span> <span class="o">=</span> <span class="n">new_index_func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keep_coords_as</span> <span class="o">=</span> <span class="n">keep_coords_as</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">groupby</span> <span class="o">=</span> <span class="n">groupby</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">group_dim</span> <span class="o">=</span> <span class="n">group_dim</span>
 
-    <span class="k">def</span> <span class="nf">_segment_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">new_len</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_segment_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Segment an array along some axis. &quot;&quot;&quot;</span>
 
-        <span class="n">new_shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-        <span class="n">new_shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">new_shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">-</span> <span class="n">new_len</span> <span class="o">+</span> <span class="n">step</span><span class="p">)</span> <span class="o">//</span> <span class="n">step</span>
-        <span class="n">new_shape</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_len</span><span class="p">)</span>
-        <span class="n">arr_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">new_shape</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_len</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span>
 
+        <span class="c1"># calculated shape after transformation and create empty array</span>
+        <span class="n">new_shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">new_shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">new_shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_len</span> <span class="o">+</span> <span class="n">step</span><span class="p">)</span> <span class="o">//</span> <span class="n">step</span>
+        <span class="n">new_shape</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_len</span><span class="p">)</span>
+        <span class="n">arr_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">new_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">arr</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+        <span class="c1"># setup up indices</span>
         <span class="n">idx_old</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">arr</span><span class="o">.</span><span class="n">ndim</span>
         <span class="n">idx_new</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_shape</span><span class="p">)</span>
 
+        <span class="c1"># loop over axis</span>
         <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">new_shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]):</span>
-            <span class="n">idx_old</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">n</span> <span class="o">*</span> <span class="n">step</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">new_len</span><span class="p">)</span>
+            <span class="n">idx_old</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">n</span> <span class="o">*</span> <span class="n">step</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_len</span><span class="p">)</span>
             <span class="n">idx_new</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">n</span>
             <span class="n">arr_new</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">idx_new</span><span class="p">)]</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">idx_old</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
 
         <span class="k">return</span> <span class="n">arr_new</span>
+
+    <span class="k">def</span> <span class="nf">_rebuild_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Rebuild an array along some axis. &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_len</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span>
+
+        <span class="c1"># calculated shape before transformation and create empty array</span>
+        <span class="n">old_shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">old_shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">old_shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">*</span> <span class="n">step</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_len</span> <span class="o">-</span> <span class="n">step</span>
+        <span class="n">old_shape</span> <span class="o">=</span> <span class="n">old_shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">arr_old</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">old_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">arr</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+        <span class="c1"># setup up indices</span>
+        <span class="n">idx_old</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">old_shape</span><span class="p">)</span>
+        <span class="n">idx_new</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">arr</span><span class="o">.</span><span class="n">ndim</span>
+
+        <span class="c1"># loop over axis</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]):</span>
+            <span class="n">idx_old</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">n</span> <span class="o">*</span> <span class="n">step</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_len</span><span class="p">)</span>
+            <span class="n">idx_new</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">n</span>
+            <span class="c1"># TODO: mean of overlapping values?</span>
+            <span class="n">arr_old</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">idx_old</span><span class="p">)]</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">idx_new</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
+
+        <span class="k">return</span> <span class="n">arr_old</span>
+
+    <span class="k">def</span> <span class="nf">_transform_var</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Transform a single variable. &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="ow">in</span> <span class="n">X</span><span class="o">.</span><span class="n">dims</span><span class="p">:</span>
+            <span class="n">new_dims</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">new_dim</span><span class="p">]</span>
+            <span class="n">var_t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_segment_array</span><span class="p">(</span>
+                <span class="n">X</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_dims</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">dims</span>
+            <span class="n">var_t</span> <span class="o">=</span> <span class="n">X</span>
+
+        <span class="k">return</span> <span class="n">new_dims</span><span class="p">,</span> <span class="n">var_t</span>
+
+    <span class="k">def</span> <span class="nf">_inverse_transform_var</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Inverse transform a single variable. &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="ow">in</span> <span class="n">X</span><span class="o">.</span><span class="n">dims</span><span class="p">:</span>
+            <span class="n">new_dims</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
+            <span class="n">new_dims</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_dim</span><span class="p">)</span>
+            <span class="n">var_t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rebuild_array</span><span class="p">(</span>
+                <span class="n">X</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_dims</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">dims</span>
+            <span class="n">var_t</span> <span class="o">=</span> <span class="n">X</span>
+
+        <span class="k">return</span> <span class="n">new_dims</span><span class="p">,</span> <span class="n">var_t</span>
+
+    <span class="k">def</span> <span class="nf">_update_coords</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Update coordinates. &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_len</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span>
+
+        <span class="c1"># get indices of new dimension</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_index_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">new_dim_coords</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">][:</span><span class="bp">self</span><span class="o">.</span><span class="n">new_len</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_dim_coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_index_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_len</span><span class="p">)</span>
+
+        <span class="c1"># reduce indices of original dimension</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduce_index</span> <span class="o">==</span> <span class="s1">&#39;subsample&#39;</span><span class="p">:</span>
+            <span class="n">dim_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+                <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">])</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_len</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">step</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduce_index</span> <span class="o">==</span> <span class="s1">&#39;head&#39;</span><span class="p">:</span>
+            <span class="n">dim_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+                <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">])</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_len</span> <span class="o">+</span> <span class="n">step</span><span class="p">)</span> <span class="o">//</span> <span class="n">step</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Unrecognized mode for index reduction&#39;</span><span class="p">)</span>
+
+        <span class="c1"># assign coordinates</span>
+        <span class="n">coords_new</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">:</span> <span class="n">X</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">dim_idx</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">new_dim</span><span class="p">:</span> <span class="n">new_dim_coords</span>
+        <span class="p">}</span>
+
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">X</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="ow">in</span> <span class="n">X</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="p">:</span>
+                <span class="n">new_dims</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">new_dim</span><span class="p">]</span>
+                <span class="n">coords_new</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">new_dims</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_segment_array</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+                                        <span class="nb">tuple</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)))</span>
+            <span class="k">elif</span> <span class="n">c</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">:</span>
+                <span class="n">coords_new</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="n">c</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">coords_new</span>
+
+    <span class="k">def</span> <span class="nf">_restore_coords</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+
+        <span class="c1"># restore original coord</span>
+        <span class="n">coords_old</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rebuild_array</span><span class="p">(</span>
+                <span class="n">X</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">keep_coords_as</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+                <span class="nb">tuple</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">keep_coords_as</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
+        <span class="p">}</span>
+
+        <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keep_coords_as</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">X</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_dim</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="ow">in</span> <span class="n">X</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="p">:</span>
+                <span class="n">new_dims</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
+                <span class="n">new_dims</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_dim</span><span class="p">)</span>
+                <span class="n">coords_old</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">new_dims</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_rebuild_array</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+                                        <span class="nb">tuple</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)))</span>
+            <span class="k">elif</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_dim</span><span class="p">):</span>
+                <span class="n">coords_old</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="n">c</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">coords_old</span>
 
     <span class="k">def</span> <span class="nf">_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Transform. &quot;&quot;&quot;</span>
@@ -646,62 +782,48 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Name and length of new dimension must be &#39;</span>
                              <span class="s1">&#39;specified&#39;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_len</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span>
+        <span class="n">Xt</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-        <span class="c1"># reduce indices of original dimension</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduce_index</span> <span class="o">==</span> <span class="s1">&#39;subsample&#39;</span><span class="p">:</span>
-            <span class="n">dim_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">])</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_len</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">step</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduce_index</span> <span class="o">==</span> <span class="s1">&#39;head&#39;</span><span class="p">:</span>
-            <span class="n">dim_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
-                <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">])</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_len</span> <span class="o">+</span> <span class="n">step</span><span class="p">)</span> <span class="o">//</span> <span class="n">step</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Unrecognized mode for index reduction&#39;</span><span class="p">)</span>
-
-        <span class="c1"># get indices of new dimension</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_index_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">new_dim_coords</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">][:</span><span class="bp">self</span><span class="o">.</span><span class="n">new_len</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">new_dim_coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_index_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_len</span><span class="p">)</span>
+        <span class="c1"># keep the original coord if desired</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_coords_as</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Xt</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">keep_coords_as</span><span class="p">]</span> <span class="o">=</span> <span class="n">Xt</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;Dataset&#39;</span><span class="p">:</span>
-
             <span class="n">vars_t</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">X</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="ow">in</span> <span class="n">X</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="p">:</span>
-                    <span class="n">new_dims</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">new_dim</span><span class="p">]</span>
-                    <span class="n">xv_t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_segment_array</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_len</span><span class="p">,</span>
-                                               <span class="n">X</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
-                    <span class="n">vars_t</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">new_dims</span><span class="p">,</span> <span class="n">xv_t</span><span class="p">)</span>
-
-            <span class="n">coords_t</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">new_dim</span><span class="p">:</span> <span class="n">new_dim_coords</span><span class="p">}</span>
-            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">X</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="ow">in</span> <span class="n">X</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="p">:</span>
-                    <span class="n">coords_t</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">:</span> <span class="n">dim_idx</span><span class="p">}))</span>
-
+            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">Xt</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
+                <span class="n">vars_t</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform_var</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="n">v</span><span class="p">])</span>
+            <span class="n">coords_t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_coords</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">vars_t</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">coords_t</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
-
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="ow">in</span> <span class="n">X</span><span class="o">.</span><span class="n">dims</span><span class="p">:</span>
-                <span class="n">new_dims</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">new_dim</span><span class="p">]</span>
-                <span class="n">x_t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_segment_array</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_len</span><span class="p">,</span>
-                                           <span class="n">X</span><span class="o">.</span><span class="n">dims</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
-
-            <span class="n">coords_t</span> <span class="o">=</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">new_dim</span><span class="p">:</span> <span class="n">new_dim_coords</span><span class="p">}</span>
-            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">X</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="ow">in</span> <span class="n">X</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="p">:</span>
-                    <span class="n">coords_t</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">:</span> <span class="n">dim_idx</span><span class="p">}))</span>
-
-            <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">x_t</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">coords_t</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">new_dims</span><span class="p">)</span>
+            <span class="n">new_dims</span><span class="p">,</span> <span class="n">var_t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform_var</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
+            <span class="n">coords_t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_coords</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">var_t</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">coords_t</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">new_dims</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_inverse_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Reverse transform. &quot;&quot;&quot;</span>
 
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s1">&#39;inverse_transform has not yet been implemented for this estimator&#39;</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_len</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Name and length of new dimension must be &#39;</span>
+                             <span class="s1">&#39;specified&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_coords_as</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;keep_coords_as must be specified in order for &#39;</span>
+                             <span class="s1">&#39;inverse_transform to work.&#39;</span><span class="p">)</span>
+
+        <span class="n">Xt</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;Dataset&#39;</span><span class="p">:</span>
+            <span class="n">vars_it</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">Xt</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
+                <span class="n">vars_it</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_transform_var</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="n">v</span><span class="p">])</span>
+            <span class="n">coords_it</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_restore_coords</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">vars_it</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">coords_it</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_dims</span><span class="p">,</span> <span class="n">var_it</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_transform_var</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
+            <span class="n">coords_it</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_restore_coords</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">var_it</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">coords_it</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">new_dims</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="segment"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.segment">[docs]</a><span class="k">def</span> <span class="nf">segment</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">return_estimator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
@@ -732,7 +854,7 @@
 
 
 <div class="viewcode-block" id="Resampler"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.Resampler">[docs]</a><span class="k">class</span> <span class="nc">Resampler</span><span class="p">(</span><span class="n">BaseTransformer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Resamples along some dimension.</span>
+    <span class="sd">&quot;&quot;&quot; Resample along some dimension.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -833,12 +955,11 @@
 
         <span class="k">else</span><span class="p">:</span>
 
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="ow">in</span> <span class="n">X</span><span class="o">.</span><span class="n">dims</span><span class="p">:</span>
-                <span class="n">axis</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">dims</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
-                <span class="n">x_t</span> <span class="o">=</span> <span class="n">sig</span><span class="o">.</span><span class="n">resample_poly</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">den</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
-                <span class="c1"># trim the results because the length might be greater</span>
-                <span class="n">I</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">x_t</span><span class="o">.</span><span class="n">ndim</span>
-                <span class="n">I</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Xt_dim</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">]))</span>
+            <span class="n">axis</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">dims</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+            <span class="n">x_t</span> <span class="o">=</span> <span class="n">sig</span><span class="o">.</span><span class="n">resample_poly</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">den</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+            <span class="c1"># trim the results because the length might be greater</span>
+            <span class="n">I</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">x_t</span><span class="o">.</span><span class="n">ndim</span>
+            <span class="n">I</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Xt_dim</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">]))</span>
 
             <span class="c1"># combine to new array</span>
             <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">x_t</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">coords_t</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
@@ -878,7 +999,7 @@
 
 
 <div class="viewcode-block" id="Concatenator"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.Concatenator">[docs]</a><span class="k">class</span> <span class="nc">Concatenator</span><span class="p">(</span><span class="n">BaseTransformer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Concatenates variables along a dimension.</span>
+    <span class="sd">&quot;&quot;&quot; Concatenate variables along a dimension.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -996,7 +1117,7 @@
 
 
 <div class="viewcode-block" id="Featurizer"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.Featurizer">[docs]</a><span class="k">class</span> <span class="nc">Featurizer</span><span class="p">(</span><span class="n">BaseTransformer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Stacks all dimensions and variables except for sample dimension.</span>
+    <span class="sd">&quot;&quot;&quot; Stack all dimensions and variables except for sample dimension.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1094,7 +1215,7 @@
 
 
 <div class="viewcode-block" id="Sanitizer"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.Sanitizer">[docs]</a><span class="k">class</span> <span class="nc">Sanitizer</span><span class="p">(</span><span class="n">BaseTransformer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Removes elements containing NaNs.</span>
+    <span class="sd">&quot;&quot;&quot; Remove elements containing NaNs.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1167,7 +1288,7 @@
 
 
 <div class="viewcode-block" id="Reducer"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.Reducer">[docs]</a><span class="k">class</span> <span class="nc">Reducer</span><span class="p">(</span><span class="n">BaseTransformer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Reduces data along some dimension.</span>
+    <span class="sd">&quot;&quot;&quot; Reduce data along some dimension.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>

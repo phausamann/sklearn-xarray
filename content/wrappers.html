@@ -103,8 +103,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="target.html">Using coordinates as targets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="transformers.html">Custom transformers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipelining and cross-validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformers.html">Custom transformers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
 </ul>
 
@@ -177,7 +177,7 @@ of both packages by only applying estimator methods on the raw data while
 metadata (coordinates in xarray) remains untouched whereever possible.</p>
 <p>There are two different kinds of wrappers for the two principal data types in
 xarray: <code class="docutils literal"><span class="pre">DataArray</span></code> and <code class="docutils literal"><span class="pre">Dataset</span></code>. Each kind of wrapper has its own module,
-<code class="docutils literal"><span class="pre">sklearn_xarray.dataarray</span></code> and <code class="docutils literal"><span class="pre">sklearn_xarray.dataset</span></code>.</p>
+<a class="reference internal" href="api/dataarray.html#module-sklearn_xarray.dataarray" title="sklearn_xarray.dataarray"><code class="xref py py-mod docutils literal"><span class="pre">sklearn_xarray.dataarray</span></code></a> and <a class="reference internal" href="api/dataset.html#module-sklearn_xarray.dataset" title="sklearn_xarray.dataset"><code class="xref py py-mod docutils literal"><span class="pre">sklearn_xarray.dataset</span></code></a>.</p>
 <div class="section" id="wrapping-estimators-for-dataarrays">
 <h2>Wrapping estimators for DataArrays<a class="headerlink" href="#wrapping-estimators-for-dataarrays" title="Permalink to this headline">¶</a></h2>
 <p>First, we look at a basic example that shows how to wrap an estimator from
@@ -190,14 +190,16 @@ sklearn for use with a <code class="docutils literal"><span class="pre">DataArra
 <span class="n">Xt</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">())</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">wrap</span></code> function will try to guess the type of the estimator it wraps
-and return an object with the corresponding methods for each type of estimator
-(e.g. <code class="docutils literal"><span class="pre">predict</span></code> for classifiers and regressors).</p>
+<p>The <a class="reference internal" href="api/dataarray.html#sklearn_xarray.dataarray.wrap" title="sklearn_xarray.dataarray.wrap"><code class="xref py py-func docutils literal"><span class="pre">wrap()</span></code></a> function will try to guess the type of the estimator it
+wraps and return an object with the corresponding methods for each type of
+estimator (e.g. <code class="docutils literal"><span class="pre">predict</span></code> for classifiers and regressors).</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">xarray references axes by name rather than by order. Therefore, you can
 specify the <code class="docutils literal"><span class="pre">sample_dim</span></code> parameter of the wrapper to refer to the
-dimension in your data that represents the samples.</p>
+dimension in your data that represents the samples. By default, the
+wrapper will assume that the first dimension in the array is the sample
+dimension.</p>
 </div>
 <p>When we run the example, we see that he data in the array is scaled, but the
 coordinates and dimensions have not changed:</p>
@@ -276,9 +278,9 @@ will be stored in the <code class="docutils literal"><span class="pre">estimator
 <div class="section" id="wrapping-estimators-for-datasets">
 <h2>Wrapping estimators for Datasets<a class="headerlink" href="#wrapping-estimators-for-datasets" title="Permalink to this headline">¶</a></h2>
 <p>The syntax for Datasets is mostly the same as for DataArrays, only that it
-uses the <code class="docutils literal"><span class="pre">dataset</span></code> module. Note that the wrapper will fit one estimator for
-each variable in the Dataset. The fitted estimators are stored in the
-attribute <code class="docutils literal"><span class="pre">estimator_dict_</span></code>:</p>
+uses the <a class="reference internal" href="api/dataset.html#module-sklearn_xarray.dataset" title="sklearn_xarray.dataset"><code class="xref py py-mod docutils literal"><span class="pre">sklearn_xarray.dataset</span></code></a> module. Note that the wrapper will
+fit one estimator for each variable in the Dataset. The fitted estimators are
+stored in the attribute <code class="docutils literal"><span class="pre">estimator_dict_</span></code>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn_xarray.dataset</span> <span class="k">as</span> <span class="nn">ds</span>
 <span class="kn">from</span> <span class="nn">sklearn_xarray.data</span> <span class="k">import</span> <span class="n">load_dummy_dataset</span>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span>

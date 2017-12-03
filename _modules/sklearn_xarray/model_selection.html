@@ -96,8 +96,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../content/installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../content/wrappers.html">Wrappers for sklearn estimators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../content/target.html">Using coordinates as targets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../content/transformers.html">Custom transformers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../content/pipeline.html">Pipelining and cross-validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../content/transformers.html">Custom transformers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../content/api.html">API Reference</a></li>
 </ul>
 
@@ -163,7 +163,11 @@
            <div itemprop="articleBody">
             
   <h1>Source code for sklearn_xarray.model_selection</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">``sklearn_xarray.model_selection``</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
 <div class="viewcode-block" id="CrossValidatorWrapper"><a class="viewcode-back" href="../../content/api/model_selection.html#sklearn_xarray.model_selection.CrossValidatorWrapper">[docs]</a><span class="k">class</span> <span class="nc">CrossValidatorWrapper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -171,15 +175,15 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    cross_validator : sklearn cross validator</span>
-<span class="sd">        TODO</span>
+<span class="sd">    cross_validator : sklearn cross-validator</span>
+<span class="sd">        An instance of a cross-validator.</span>
 
 <span class="sd">    dim : str</span>
-<span class="sd">        TODO</span>
+<span class="sd">        The dimension along which to perform the split.</span>
 
 <span class="sd">    groupby : str or list</span>
-<span class="sd">        TODO</span>
-
+<span class="sd">        Name of coordinate or list of coordinates by which the groups are</span>
+<span class="sd">        determined.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cross_validator</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="s1">&#39;sample&#39;</span><span class="p">,</span> <span class="n">groupby</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>

@@ -96,8 +96,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../content/installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../content/wrappers.html">Wrappers for sklearn estimators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../content/target.html">Using coordinates as targets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../content/transformers.html">Custom transformers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../content/pipeline.html">Pipelining and cross-validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../content/transformers.html">Custom transformers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../content/api.html">API Reference</a></li>
 </ul>
 
@@ -164,7 +164,7 @@
             
   <h1>Source code for sklearn_xarray.dataarray.wrappers</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">`sklearn_xarray.dataarray.wrappers`</span>
+<span class="sd">``sklearn_xarray.dataarray.wrappers``</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -177,7 +177,7 @@
 
 
 <div class="viewcode-block" id="wrap"><a class="viewcode-back" href="../../../content/api/dataarray.html#sklearn_xarray.dataarray.wrap">[docs]</a><span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">reshapes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_dim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compat</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Wrap an sklearn estimators by guessing its type.</span>
+    <span class="sd">&quot;&quot;&quot; Wrap an sklearn estimator for xarray DataArrays by guessing its type.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -199,7 +199,7 @@
 <span class="sd">        the wrapper will assume that this is the first dimension in the array.</span>
 
 <span class="sd">    compat : bool, optional</span>
-<span class="sd">        If True, ``set`_params``/``get_params`` will only use the wrapper&#39;s</span>
+<span class="sd">        If True, ``set_params``/``get_params`` will only use the wrapper&#39;s</span>
 <span class="sd">        actual parameters and not those of the wrapped estimator. This might</span>
 <span class="sd">        be necessary when the estimator defines parameters with the same name</span>
 <span class="sd">        as the wrapper.</span>

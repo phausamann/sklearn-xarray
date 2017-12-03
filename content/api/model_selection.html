@@ -37,7 +37,8 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="sklearn-xarray 0.1.0 documentation" href="../../index.html"/> 
+    <link rel="top" title="sklearn-xarray 0.1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="API Reference" href="../api.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -90,14 +91,35 @@
               
             
             
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../wrappers.html">Wrappers for sklearn estimators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../target.html">Using coordinates as targets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../transformers.html">Custom transformers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pipeline.html">Pipelining and cross-validation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../transformers.html">Custom transformers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api.html#dataarray-wrappers">DataArray wrappers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#dataset-wrappers">Dataset wrappers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#target">Target</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#pre-processing">Pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#model-selection">Model selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#utility-functions">Utility functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#datasets">Datasets</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#list-of-modules">List of modules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="dataarray.html">DataArray</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dataset.html">Dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="target.html">Target</a></li>
+<li class="toctree-l3"><a class="reference internal" href="preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Model Selection</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html">Utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html">Data</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
             
@@ -142,6 +164,8 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
+          <li><a href="../api.html">API Reference</a> &raquo;</li>
+        
       <li>Model Selection</li>
     
     
@@ -163,31 +187,47 @@
             
   <div class="section" id="module-sklearn_xarray.model_selection">
 <span id="model-selection"></span><h1>Model Selection<a class="headerlink" href="#module-sklearn_xarray.model_selection" title="Permalink to this headline">¶</a></h1>
+<p><code class="docutils literal"><span class="pre">sklearn_xarray.model_selection</span></code></p>
 <dl class="class">
 <dt id="sklearn_xarray.model_selection.CrossValidatorWrapper">
-<em class="property">class </em><code class="descclassname">sklearn_xarray.model_selection.</code><code class="descname">CrossValidatorWrapper</code><span class="sig-paren">(</span><em>cross_validator</em>, <em>dim='sample'</em>, <em>groupby=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/model_selection.html#CrossValidatorWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.model_selection.CrossValidatorWrapper" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descname">CrossValidatorWrapper</code><span class="sig-paren">(</span><em>cross_validator</em>, <em>dim='sample'</em>, <em>groupby=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/model_selection.html#CrossValidatorWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.model_selection.CrossValidatorWrapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrap an sklearn cross validator for use with xarray.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>cross_validator</strong> : sklearn cross validator</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>cross_validator</strong> : sklearn cross-validator</p>
 <blockquote>
-<div><p>TODO</p>
+<div><p>An instance of a cross-validator.</p>
 </div></blockquote>
 <p><strong>dim</strong> : str</p>
 <blockquote>
-<div><p>TODO</p>
+<div><p>The dimension along which to perform the split.</p>
 </div></blockquote>
 <p><strong>groupby</strong> : str or list</p>
 <blockquote class="last">
-<div><p>TODO</p>
+<div><p>Name of coordinate or list of coordinates by which the groups are
+determined.</p>
 </div></blockquote>
 </td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#sklearn_xarray.model_selection.CrossValidatorWrapper.get_n_splits" title="sklearn_xarray.model_selection.CrossValidatorWrapper.get_n_splits"><code class="xref py py-obj docutils literal"><span class="pre">get_n_splits</span></code></a>([X,&nbsp;y,&nbsp;groups])</td>
+<td>Returns the number of splitting iterations in the cross-validator.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#sklearn_xarray.model_selection.CrossValidatorWrapper.split" title="sklearn_xarray.model_selection.CrossValidatorWrapper.split"><code class="xref py py-obj docutils literal"><span class="pre">split</span></code></a>(X[,&nbsp;y,&nbsp;groups])</td>
+<td>Generate indices to split data into training and test set.</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="sklearn_xarray.model_selection.CrossValidatorWrapper.get_n_splits">
 <code class="descname">get_n_splits</code><span class="sig-paren">(</span><em>X=None</em>, <em>y=None</em>, <em>groups=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/model_selection.html#CrossValidatorWrapper.get_n_splits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.model_selection.CrossValidatorWrapper.get_n_splits" title="Permalink to this definition">¶</a></dt>

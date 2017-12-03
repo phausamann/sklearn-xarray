@@ -96,8 +96,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../content/installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../content/wrappers.html">Wrappers for sklearn estimators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../content/target.html">Using coordinates as targets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../content/transformers.html">Custom transformers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../content/pipeline.html">Pipelining and cross-validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../content/transformers.html">Custom transformers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../content/api.html">API Reference</a></li>
 </ul>
 
@@ -163,7 +163,9 @@
            <div itemprop="articleBody">
             
   <h1>Source code for sklearn_xarray.target</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="sd">&quot;&quot;&quot;``sklearn_xarray.target``&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
 
@@ -182,12 +184,13 @@
 
 <span class="sd">    lazy : bool, optinonal</span>
 <span class="sd">        If true, the target coordinate is only transformed by the transformer</span>
-<span class="sd">        when needed. The transformer can implement a `get_transformed_shape`</span>
+<span class="sd">        when needed. The transformer can implement a ``get_transformed_shape``</span>
 <span class="sd">        method that returns the shape after the transformation of the provided</span>
 <span class="sd">        coordinate without actually transforming the data.</span>
 
-<span class="sd">    dim : str</span>
-
+<span class="sd">    dim : str, optional</span>
+<span class="sd">        When set, multi-dimensional coordinates will be reduced to this</span>
+<span class="sd">        dimension.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -216,10 +219,24 @@
 
         <span class="k">return</span> <span class="n">new_obj</span>
 
-
     <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">assign_to</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">coord</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s1">&#39;Unassigned sklearn_xarray.Target without coordinate.&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s1">&#39;Unassigned sklearn_xarray.Target with coordinate &quot;&#39;</span> <span class="o">+</span> \
+                       <span class="bp">self</span><span class="o">.</span><span class="n">coord</span> <span class="o">+</span> <span class="s1">&#39;&quot;.&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;sklearn_xarray.Target with data:</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">__array__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
@@ -251,7 +268,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ndim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; The shape of the transformed target. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot; The number of dimensions of the transformed target. &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_assigned</span><span class="p">()</span>
 

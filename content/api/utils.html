@@ -37,7 +37,9 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="sklearn-xarray 0.1.0 documentation" href="../../index.html"/> 
+    <link rel="top" title="sklearn-xarray 0.1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="API Reference" href="../api.html"/>
+        <link rel="next" title="Data" href="data.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -90,14 +92,33 @@
               
             
             
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../wrappers.html">Wrappers for sklearn estimators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../target.html">Using coordinates as targets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../transformers.html">Custom transformers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pipeline.html">Pipelining and cross-validation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../transformers.html">Custom transformers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api.html#dataarray-wrappers">DataArray wrappers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#dataset-wrappers">Dataset wrappers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#target">Target</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#pre-processing">Pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#model-selection">Model selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#utility-functions">Utility functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#datasets">Datasets</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#list-of-modules">List of modules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="dataarray.html">DataArray</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dataset.html">Dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="target.html">Target</a></li>
+<li class="toctree-l3"><a class="reference internal" href="preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="model_selection.html">Model Selection</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html">Data</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
             
@@ -142,6 +163,8 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
+          <li><a href="../api.html">API Reference</a> &raquo;</li>
+        
       <li>Utils</li>
     
     
@@ -163,10 +186,10 @@
             
   <div class="section" id="module-sklearn_xarray.utils">
 <span id="utils"></span><h1>Utils<a class="headerlink" href="#module-sklearn_xarray.utils" title="Permalink to this headline">¶</a></h1>
-<p><cite>sklearn_xarray.utils</cite></p>
+<p><code class="docutils literal"><span class="pre">sklearn_xarray.utils</span></code></p>
 <dl class="function">
 <dt id="sklearn_xarray.utils.convert_to_ndarray">
-<code class="descclassname">sklearn_xarray.utils.</code><code class="descname">convert_to_ndarray</code><span class="sig-paren">(</span><em>X</em>, <em>new_dim_last=True</em>, <em>new_dim_name='variable'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/utils.html#convert_to_ndarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.utils.convert_to_ndarray" title="Permalink to this definition">¶</a></dt>
+<code class="descname">convert_to_ndarray</code><span class="sig-paren">(</span><em>X</em>, <em>new_dim_last=True</em>, <em>new_dim_name='variable'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/utils.html#convert_to_ndarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.utils.convert_to_ndarray" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert xarray DataArray or Dataset to numpy ndarray.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -198,7 +221,7 @@
 
 <dl class="function">
 <dt id="sklearn_xarray.utils.get_group_indices">
-<code class="descclassname">sklearn_xarray.utils.</code><code class="descname">get_group_indices</code><span class="sig-paren">(</span><em>X</em>, <em>groupby</em>, <em>group_dim=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/utils.html#get_group_indices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.utils.get_group_indices" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_group_indices</code><span class="sig-paren">(</span><em>X</em>, <em>groupby</em>, <em>group_dim=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/utils.html#get_group_indices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.utils.get_group_indices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get logical index vectors for each group.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -231,7 +254,7 @@ determined.</p>
 
 <dl class="function">
 <dt id="sklearn_xarray.utils.is_dataarray">
-<code class="descclassname">sklearn_xarray.utils.</code><code class="descname">is_dataarray</code><span class="sig-paren">(</span><em>X</em>, <em>require_attrs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/utils.html#is_dataarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.utils.is_dataarray" title="Permalink to this definition">¶</a></dt>
+<code class="descname">is_dataarray</code><span class="sig-paren">(</span><em>X</em>, <em>require_attrs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/utils.html#is_dataarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.utils.is_dataarray" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether an object is a DataArray.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -256,7 +279,7 @@ determined.</p>
 
 <dl class="function">
 <dt id="sklearn_xarray.utils.is_dataset">
-<code class="descclassname">sklearn_xarray.utils.</code><code class="descname">is_dataset</code><span class="sig-paren">(</span><em>X</em>, <em>require_attrs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/utils.html#is_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.utils.is_dataset" title="Permalink to this definition">¶</a></dt>
+<code class="descname">is_dataset</code><span class="sig-paren">(</span><em>X</em>, <em>require_attrs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/utils.html#is_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.utils.is_dataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether an object is a Dataset.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -281,7 +304,7 @@ determined.</p>
 
 <dl class="function">
 <dt id="sklearn_xarray.utils.is_target">
-<code class="descclassname">sklearn_xarray.utils.</code><code class="descname">is_target</code><span class="sig-paren">(</span><em>X</em>, <em>require_attrs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/utils.html#is_target"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.utils.is_target" title="Permalink to this definition">¶</a></dt>
+<code class="descname">is_target</code><span class="sig-paren">(</span><em>X</em>, <em>require_attrs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/utils.html#is_target"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.utils.is_target" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether an object is a Target.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -313,6 +336,13 @@ determined.</p>
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="data.html" class="btn btn-neutral float-right" title="Data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
   
 
   <hr/>

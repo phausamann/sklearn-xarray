@@ -37,7 +37,9 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="sklearn-xarray 0.1.0 documentation" href="../../index.html"/> 
+    <link rel="top" title="sklearn-xarray 0.1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="API Reference" href="../api.html"/>
+        <link rel="prev" title="Utils" href="utils.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -90,14 +92,33 @@
               
             
             
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../wrappers.html">Wrappers for sklearn estimators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../target.html">Using coordinates as targets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../transformers.html">Custom transformers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pipeline.html">Pipelining and cross-validation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../transformers.html">Custom transformers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api.html#dataarray-wrappers">DataArray wrappers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#dataset-wrappers">Dataset wrappers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#target">Target</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#pre-processing">Pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#model-selection">Model selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#utility-functions">Utility functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#datasets">Datasets</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#list-of-modules">List of modules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="dataarray.html">DataArray</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dataset.html">Dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="target.html">Target</a></li>
+<li class="toctree-l3"><a class="reference internal" href="preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="model_selection.html">Model Selection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html">Utils</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Data</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
             
@@ -142,6 +163,8 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
+          <li><a href="../api.html">API Reference</a> &raquo;</li>
+        
       <li>Data</li>
     
     
@@ -165,20 +188,44 @@
 <span id="data"></span><h1>Data<a class="headerlink" href="#module-sklearn_xarray.data" title="Permalink to this headline">¶</a></h1>
 <p><code class="docutils literal"><span class="pre">sklearn_xarray.data</span></code></p>
 <dl class="function">
+<dt id="sklearn_xarray.data.load_digits_dataarray">
+<code class="descname">load_digits_dataarray</code><span class="sig-paren">(</span><em>load_images=False</em>, <em>nan_probability=0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/data.html#load_digits_dataarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.data.load_digits_dataarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a the ‘digits’ dataset from sklearn as a DataArray.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>load_images</strong> : bool, optional</p>
+<blockquote>
+<div><p>If true, the DataArray will contain the two-dimensional images as
+data instead of the vectorized samples.</p>
+</div></blockquote>
+<p><strong>nan_probability</strong> : float between 0 and 1</p>
+<blockquote class="last">
+<div><p>The probability with which a sample is injected with NaN values. For
+demonstration purposes only.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="sklearn_xarray.data.load_dummy_dataarray">
-<code class="descclassname">sklearn_xarray.data.</code><code class="descname">load_dummy_dataarray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/data.html#load_dummy_dataarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.data.load_dummy_dataarray" title="Permalink to this definition">¶</a></dt>
+<code class="descname">load_dummy_dataarray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/data.html#load_dummy_dataarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.data.load_dummy_dataarray" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load a DataArray for demonstration purposes.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="sklearn_xarray.data.load_dummy_dataset">
-<code class="descclassname">sklearn_xarray.data.</code><code class="descname">load_dummy_dataset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/data.html#load_dummy_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.data.load_dummy_dataset" title="Permalink to this definition">¶</a></dt>
+<code class="descname">load_dummy_dataset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/data.html#load_dummy_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.data.load_dummy_dataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load a Dataset for demonstration purposes.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="sklearn_xarray.data.load_wisdm">
-<code class="descclassname">sklearn_xarray.data.</code><code class="descname">load_wisdm</code><span class="sig-paren">(</span><em>url='http://www.cis.fordham.edu/wisdm/includes/datasets/latest/WISDM_ar_latest.tar.gz'</em>, <em>file='WISDM_ar_v1.1/WISDM_ar_v1.1_raw.txt'</em>, <em>folder='data/'</em>, <em>tmp_file='widsm.tar.gz'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/data.html#load_wisdm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.data.load_wisdm" title="Permalink to this definition">¶</a></dt>
+<dt id="sklearn_xarray.data.load_wisdm_dataarray">
+<code class="descname">load_wisdm_dataarray</code><span class="sig-paren">(</span><em>url='http://www.cis.fordham.edu/wisdm/includes/datasets/latest/WISDM_ar_latest.tar.gz'</em>, <em>file='WISDM_ar_v1.1/WISDM_ar_v1.1_raw.txt'</em>, <em>folder='data/'</em>, <em>tmp_file='widsm.tar.gz'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/data.html#load_wisdm_dataarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.data.load_wisdm_dataarray" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load the WISDM activity recognition dataset.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -221,6 +268,13 @@
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="utils.html" class="btn btn-neutral" title="Utils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
