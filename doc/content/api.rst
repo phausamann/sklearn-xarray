@@ -129,3 +129,17 @@ Module: :py:mod:`sklearn_xarray.data`
     load_dummy_dataset
     load_digits_dataarray
     load_wisdm_dataarray
+
+
+List of modules
+---------------
+
+    .. toctree::
+
+        api/dataarray
+        api/dataset
+        api/target
+        api/preprocessing
+        api/model_selection
+        api/utils
+        api/data

@@ -1,3 +1,7 @@
+"""
+``sklearn_xarray.model_selection``
+"""
+
 import numpy as np
 
 

@@ -23,8 +23,8 @@ Documentation
        content/installation
        content/wrappers
        content/target
-       content/transformers
        content/pipeline
+       content/transformers
 
        content/api
 

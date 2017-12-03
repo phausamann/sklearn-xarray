@@ -52,7 +52,11 @@ Required dependencies:
 - xarray (0.10 or later)
 - pandas (0.20 or later)
 
-For now, the package has to be installed from source::
+The package can be installed from ``pip``::
+
+    $ pip install sklearn-xarray
+
+For the latest version, you can also install from source::
 
     $ git clone https://github.com/phausamann/sklearn-xarray.git
     $ cd sklearn-xarray

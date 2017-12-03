@@ -24,7 +24,7 @@ def load_dummy_dataset():
     )
 
 
-def load_digits_dataarray(load_images=False):
+def load_digits_dataarray(load_images=False, nan_probability=0):
     """ Load a the 'digits' dataset from sklearn as a DataArray.
 
     Parameters
@@ -32,6 +32,10 @@ def load_digits_dataarray(load_images=False):
     load_images : bool, optional
         If true, the DataArray will contain the two-dimensional images as
         data instead of the vectorized samples.
+
+    nan_probability : float between 0 and 1
+        The probability with which a sample is injected with NaN values. For
+        demonstration purposes only.
     """
 
     from sklearn.datasets import load_digits
@@ -40,6 +44,11 @@ def load_digits_dataarray(load_images=False):
 
         bunch = load_digits()
         data = bunch.images
+
+        if nan_probability > 0:
+            for i in range(data.shape[0]):
+                if np.random.rand(1) < nan_probability:
+                    data[i, 0, 0] = np.nan
 
         return xr.DataArray(
             data,
@@ -53,6 +62,11 @@ def load_digits_dataarray(load_images=False):
     else:
 
         data, target = load_digits(return_X_y=True)
+
+        if nan_probability > 0:
+            for i in range(data.shape[0]):
+                if np.random.rand(1) < nan_probability:
+                    data[i, 0] = np.nan
 
         return xr.DataArray(
             data,
