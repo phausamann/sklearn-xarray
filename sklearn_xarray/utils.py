@@ -1,5 +1,5 @@
 """
-`sklearn_xarray.utils`
+``sklearn_xarray.utils``
 """
 
 

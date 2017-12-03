@@ -19,7 +19,7 @@ except ImportError:
     sys.exit(1)
 
 setup(name='sklearn-xarray',
-      version='0.0.1',
+      version='0.1',
       description='xarray integration with sklearn',
       author='Peter Hausamann',
       packages=find_packages(),

@@ -135,23 +135,37 @@ def test_segment():
 
     X_da = xr.DataArray(
         np.random.random((100, 10)),
-        coords={'sample': range(100), 'feature': range(10)},
+        coords={'sample': range(100), 'feature': range(10),
+                'coord_1': (['sample', 'feature'],
+                            np.tile('Test', (100, 10)))},
         dims=('sample', 'feature')
     )
 
-    Xt_da = segment(
+    Xt_da, estimator = segment(
         X_da, new_dim='split_sample', new_len=10, step=5,
-        reduce_index='subsample')
-
-    X_ds = xr.Dataset(
-        {'var_1': (['sample', 'feature'], np.random.random((100, 10)))},
-        coords={'sample': range(100), 'feature': range(10)}
+        reduce_index='subsample', keep_coords_as='backup', return_estimator=True
     )
 
-    Xt_ds = segment(
-        X_ds, new_dim='split_sample', new_len=10, step=5, reduce_index='head')
+    assert Xt_da.coord_1.shape == (19, 10, 10)
 
-    #TODO: check result
+    xrt.assert_allclose(estimator.inverse_transform(Xt_da), X_da)
+
+    X_ds = xr.Dataset({
+        'var_1': (['sample', 'feature'], np.random.random((100, 10))),
+        'var_2': (['dummy'], np.random.random((10,)))},
+        coords={'sample': range(100), 'feature': range(10), 'dummy': range(10),
+                'coord_1': (['sample', 'feature'],
+                            np.tile('Test', (100, 10)))}
+    )
+
+    Xt_ds, estimator = segment(
+        X_ds, new_dim='split_sample', new_len=10, step=5, reduce_index='head',
+        keep_coords_as='backup', return_estimator=True
+    )
+
+    assert Xt_ds.coord_1.shape == (19, 10, 10)
+
+    xrt.assert_allclose(estimator.inverse_transform(Xt_ds), X_ds)
 
 
 def test_resample():

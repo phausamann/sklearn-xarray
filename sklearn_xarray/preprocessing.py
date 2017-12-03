@@ -1,5 +1,5 @@
 """
-The `sklearn_xarray.preprocessing` module contains various preprocessing
+The ``sklearn_xarray.preprocessing`` module contains various preprocessing
 methods that work on xarray DataArrays and Datasets.
 """
 
@@ -23,7 +23,7 @@ def preprocess(X, function, groupby=None, group_dim='sample', **fit_params):
     X : xarray DataArray or Dataset
         The input data.
 
-    function : function
+    function : callable
         The function to apply to the data. Note that this function cannot
         change the shape of the data.
 
@@ -144,7 +144,7 @@ class BaseTransformer(BaseEstimator, TransformerMixin):
 
 
 class Transposer(BaseTransformer):
-    """ Reorders data dimensions.
+    """ Reorder data dimensions.
 
     Parameters
     ----------
@@ -244,7 +244,7 @@ def transpose(X, return_estimator=False, **fit_params):
 
 
 class Splitter(BaseTransformer):
-    """ Splits X along some dimension.
+    """ Split along some dimension.
 
     Parameters
     ----------
@@ -259,17 +259,18 @@ class Splitter(BaseTransformer):
 
     reduce_index : str
         How to reduce the index of the split dimension.
-        'head' : Take the first `n` values where `n` is the length of the
-            dimension after splitting.
-        'subsample' : Take every `new_len`th value.
 
-    new_index_func : function
-        A function that takes `new_len` as a parameter and returns a vector of
-        length `new_len` to be used as the indices for the new dimension.
+        - ``'head'`` : Take the first `n` values where `n` is the length of the
+          dimension after splitting.
+        - ``'subsample'`` : Take every ``new_len`` th value.
+
+    new_index_func : callable
+        A function that takes ``new_len`` as a parameter and returns a vector of
+        length ``new_len`` to be used as the indices for the new dimension.
 
     keep_coords_as : str or None
         If set, the coordinate of the split dimension will be kept as a
-        separate coordinate with this name. This allows `inverse_transform`
+        separate coordinate with this name. This allows ``inverse_transform``
         to reconstruct the original coordinate.
 
     groupby : str or list, optional
@@ -407,7 +408,7 @@ def split(X, return_estimator=False, **fit_params):
 
 
 class Segmenter(BaseTransformer):
-    """ Segments X along some dimension.
+    """ Split into segments along some dimension.
 
     Parameters
     ----------
@@ -425,14 +426,20 @@ class Segmenter(BaseTransformer):
 
     reduce_index : str
         How to reduce the index of the split dimension.
-        'head' : Take the first `n` values where `n` is the length of the
-            dimension after segmenting.
-        'subsample' : Take the values corresponding to the first element of
-            every segment.
 
-    new_index_func : function
-        A function that takes `new_len` as a parameter and returns a vector of
-        length `new_len` to be used as the indices for the new dimension.
+        - ``'head'`` : Take the first `n` values where `n` is the length of the
+          dimension after segmenting.
+        - ``'subsample'`` : Take the values corresponding to the first element
+          of every segment.
+
+    new_index_func : callable
+        A function that takes ``new_len`` as a parameter and returns a vector of
+        length ``new_len`` to be used as the indices for the new dimension.
+
+    keep_coords_as : str or None
+        If set, the coordinate of the split dimension will be kept as a
+        separate coordinate with this name. This allows ``inverse_transform``
+        to reconstruct the original coordinate.
 
     groupby : str or list, optional
         Name of coordinate or list of coordinates by which the groups are
@@ -442,9 +449,11 @@ class Segmenter(BaseTransformer):
         Name of dimension along which the groups are indexed.
     """
 
+    # TODO: put step calculation in fit()?
+
     def __init__(self, dim='sample', new_dim=None, new_len=None, step=None,
                  reduce_index='subsample', new_index_func=np.arange,
-                 groupby=None, group_dim='sample'):
+                 keep_coords_as=None, groupby=None, group_dim='sample'):
 
         self.dim = dim
         self.new_dim = new_dim
@@ -452,27 +461,154 @@ class Segmenter(BaseTransformer):
         self.step = step
         self.reduce_index = reduce_index
         self.new_index_func = new_index_func
+        self.keep_coords_as = keep_coords_as
 
         self.groupby = groupby
         self.group_dim = group_dim
 
-    def _segment_array(self, arr, step, new_len, axis):
+    def _segment_array(self, arr, axis):
         """ Segment an array along some axis. """
 
-        new_shape = list(arr.shape)
-        new_shape[axis] = (new_shape[axis] - new_len + step) // step
-        new_shape.append(new_len)
-        arr_new = np.zeros(new_shape)
+        if self.step is None:
+            step = self.new_len
+        else:
+            step = self.step
 
+        # calculated shape after transformation and create empty array
+        new_shape = list(arr.shape)
+        new_shape[axis] = (new_shape[axis] - self.new_len + step) // step
+        new_shape.append(self.new_len)
+        arr_new = np.zeros(new_shape, dtype=arr.dtype)
+
+        # setup up indices
         idx_old = [slice(None)] * arr.ndim
         idx_new = [slice(None)] * len(new_shape)
 
+        # loop over axis
         for n in range(new_shape[axis]):
-            idx_old[axis] = n * step + np.arange(new_len)
+            idx_old[axis] = n * step + np.arange(self.new_len)
             idx_new[axis] = n
             arr_new[tuple(idx_new)] = arr[idx_old].T
 
         return arr_new
+
+    def _rebuild_array(self, arr, axis):
+        """ Rebuild an array along some axis. """
+
+        if self.step is None:
+            step = self.new_len
+        else:
+            step = self.step
+
+        # calculated shape before transformation and create empty array
+        old_shape = list(arr.shape)
+        old_shape[axis] = old_shape[axis] * step + self.new_len - step
+        old_shape = old_shape[:-1]
+        arr_old = np.zeros(old_shape, dtype=arr.dtype)
+
+        # setup up indices
+        idx_old = [slice(None)] * len(old_shape)
+        idx_new = [slice(None)] * arr.ndim
+
+        # loop over axis
+        for n in range(arr.shape[axis]):
+            idx_old[axis] = n * step + np.arange(self.new_len)
+            idx_new[axis] = n
+            # TODO: mean of overlapping values?
+            arr_old[tuple(idx_old)] = arr[idx_new].T
+
+        return arr_old
+
+    def _transform_var(self, X):
+        """ Transform a single variable. """
+
+        if self.dim in X.dims:
+            new_dims = list(X.dims) + [self.new_dim]
+            var_t = self._segment_array(
+                X.values, tuple(X.dims).index(self.dim))
+        else:
+            new_dims = X.dims
+            var_t = X
+
+        return new_dims, var_t
+
+    def _inverse_transform_var(self, X):
+        """ Inverse transform a single variable. """
+
+        if self.dim in X.dims:
+            new_dims = list(X.dims)
+            new_dims.remove(self.new_dim)
+            var_t = self._rebuild_array(
+                X.values, tuple(X.dims).index(self.dim))
+        else:
+            new_dims = X.dims
+            var_t = X
+
+        return new_dims, var_t
+
+    def _update_coords(self, X):
+        """ Update coordinates. """
+
+        if self.step is None:
+            step = self.new_len
+        else:
+            step = self.step
+
+        # get indices of new dimension
+        if self.new_index_func is None:
+            new_dim_coords = X[self.dim][:self.new_len]
+        else:
+            new_dim_coords = self.new_index_func(self.new_len)
+
+        # reduce indices of original dimension
+        if self.reduce_index == 'subsample':
+            dim_idx = np.arange(
+                0, (len(X[self.dim]) - self.new_len + 1), step)
+        elif self.reduce_index == 'head':
+            dim_idx = np.arange(
+                (len(X[self.dim]) - self.new_len + step) // step)
+        else:
+            raise KeyError('Unrecognized mode for index reduction')
+
+        # assign coordinates
+        coords_new = {
+            self.dim: X[self.dim].values[dim_idx],
+            self.new_dim: new_dim_coords
+        }
+
+        for c in X.coords:
+            if c != self.dim and self.dim in X[c].dims:
+                new_dims = list(X[c].dims) + [self.new_dim]
+                coords_new[c] = (new_dims,
+                    self._segment_array(X[c].values,
+                                        tuple(X[c].dims).index(self.dim)))
+            elif c != self.dim:
+                coords_new[c] = (X[c].dims, X[c])
+
+        return coords_new
+
+    def _restore_coords(self, X):
+
+        # restore original coord
+        coords_old = {
+            self.dim: self._rebuild_array(
+                X[self.keep_coords_as].values,
+                tuple(X[self.keep_coords_as].dims).index(self.dim))
+        }
+
+        X = X.drop(self.keep_coords_as)
+
+        for c in X.coords:
+            if c not in (self.dim, self.new_dim) and self.dim in X[c].dims:
+                new_dims = list(X[c].dims)
+                new_dims.remove(self.new_dim)
+                coords_old[c] = (new_dims,
+                    self._rebuild_array(X[c].values,
+                                        tuple(X[c].dims).index(self.dim)))
+            elif c not in (self.dim, self.new_dim):
+                coords_old[c] = (X[c].dims, X[c])
+
+        return coords_old
 
     def _transform(self, X):
         """ Transform. """
@@ -481,62 +617,48 @@ class Segmenter(BaseTransformer):
             raise ValueError('Name and length of new dimension must be '
                              'specified')
 
-        if self.step is None:
-            step = self.new_len
-        else:
-            step = self.step
+        Xt = X.copy()
 
-        # reduce indices of original dimension
-        if self.reduce_index == 'subsample':
-            dim_idx = np.arange(0, (len(X[self.dim]) - self.new_len + 1), step)
-        elif self.reduce_index == 'head':
-            dim_idx = np.arange(
-                (len(X[self.dim]) - self.new_len + step) // step)
-        else:
-            raise KeyError('Unrecognized mode for index reduction')
-
-        # get indices of new dimension
-        if self.new_index_func is None:
-            new_dim_coords = X[self.dim][:self.new_len]
-        else:
-            new_dim_coords = self.new_index_func(self.new_len)
+        # keep the original coord if desired
+        if self.keep_coords_as is not None:
+            Xt.coords[self.keep_coords_as] = Xt[self.dim]
 
         if self.type_ == 'Dataset':
-
             vars_t = dict()
-            for v in X.data_vars:
-                if self.dim in X[v].dims:
-                    new_dims = list(X[v].dims) + [self.new_dim]
-                    xv_t = self._segment_array(X[v].values, step, self.new_len,
-                                               X[v].dims.index(self.dim))
-                    vars_t[v] = (new_dims, xv_t)
-
-            coords_t = {self.new_dim: new_dim_coords}
-            for c in X.coords:
-                if self.dim in X[c].dims:
-                    coords_t[c] = (X[c].dims, X[c].isel(**{self.dim: dim_idx}))
-
+            for v in Xt.data_vars:
+                vars_t[v] = self._transform_var(Xt[v])
+            coords_t = self._update_coords(Xt)
             return xr.Dataset(vars_t, coords=coords_t)
 
         else:
-
-            if self.dim in X.dims:
-                new_dims = list(X.dims) + [self.new_dim]
-                x_t = self._segment_array(X.values, step, self.new_len,
-                                           X.dims.index(self.dim))
-
-            coords_t = {self.new_dim: new_dim_coords}
-            for c in X.coords:
-                if self.dim in X[c].dims:
-                    coords_t[c] = (X[c].dims, X[c].isel(**{self.dim: dim_idx}))
-
-            return xr.DataArray(x_t, coords=coords_t, dims=new_dims)
+            new_dims, var_t = self._transform_var(Xt)
+            coords_t = self._update_coords(Xt)
+            return xr.DataArray(var_t, coords=coords_t, dims=new_dims)
 
     def _inverse_transform(self, X):
         """ Reverse transform. """
 
-        raise NotImplementedError(
-            'inverse_transform has not yet been implemented for this estimator')
+        if None in (self.new_dim, self.new_len):
+            raise ValueError('Name and length of new dimension must be '
+                             'specified')
+
+        if self.keep_coords_as is None:
+            raise ValueError('keep_coords_as must be specified in order for '
+                             'inverse_transform to work.')
+
+        Xt = X.copy()
+
+        if self.type_ == 'Dataset':
+            vars_it = dict()
+            for v in Xt.data_vars:
+                vars_it[v] = self._inverse_transform_var(Xt[v])
+            coords_it = self._restore_coords(Xt)
+            return xr.Dataset(vars_it, coords=coords_it)
+
+        else:
+            new_dims, var_it = self._inverse_transform_var(Xt)
+            coords_it = self._restore_coords(Xt)
+            return xr.DataArray(var_it, coords=coords_it, dims=new_dims)
 
 
 def segment(X, return_estimator=False, **fit_params):
@@ -567,7 +689,7 @@ def segment(X, return_estimator=False, **fit_params):
 
 
 class Resampler(BaseTransformer):
-    """ Resamples along some dimension.
+    """ Resample along some dimension.
 
     Parameters
     ----------
@@ -668,12 +790,11 @@ class Resampler(BaseTransformer):
 
         else:
 
-            if self.dim in X.dims:
-                axis = X.dims.index(self.dim)
-                x_t = sig.resample_poly(X, num, den, axis=axis)
-                # trim the results because the length might be greater
-                I = [slice(None)] * x_t.ndim
-                I[axis] = np.arange(len(Xt_dim[self.dim]))
+            axis = X.dims.index(self.dim)
+            x_t = sig.resample_poly(X, num, den, axis=axis)
+            # trim the results because the length might be greater
+            I = [slice(None)] * x_t.ndim
+            I[axis] = np.arange(len(Xt_dim[self.dim]))
 
             # combine to new array
             return xr.DataArray(x_t, coords=coords_t, dims=X.dims)
@@ -713,7 +834,7 @@ def resample(X, return_estimator=False, **fit_params):
 
 
 class Concatenator(BaseTransformer):
-    """ Concatenates variables along a dimension.
+    """ Concatenate variables along a dimension.
 
     Parameters
     ----------
@@ -831,7 +952,7 @@ def concatenate(X, return_estimator=False, **fit_params):
 
 
 class Featurizer(BaseTransformer):
-    """ Stacks all dimensions and variables except for sample dimension.
+    """ Stack all dimensions and variables except for sample dimension.
 
     Parameters
     ----------
@@ -929,7 +1050,7 @@ def featurize(X, return_estimator=False, **fit_params):
 
 
 class Sanitizer(BaseTransformer):
-    """ Removes elements containing NaNs.
+    """ Remove elements containing NaNs.
 
     Parameters
     ----------
@@ -1002,7 +1123,7 @@ def sanitize(X, return_estimator=False, **fit_params):
 
 
 class Reducer(BaseTransformer):
-    """ Reduces data along some dimension.
+    """ Reduce data along some dimension.
 
     Parameters
     ----------

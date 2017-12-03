@@ -1,3 +1,7 @@
+"""
+``sklearn_xarray.model_selection``
+"""
+
 import numpy as np
 
 
@@ -6,15 +10,15 @@ class CrossValidatorWrapper(object):
 
     Parameters
     ----------
-    cross_validator : sklearn cross validator
-        TODO
+    cross_validator : sklearn cross-validator
+        An instance of a cross-validator.
 
     dim : str
-        TODO
+        The dimension along which to perform the split.
 
     groupby : str or list
-        TODO
-
+        Name of coordinate or list of coordinates by which the groups are
+        determined.
     """
 
     def __init__(self, cross_validator, dim='sample', groupby=None):
