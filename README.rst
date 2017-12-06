@@ -1,6 +1,6 @@
 .. -*- mode: rst -*-
 
-|Travis|_ |AppVeyor|_ |Coverage|_ |CircleCI|_ |PyPI|_
+|Travis|_ |AppVeyor|_ |CircleCI|_ |Coverage|_ |PyPI|_
 
 .. |Travis| image:: https://travis-ci.org/phausamann/sklearn-xarray.svg?branch=master
 .. _Travis: https://travis-ci.org/phausamann/sklearn-xarray
