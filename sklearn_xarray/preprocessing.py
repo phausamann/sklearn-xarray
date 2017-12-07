@@ -992,28 +992,29 @@ class Featurizer(BaseTransformer):
         self.groupby = groupby
         self.group_dim = group_dim
 
-    def _transform(self, X):
-        """ Transform. """
+    def _transform_var(self, X):
+        """ Transform a single variable. """
 
-        # convert to DataArray if necessary
-        if self.type_ == 'Dataset':
-            if len(X.data_vars) > 1:
-                X = X.to_array(dim='variable')
-            else:
-                X = X[X.data_vars.pop()]
-
-        # stack all dimensions except for sample dimension
         if self.order is not None:
             stack_dims = self.order
         else:
             stack_dims = tuple(set(X.dims) - {self.sample_dim})
 
-        X = X.stack(**{self.feature_dim: stack_dims})
+        return X.stack(**{self.feature_dim: stack_dims})
 
-        if self.type_ == 'Dataset' and not self.return_array:
-            return X.to_dataset(name=self.var_name)
+    def _transform(self, X):
+        """ Transform. """
+
+        # stack all dimensions except for sample dimension
+        if self.type_ == 'Dataset':
+            X = xr.concat([self._transform_var(X[v]) for v in X.data_vars],
+                           dim=self.feature_dim)
+            if self.return_array:
+                return X
+            else:
+                return X.to_dataset(name=self.var_name)
         else:
-            return X
+            return self._transform_var(X)
 
     def _inverse_transform(self, X):
         """ Reverse transform. """
