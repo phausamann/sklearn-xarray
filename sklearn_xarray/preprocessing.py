@@ -495,6 +495,8 @@ class Segmenter(BaseTransformer):
     def _rebuild_array(self, arr, axis):
         """ Rebuild an array along some axis. """
 
+        import numpy_groupies as npg
+
         if self.step is None:
             step = self.new_len
         else:
@@ -504,20 +506,32 @@ class Segmenter(BaseTransformer):
         old_shape = list(arr.shape)
         old_shape[axis] = old_shape[axis] * step + self.new_len - step
         old_shape = old_shape[:-1]
-        arr_old = np.zeros(old_shape, dtype=arr.dtype)
 
-        # setup up indices
-        idx_old = [slice(None)] * len(old_shape)
-        idx_new = [slice(None)] * arr.ndim
+        if np.issubdtype(arr.dtype, np.number):
 
-        # loop over axis
-        for n in range(arr.shape[axis]):
-            idx_old[axis] = n * step + np.arange(self.new_len)
-            idx_new[axis] = n
-            # TODO: mean of overlapping values?
-            arr_old[tuple(idx_old)] = arr[idx_new].T
+            # fast aggregate implementation for vars and numeric coords
+            old_ranges = [range(s) for s in old_shape]
+            idx = np.vstack(self._segment_array(g.T, axis).flatten()
+                            for g in np.meshgrid(*old_ranges))
+            return npg.aggregate(
+                idx, arr.flatten().T, size=old_shape, func='mean')
 
-        return arr_old
+        else:
+
+            # slow implementation for non-numeric coords
+            arr_old = np.zeros(old_shape, dtype=arr.dtype)
+
+            # setup up indices
+            idx_old = [slice(None)] * len(old_shape)
+            idx_new = [slice(None)] * arr.ndim
+
+            # loop over axis
+            for n in range(arr.shape[axis]):
+                idx_old[axis] = n * step + np.arange(self.new_len)
+                idx_new[axis] = n
+                arr_old[tuple(idx_old)] = arr[idx_new].T
+
+            return arr_old
 
     def _transform_var(self, X):
         """ Transform a single variable. """

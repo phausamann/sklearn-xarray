@@ -100,6 +100,20 @@ def test_dummy_transformer():
     assert_equal(yp, X)
 
 
+def test_wrapped_transformer():
+
+    from sklearn.preprocessing import StandardScaler
+
+    X = xr.Dataset(
+        {'var_1': (['sample', 'feature'], np.random.random((100, 10)))},
+        coords={'sample': range(100), 'feature': range(10)}
+    )
+
+    estimator = TransformerWrapper(StandardScaler()).fit(X)
+
+    assert_allclose(X, estimator.inverse_transform(estimator.transform(X)))
+
+
 def test_ndim_dummy_estimator():
 
     X = xr.Dataset(

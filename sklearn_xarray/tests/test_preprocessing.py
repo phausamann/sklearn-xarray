@@ -3,6 +3,7 @@ import xarray as xr
 import xarray.testing as xrt
 import numpy.testing as npt
 
+
 from sklearn_xarray.preprocessing import (
     preprocess, transpose, split, segment, resample, concatenate, featurize,
     sanitize, reduce, Transposer, Splitter
