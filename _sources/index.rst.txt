@@ -12,21 +12,24 @@ labels.
 .. _scikit-learn: http://scikit-learn.org/stable/
 .. _xarray: http://xarray.pydata.org
 
+The code repository is hosted on GitHub_.
+
+.. _GitHub: https://github.com/phausamann/sklearn-xarray
 
 Documentation
 -------------
 
     .. toctree::
-       :maxdepth: 1
+        :maxdepth: 1
 
-       content/intro
-       content/installation
-       content/wrappers
-       content/target
-       content/pipeline
-       content/transformers
+        content/intro
+        content/installation
+        content/wrappers
+        content/target
+        content/pipeline
+        content/transformers
 
-       content/api
+        content/api
 
 
 Indices and tables
