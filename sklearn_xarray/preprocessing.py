@@ -13,6 +13,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils.validation import check_is_fitted
 
 from .utils import get_group_indices, is_dataarray, is_dataset
+from .externals import numpy_groupies as npg
 
 
 def preprocess(X, function, groupby=None, group_dim='sample', **fit_params):
@@ -494,8 +495,6 @@ class Segmenter(BaseTransformer):
 
     def _rebuild_array(self, arr, axis):
         """ Rebuild an array along some axis. """
-
-        import numpy_groupies as npg
 
         if self.step is None:
             step = self.new_len
