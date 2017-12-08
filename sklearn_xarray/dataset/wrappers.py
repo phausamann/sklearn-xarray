@@ -208,6 +208,39 @@ class _ImplementsTransformMixin(_CommonEstimatorWrapper, TransformerMixin):
                 for v, e in six.iteritems(self.estimator_dict_)}
             return xr.Dataset(data_vars, coords=X.coords)
 
+    def inverse_transform(self, X):
+        """ A wrapper around the inverse transformation function.
+
+        Parameters
+        ----------
+        X : xarray Dataset
+            The input samples.
+
+        Returns
+        -------
+        y : xarray Dataset
+            The transformed output.
+        """
+
+        check_is_fitted(self, ['estimator_dict_'])
+
+        if not is_dataset(X):
+            # TODO: check if we need to handle the case when this fails
+            X = xr.Dataset(X)
+
+        if self.reshapes is not None:
+            data_vars = dict()
+            for v, e in six.iteritems(self.estimator_dict_):
+                yp_v, dims = self._inverse_transform(e, X[v])
+                data_vars[v] = (dims, yp_v)
+            coords = self._update_coords(X)
+            return xr.Dataset(data_vars, coords=coords)
+        else:
+            data_vars = {
+                v: (X[v].dims, e.inverse_transform(X[v]))
+                for v, e in six.iteritems(self.estimator_dict_)}
+            return xr.Dataset(data_vars, coords=X.coords)
+
 
 class _ImplementsScoreMixin(_CommonEstimatorWrapper):
 

@@ -95,14 +95,27 @@ def test_dummy_transformer():
         dims=['sample', 'feature']
     )
 
-    y = X
-
     estimator = TransformerWrapper(DummyTransformer())
 
     estimator.fit(X)
     yp = estimator.transform(X)
 
     assert_equal(yp, X)
+    
+    
+def test_wrapped_transformer():
+
+    from sklearn.preprocessing import StandardScaler
+
+    X = xr.DataArray(
+        np.random.random((100, 10)),
+        coords={'sample': range(100), 'feature': range(10)},
+        dims=['sample', 'feature']
+    )
+
+    estimator = TransformerWrapper(StandardScaler()).fit(X)
+
+    assert_allclose(X, estimator.inverse_transform(estimator.transform(X)))
 
 
 def test_ndim_dummy_estimator():
@@ -112,8 +125,6 @@ def test_ndim_dummy_estimator():
         coords={'sample': range(100), 'feat_1': range(10), 'feat_2': range(10)},
         dims=['sample', 'feat_1', 'feat_2']
     )
-
-    y = X
 
     estimator = RegressorWrapper(DummyEstimator())
 

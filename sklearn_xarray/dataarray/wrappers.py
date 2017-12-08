@@ -199,6 +199,35 @@ class _ImplementsTransformMixin(_CommonEstimatorWrapper, TransformerMixin):
             return xr.DataArray(
                 self.estimator_.transform(X), coords=X.coords, dims=X.dims)
 
+    def inverse_transform(self, X):
+        """ A wrapper around the inverse transformation function.
+
+        Parameters
+        ----------
+        X : xarray DataArray
+            The input samples.
+
+        Returns
+        -------
+        y : xarray DataArray
+            The transformed output.
+        """
+
+        check_is_fitted(self, ['estimator_'])
+
+        if not is_dataarray(X):
+            # TODO: check if we need to handle the case when this fails
+            X = xr.DataArray(X)
+
+        if self.reshapes is not None:
+            data, dims = self._inverse_transform(self.estimator_, X)
+            coords = self._update_coords(X)
+            return xr.DataArray(data, coords=coords, dims=dims)
+        else:
+            return xr.DataArray(
+                self.estimator_.inverse_transform(X), coords=X.coords,
+                dims=X.dims)
+
 
 class _ImplementsScoreMixin(_CommonEstimatorWrapper):
 

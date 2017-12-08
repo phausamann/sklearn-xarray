@@ -18,11 +18,12 @@ except ImportError:
     print('scipy is required during installation')
     sys.exit(1)
 
-setup(name='sklearn-xarray',
-      version='0.1',
-      description='xarray integration with sklearn',
-      author='Peter Hausamann',
-      packages=find_packages(),
-      install_requires=INSTALL_REQUIRES,
-      author_email='peter.hausamann@tum.de',
-      )
+setup(
+    name='sklearn-xarray',
+    version='0.1.1',
+    description='xarray integration with sklearn',
+    author='Peter Hausamann',
+    packages=find_packages(),
+    install_requires=INSTALL_REQUIRES,
+    author_email='peter.hausamann@tum.de',
+)

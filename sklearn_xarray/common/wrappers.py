@@ -125,12 +125,30 @@ class _CommonEstimatorWrapper(BaseEstimator):
         if self.sample_dim is not None:
             # transpose to sample dim first, transform and transpose back
             order = self._get_transpose_order(X)
-            X_arr = np.transpose(np.array(X), order)
+            X_arr = np.transpose(X.values, order)
             Xt = estimator.transform(X_arr)
             if Xt.ndim == X.ndim:
                 Xt = np.transpose(Xt, np.argsort(order))
         else:
             Xt = estimator.transform(np.array(X))
+
+        # update dims
+        dims_new = self._update_dims(X, Xt)
+
+        return Xt, dims_new
+
+    def _inverse_transform(self, estimator, X):
+        """ Inverse ransform with `estimator` and update coords and dims. """
+
+        if self.sample_dim is not None:
+            # transpose to sample dim first, transform and transpose back
+            order = self._get_transpose_order(X)
+            X_arr = np.transpose(X.values, order)
+            Xt = estimator.transform(X_arr)
+            if Xt.ndim == X.ndim:
+                Xt = np.transpose(Xt, np.argsort(order))
+        else:
+            Xt = estimator.inverse_transform(np.array(X))
 
         # update dims
         dims_new = self._update_dims(X, Xt)

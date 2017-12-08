@@ -3,6 +3,7 @@ import xarray as xr
 import xarray.testing as xrt
 import numpy.testing as npt
 
+
 from sklearn_xarray.preprocessing import (
     preprocess, transpose, split, segment, resample, concatenate, featurize,
     sanitize, reduce, Transposer, Splitter
@@ -222,17 +223,19 @@ def test_featurize():
 
     Xt_da = featurize(X_da)
 
+    assert Xt_da.shape == (100, 100)
+
     X_ds = xr.Dataset(
         {'var_1': (['sample', 'feat_1', 'feat_2'],
                    np.random.random((100, 10, 10))),
-         'var_2': (['sample', 'feat_1', 'feat_2'],
-                   np.random.random((100, 10, 10)))},
+         'var_2': (['sample', 'feat_1'],
+                   np.random.random((100, 10)))},
         coords={'sample': range(100), 'feat_1': range(10), 'feat_2': range(10)}
     )
 
-    Xt_ds = featurize(X_ds)
+    Xt_ds = featurize(X_ds, return_array=True)
 
-    #TODO: check result
+    assert Xt_ds.shape == (100, 110)
 
 
 def test_sanitize():
