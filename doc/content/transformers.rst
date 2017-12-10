@@ -30,8 +30,7 @@ circumvents this restriction with the :py:class:`Target` class.
 We look at an example where the digits dataset is loaded but some of the same
 are corrupted and contain ``nan`` values::
 
-    import sklearn_xarray.dataarray as da
-    from sklearn_xarray import Target
+    from sklearn_xarray import wrap, Target
     from sklearn_xarray.preprocessing import Sanitizer
     from sklearn_xarray.data import load_digits_dataarray
 
@@ -43,7 +42,7 @@ are corrupted and contain ``nan`` values::
 
     pipeline = Pipeline([
         ('san', Sanitizer()),
-        ('cls', da.wrap(LogisticRegression(), reshapes='feature'))
+        ('cls', wrap(LogisticRegression(), reshapes='feature'))
     ])
 
     pipeline.fit(X, y)
