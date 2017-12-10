@@ -32,7 +32,7 @@ conda create -n testenv --yes python=$PYTHON_VERSION pip nose \
 source activate testenv
 
 if [[ "$COVERAGE" == "true" ]]; then
-    conda install -c conda-forge coverage coveralls
+    conda install -c conda-forge --yes coverage coveralls
 fi
 
 python --version
