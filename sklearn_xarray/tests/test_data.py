@@ -18,9 +18,9 @@ def test_load_dummy_dataset():
 
 def test_load_digits_dataarray():
 
-    X = load_digits_dataarray()
+    X = load_digits_dataarray(nan_probability=0.1)
 
-    X = load_digits_dataarray(load_images=True)
+    X = load_digits_dataarray(load_images=True, nan_probability=0.1)
 
 
 def test_load_wisdm_dataarray():

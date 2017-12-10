@@ -22,6 +22,7 @@ Documentation
     .. toctree::
         :maxdepth: 1
 
+        content/whatsnew
         content/intro
         content/installation
         content/wrappers

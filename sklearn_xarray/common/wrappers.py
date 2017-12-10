@@ -1,211 +1,202 @@
-import numpy as np
-import xarray as xr
-from sklearn.base import clone, BaseEstimator, TransformerMixin
+""" ``sklearn_xarray.common.wrappers`` """
+
+from sklearn.base import clone
+from sklearn.utils.validation import check_X_y, check_array
+
+from .base import (
+    _CommonEstimatorWrapper, _ImplementsPredictMixin,
+    _ImplementsScoreMixin, _ImplementsTransformMixin
+)
+
+from sklearn_xarray.utils import is_dataarray, is_dataset, is_target
 
 
-class _CommonEstimatorWrapper(BaseEstimator):
-    """ Base class for DataArray and Dataset wrappers. """
+def wrap(estimator, reshapes=None, sample_dim=None, compat=False):
+    """ Wrap an sklearn estimator for xarray objects by guessing its type.
 
-    def _get_transpose_order(self, X):
-        """ Get the transpose order that puts the sample dim first. """
+    Parameters
+    ----------
+    estimator : sklearn estimator
+        The estimator instance this instance wraps around.
 
-        sample_axis = X.dims.index(self.sample_dim)
-        order = list(range(len(X.dims)))
-        order.remove(sample_axis)
-        order.insert(0, sample_axis)
+    reshapes : str or dict, optional
+        The dimension(s) reshaped by this estimator. Any coordinates in the
+        DataArray along these dimensions will be dropped. If the estimator drops
+        this dimension (e.g. a binary classifier returning a 1D vector), the
+        dimension itself will also be dropped.
 
-        return order
+        You can specify multiple dimensions mapping to multiple new dimensions
+        with a dict whose items are lists of reshaped dimensions, e.g.
+        ``{'new_feature': ['feature_1', 'feature_2'], ...}``
 
-    def _update_dims(self, X_in, X_out):
-        """ Update the dimensions of a reshaped DataArray. """
+    sample_dim : str, optional
+        The name of the dimension that represents the samples. By default,
+        the wrapper will assume that this is the first dimension in the array.
 
-        dims_new = list(X_in.dims)
+    compat : bool, optional
+        If True, ``set_params``/``get_params`` will only use the wrapper's
+        actual parameters and not those of the wrapped estimator. This might
+        be necessary when the estimator defines parameters with the same name
+        as the wrapper.
 
-        # dict syntax
-        if hasattr(self.reshapes, 'items'):
+    Returns
+    -------
+    A wrapped estimator.
+    """
 
-            # check if new dims are dropped by estimator
-            all_old_dims = []
-            for _, old_dims in self.reshapes.items():
-                all_old_dims += old_dims
-
-            if X_out.ndim == X_in.ndim-len(all_old_dims)+len(self.reshapes):
-                drop_new_dims = False
-            elif X_out.ndim == X_in.ndim-len(all_old_dims):
-                drop_new_dims = True
-            else:
-                raise ValueError(
-                    'Inconsistent dimensions returned by estimator')
-
-            # get new dims
-            for new_dim, old_dims in self.reshapes.items():
-                for d in old_dims:
-                    dims_new.remove(d)
-                if not drop_new_dims:
-                    dims_new.append(new_dim)
-
-        # string syntax
+    if hasattr(estimator, '_estimator_type'):
+        if estimator._estimator_type == 'classifier':
+            return ClassifierWrapper(
+                estimator, reshapes=reshapes, sample_dim=sample_dim,
+                compat=compat)
+        elif estimator._estimator_type == 'regressor':
+            return RegressorWrapper(
+                estimator, reshapes=reshapes, sample_dim=sample_dim,
+                compat=compat)
+        elif estimator._estimator_type == 'clusterer':
+            raise NotImplementedError(
+                'The wrapper for clustering estimators has not been '
+                'implemented yet.')
         else:
-            # check if dim is dropped by estimator
-            if X_out.ndim < X_in.ndim:
-                dims_new.remove(self.reshapes)
-
-        return dims_new
-
-    def _update_coords(self, X):
-        """ Update the coordinates of a reshaped DataArray. """
-
-        coords_new = dict()
-
-        # dict syntax
-        if hasattr(self.reshapes, 'items'):
-            # drop all coords along the reshaped dimensions
-            for _, old_dims in self.reshapes.items():
-                for c in X.coords:
-                    old_dims_in_c = [x for x in X[c].dims if x in old_dims]
-                    if any(old_dims_in_c) and c not in old_dims:
-                        c_t = X[c].isel(**{d: 0 for d in old_dims_in_c})
-                        new_dims = [d for d in X[c].dims if d not in old_dims]
-                        coords_new[c] = (new_dims, c_t.drop(old_dims_in_c))
-                    elif c not in old_dims:
-                        coords_new[c] = X[c]
-
-        # string syntax
+            raise ValueError('Could not determine type')
+    else:
+        if hasattr(estimator, 'transform'):
+            return TransformerWrapper(
+                estimator, reshapes=reshapes, sample_dim=sample_dim,
+                compat=compat)
         else:
-            # drop all coords along the reshaped dimensions
-            for c in X.coords:
-                if self.reshapes in X[c].dims and c != self.reshapes:
-                    c_t = X[c].isel(**{self.reshapes: 0})
-                    new_dims = [d for d in X[c].dims if d != self.reshapes]
-                    coords_new[c] = (new_dims, c_t.drop(self.reshapes))
-                elif c != self.reshapes:
-                    coords_new[c] = X[c]
+            raise ValueError('Could not determine type')
 
-        return coords_new
 
-    def _fit(self, X, y=None, **fit_params):
-        """ Tranpose if necessary and fit. """
+class EstimatorWrapper(_CommonEstimatorWrapper):
+    """ A wrapper around sklearn estimators compatible with xarray objects.
 
-        if self.sample_dim is not None:
-            order = self._get_transpose_order(X)
-            X = np.transpose(np.array(X), order)
-            if y is not None:
-                if y.ndim == X.ndim:
-                    y = np.transpose(np.array(y), order)
-                elif y.ndim == 1:
-                    y = np.array(y)
-                else:
-                    raise ValueError('Could not figure out how to transpose y.')
+    Parameters
+    ----------
+    estimator : sklearn estimator
+        The estimator instance this instance wraps around.
 
-        estimator_ = clone(self.estimator).fit(X, y, **fit_params)
+    reshapes : str or dict, optional
+        The dimension(s) reshaped by this estimator. Any coordinates in the
+        DataArray along these dimensions will be dropped. If the estimator drops
+        this dimension (e.g. a binary classifier returning a 1D vector), the
+        dimension itself will also be dropped.
 
-        return estimator_
+        You can specify multiple dimensions mapping to multiple new dimensions
+        with a dict whose items are lists of reshaped dimensions, e.g.
+        ``{'new_feature': ['feature_1', 'feature_2'], ...}``
 
-    def _predict(self, estimator, X):
-        """ Predict with `self.estimator` and update coords and dims. """
+    sample_dim : str, optional
+        The name of the dimension that represents the samples. By default,
+        the wrapper will assume that this is the first dimension in the array.
 
-        if self.sample_dim is not None:
-            # transpose to sample dim first, predict and transpose back
-            order = self._get_transpose_order(X)
-            X_arr = np.transpose(np.array(X), order)
-            yp = estimator.predict(X_arr)
-            if yp.ndim == X.ndim:
-                yp = np.transpose(yp, np.argsort(order))
+    compat : bool, optional
+        If True, ``set`_params``/``get_params`` will only use the wrapper's
+        actual parameters and not those of the wrapped estimator. This might
+        be necessary when the estimator defines parameters with the same name
+        as the wrapper.
+    """
+
+    def __init__(self, estimator=None, reshapes=None, sample_dim=None,
+                 compat=False, **fit_params):
+
+        if isinstance(estimator, type):
+            self.estimator = estimator(**fit_params)
         else:
-            yp = estimator.predict(np.array(X))
+            self.estimator = estimator
 
-        # update coords and dims
-        dims_new = self._update_dims(X, yp)
+        self.reshapes = reshapes
+        self.sample_dim = sample_dim
+        self.compat = compat
 
-        return yp, dims_new
-
-    def _transform(self, estimator, X):
-        """ Transform with `estimator` and update coords and dims. """
-
-        if self.sample_dim is not None:
-            # transpose to sample dim first, transform and transpose back
-            order = self._get_transpose_order(X)
-            X_arr = np.transpose(X.values, order)
-            Xt = estimator.transform(X_arr)
-            if Xt.ndim == X.ndim:
-                Xt = np.transpose(Xt, np.argsort(order))
-        else:
-            Xt = estimator.transform(np.array(X))
-
-        # update dims
-        dims_new = self._update_dims(X, Xt)
-
-        return Xt, dims_new
-
-    def _inverse_transform(self, estimator, X):
-        """ Inverse ransform with `estimator` and update coords and dims. """
-
-        if self.sample_dim is not None:
-            # transpose to sample dim first, transform and transpose back
-            order = self._get_transpose_order(X)
-            X_arr = np.transpose(X.values, order)
-            Xt = estimator.transform(X_arr)
-            if Xt.ndim == X.ndim:
-                Xt = np.transpose(Xt, np.argsort(order))
-        else:
-            Xt = estimator.inverse_transform(np.array(X))
-
-        # update dims
-        dims_new = self._update_dims(X, Xt)
-
-        return Xt, dims_new
-
-    def get_params(self, deep=True):
-        """ Get parameters for this estimator.
+    def fit(self, X, y=None, **fit_params):
+        """ A wrapper around the fitting function.
 
         Parameters
         ----------
-        deep : boolean, optional
-            If True, will return the parameters for this estimator and
-            contained subobjects that are estimators.
+        X : xarray DataArray, Dataset other other array-like
+            The training input samples.
+
+        y : xarray DataArray, Dataset other other array-like
+            The target values.
 
         Returns
         -------
-        params : mapping of string to any
-            Parameter names mapped to their values.
+        Returns self.
         """
 
-        if self.compat:
-            return BaseEstimator.get_params(self, deep)
+        if self.estimator is None:
+            raise ValueError('You must specify an estimator instance to wrap.')
+
+        if is_target(y):
+            y = y(X)
+
+        if is_dataarray(X):
+
+            self.type_ = 'DataArray'
+            self.estimator_ = self._fit(X, y, **fit_params)
+
+        elif is_dataset(X):
+
+            self.type_ = 'Dataset'
+            self.estimator_dict_ = {
+                v: self._fit(X[v], y, **fit_params) for v in X.data_vars}
 
         else:
-            if self.estimator is not None:
-                params = self.estimator.get_params(deep)
+
+            self.type_ = 'other'
+            if y is None:
+                X = check_array(X)
             else:
-                # TODO: check if this is necessary
-                params = dict()
+                X, y = check_X_y(X, y)
 
-            for p in self._get_param_names():
-                params[p] = getattr(self, p, None)
+            self.estimator_ = clone(self.estimator).fit(X, y, **fit_params)
 
-            return params
-
-    def set_params(self, **params):
-        """ Set the parameters of this estimator.
-
-        The method works on simple estimators as well as on nested objects
-        (such as pipelines). The latter have parameters of the form
-        ``<component>__<parameter>`` so that it's possible to update each
-        component of a nested object.
-
-        Returns
-        -------
-        self
-        """
-
-        if self.compat:
-            BaseEstimator.set_params(self, **params)
-
-        else:
-            for p in self._get_param_names():
-                if p in params:
-                    setattr(self, p, params.pop(p))
-
-            self.estimator.set_params(**params)
+            for v in vars(self.estimator_):
+                if v.endswith('_') and not v.startswith('_'):
+                    setattr(self, v, getattr(self.estimator_, v))
 
         return self
+
+
+class TransformerWrapper(EstimatorWrapper, _ImplementsTransformMixin):
+    """ A wrapper around sklearn transformers compatible with xarray objects.
+
+    Parameters
+    ----------
+    estimator : sklearn estimator
+        The estimator this instance wraps around.
+
+    reshapes : str or dict, optional
+        The dimension reshaped by this estimator.
+    """
+
+
+class RegressorWrapper(
+    EstimatorWrapper, _ImplementsPredictMixin, _ImplementsScoreMixin):
+    """ A wrapper around sklearn regressors compatible with xarray objects.
+
+    Parameters
+    ----------
+    estimator : sklearn estimator
+        The estimator this instance wraps around.
+
+    reshapes : str or dict, optional
+        The dimension reshaped by this estimator.
+    """
+    _estimator_type = "regressor"
+
+
+class ClassifierWrapper(
+    EstimatorWrapper, _ImplementsPredictMixin, _ImplementsScoreMixin):
+    """ A wrapper around sklearn classifiers compatible with xarray DataArrays.
+
+    Parameters
+    ----------
+    estimator : sklearn estimator
+        The estimator this instance wraps around.
+
+    reshapes : str or dict, optional
+        The dimension reshaped by this estimator.
+    """
+    _estimator_type = "classifier"

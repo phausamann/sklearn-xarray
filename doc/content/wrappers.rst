@@ -6,25 +6,26 @@ xarray DataArrays and Datasets. The goal is to provide a seamless integration
 of both packages by only applying estimator methods on the raw data while
 metadata (coordinates in xarray) remains untouched whereever possible.
 
-There are two different kinds of wrappers for the two principal data types in
-xarray: ``DataArray`` and ``Dataset``. Each kind of wrapper has its own module,
-:py:mod:`sklearn_xarray.dataarray` and :py:mod:`sklearn_xarray.dataset`.
+There are two principal data types in xarray: ``DataArray`` and ``Dataset``.
+The wrappers provided in this package will determine automatically which
+xarray type they're dealing with when you call ``fit`` and pass one of them
+as your training data.
 
 
 Wrapping estimators for DataArrays
 ----------------------------------
 
-.. py:currentmodule:: sklearn_xarray.dataarray
+.. py:currentmodule:: sklearn_xarray
 
 First, we look at a basic example that shows how to wrap an estimator from
 sklearn for use with a ``DataArray``::
 
-    import sklearn_xarray.dataarray as da
+    from sklearn_xarray import wrap
     from sklearn_xarray.data import load_dummy_dataarray
     from sklearn.preprocessing import StandardScaler
 
     X = load_dummy_dataarray()
-    Xt = da.wrap(StandardScaler()).fit_transform(X)
+    Xt = wrap(StandardScaler()).fit_transform(X)
 
 The :py:func:`wrap` function will try to guess the type of the estimator it
 wraps and return an object with the corresponding methods for each type of
@@ -81,7 +82,7 @@ dimension is changed with the ``reshapes`` parameter::
 
     from sklearn.decomposition import PCA
 
-    Xt = da.wrap(PCA(n_components=5), reshapes='feature').fit_transform(X)
+    Xt = wrap(PCA(n_components=5), reshapes='feature').fit_transform(X)
 
     In []: Xt
     Out[]:
@@ -108,7 +109,7 @@ The ``estimator`` attribute of the wrapper will always hold the unfitted
 estimator that was passed initially. After calling ``fit`` the fitted estimator
 will be stored in the ``estimator_`` attribute::
 
-    wrapper = da.wrap(StandardScaler())
+    wrapper = wrap(StandardScaler())
     wrapper.fit(X)
 
     In []: wrapper.estimator_.mean_
@@ -122,17 +123,16 @@ Wrapping estimators for Datasets
 
 .. py:currentmodule:: sklearn_xarray.dataset
 
-The syntax for Datasets is mostly the same as for DataArrays, only that it
-uses the :py:mod:`sklearn_xarray.dataset` module. Note that the wrapper will
-fit one estimator for each variable in the Dataset. The fitted estimators are
-stored in the attribute ``estimator_dict_``::
+The syntax for Datasets is exactly the same as for DataArrays. Note that the
+wrapper will fit one estimator for each variable in the Dataset. The fitted
+estimators are stored in the attribute ``estimator_dict_``::
 
-    import sklearn_xarray.dataset as ds
+    from sklearn_xarray import wrap
     from sklearn_xarray.data import load_dummy_dataset
     from sklearn.preprocessing import StandardScaler
 
     X = load_dummy_dataset()
-    wrapper = ds.wrap(StandardScaler())
+    wrapper = wrap(StandardScaler())
     wrapper.fit(X)
 
     In []: wrapper.estimator_dict_
