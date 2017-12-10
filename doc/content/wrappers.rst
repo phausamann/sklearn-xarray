@@ -8,8 +8,8 @@ metadata (coordinates in xarray) remains untouched whereever possible.
 
 There are two principal data types in xarray: ``DataArray`` and ``Dataset``.
 The wrappers provided in this package will determine automatically which
-xarray type they're dealing with when you call ``fit`` and pass one of them
-as your training data.
+xarray type they're dealing with when you call ``fit`` with either a
+DataArray or a Dataset as your training data.
 
 
 Wrapping estimators for DataArrays

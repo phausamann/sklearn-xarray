@@ -189,7 +189,7 @@ class RegressorWrapper(
 
 class ClassifierWrapper(
     EstimatorWrapper, _ImplementsPredictMixin, _ImplementsScoreMixin):
-    """ A wrapper around sklearn classifiers compatible with xarray DataArrays.
+    """ A wrapper around sklearn classifiers compatible with xarray objects.
 
     Parameters
     ----------
