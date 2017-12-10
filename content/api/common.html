@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>DataArray &mdash; sklearn-xarray 0.1.2-alpha documentation</title>
+  <title>Top-level functions and classes &mdash; sklearn-xarray 0.1.2-alpha documentation</title>
   
 
   
@@ -38,7 +38,8 @@
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
     <link rel="top" title="sklearn-xarray 0.1.2-alpha documentation" href="../../index.html"/>
-        <link rel="up" title="API Reference" href="../api.html"/> 
+        <link rel="up" title="API Reference" href="../api.html"/>
+        <link rel="prev" title="API Reference" href="../api.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -109,10 +110,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../api.html#utility-functions">Utility functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#datasets">Datasets</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../api.html#list-of-modules">List of modules</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="common.html">Top-level functions and classes</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">DataArray</a><ul class="simple">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Top-level functions and classes</a><ul class="simple">
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="dataarray.html">DataArray</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dataset.html">Dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="preprocessing.html">Preprocessing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="model_selection.html">Model Selection</a></li>
@@ -168,13 +169,13 @@
         
           <li><a href="../api.html">API Reference</a> &raquo;</li>
         
-      <li>DataArray</li>
+      <li>Top-level functions and classes</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/content/api/dataarray.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/content/api/common.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -187,12 +188,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-sklearn_xarray.dataarray">
-<span id="dataarray"></span><h1>DataArray<a class="headerlink" href="#module-sklearn_xarray.dataarray" title="Permalink to this headline">¶</a></h1>
-<p><code class="docutils literal"><span class="pre">sklearn_xarray.dataarray</span></code></p>
+  <div class="section" id="module-sklearn_xarray">
+<span id="top-level-functions-and-classes"></span><h1>Top-level functions and classes<a class="headerlink" href="#module-sklearn_xarray" title="Permalink to this headline">¶</a></h1>
+<p><code class="docutils literal"><span class="pre">sklearn_xarray</span></code></p>
 <dl class="function">
-<dt id="sklearn_xarray.dataarray.wrap">
-<code class="descname">wrap</code><span class="sig-paren">(</span><em>estimator</em>, <em>reshapes=None</em>, <em>sample_dim=None</em>, <em>compat=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/common/wrappers.html#wrap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.dataarray.wrap" title="Permalink to this definition">¶</a></dt>
+<dt id="sklearn_xarray.wrap">
+<code class="descname">wrap</code><span class="sig-paren">(</span><em>estimator</em>, <em>reshapes=None</em>, <em>sample_dim=None</em>, <em>compat=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/common/wrappers.html#wrap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.wrap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrap an sklearn estimator for xarray objects by guessing its type.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -234,8 +235,8 @@ as the wrapper.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="sklearn_xarray.dataarray.ClassifierWrapper">
-<em class="property">class </em><code class="descname">ClassifierWrapper</code><span class="sig-paren">(</span><em>estimator=None</em>, <em>reshapes=None</em>, <em>sample_dim=None</em>, <em>compat=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/common/wrappers.html#ClassifierWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.dataarray.ClassifierWrapper" title="Permalink to this definition">¶</a></dt>
+<dt id="sklearn_xarray.ClassifierWrapper">
+<em class="property">class </em><code class="descname">ClassifierWrapper</code><span class="sig-paren">(</span><em>estimator=None</em>, <em>reshapes=None</em>, <em>sample_dim=None</em>, <em>compat=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/common/wrappers.html#ClassifierWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.ClassifierWrapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>A wrapper around sklearn classifiers compatible with xarray DataArrays.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -280,8 +281,8 @@ as the wrapper.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="sklearn_xarray.dataarray.RegressorWrapper">
-<em class="property">class </em><code class="descname">RegressorWrapper</code><span class="sig-paren">(</span><em>estimator=None</em>, <em>reshapes=None</em>, <em>sample_dim=None</em>, <em>compat=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/common/wrappers.html#RegressorWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.dataarray.RegressorWrapper" title="Permalink to this definition">¶</a></dt>
+<dt id="sklearn_xarray.RegressorWrapper">
+<em class="property">class </em><code class="descname">RegressorWrapper</code><span class="sig-paren">(</span><em>estimator=None</em>, <em>reshapes=None</em>, <em>sample_dim=None</em>, <em>compat=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/common/wrappers.html#RegressorWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.RegressorWrapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>A wrapper around sklearn regressors compatible with xarray objects.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -326,8 +327,8 @@ as the wrapper.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="sklearn_xarray.dataarray.TransformerWrapper">
-<em class="property">class </em><code class="descname">TransformerWrapper</code><span class="sig-paren">(</span><em>estimator=None</em>, <em>reshapes=None</em>, <em>sample_dim=None</em>, <em>compat=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/common/wrappers.html#TransformerWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.dataarray.TransformerWrapper" title="Permalink to this definition">¶</a></dt>
+<dt id="sklearn_xarray.TransformerWrapper">
+<em class="property">class </em><code class="descname">TransformerWrapper</code><span class="sig-paren">(</span><em>estimator=None</em>, <em>reshapes=None</em>, <em>sample_dim=None</em>, <em>compat=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/common/wrappers.html#TransformerWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.TransformerWrapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>A wrapper around sklearn transformers compatible with xarray objects.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -374,6 +375,115 @@ as the wrapper.</p>
 </table>
 </dd></dl>
 
+<dl class="class">
+<dt id="sklearn_xarray.Target">
+<em class="property">class </em><code class="descname">Target</code><span class="sig-paren">(</span><em>coord=None</em>, <em>transformer=None</em>, <em>lazy=False</em>, <em>dim=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/target.html#Target"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.Target" title="Permalink to this definition">¶</a></dt>
+<dd><p>A pointer to xarray coordinates or variables to be used as a target.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>coord</strong> : str or None</p>
+<blockquote>
+<div><p>The coordinate or variable that holds the data of the target. If None,
+the target will be the entire DataArray/Dataset.</p>
+</div></blockquote>
+<p><strong>transformer</strong> : sklearn transformer or None</p>
+<blockquote>
+<div><p>Transforms the coordinate into an sklearn compatible target
+representation. If None, the target will be used as-is.</p>
+</div></blockquote>
+<p><strong>lazy</strong> : bool, optinonal</p>
+<blockquote>
+<div><p>If true, the target coordinate is only transformed by the transformer
+when needed. The transformer can implement a <code class="docutils literal"><span class="pre">get_transformed_shape</span></code>
+method that returns the shape after the transformation of the provided
+coordinate without actually transforming the data.</p>
+</div></blockquote>
+<p><strong>dim</strong> : str, optional</p>
+<blockquote class="last">
+<div><p>When set, multi-dimensional coordinates will be reduced to this
+dimension.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#sklearn_xarray.Target.ndim" title="sklearn_xarray.Target.ndim"><code class="xref py py-obj docutils literal"><span class="pre">ndim</span></code></a></td>
+<td>The number of dimensions of the transformed target.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#sklearn_xarray.Target.shape" title="sklearn_xarray.Target.shape"><code class="xref py py-obj docutils literal"><span class="pre">shape</span></code></a></td>
+<td>The shape of the transformed target.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(X)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#sklearn_xarray.Target.assign_to" title="sklearn_xarray.Target.assign_to"><code class="xref py py-obj docutils literal"><span class="pre">assign_to</span></code></a>(X)</td>
+<td><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="sklearn_xarray.Target.assign_to">
+<code class="descname">assign_to</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/target.html#Target.assign_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.Target.assign_to" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : xarray DataArray or Dataset</p>
+<blockquote>
+<div><p>The data whose coordinate is used as the target.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">self:</p>
+<blockquote class="last">
+<div><p>The target itself.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sklearn_xarray.Target.ndim">
+<code class="descname">ndim</code><a class="headerlink" href="#sklearn_xarray.Target.ndim" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of dimensions of the transformed target.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sklearn_xarray.Target.shape">
+<code class="descname">shape</code><a class="headerlink" href="#sklearn_xarray.Target.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>The shape of the transformed target.</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -383,6 +493,13 @@ as the wrapper.</p>
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../api.html" class="btn btn-neutral" title="API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

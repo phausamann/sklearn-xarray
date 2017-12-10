@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>API Reference &mdash; sklearn-xarray 0.1.0 documentation</title>
+  <title>API Reference &mdash; sklearn-xarray 0.1.2-alpha documentation</title>
   
 
   
@@ -37,8 +37,8 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="sklearn-xarray 0.1.0 documentation" href="../index.html"/>
-        <link rel="next" title="DataArray" href="api/dataarray.html"/>
+    <link rel="top" title="sklearn-xarray 0.1.2-alpha documentation" href="../index.html"/>
+        <link rel="next" title="Top-level functions and classes" href="api/common.html"/>
         <link rel="prev" title="Custom transformers" href="transformers.html"/> 
 
   
@@ -68,7 +68,7 @@
             
             
               <div class="version">
-                0.1
+                0.1.2
               </div>
             
           
@@ -93,6 +93,7 @@
             
             
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="whatsnew.html">What’s New</a></li>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wrappers.html">Wrappers for sklearn estimators</a></li>
@@ -100,6 +101,7 @@
 <li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipelining and cross-validation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="transformers.html">Custom transformers</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#wrappers">Wrappers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#dataarray-wrappers">DataArray wrappers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#dataset-wrappers">Dataset wrappers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#target">Target</a></li>
@@ -108,9 +110,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#utility-functions">Utility functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#datasets">Datasets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#list-of-modules">List of modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/common.html">Top-level functions and classes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/dataarray.html">DataArray</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/dataset.html">Dataset</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/target.html">Target</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/preprocessing.html">Preprocessing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/model_selection.html">Model Selection</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/utils.html">Utils</a></li>
@@ -184,73 +186,59 @@
             
   <div class="section" id="api-reference">
 <h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="dataarray-wrappers">
-<h2>DataArray wrappers<a class="headerlink" href="#dataarray-wrappers" title="Permalink to this headline">¶</a></h2>
-<p>Module: <a class="reference internal" href="api/dataarray.html#module-sklearn_xarray.dataarray" title="sklearn_xarray.dataarray"><code class="xref py py-mod docutils literal"><span class="pre">sklearn_xarray.dataarray</span></code></a></p>
+<div class="section" id="wrappers">
+<span id="api-wrappers"></span><h2>Wrappers<a class="headerlink" href="#wrappers" title="Permalink to this headline">¶</a></h2>
+<p>Module: <a class="reference internal" href="api/common.html#module-sklearn_xarray" title="sklearn_xarray"><code class="xref py py-mod docutils literal"><span class="pre">sklearn_xarray</span></code></a></p>
 <table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="api/dataarray.html#sklearn_xarray.dataarray.wrap" title="sklearn_xarray.dataarray.wrap"><code class="xref py py-obj docutils literal"><span class="pre">wrap</span></code></a></td>
-<td>Wrap an sklearn estimator for xarray DataArrays by guessing its type.</td>
+<tr class="row-odd"><td><a class="reference internal" href="api/common.html#sklearn_xarray.wrap" title="sklearn_xarray.wrap"><code class="xref py py-obj docutils literal"><span class="pre">wrap</span></code></a></td>
+<td>Wrap an sklearn estimator for xarray objects by guessing its type.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="api/dataarray.html#sklearn_xarray.dataarray.ClassifierWrapper" title="sklearn_xarray.dataarray.ClassifierWrapper"><code class="xref py py-obj docutils literal"><span class="pre">ClassifierWrapper</span></code></a></td>
+<tr class="row-even"><td><a class="reference internal" href="api/common.html#sklearn_xarray.ClassifierWrapper" title="sklearn_xarray.ClassifierWrapper"><code class="xref py py-obj docutils literal"><span class="pre">ClassifierWrapper</span></code></a></td>
 <td>A wrapper around sklearn classifiers compatible with xarray DataArrays.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="api/dataarray.html#sklearn_xarray.dataarray.RegressorWrapper" title="sklearn_xarray.dataarray.RegressorWrapper"><code class="xref py py-obj docutils literal"><span class="pre">RegressorWrapper</span></code></a></td>
-<td>A wrapper around sklearn regressors compatible with xarray DataArrays.</td>
+<tr class="row-odd"><td><a class="reference internal" href="api/common.html#sklearn_xarray.RegressorWrapper" title="sklearn_xarray.RegressorWrapper"><code class="xref py py-obj docutils literal"><span class="pre">RegressorWrapper</span></code></a></td>
+<td>A wrapper around sklearn regressors compatible with xarray objects.</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">TransformerWrapper</span></code></td>
-<td>A wrapper around sklearn transformers compatible with xarray DataArrays.</td>
+<tr class="row-even"><td><a class="reference internal" href="api/common.html#sklearn_xarray.TransformerWrapper" title="sklearn_xarray.TransformerWrapper"><code class="xref py py-obj docutils literal"><span class="pre">TransformerWrapper</span></code></a></td>
+<td>A wrapper around sklearn transformers compatible with xarray objects.</td>
 </tr>
 </tbody>
 </table>
+</div>
+<div class="section" id="dataarray-wrappers">
+<h2>DataArray wrappers<a class="headerlink" href="#dataarray-wrappers" title="Permalink to this headline">¶</a></h2>
+<p>Module: <a class="reference internal" href="api/dataarray.html#module-sklearn_xarray.dataarray" title="sklearn_xarray.dataarray"><code class="xref py py-mod docutils literal"><span class="pre">sklearn_xarray.dataarray</span></code></a></p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This module has been deprecated in favor of the more flexible top-level
+functions and classes (see <a class="reference internal" href="#api-wrappers"><span class="std std-ref">Wrappers</span></a>).</p>
+</div>
 </div>
 <div class="section" id="dataset-wrappers">
 <h2>Dataset wrappers<a class="headerlink" href="#dataset-wrappers" title="Permalink to this headline">¶</a></h2>
 <p>Module: <a class="reference internal" href="api/dataset.html#module-sklearn_xarray.dataset" title="sklearn_xarray.dataset"><code class="xref py py-mod docutils literal"><span class="pre">sklearn_xarray.dataset</span></code></a></p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="api/dataset.html#sklearn_xarray.dataset.wrap" title="sklearn_xarray.dataset.wrap"><code class="xref py py-obj docutils literal"><span class="pre">wrap</span></code></a></td>
-<td>Wrap an sklearn estimator for xarray Datasets by guessing its type.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="api/dataset.html#sklearn_xarray.dataset.ClassifierWrapper" title="sklearn_xarray.dataset.ClassifierWrapper"><code class="xref py py-obj docutils literal"><span class="pre">ClassifierWrapper</span></code></a></td>
-<td>A wrapper around sklearn classifiers compatible with xarray Datasets.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="api/dataset.html#sklearn_xarray.dataset.RegressorWrapper" title="sklearn_xarray.dataset.RegressorWrapper"><code class="xref py py-obj docutils literal"><span class="pre">RegressorWrapper</span></code></a></td>
-<td>A wrapper around sklearn regressors compatible with xarray Datasets.</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">TransformerWrapper</span></code></td>
-<td>A wrapper around sklearn transformers compatible with xarray Datasets.</td>
-</tr>
-</tbody>
-</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This module has been deprecated in favor of the more flexible top-level
+functions and classes (see <a class="reference internal" href="#api-wrappers"><span class="std std-ref">Wrappers</span></a>).</p>
+</div>
 </div>
 <div class="section" id="target">
 <h2>Target<a class="headerlink" href="#target" title="Permalink to this headline">¶</a></h2>
-<p>Module: <a class="reference internal" href="api/target.html#module-sklearn_xarray.target" title="sklearn_xarray.target"><code class="xref py py-mod docutils literal"><span class="pre">sklearn_xarray.target</span></code></a></p>
+<p>Module: <a class="reference internal" href="api/common.html#module-sklearn_xarray" title="sklearn_xarray"><code class="xref py py-mod docutils literal"><span class="pre">sklearn_xarray</span></code></a></p>
 <table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="api/target.html#sklearn_xarray.target.Target" title="sklearn_xarray.target.Target"><code class="xref py py-obj docutils literal"><span class="pre">Target</span></code></a></td>
-<td><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</td>
+<tr class="row-odd"><td><a class="reference internal" href="api/common.html#sklearn_xarray.Target" title="sklearn_xarray.Target"><code class="xref py py-obj docutils literal"><span class="pre">Target</span></code></a></td>
+<td>A pointer to xarray coordinates or variables to be used as a target.</td>
 </tr>
 </tbody>
 </table>
@@ -399,13 +387,13 @@
 <blockquote>
 <div><div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="api/common.html">Top-level functions and classes</a><ul class="simple">
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="api/dataarray.html">DataArray</a><ul class="simple">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api/dataset.html">Dataset</a><ul class="simple">
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="api/target.html">Target</a><ul class="simple">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api/preprocessing.html">Preprocessing</a><ul class="simple">
@@ -432,7 +420,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="api/dataarray.html" class="btn btn-neutral float-right" title="DataArray" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="api/common.html" class="btn btn-neutral float-right" title="Top-level functions and classes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="transformers.html" class="btn btn-neutral" title="Custom transformers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -466,7 +454,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.1.0',
+            VERSION:'0.1.2-alpha',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Overview: module code &mdash; sklearn-xarray 0.1.2-alpha documentation</title>
+  <title>What’s New &mdash; sklearn-xarray 0.1.2-alpha documentation</title>
   
 
   
@@ -37,7 +37,9 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="sklearn-xarray 0.1.2-alpha documentation" href="../index.html"/> 
+    <link rel="top" title="sklearn-xarray 0.1.2-alpha documentation" href="../index.html"/>
+        <link rel="next" title="Introduction" href="intro.html"/>
+        <link rel="prev" title="sklearn-xarray: Using scikit-learn with xarray" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -90,15 +92,21 @@
               
             
             
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="../content/whatsnew.html">What’s New</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../content/intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../content/installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../content/wrappers.html">Wrappers for sklearn estimators</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../content/target.html">Using coordinates as targets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../content/pipeline.html">Pipelining and cross-validation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../content/transformers.html">Custom transformers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../content/api.html">API Reference</a></li>
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">What’s New</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#v0-1-2-december-2017">v0.1.2 (December 2017)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#enhancements">Enhancements</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wrappers.html">Wrappers for sklearn estimators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="target.html">Using coordinates as targets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipelining and cross-validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformers.html">Custom transformers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
 </ul>
 
             
@@ -143,12 +151,14 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Overview: module code</li>
+      <li>What’s New</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
+            <a href="../_sources/content/whatsnew.rst.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
     
@@ -160,14 +170,24 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>All modules for which code is available</h1>
-<ul><li><a href="sklearn_xarray/common/wrappers.html">sklearn_xarray.common.wrappers</a></li>
-<li><a href="sklearn_xarray/data.html">sklearn_xarray.data</a></li>
-<li><a href="sklearn_xarray/model_selection.html">sklearn_xarray.model_selection</a></li>
-<li><a href="sklearn_xarray/preprocessing.html">sklearn_xarray.preprocessing</a></li>
-<li><a href="sklearn_xarray/target.html">sklearn_xarray.target</a></li>
-<li><a href="sklearn_xarray/utils.html">sklearn_xarray.utils</a></li>
-</ul>
+  <div class="section" id="what-s-new">
+<h1>What’s New<a class="headerlink" href="#what-s-new" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="v0-1-2-december-2017">
+<h2>v0.1.2 (December 2017)<a class="headerlink" href="#v0-1-2-december-2017" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="enhancements">
+<h3>Enhancements<a class="headerlink" href="#enhancements" title="Permalink to this headline">¶</a></h3>
+<p>The wrapping mechanism has been changed to work with both DataArrays and
+Datasets. From now on, you can use <code class="docutils literal"><span class="pre">from</span> <span class="pre">sklearn_xarray</span> <span class="pre">import</span> <span class="pre">wrap</span></code> which
+will automatically determine the type of xarray object when calling <code class="docutils literal"><span class="pre">fit</span></code>.
+Note that a wrapper fitted for DataArrays cannot be used for Datasets and
+vice-versa.</p>
+<p>The wrappers now also support passing an estimator type rather than an
+instance and passing the parameters of the wrapped estimator directly to the
+wrapper.</p>
+</div>
+</div>
+</div>
+
 
            </div>
            <div class="articleComments">
@@ -175,6 +195,15 @@
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="intro.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral" title="sklearn-xarray: Using scikit-learn with xarray" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

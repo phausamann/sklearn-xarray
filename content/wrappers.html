@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Wrappers for sklearn estimators &mdash; sklearn-xarray 0.1.0 documentation</title>
+  <title>Wrappers for sklearn estimators &mdash; sklearn-xarray 0.1.2-alpha documentation</title>
   
 
   
@@ -37,7 +37,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="sklearn-xarray 0.1.0 documentation" href="../index.html"/>
+    <link rel="top" title="sklearn-xarray 0.1.2-alpha documentation" href="../index.html"/>
         <link rel="next" title="Using coordinates as targets" href="target.html"/>
         <link rel="prev" title="Installation" href="installation.html"/> 
 
@@ -68,7 +68,7 @@
             
             
               <div class="version">
-                0.1
+                0.1.2
               </div>
             
           
@@ -93,6 +93,7 @@
             
             
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="whatsnew.html">What’s New</a></li>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Wrappers for sklearn estimators</a><ul>
@@ -175,22 +176,23 @@
 xarray DataArrays and Datasets. The goal is to provide a seamless integration
 of both packages by only applying estimator methods on the raw data while
 metadata (coordinates in xarray) remains untouched whereever possible.</p>
-<p>There are two different kinds of wrappers for the two principal data types in
-xarray: <code class="docutils literal"><span class="pre">DataArray</span></code> and <code class="docutils literal"><span class="pre">Dataset</span></code>. Each kind of wrapper has its own module,
-<a class="reference internal" href="api/dataarray.html#module-sklearn_xarray.dataarray" title="sklearn_xarray.dataarray"><code class="xref py py-mod docutils literal"><span class="pre">sklearn_xarray.dataarray</span></code></a> and <a class="reference internal" href="api/dataset.html#module-sklearn_xarray.dataset" title="sklearn_xarray.dataset"><code class="xref py py-mod docutils literal"><span class="pre">sklearn_xarray.dataset</span></code></a>.</p>
+<p>There are two principal data types in xarray: <code class="docutils literal"><span class="pre">DataArray</span></code> and <code class="docutils literal"><span class="pre">Dataset</span></code>.
+The wrappers provided in this package will determine automatically which
+xarray type they’re dealing with when you call <code class="docutils literal"><span class="pre">fit</span></code> and pass one of them
+as your training data.</p>
 <div class="section" id="wrapping-estimators-for-dataarrays">
 <h2>Wrapping estimators for DataArrays<a class="headerlink" href="#wrapping-estimators-for-dataarrays" title="Permalink to this headline">¶</a></h2>
 <p>First, we look at a basic example that shows how to wrap an estimator from
 sklearn for use with a <code class="docutils literal"><span class="pre">DataArray</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn_xarray.dataarray</span> <span class="k">as</span> <span class="nn">da</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn_xarray</span> <span class="k">import</span> <span class="n">wrap</span>
 <span class="kn">from</span> <span class="nn">sklearn_xarray.data</span> <span class="k">import</span> <span class="n">load_dummy_dataarray</span>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span>
 
 <span class="n">X</span> <span class="o">=</span> <span class="n">load_dummy_dataarray</span><span class="p">()</span>
-<span class="n">Xt</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">())</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">Xt</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">())</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The <a class="reference internal" href="api/dataarray.html#sklearn_xarray.dataarray.wrap" title="sklearn_xarray.dataarray.wrap"><code class="xref py py-func docutils literal"><span class="pre">wrap()</span></code></a> function will try to guess the type of the estimator it
+<p>The <a class="reference internal" href="api/common.html#sklearn_xarray.wrap" title="sklearn_xarray.wrap"><code class="xref py py-func docutils literal"><span class="pre">wrap()</span></code></a> function will try to guess the type of the estimator it
 wraps and return an object with the corresponding methods for each type of
 estimator (e.g. <code class="docutils literal"><span class="pre">predict</span></code> for classifiers and regressors).</p>
 <div class="admonition note">
@@ -242,7 +244,7 @@ wrapper will omit the coordinates along this dimension. You can specify which
 dimension is changed with the <code class="docutils literal"><span class="pre">reshapes</span></code> parameter:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="k">import</span> <span class="n">PCA</span>
 
-<span class="n">Xt</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span> <span class="n">reshapes</span><span class="o">=</span><span class="s1">&#39;feature&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">Xt</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span><span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span> <span class="n">reshapes</span><span class="o">=</span><span class="s1">&#39;feature&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
 <span class="n">In</span> <span class="p">[]:</span> <span class="n">Xt</span>
 <span class="n">Out</span><span class="p">[]:</span>
@@ -265,7 +267,7 @@ dimension is changed with the <code class="docutils literal"><span class="pre">r
 <p>The <code class="docutils literal"><span class="pre">estimator</span></code> attribute of the wrapper will always hold the unfitted
 estimator that was passed initially. After calling <code class="docutils literal"><span class="pre">fit</span></code> the fitted estimator
 will be stored in the <code class="docutils literal"><span class="pre">estimator_</span></code> attribute:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">wrapper</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">())</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">wrapper</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">())</span>
 <span class="n">wrapper</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
 <span class="n">In</span> <span class="p">[]:</span> <span class="n">wrapper</span><span class="o">.</span><span class="n">estimator_</span><span class="o">.</span><span class="n">mean_</span>
@@ -277,16 +279,15 @@ will be stored in the <code class="docutils literal"><span class="pre">estimator
 </div>
 <div class="section" id="wrapping-estimators-for-datasets">
 <h2>Wrapping estimators for Datasets<a class="headerlink" href="#wrapping-estimators-for-datasets" title="Permalink to this headline">¶</a></h2>
-<p>The syntax for Datasets is mostly the same as for DataArrays, only that it
-uses the <a class="reference internal" href="api/dataset.html#module-sklearn_xarray.dataset" title="sklearn_xarray.dataset"><code class="xref py py-mod docutils literal"><span class="pre">sklearn_xarray.dataset</span></code></a> module. Note that the wrapper will
-fit one estimator for each variable in the Dataset. The fitted estimators are
-stored in the attribute <code class="docutils literal"><span class="pre">estimator_dict_</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn_xarray.dataset</span> <span class="k">as</span> <span class="nn">ds</span>
+<p>The syntax for Datasets is exactly the same as for DataArrays. Note that the
+wrapper will fit one estimator for each variable in the Dataset. The fitted
+estimators are stored in the attribute <code class="docutils literal"><span class="pre">estimator_dict_</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn_xarray</span> <span class="k">import</span> <span class="n">wrap</span>
 <span class="kn">from</span> <span class="nn">sklearn_xarray.data</span> <span class="k">import</span> <span class="n">load_dummy_dataset</span>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span>
 
 <span class="n">X</span> <span class="o">=</span> <span class="n">load_dummy_dataset</span><span class="p">()</span>
-<span class="n">wrapper</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">())</span>
+<span class="n">wrapper</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">())</span>
 <span class="n">wrapper</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
 <span class="n">In</span> <span class="p">[]:</span> <span class="n">wrapper</span><span class="o">.</span><span class="n">estimator_dict_</span>
@@ -340,7 +341,7 @@ stored in the attribute <code class="docutils literal"><span class="pre">estimat
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.1.0',
+            VERSION:'0.1.2-alpha',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
