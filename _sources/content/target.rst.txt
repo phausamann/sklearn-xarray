@@ -7,8 +7,7 @@ With sklearn-xarray you can easily point an sklearn estimator to a
 coordinate in an xarray DataArray or Dataset in order to use it as a target
 for supervised learning. This is achieved with a :py:class:`Target` object::
 
-    import sklearn_xarray.dataarray as da
-    from sklearn_xarray import Target
+    from sklearn_xarray import wrap, Target
     from sklearn_xarray.data import load_digits_dataarray
 
     from sklearn.linear_model.logistic import LogisticRegression
@@ -49,7 +48,7 @@ target data will be the Dataset/DataArray itself.
 The Target object can be used as a target for a wrapped estimator in accordance
 with sklearn's usual syntax::
 
-    wrapper = da.wrap(LogisticRegression())
+    wrapper = wrap(LogisticRegression())
     wrapper.fit(X, y)
 
     In []: wrapper.score(X, y)
@@ -72,7 +71,7 @@ object implementing the sklearn transformer interface)::
 
     y = Target(coord='digit', transformer=LabelBinarizer())(X)
 
-    wrapper = da.wrap(MLPClassifier())
+    wrapper = wrap(MLPClassifier())
     wrapper.fit(X, y)
 
 

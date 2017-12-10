@@ -178,8 +178,8 @@ of both packages by only applying estimator methods on the raw data while
 metadata (coordinates in xarray) remains untouched whereever possible.</p>
 <p>There are two principal data types in xarray: <code class="docutils literal"><span class="pre">DataArray</span></code> and <code class="docutils literal"><span class="pre">Dataset</span></code>.
 The wrappers provided in this package will determine automatically which
-xarray type they’re dealing with when you call <code class="docutils literal"><span class="pre">fit</span></code> and pass one of them
-as your training data.</p>
+xarray type they’re dealing with when you call <code class="docutils literal"><span class="pre">fit</span></code> with either a
+DataArray or a Dataset as your training data.</p>
 <div class="section" id="wrapping-estimators-for-dataarrays">
 <h2>Wrapping estimators for DataArrays<a class="headerlink" href="#wrapping-estimators-for-dataarrays" title="Permalink to this headline">¶</a></h2>
 <p>First, we look at a basic example that shows how to wrap an estimator from
