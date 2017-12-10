@@ -5,13 +5,13 @@ import xarray as xr
 
 
 class Target(object):
-    """
+    """ A pointer to xarray coordinates or variables to be used as a target.
 
     Parameters
     ----------
     coord : str or None
-        The coordinate that holds the data of the target. If None, the target
-        will be the entire DataArray/Dataset.
+        The coordinate or variable that holds the data of the target. If None,
+        the target will be the entire DataArray/Dataset.
 
     transformer : sklearn transformer or None
         Transforms the coordinate into an sklearn compatible target

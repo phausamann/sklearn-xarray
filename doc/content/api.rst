@@ -1,12 +1,14 @@
 API Reference
 =============
 
-DataArray wrappers
-------------------
+.. _API/Wrappers:
 
-.. py:currentmodule:: sklearn_xarray.dataarray
+Wrappers
+--------
 
-Module: :py:mod:`sklearn_xarray.dataarray`
+.. py:currentmodule:: sklearn_xarray
+
+Module: :py:mod:`sklearn_xarray`
 
 .. autosummary::
     :nosignatures:
@@ -15,6 +17,17 @@ Module: :py:mod:`sklearn_xarray.dataarray`
     ClassifierWrapper
     RegressorWrapper
     TransformerWrapper
+
+DataArray wrappers
+------------------
+
+.. py:currentmodule:: sklearn_xarray.dataarray
+
+Module: :py:mod:`sklearn_xarray.dataarray`
+
+.. warning::
+    This module has been deprecated in favor of the more flexible top-level
+    functions and classes (see :ref:`API/Wrappers`).
 
 
 Dataset wrappers
@@ -24,21 +37,17 @@ Dataset wrappers
 
 Module: :py:mod:`sklearn_xarray.dataset`
 
-.. autosummary::
-    :nosignatures:
-
-    wrap
-    ClassifierWrapper
-    RegressorWrapper
-    TransformerWrapper
+.. warning::
+    This module has been deprecated in favor of the more flexible top-level
+    functions and classes (see :ref:`API/Wrappers`).
 
 
 Target
 ------
 
-.. py:currentmodule:: sklearn_xarray.target
+.. py:currentmodule:: sklearn_xarray
 
-Module: :py:mod:`sklearn_xarray.target`
+Module: :py:mod:`sklearn_xarray`
 
 .. autosummary::
     :nosignatures:
@@ -136,9 +145,9 @@ List of modules
 
     .. toctree::
 
+        api/common
         api/dataarray
         api/dataset
-        api/target
         api/preprocessing
         api/model_selection
         api/utils

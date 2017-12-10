@@ -1,10 +1,15 @@
 from __future__ import print_function
 import sys
 from setuptools import setup, find_packages
+from distutils.util import convert_path
 
 with open('requirements.txt') as f:
     INSTALL_REQUIRES = [l.strip() for l in f.readlines() if l]
 
+main_ns = {}
+ver_path = convert_path('sklearn_xarray/version.py')
+with open(ver_path) as ver_file:
+    exec(ver_file.read(), main_ns)
 
 try:
     import numpy
@@ -20,7 +25,7 @@ except ImportError:
 
 setup(
     name='sklearn-xarray',
-    version='0.1.1',
+    version=main_ns['__version__'],
     description='xarray integration with sklearn',
     author='Peter Hausamann',
     packages=find_packages(),

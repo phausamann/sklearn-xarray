@@ -5,7 +5,7 @@ import numpy.testing as npt
 
 from sklearn.base import BaseEstimator, TransformerMixin
 
-from sklearn_xarray.dataarray import (
+from sklearn_xarray import (
     wrap, TransformerWrapper, ClassifierWrapper, RegressorWrapper)
 
 
