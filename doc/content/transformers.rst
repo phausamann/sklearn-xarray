@@ -27,8 +27,9 @@ package does not provide any mechanism of also changing the number of samples
 of the target in a pipelined supervised learning task. sklearn-xarray
 circumvents this restriction with the :py:class:`Target` class.
 
-We look at an example where the digits dataset is loaded but some of the same
-are corrupted and contain ``nan`` values::
+We look at an example where the digits dataset is loaded but some of the
+samples are corrupted and contain ``nan`` values. The :py:class:`Sanitizer`
+transformer removes these samples from the dataset::
 
     from sklearn_xarray import wrap, Target
     from sklearn_xarray.preprocessing import Sanitizer
