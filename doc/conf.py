@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# project-template documentation build configuration file, created by
+# sklearn-xarray documentation build configuration file, created by
 # sphinx-quickstart on Mon Jan 18 14:44:12 2016.
 #
 # This file is execfile()d with the current directory set to its
@@ -215,7 +215,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'project-templatedoc'
+htmlhelp_basename = 'sklearn-xarraydoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -235,7 +235,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'project-template.tex', u'project-template Documentation',
+  ('index', 'sklearn-xarray.tex', u'sklearn-xarray Documentation',
    u'Peter Hausamann', 'manual'),
 ]
 
@@ -265,8 +265,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'project-template', u'project-template Documentation',
-     [u'Vighnesh Birodkar'], 1)
+    ('index', 'sklearn-xarray', u'sklearn-xarray Documentation',
+     [u'Peter Hausamann'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -279,8 +279,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'project-template', u'project-template Documentation',
-   u'Vighnesh Birodkar', 'project-template', 'One line description of project.',
+  ('index', 'sklearn-xarray', u'sklearn-xarray Documentation',
+   u'Peter Hausamann', 'sklearn-xarray', 'Integrate xarray and sklearn.',
    'Miscellaneous'),
 ]
 
