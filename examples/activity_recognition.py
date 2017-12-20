@@ -1,24 +1,29 @@
-""" Activity recognition with accelerometer data
+"""
+Activity recognition from accelerometer data
+============================================
 
-This demo shows how the `sklearn_xarray` package works with the `Pipeline` and
-`GridSearchCV` methods from scikit-learn providing a metadata-aware
+This demo shows how the **sklearn-xarray** package works with the ``Pipeline``
+and ``GridSearchCV`` methods from scikit-learn providing a metadata-aware
 grid-searchable pipeline mechansism.
 
-The package combines the metadata-handling capabilities of `xarray` with the
-machine-learning framework of `sklearn`. It enables the user to apply
+The package combines the metadata-handling capabilities of xarray with the
+machine-learning framework of sklearn. It enables the user to apply
 preprocessing steps group by group, use transformers that change the number
 of samples, use metadata directly as labels for classification tasks and more.
 
 The example performs activity recognition from raw accelerometer data with a
-feedforward neural network. It uses the WISDM activity prediction dataset
-(http://www.cis.fordham.edu/wisdm/dataset.php) which contains the activities
+feedforward neural network. It uses the `WISDM activity prediction dataset`__
+which contains the activities
 walking, jogging, walking upstairs, walking downstairs, sitting and standing
 from 36 different subjects.
+
+.. _WISDM: http://www.cis.fordham.edu/wisdm/dataset.php
+
+__ WISDM_
 """
 
 
-import sklearn_xarray.dataarray as da
-from sklearn_xarray import Target
+from sklearn_xarray import wrap, Target
 from sklearn_xarray.preprocessing import (Splitter, Sanitizer, Featurizer)
 from sklearn_xarray.model_selection import CrossValidatorWrapper
 from sklearn_xarray.data import load_wisdm_dataarray
@@ -47,8 +52,8 @@ pl = Pipeline([
         groupby=['subject', 'activity'], new_dim='timepoints')),
     ('sanitizer', Sanitizer()),
     ('featurizer', Featurizer()),
-    ('scaler', da.TransformerWrapper(StandardScaler())),
-    ('mlp', da.ClassifierWrapper(MLPClassifier(), reshapes='features'))
+    ('scaler', wrap(StandardScaler)),
+    ('mlp', wrap(MLPClassifier, reshapes='features'))
 ])
 
 # Since we want to use cross-validated grid search to find the best model
