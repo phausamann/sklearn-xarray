@@ -30,6 +30,7 @@ Documentation
         content/pipeline
         content/transformers
 
+        auto_examples/index
         content/api
 
 
