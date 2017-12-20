@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; sklearn-xarray 0.1.2-alpha documentation</title>
+  <title>Activity recognition from accelerometer data &mdash; sklearn-xarray 0.1.2-alpha documentation</title>
   
 
   
@@ -37,7 +37,10 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="sklearn-xarray 0.1.2-alpha documentation" href="../index.html"/> 
+    <link rel="top" title="sklearn-xarray 0.1.2-alpha documentation" href="../index.html"/>
+        <link rel="up" title="General examples" href="index.html"/>
+        <link rel="next" title="API Reference" href="../content/api.html"/>
+        <link rel="prev" title="General examples" href="index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -90,7 +93,7 @@
               
             
             
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../content/whatsnew.html">What’s New</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../content/intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../content/installation.html">Installation</a></li>
@@ -98,6 +101,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../content/target.html">Using coordinates as targets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../content/pipeline.html">Pipelining and cross-validation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../content/transformers.html">Custom transformers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">General examples</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Activity recognition from accelerometer data</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../content/api.html">API Reference</a></li>
 </ul>
 
@@ -143,7 +150,9 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>&lt;no title&gt;</li>
+          <li><a href="index.html">General examples</a> &raquo;</li>
+        
+      <li>Activity recognition from accelerometer data</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -162,22 +171,21 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <blockquote id="sphx-glr-auto-examples-activity-recognition-py">
-<div>Activity recognition with accelerometer data</div></blockquote>
-<p>This demo shows how the <cite>sklearn_xarray</cite> package works with the <cite>Pipeline</cite> and
-<cite>GridSearchCV</cite> methods from scikit-learn providing a metadata-aware
+  <div class="section" id="activity-recognition-from-accelerometer-data">
+<span id="sphx-glr-auto-examples-activity-recognition-py"></span><h1>Activity recognition from accelerometer data<a class="headerlink" href="#activity-recognition-from-accelerometer-data" title="Permalink to this headline">¶</a></h1>
+<p>This demo shows how the <strong>sklearn-xarray</strong> package works with the <code class="docutils literal"><span class="pre">Pipeline</span></code>
+and <code class="docutils literal"><span class="pre">GridSearchCV</span></code> methods from scikit-learn providing a metadata-aware
 grid-searchable pipeline mechansism.</p>
-<p>The package combines the metadata-handling capabilities of <cite>xarray</cite> with the
-machine-learning framework of <cite>sklearn</cite>. It enables the user to apply
+<p>The package combines the metadata-handling capabilities of xarray with the
+machine-learning framework of sklearn. It enables the user to apply
 preprocessing steps group by group, use transformers that change the number
 of samples, use metadata directly as labels for classification tasks and more.</p>
 <p>The example performs activity recognition from raw accelerometer data with a
-feedforward neural network. It uses the WISDM activity prediction dataset
-(<a class="reference external" href="http://www.cis.fordham.edu/wisdm/dataset.php">http://www.cis.fordham.edu/wisdm/dataset.php</a>) which contains the activities
+feedforward neural network. It uses the <a class="reference external" href="http://www.cis.fordham.edu/wisdm/dataset.php">WISDM activity prediction dataset</a>
+which contains the activities
 walking, jogging, walking upstairs, walking downstairs, sitting and standing
 from 36 different subjects.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn_xarray.dataarray</span> <span class="kn">as</span> <span class="nn">da</span>
-<span class="kn">from</span> <span class="nn">sklearn_xarray</span> <span class="kn">import</span> <span class="n">Target</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn_xarray</span> <span class="kn">import</span> <span class="n">wrap</span><span class="p">,</span> <span class="n">Target</span>
 <span class="kn">from</span> <span class="nn">sklearn_xarray.preprocessing</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Splitter</span><span class="p">,</span> <span class="n">Sanitizer</span><span class="p">,</span> <span class="n">Featurizer</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">sklearn_xarray.model_selection</span> <span class="kn">import</span> <span class="n">CrossValidatorWrapper</span>
 <span class="kn">from</span> <span class="nn">sklearn_xarray.data</span> <span class="kn">import</span> <span class="n">load_wisdm_dataarray</span>
@@ -206,8 +214,8 @@ from 36 different subjects.</p>
         <span class="n">groupby</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">,</span> <span class="s1">&#39;activity&#39;</span><span class="p">],</span> <span class="n">new_dim</span><span class="o">=</span><span class="s1">&#39;timepoints&#39;</span><span class="p">)),</span>
     <span class="p">(</span><span class="s1">&#39;sanitizer&#39;</span><span class="p">,</span> <span class="n">Sanitizer</span><span class="p">()),</span>
     <span class="p">(</span><span class="s1">&#39;featurizer&#39;</span><span class="p">,</span> <span class="n">Featurizer</span><span class="p">()),</span>
-    <span class="p">(</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span> <span class="n">da</span><span class="o">.</span><span class="n">TransformerWrapper</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">())),</span>
-    <span class="p">(</span><span class="s1">&#39;mlp&#39;</span><span class="p">,</span> <span class="n">da</span><span class="o">.</span><span class="n">ClassifierWrapper</span><span class="p">(</span><span class="n">MLPClassifier</span><span class="p">(),</span> <span class="n">reshapes</span><span class="o">=</span><span class="s1">&#39;features&#39;</span><span class="p">))</span>
+    <span class="p">(</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span> <span class="n">wrap</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s1">&#39;mlp&#39;</span><span class="p">,</span> <span class="n">wrap</span><span class="p">(</span><span class="n">MLPClassifier</span><span class="p">,</span> <span class="n">reshapes</span><span class="o">=</span><span class="s1">&#39;features&#39;</span><span class="p">))</span>
 <span class="p">])</span>
 
 <span class="c1"># Since we want to use cross-validated grid search to find the best model</span>
@@ -246,6 +254,7 @@ from 36 different subjects.</p>
 <a class="reference download internal" href="../_downloads/activity_recognition.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">activity_recognition.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
 
 
            </div>
@@ -254,6 +263,15 @@ from 36 different subjects.</p>
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../content/api.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="General examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

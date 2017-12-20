@@ -38,7 +38,7 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="sklearn-xarray 0.1.2-alpha documentation" href="../index.html"/>
-        <link rel="next" title="API Reference" href="api.html"/>
+        <link rel="next" title="General examples" href="../auto_examples/index.html"/>
         <link rel="prev" title="Pipelining and cross-validation" href="pipeline.html"/> 
 
   
@@ -105,6 +105,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#wrapping-custom-functions">Wrapping custom functions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">General examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
 </ul>
 
@@ -202,8 +203,9 @@ namely:</p>
 package does not provide any mechanism of also changing the number of samples
 of the target in a pipelined supervised learning task. sklearn-xarray
 circumvents this restriction with the <code class="xref py py-class docutils literal"><span class="pre">Target</span></code> class.</p>
-<p>We look at an example where the digits dataset is loaded but some of the same
-are corrupted and contain <code class="docutils literal"><span class="pre">nan</span></code> values:</p>
+<p>We look at an example where the digits dataset is loaded but some of the
+samples are corrupted and contain <code class="docutils literal"><span class="pre">nan</span></code> values. The <a class="reference internal" href="api/preprocessing.html#sklearn_xarray.preprocessing.Sanitizer" title="sklearn_xarray.preprocessing.Sanitizer"><code class="xref py py-class docutils literal"><span class="pre">Sanitizer</span></code></a>
+transformer removes these samples from the dataset:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn_xarray</span> <span class="k">import</span> <span class="n">wrap</span><span class="p">,</span> <span class="n">Target</span>
 <span class="kn">from</span> <span class="nn">sklearn_xarray.preprocessing</span> <span class="k">import</span> <span class="n">Sanitizer</span>
 <span class="kn">from</span> <span class="nn">sklearn_xarray.data</span> <span class="k">import</span> <span class="n">load_digits_dataarray</span>
@@ -299,7 +301,7 @@ also supports groupwise transformations.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="api.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../auto_examples/index.html" class="btn btn-neutral float-right" title="General examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="pipeline.html" class="btn btn-neutral" title="Pipelining and cross-validation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

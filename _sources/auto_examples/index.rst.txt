@@ -11,7 +11,7 @@ Introductory examples.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This demo shows how the `sklearn_xarray` package works with the `Pipeline` and `GridSearchCV` m...">
+    <div class="sphx-glr-thumbcontainer" tooltip="This demo shows how the **sklearn-xarray** package works with the ``Pipeline`` and ``GridSearch...">
 
 .. only:: html
 
