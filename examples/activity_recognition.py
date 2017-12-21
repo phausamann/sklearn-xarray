@@ -33,11 +33,12 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import GroupShuffleSplit, GridSearchCV
 from sklearn.pipeline import Pipeline
 
-
+##############################################################################
 # First, we load the dataset.
 
 X = load_wisdm_dataarray()
 
+##############################################################################
 # Then we define a pipeline with various preprocessing steps and a classifier.
 #
 # The preprocessing consists of splitting the data into segments, removing
@@ -56,6 +57,7 @@ pl = Pipeline([
     ('mlp', wrap(MLPClassifier, reshapes='features'))
 ])
 
+##############################################################################
 # Since we want to use cross-validated grid search to find the best model
 # parameters, we define a cross-validator. In order to make sure the model
 # performs subject-independent recognition, we use a `GroupShuffleSplit`
@@ -65,6 +67,7 @@ pl = Pipeline([
 cv = CrossValidatorWrapper(
     GroupShuffleSplit(n_splits=3, test_size=0.3), groupby=['subject'])
 
+##############################################################################
 # The grid search will try different combinations of segment length and
 # neural network layers to find the best parameters for this task.
 
@@ -74,11 +77,13 @@ gs = GridSearchCV(
         'mlp__hidden_layer_sizes': [(100,), (100, 50)]
     })
 
+##############################################################################
 # The label to classify is the activity which we convert to a binary
 # representation for the classification.
 
 y = Target('activity', LabelBinarizer(), dim='sample')(X)
 
+##############################################################################
 # Finally, we run the grid search.
 
 gs.fit(X, y)

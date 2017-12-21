@@ -69,6 +69,8 @@ For the latest version, you can also install from source::
 Example
 -------------
 
-The example `examples/activity_recognition.py` demonstrates how to use the
+The `activity recognition example`_ demonstrates how to use the
 package for cross-validated grid search for an activity recognition task. The
 example is also present as a jupyter notebook.
+
+.. _activity recognition example: https://phausamann.github.io/sklearn-xarray/auto_examples/activity_recognition.html
