@@ -2,22 +2,38 @@ language: python
 
 cache:
   apt: true
-  # We use three different cache directory
-  # to work around a Travis bug with multi-platform cache
   directories:
-  - $HOME/.cache/pip
-  - $HOME/download
+  - "$HOME/.cache/pip"
+  - "$HOME/download"
+
 env:
   global:
-    # Directory where tests are run from
-    - TEST_DIR=/tmp/test_dir/
-    - MODULE=sklearn_xarray
+  - TEST_DIR=/tmp/test_dir/
+  - MODULE=sklearn_xarray
   matrix:
-    - DISTRIB="conda" PYTHON_VERSION="2.7"
-    - DISTRIB="conda" PYTHON_VERSION="3.5"
-    - DISTRIB="conda" PYTHON_VERSION="3.6" COVERAGE="true"
-      #NUMPY_VERSION="1.13.1" SCIPY_VERSION="1.0.0" CYTHON_VERSION="0.25.2"
+  - DISTRIB="conda" PYTHON_VERSION="2.7"
+  - DISTRIB="conda" PYTHON_VERSION="3.5" COVERAGE="true"
 
 install: source build_tools/travis/install.sh
 script: bash build_tools/travis/test.sh
-after_success: source build_tools/travis/success.sh
+
+after_success:
+  - source build_tools/travis/success.sh
+  - chmod +x build_tools/travis/deploy_anaconda.sh
+
+deploy:
+
+  - provider: pypi
+    user: phausamann
+    password:
+      secure: cRtfmsupJcyrZ1EU+NJ1eng0Abn9LeDVHLf1xZ1/1sg3qq6PwJwxNFJHTMin0sIJXERFAGG3btRnFqiwYsrxF7OdWObDYZN3G9riKKhS2Z5bSanWyrQk4XF/s9haONHKv2falsZ6nnux9GDMod+ojPzedNGagISLsLixHMRZmYFnUAJtdzDOm6PoNTui0+0C3bHoAIPu+FZJ1rPV1xmGM+4YGLg/j3yFt6SIY0XYY9d2torXSwD1E0+8V/kPxTcyNCQVE9LlFP3v9xLt2wYq7ehjGbetehSZyJxjchjtgABBMBkGTKqBwb3pgagaRmC9KVatpRVVVSLJRZAbFOmfK3QkZzrVzDVwOEloVhhUxUAm3rZDbZHmvHO0maS5VkpDAb3lE1edLziLiD0qqLBSuy5Tru+uELa6IO6gO8r/dA8usnKAcNWHIjrpLd3W7P+btjrmrSx8ReYs9PitKFiCLgleoAJGZFoSN0sOIAimCzvIsCvJyjlbHOvDyb+ziqvxu66yz/hBmupGibIT2529pyVW713gBOyrIvsLqzX3uDw6aYMTSi4aYp5+sfkCA5RE8Fc6PEPnqj6LbWjBF6bgelj3wUc9J4ZniuSWFMDKmBhk/p/j9CRg7RYQ5g+lK5E0oJma0vThqx8MKDivVk4oOMD8txcA0g1DJn8oE6i4ptc=
+    on:
+      branch: master
+      tags: true
+    skip_cleanup: true
+
+  - provider: script
+    script: build_tools/travis/deploy_anaconda.sh
+    on:
+      tags: true
+    skip_cleanup: true
