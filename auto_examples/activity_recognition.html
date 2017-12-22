@@ -194,22 +194,19 @@ from 36 different subjects.</p>
 <span class="kn">from</span> <span class="nn">sklearn.neural_network</span> <span class="kn">import</span> <span class="n">MLPClassifier</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GroupShuffleSplit</span><span class="p">,</span> <span class="n">GridSearchCV</span>
 <span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
-
-
-<span class="c1"># First, we load the dataset.</span>
-
-<span class="n">X</span> <span class="o">=</span> <span class="n">load_wisdm_dataarray</span><span class="p">()</span>
-
-<span class="c1"># Then we define a pipeline with various preprocessing steps and a classifier.</span>
-<span class="c1">#</span>
-<span class="c1"># The preprocessing consists of splitting the data into segments, removing</span>
-<span class="c1"># segments with `nan` values and standardizing. Since the accelerometer data is</span>
-<span class="c1"># three-dimensional but the standardizer and classifier expect a one-dimensional</span>
-<span class="c1"># feature vector, we have to vectorize the samples.</span>
-<span class="c1">#</span>
-<span class="c1"># Finally, we use a feedforward neural network to perform the classification.</span>
-
-<span class="n">pl</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+</pre></div>
+</div>
+<p>First, we load the dataset.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">load_wisdm_dataarray</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Then we define a pipeline with various preprocessing steps and a classifier.</p>
+<p>The preprocessing consists of splitting the data into segments, removing
+segments with <cite>nan</cite> values and standardizing. Since the accelerometer data is
+three-dimensional but the standardizer and classifier expect a one-dimensional
+feature vector, we have to vectorize the samples.</p>
+<p>Finally, we use a feedforward neural network to perform the classification.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">pl</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
     <span class="p">(</span><span class="s1">&#39;splitter&#39;</span><span class="p">,</span> <span class="n">Splitter</span><span class="p">(</span>
         <span class="n">groupby</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">,</span> <span class="s1">&#39;activity&#39;</span><span class="p">],</span> <span class="n">new_dim</span><span class="o">=</span><span class="s1">&#39;timepoints&#39;</span><span class="p">)),</span>
     <span class="p">(</span><span class="s1">&#39;sanitizer&#39;</span><span class="p">,</span> <span class="n">Sanitizer</span><span class="p">()),</span>
@@ -217,33 +214,33 @@ from 36 different subjects.</p>
     <span class="p">(</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span> <span class="n">wrap</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">)),</span>
     <span class="p">(</span><span class="s1">&#39;mlp&#39;</span><span class="p">,</span> <span class="n">wrap</span><span class="p">(</span><span class="n">MLPClassifier</span><span class="p">,</span> <span class="n">reshapes</span><span class="o">=</span><span class="s1">&#39;features&#39;</span><span class="p">))</span>
 <span class="p">])</span>
-
-<span class="c1"># Since we want to use cross-validated grid search to find the best model</span>
-<span class="c1"># parameters, we define a cross-validator. In order to make sure the model</span>
-<span class="c1"># performs subject-independent recognition, we use a `GroupShuffleSplit`</span>
-<span class="c1"># cross-validator that ensures that the same subject will not appear in both</span>
-<span class="c1"># training and validation set.</span>
-
-<span class="n">cv</span> <span class="o">=</span> <span class="n">CrossValidatorWrapper</span><span class="p">(</span>
+</pre></div>
+</div>
+<p>Since we want to use cross-validated grid search to find the best model
+parameters, we define a cross-validator. In order to make sure the model
+performs subject-independent recognition, we use a <cite>GroupShuffleSplit</cite>
+cross-validator that ensures that the same subject will not appear in both
+training and validation set.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">cv</span> <span class="o">=</span> <span class="n">CrossValidatorWrapper</span><span class="p">(</span>
     <span class="n">GroupShuffleSplit</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">),</span> <span class="n">groupby</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">])</span>
-
-<span class="c1"># The grid search will try different combinations of segment length and</span>
-<span class="c1"># neural network layers to find the best parameters for this task.</span>
-
-<span class="n">gs</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span>
+</pre></div>
+</div>
+<p>The grid search will try different combinations of segment length and
+neural network layers to find the best parameters for this task.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">gs</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span>
     <span class="n">pl</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">param_grid</span><span class="o">=</span><span class="p">{</span>
         <span class="s1">&#39;splitter__new_len&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">],</span>
         <span class="s1">&#39;mlp__hidden_layer_sizes&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="mi">100</span><span class="p">,),</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">)]</span>
     <span class="p">})</span>
-
-<span class="c1"># The label to classify is the activity which we convert to a binary</span>
-<span class="c1"># representation for the classification.</span>
-
-<span class="n">y</span> <span class="o">=</span> <span class="n">Target</span><span class="p">(</span><span class="s1">&#39;activity&#39;</span><span class="p">,</span> <span class="n">LabelBinarizer</span><span class="p">(),</span> <span class="n">dim</span><span class="o">=</span><span class="s1">&#39;sample&#39;</span><span class="p">)(</span><span class="n">X</span><span class="p">)</span>
-
-<span class="c1"># Finally, we run the grid search.</span>
-
-<span class="n">gs</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The label to classify is the activity which we convert to a binary
+representation for the classification.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">Target</span><span class="p">(</span><span class="s1">&#39;activity&#39;</span><span class="p">,</span> <span class="n">LabelBinarizer</span><span class="p">(),</span> <span class="n">dim</span><span class="o">=</span><span class="s1">&#39;sample&#39;</span><span class="p">)(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally, we run the grid search.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">gs</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
