@@ -5,6 +5,10 @@ data/
 doc/modules/
 doc/_build/
 doc/auto_examples/
+coverage/
+
+# So far, all html files are auto-generated
+*.html
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
