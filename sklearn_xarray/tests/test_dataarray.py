@@ -246,7 +246,27 @@ def test_sample_dim():
         dims=['feature', 'sample']
     )
 
-    Xt = wrap(PCA(n_components=5), reshapes='feature',
-              sample_dim='sample').fit_transform(X)
+    wrapper = wrap(PCA(n_components=5), reshapes='feature', sample_dim='sample')
+
+    Xt = wrapper.fit_transform(X)
+    Xr = wrapper.inverse_transform(Xt)
 
     npt.assert_equal(Xt.shape, (5, 100))
+    npt.assert_equal(Xr.shape, (10, 100))
+
+
+def test_score():
+
+    from sklearn.linear_model import LinearRegression
+
+    X = xr.DataArray(
+        np.random.random((100, 10)),
+        coords={'sample': range(100), 'feature': range(10)},
+        dims=['sample', 'feature']
+    )
+
+    y = np.random.random(100)
+
+    wrapper = wrap(LinearRegression, reshapes='feature').fit(X, y)
+
+    wrapper.score(X, y)
