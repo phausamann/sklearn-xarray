@@ -138,3 +138,31 @@ estimators are stored in the attribute ``estimator_dict_``::
     In []: wrapper.estimator_dict_
     Out[]: {'var_1': StandardScaler(copy=True, with_mean=True, with_std=True)}
 
+
+Wrapping dask-ml estimators
+---------------------------
+
+The dask-ml_ package re-implements a number of scikit-learn estimators for
+use with dask_ on-disk arrays. You can wrap these estimators in the same way
+in order to work with dask-backed DataArrays and Datasets::
+
+    from sklearn_xarray import wrap
+    from dask_ml.preprocessing import StandardScaler
+    import xarray as xr
+    import numpy as np
+    import dask.array as da
+
+    X = xr.DataArray(
+            da.from_array(np.random.random((100, 10)), chunks=(10, 10)),
+            coords={'sample': range(100), 'feature': range(10)},
+            dims=('sample', 'feature')
+        )
+
+    Xt = wrap(StandardScaler()).fit_transform(X)
+
+    In []: type(Xt.data)
+    Out[]: dask.array.core.Array
+
+
+.. _dask-ml: http://dask-ml.readthedocs.io/en/latest/index.html
+.. _dask: http://dask.pydata.org/en/latest/
