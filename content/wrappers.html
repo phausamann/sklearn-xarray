@@ -101,6 +101,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#estimators-changing-the-shape-of-the-data">Estimators changing the shape of the data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#accessing-fitted-estimators">Accessing fitted estimators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#wrapping-estimators-for-datasets">Wrapping estimators for Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#wrapping-dask-ml-estimators">Wrapping dask-ml estimators</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="target.html">Using coordinates as targets</a></li>
@@ -293,6 +294,30 @@ estimators are stored in the attribute <code class="docutils literal"><span clas
 
 <span class="n">In</span> <span class="p">[]:</span> <span class="n">wrapper</span><span class="o">.</span><span class="n">estimator_dict_</span>
 <span class="n">Out</span><span class="p">[]:</span> <span class="p">{</span><span class="s1">&#39;var_1&#39;</span><span class="p">:</span> <span class="n">StandardScaler</span><span class="p">(</span><span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_mean</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_std</span><span class="o">=</span><span class="kc">True</span><span class="p">)}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="wrapping-dask-ml-estimators">
+<h2>Wrapping dask-ml estimators<a class="headerlink" href="#wrapping-dask-ml-estimators" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference external" href="http://dask-ml.readthedocs.io/en/latest/index.html">dask-ml</a> package re-implements a number of scikit-learn estimators for
+use with <a class="reference external" href="http://dask.pydata.org/en/latest/">dask</a> on-disk arrays. You can wrap these estimators in the same way
+in order to work with dask-backed DataArrays and Datasets:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn_xarray</span> <span class="k">import</span> <span class="n">wrap</span>
+<span class="kn">from</span> <span class="nn">dask_ml.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">dask.array</span> <span class="k">as</span> <span class="nn">da</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
+        <span class="n">da</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">)),</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)),</span>
+        <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span> <span class="s1">&#39;feature&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)},</span>
+        <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;sample&#39;</span><span class="p">,</span> <span class="s1">&#39;feature&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="n">Xt</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">())</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[]:</span> <span class="nb">type</span><span class="p">(</span><span class="n">Xt</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[]:</span> <span class="n">dask</span><span class="o">.</span><span class="n">array</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Array</span>
 </pre></div>
 </div>
 </div>

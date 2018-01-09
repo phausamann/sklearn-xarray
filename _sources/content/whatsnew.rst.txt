@@ -1,6 +1,19 @@
 What's New
 ==========
 
+v0.1.3 (January 9, 2018)
+------------------------
+
+Enhancements
+~~~~~~~~~~~~
+
+The wrapper now passes the DataArray's ``data`` attribute to the wrapped
+estimator, making it possible to wrap estimators from dask-ml_ and use
+dask-backed DataArrays and Datasets as inputs.
+
+.. _dask-ml: http://dask-ml.readthedocs.io/en/latest/index.html
+
+
 v0.1.2 (December 10, 2017)
 --------------------------
 
