@@ -21,7 +21,6 @@ def test_regressor():
     # TODO: check_estimator(regressor(LinearRegression))
 
 
-
 def test_transformer():
 
     check_estimator(TransformerWrapper(StandardScaler))

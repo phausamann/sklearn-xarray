@@ -243,3 +243,19 @@ def test_sample_dim():
               sample_dim='sample').fit_transform(X)
 
     npt.assert_equal(Xt.var_1.shape, (5, 100))
+
+
+def test_score():
+
+    from sklearn.linear_model import LinearRegression
+
+    X = xr.Dataset(
+        {'var_1': (['sample', 'feature'], np.random.random((100, 10)))},
+        coords={'sample': range(100), 'feature': range(10)}
+    )
+
+    y = np.random.random(100)
+
+    wrapper = wrap(LinearRegression, reshapes='feature').fit(X, y)
+
+    wrapper.score(X, y)
