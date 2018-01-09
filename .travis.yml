@@ -19,7 +19,7 @@ script: bash build_tools/travis/test.sh
 
 after_success:
   - source build_tools/travis/success.sh
-  - chmod +x build_tools/travis/deploy_anaconda.sh
+#  - chmod +x build_tools/travis/deploy_anaconda.sh
 
 deploy:
 
@@ -32,8 +32,9 @@ deploy:
       tags: true
     skip_cleanup: true
 
-  - provider: script
-    script: build_tools/travis/deploy_anaconda.sh
-    on:
-      tags: true
-    skip_cleanup: true
+#  - provider: script
+#    script: build_tools/travis/deploy_anaconda.sh
+#    on:
+#      branch: master
+#      tags: true
+#    skip_cleanup: true
