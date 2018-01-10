@@ -23,10 +23,14 @@ except ImportError:
     print('scipy is required during installation')
     sys.exit(1)
 
+with open('README.rst') as f:
+    readme = f.read()
+
 setup(
     name='sklearn-xarray',
     version=main_ns['__version__'],
     description='xarray integration with sklearn',
+    long_description=readme,
     author='Peter Hausamann',
     packages=find_packages(),
     install_requires=INSTALL_REQUIRES,

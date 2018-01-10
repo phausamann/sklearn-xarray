@@ -74,6 +74,42 @@ before you submit a pull request:
 -  All public methods should have informative docstrings with sample
    usage presented as doctests when appropriate.
 
+- If you add a new module, add a file ``doc/content/api/your_module.rst`` that
+  looks as follows::
+
+      <Your module title>
+      ===================
+
+      .. automodule:: sklearn_xarray.your_module
+         :members:
+
+
+- Update ``doc/content/api.rst`` by adding a section for your module that looks
+  like this::
+
+      <Your module title>
+      ------------------
+
+      .. py:currentmodule:: sklearn_xarray.your_module
+
+      Module: :py:mod:`sklearn_xarray.your_module`
+
+      .. autosummary::
+          :nosignatures:
+
+          YourClass1
+          YourClass2
+          your_function_1
+          your_function_2
+
+  and add ``api/your_module.rst`` to the toctree at the end of the file. If you
+  add new classes or functions to an existing module you just have to
+  add their names to the ``autosummary`` list like in the snippet above.
+
+- If you add new functionality you should demonstrate it by adding an example
+  in the ``examples`` folder. Take a look at the source code of the existing
+  examples as a syntax reference.
+
 -  Documentation and high-coverage tests are necessary for enhancements to be
    accepted. Bug-fixes or new features should be provided with
    `non-regression tests <https://en.wikipedia.org/wiki/Non-regression_testing>`_.

@@ -16,6 +16,8 @@ def classifier(cls):
                 cls, reshapes=reshapes, sample_dim=sample_dim,
                 compat=compat, **fit_params)
 
+    ClassifierWrapper.__name__ = 'sklearn_xarray.ClassifierWrapper'
+
     return ClassifierWrapper
 
 
@@ -29,6 +31,8 @@ def regressor(cls):
             super(RegressorWrapper, self).__init__(
                 cls, reshapes=reshapes, sample_dim=sample_dim,
                 compat=compat, **fit_params)
+
+    RegressorWrapper.__name__ = 'sklearn_xarray.RegressorWrapper'
 
     return RegressorWrapper
 
@@ -44,5 +48,7 @@ def transformer(cls):
             super(TransformerWrapper, self).__init__(
                 cls, reshapes=reshapes, sample_dim=sample_dim,
                 compat=compat, **fit_params)
+
+    TransformerWrapper.__name__ = 'sklearn_xarray.TransformerWrapper'
 
     return TransformerWrapper
