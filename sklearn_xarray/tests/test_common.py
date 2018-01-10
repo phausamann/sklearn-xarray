@@ -25,3 +25,10 @@ def test_transformer():
 
     check_estimator(TransformerWrapper(StandardScaler))
     # TODO: check_estimator(transformer(StandardScaler))
+
+
+def test_decorators():
+
+    assert issubclass(classifier(SVC), ClassifierWrapper)
+    assert issubclass(regressor(LinearRegression), RegressorWrapper)
+    assert issubclass(transformer(StandardScaler), TransformerWrapper)

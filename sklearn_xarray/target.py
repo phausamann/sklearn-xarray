@@ -9,13 +9,18 @@ class Target(object):
 
     Parameters
     ----------
-    coord : str or None
-        The coordinate or variable that holds the data of the target. If None,
-        the target will be the entire DataArray/Dataset.
+    coord : str, optional
+        The coordinate or variable that holds the data of the target. If not
+        specified, the target will be the entire DataArray/Dataset.
 
-    transformer : sklearn transformer or None
-        Transforms the coordinate into an sklearn compatible target
-        representation. If None, the target will be used as-is.
+    transform_func : callable, optional
+        A function that transforms the coordinate values to an
+        sklearn-compatible type and shape. If not specified, the coordinate(s)
+        will be used as-is.
+
+    transformer : sklearn transformer, optional
+        **Deprecated**, use ``transform_func=Transformer().fit_transform``
+        instead.
 
     lazy : bool, optinonal
         If true, the target coordinate is only transformed by the transformer
@@ -23,18 +28,36 @@ class Target(object):
         method that returns the shape after the transformation of the provided
         coordinate without actually transforming the data.
 
-    dim : str, optional
+    dim : str or sequence of str, optional
         When set, multi-dimensional coordinates will be reduced to this
-        dimension.
-
+        dimension/these dimensions.
+        
+    reduce_func : callable, optional
+        A callable that reduces the coordinate(s) to the dimension(s) in
+        ``dim``. If not specified, the values along dimensions not in ``dim``
+        will be reduced to the first element in each of these dimensions.
     """
 
-    def __init__(self, coord=None, transformer=None, lazy=False, dim=None):
+    def __init__(self, coord=None, transform_func=None, transformer=None,
+                 lazy=False, dim=None, reduce_func=None):
 
+        self.transform_func = transform_func
         self.coord = coord
-        self.transformer = transformer
         self.lazy = lazy
+        self.reduce_func = reduce_func
         self.dim = dim
+
+        self.transformer = transformer
+        if transformer is not None:
+            import warnings
+            warnings.simplefilter('always', DeprecationWarning)
+            warnings.warn(
+                'The transformer argument is deprecated and will be removed '
+                'in a future version. Use '
+                'transform_func=Transformer().fit_transform instead.',
+                DeprecationWarning)
+            warnings.simplefilter('ignore', DeprecationWarning)
+            self.transform_func = self.transformer.fit_transform
 
         self.values = None
 
@@ -47,7 +70,7 @@ class Target(object):
         new_obj = copy.copy(self)
 
         if self.lazy:
-            new_obj.values = self.transformer.fit_transform(self.values)[key]
+            new_obj.values = self.transform_func(self.values)[key]
             new_obj.lazy = False
         else:
             new_obj.values = self.values[key]
@@ -77,17 +100,36 @@ class Target(object):
 
         self._check_assigned()
 
-        if not self.lazy or self.transformer is None:
+        if not self.lazy or self.transform_func is None:
             return np.array(self.values, dtype=dtype)
         else:
-            return np.array(
-                self.transformer.fit_transform(self.values), dtype=dtype)
+            return np.array(self.transform_func(self.values), dtype=dtype)
 
     def _check_assigned(self):
         """ Check if this instance has been assigned data. """
 
         if self.values is None and self.lazy:
             raise ValueError('This instance has not been assigned any data.')
+
+    def _reduce(self, values):
+        """ Reduce values to dimension(s). """
+
+        if self.dim is None:
+            return values
+
+        if isinstance(self.dim, str):
+            dim = [self.dim]
+        else:
+            dim = self.dim
+
+        if self.reduce_func is None:
+            for d in values.dims:
+                if d not in dim:
+                    values = values.isel(**{d: 0})
+            return values
+        else:
+            other_dims = [d for d in values.dims if d not in dim]
+            return values.reduce(self.reduce_func, dim=other_dims)
 
     @property
     def shape(self):
@@ -114,7 +156,7 @@ class Target(object):
             return self.__array__().ndim
 
     def assign_to(self, X):
-        """
+        """ Assign this target to a DataArray or Dataset.
 
         Parameters
         ----------
@@ -130,16 +172,11 @@ class Target(object):
         from .utils import convert_to_ndarray
 
         if self.coord is not None:
-            self.values = X[self.coord]
+            self.values = self._reduce(X[self.coord])
         else:
-            self.values = convert_to_ndarray(X)
+            self.values = self._reduce(X)
 
-        if self.dim is not None:
-            for d in self.values.dims:
-                if d != self.dim:
-                    self.values = self.values.isel(**{d: 0})
-
-        if not self.lazy and self.transformer is not None:
-            self.values = self.transformer.fit_transform(self.values)
+        if not self.lazy and self.transform_func is not None:
+            self.values = self.transform_func(self.values)
 
         return self
