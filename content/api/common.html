@@ -396,21 +396,27 @@ as the wrapper.</p>
 
 <dl class="class">
 <dt id="sklearn_xarray.Target">
-<em class="property">class </em><code class="descname">Target</code><span class="sig-paren">(</span><em>coord=None</em>, <em>transformer=None</em>, <em>lazy=False</em>, <em>dim=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/target.html#Target"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.Target" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descname">Target</code><span class="sig-paren">(</span><em>coord=None</em>, <em>transform_func=None</em>, <em>transformer=None</em>, <em>lazy=False</em>, <em>dim=None</em>, <em>reduce_func=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/target.html#Target"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.Target" title="Permalink to this definition">¶</a></dt>
 <dd><p>A pointer to xarray coordinates or variables to be used as a target.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>coord</strong> : str or None</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>coord</strong> : str, optional</p>
 <blockquote>
-<div><p>The coordinate or variable that holds the data of the target. If None,
-the target will be the entire DataArray/Dataset.</p>
+<div><p>The coordinate or variable that holds the data of the target. If not
+specified, the target will be the entire DataArray/Dataset.</p>
 </div></blockquote>
-<p><strong>transformer</strong> : sklearn transformer or None</p>
+<p><strong>transform_func</strong> : callable, optional</p>
 <blockquote>
-<div><p>Transforms the coordinate into an sklearn compatible target
-representation. If None, the target will be used as-is.</p>
+<div><p>A function that transforms the coordinate values to an
+sklearn-compatible type and shape. If not specified, the coordinate(s)
+will be used as-is.</p>
+</div></blockquote>
+<p><strong>transformer</strong> : sklearn transformer, optional</p>
+<blockquote>
+<div><p><strong>Deprecated</strong>, use <code class="docutils literal"><span class="pre">transform_func=Transformer().fit_transform</span></code>
+instead.</p>
 </div></blockquote>
 <p><strong>lazy</strong> : bool, optinonal</p>
 <blockquote>
@@ -419,10 +425,16 @@ when needed. The transformer can implement a <code class="docutils literal"><spa
 method that returns the shape after the transformation of the provided
 coordinate without actually transforming the data.</p>
 </div></blockquote>
-<p><strong>dim</strong> : str, optional</p>
-<blockquote class="last">
+<p><strong>dim</strong> : str or sequence of str, optional</p>
+<blockquote>
 <div><p>When set, multi-dimensional coordinates will be reduced to this
-dimension.</p>
+dimension/these dimensions.</p>
+</div></blockquote>
+<p><strong>reduce_func</strong> : callable, optional</p>
+<blockquote class="last">
+<div><p>A callable that reduces the coordinate(s) to the dimension(s) in
+<code class="docutils literal"><span class="pre">dim</span></code>. If not specified, the values along dimensions not in <code class="docutils literal"><span class="pre">dim</span></code>
+will be reduced to the first element in each of these dimensions.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -454,22 +466,15 @@ dimension.</p>
 <td></td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#sklearn_xarray.Target.assign_to" title="sklearn_xarray.Target.assign_to"><code class="xref py py-obj docutils literal"><span class="pre">assign_to</span></code></a>(X)</td>
-<td><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</td>
+<td>Assign this target to a DataArray or Dataset.</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="sklearn_xarray.Target.assign_to">
 <code class="descname">assign_to</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/target.html#Target.assign_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.Target.assign_to" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Assign this target to a DataArray or Dataset.</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
