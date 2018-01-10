@@ -1,7 +1,7 @@
 Contributing to sklearn-xarray
 ==============================
 
-These guidelines have been largely adapted from the
+These guidelines have been largely adopted from the
 `scikit-learn contribution guidelines <https://github.com/scikit-learn/scikit-learn/blob/master/CONTRIBUTING.md>`_.
 
 
@@ -16,11 +16,11 @@ repository, clone, and develop on a branch. Steps:
    a copy of the code under your GitHub user account. For more details on
    how to fork a repository see `this guide <https://help.github.com/articles/fork-a-repo/>`_.
 
-#. Clone your fork of the scikit-learn repo from your GitHub account to your
+#. Clone your fork of the sklearn-xarray repo from your GitHub account to your
    local disk::
 
-    $ git clone git@github.com:YourLogin/scikit-learn.git
-    $ cd scikit-learn
+    $ git clone git@github.com:YourLogin/sklearn-xarray.git
+    $ cd sklearn-xarray
 
 #. Create a ``feature`` branch to hold your development changes::
 
