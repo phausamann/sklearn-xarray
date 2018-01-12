@@ -330,20 +330,6 @@ class _ImplementsTransformMixin(_CommonEstimatorWrapper, TransformerMixin):
 
 class _ImplementsScoreMixin(_CommonEstimatorWrapper):
 
-    def predict(self, X):
-        """ A wrapper around the prediction function.
-
-        Parameters
-        ----------
-        X : xarray DataArray, Dataset other other array-like
-            The input samples.
-
-        Returns
-        -------
-        y : xarray DataArray, Dataset other other array-like
-            The predicted output.
-        """
-
     def score(self, X, y, sample_weight=None):
         """ Returns the score of the prediction.
 
