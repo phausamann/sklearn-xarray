@@ -230,13 +230,14 @@ will automatically call <code class="docutils literal"><span class="pre">y(X)</s
 <div class="section" id="pre-processing">
 <h2>Pre-processing<a class="headerlink" href="#pre-processing" title="Permalink to this headline">¶</a></h2>
 <p>In some cases, it is necessary to pre-process the coordinate before it can be
-used as a target. For this, the constructor takes a <code class="docutils literal"><span class="pre">transformer</span></code> parameter
-which accepts transformers from <code class="docutils literal"><span class="pre">sklearn.preprocessing</span></code> (and also any other
-object implementing the sklearn transformer interface):</p>
+used as a target. For this, the constructor takes a <code class="docutils literal"><span class="pre">transform_func</span></code> parameter
+which can be used with the <code class="docutils literal"><span class="pre">fit_transform</span></code> method of transformers in
+<code class="docutils literal"><span class="pre">sklearn.preprocessing</span></code> (and also any other object implementing the sklearn
+transformer interface):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.neural_network</span> <span class="k">import</span> <span class="n">MLPClassifier</span>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">LabelBinarizer</span>
 
-<span class="n">y</span> <span class="o">=</span> <span class="n">Target</span><span class="p">(</span><span class="n">coord</span><span class="o">=</span><span class="s1">&#39;digit&#39;</span><span class="p">,</span> <span class="n">transformer</span><span class="o">=</span><span class="n">LabelBinarizer</span><span class="p">())(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">Target</span><span class="p">(</span><span class="n">coord</span><span class="o">=</span><span class="s1">&#39;digit&#39;</span><span class="p">,</span> <span class="n">transform_func</span><span class="o">=</span><span class="n">LabelBinarizer</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">)(</span><span class="n">X</span><span class="p">)</span>
 
 <span class="n">wrapper</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span><span class="n">MLPClassifier</span><span class="p">())</span>
 <span class="n">wrapper</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
@@ -252,10 +253,11 @@ attribute which returns <code class="docutils literal"><span class="pre">numpy.a
 <div class="section" id="multi-dimensional-coordinates">
 <h2>Multi-dimensional coordinates<a class="headerlink" href="#multi-dimensional-coordinates" title="Permalink to this headline">¶</a></h2>
 <p>In some cases, the target coordinates span multiple dimensions, but the
-transformer expects a one-dimensional input. You can specify the <code class="docutils literal"><span class="pre">dim</span></code>
-parameter during construction of the target in order to handle this case. For
-now, the results in the coordinate being reduced to the first element along
-each dimension that is not <code class="docutils literal"><span class="pre">dim</span></code>.</p>
+transformer expects a lower-dimensional input. With  the <code class="docutils literal"><span class="pre">dim</span></code> parameter of
+the <a class="reference internal" href="api/target.html#sklearn_xarray.target.Target" title="sklearn_xarray.target.Target"><code class="xref py py-class docutils literal"><span class="pre">Target</span></code></a> class you can specify which of the dimensions to keep.
+You can also specify the callable <code class="docutils literal"><span class="pre">reduce_func</span></code> to perform the reduction of
+the other dimensions (e.g. <code class="docutils literal"><span class="pre">numpy.mean</span></code>). Otherwise, the coordinate will
+be reduced to the first element along each dimension that is not <code class="docutils literal"><span class="pre">dim</span></code>.</p>
 </div>
 <div class="section" id="lazy-evaluation">
 <h2>Lazy evaluation<a class="headerlink" href="#lazy-evaluation" title="Permalink to this headline">¶</a></h2>
@@ -266,8 +268,8 @@ datasets in a pipeline, because the target is assigned in each step of the
 pipeline.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">When you index a target with lazy evaluation, the transformation has to be
-performed.</p>
+<p class="last">When you index a target with lazy evaluation, the transformation is
+performed regardless of whether <code class="docutils literal"><span class="pre">lazy</span></code> was set.</p>
 </div>
 </div>
 </div>

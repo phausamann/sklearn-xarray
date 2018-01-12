@@ -15,9 +15,9 @@ Introductory examples.
 
 .. only:: html
 
-    .. figure:: /auto_examples/images/thumb/sphx_glr_activity_recognition_thumb.png
+    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_activity_recognition_thumb.png
 
-        :ref:`sphx_glr_auto_examples_activity_recognition.py`
+        :ref:`sphx_glr_auto_examples_plot_activity_recognition.py`
 
 .. raw:: html
 
@@ -27,7 +27,7 @@ Introductory examples.
 .. toctree::
    :hidden:
 
-   /auto_examples/activity_recognition
+   /auto_examples/plot_activity_recognition
 .. raw:: html
 
     <div style='clear:both'></div>
