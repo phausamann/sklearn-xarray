@@ -62,14 +62,15 @@ Pre-processing
 --------------
 
 In some cases, it is necessary to pre-process the coordinate before it can be
-used as a target. For this, the constructor takes a ``transformer`` parameter
-which accepts transformers from ``sklearn.preprocessing`` (and also any other
-object implementing the sklearn transformer interface)::
+used as a target. For this, the constructor takes a ``transform_func`` parameter
+which can be used with the ``fit_transform`` method of transformers in
+``sklearn.preprocessing`` (and also any other object implementing the sklearn
+transformer interface)::
 
     from sklearn.neural_network import MLPClassifier
     from sklearn.preprocessing import LabelBinarizer
 
-    y = Target(coord='digit', transformer=LabelBinarizer())(X)
+    y = Target(coord='digit', transform_func=LabelBinarizer().fit_transform)(X)
 
     wrapper = wrap(MLPClassifier())
     wrapper.fit(X, y)
@@ -87,10 +88,11 @@ Multi-dimensional coordinates
 -----------------------------
 
 In some cases, the target coordinates span multiple dimensions, but the
-transformer expects a one-dimensional input. You can specify the ``dim``
-parameter during construction of the target in order to handle this case. For
-now, the results in the coordinate being reduced to the first element along
-each dimension that is not ``dim``.
+transformer expects a lower-dimensional input. With  the ``dim`` parameter of
+the :py:class:`Target` class you can specify which of the dimensions to keep.
+You can also specify the callable ``reduce_func`` to perform the reduction of
+the other dimensions (e.g. ``numpy.mean``). Otherwise, the coordinate will
+be reduced to the first element along each dimension that is not ``dim``.
 
 
 Lazy evaluation
@@ -103,7 +105,5 @@ datasets in a pipeline, because the target is assigned in each step of the
 pipeline.
 
 .. note::
-    When you index a target with lazy evaluation, the transformation has to be
-    performed.
-
-.. todo:: ``get_transformed_shape``
+    When you index a target with lazy evaluation, the transformation is
+    performed regardless of whether ``lazy`` was set.
