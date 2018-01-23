@@ -87,14 +87,16 @@ def test_transpose():
     # test on Dataset with subset of dimensions
     X_ds = xr.Dataset(
         {'var_1': (['sample', 'feat_1', 'feat_2'],
-                   np.random.random((100, 10, 5)))},
+                   np.random.random((100, 10, 5))),
+         'var_2': (['feat_2', 'sample', 'feat_1'],
+                   np.random.random((5, 100, 10)))},
         coords={'sample': range(100), 'feat_1': range(10), 'feat_2': range(5)}
     )
 
     Xt_ds, estimator = transpose(
-        X_ds, order=['feat_2', 'feat_1'], return_estimator=True)
+        X_ds, order=['sample', 'feat_1', 'feat_2'], return_estimator=True)
 
-    xrt.assert_allclose(Xt_ds, X_ds.transpose('sample', 'feat_2', 'feat_1'))
+    xrt.assert_allclose(Xt_ds, X_ds.transpose('sample', 'feat_1', 'feat_2'))
 
     Xt_ds = estimator.inverse_transform(Xt_ds)
 

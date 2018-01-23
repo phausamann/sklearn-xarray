@@ -204,33 +204,33 @@ class Transposer(BaseTransformer):
 
         super(Transposer, self).fit(X, y, **fit_params)
 
-        self.initial_order_ = [d for d in X.dims if d in self.order]
+        # we need to determine the initial order for each variable seperately
+        # because they might have a different order than the dataset
+        if self.type_ == 'Dataset':
+            self.initial_order_ = {
+                v: [d for d in X[v].dims if d in self.order]
+                for v in X.data_vars}
+        else:
+            self.initial_order_ = [d for d in X.dims if d in self.order]
 
         return self
 
     def _transpose_subset(self, X, target_order):
-        """ Tranpose X with a subset of X.dims. """
+        """ Transpose X with a subset of X.dims. """
 
-        def transpose_array(x):
-            order = []
-            new_order = target_order[::-1]
-            for d in x.dims:
-                if d not in self.order:
-                    order.append(d)
-                else:
-                    order.append(new_order.pop())
-            return x.transpose(*order)
+        order = []
+        new_order = target_order[::-1]
 
-        if is_dataset(X):
-            return xr.Dataset({v: transpose_array(X[v]) for v in X.data_vars},
-                              coords=X.coords)
-        else:
-            return transpose_array(X)
+        for d in X.dims:
+            if d not in self.order:
+                order.append(d)
+            else:
+                order.append(new_order.pop())
 
-    def _transform(self, X):
-        """ Transform. """
+        return X.transpose(*order)
 
-        check_is_fitted(self, ['initial_order_'])
+    def _transform_var(self, X):
+        """ Transform a single variable. """
 
         if self.order is None:
             return X.transpose()
@@ -242,20 +242,43 @@ class Transposer(BaseTransformer):
             raise ValueError(
                 'The elements in self.order must match the dimensions of X.')
 
-    def _inverse_transform(self, X):
-        """ Reverse transform. """
+    def _inverse_transform_var(self, X, initial_order):
+        """ Inverse transform a single variable. """
 
         check_is_fitted(self, ['initial_order_'])
 
         if self.order is None:
             return X.transpose()
-        elif set(self.initial_order_) == set(X.dims):
-            return X.transpose(*self.initial_order_)
-        elif set(self.initial_order_) < set(X.dims):
-            return self._transpose_subset(X, self.initial_order_)
+        elif set(initial_order) == set(X.dims):
+            return X.transpose(*initial_order)
+        elif set(initial_order) < set(X.dims):
+            return self._transpose_subset(X, initial_order)
         else:
             raise ValueError(
                     'The dimensions of X must match those of the estimator.')
+
+    def _transform(self, X):
+        """ Transform. """
+
+        check_is_fitted(self, ['initial_order_'])
+
+        if is_dataset(X):
+            return xr.Dataset({
+                v: self._transform_var(X[v]) for v in X.data_vars})
+        else:
+            return self._transform_var(X)
+
+    def _inverse_transform(self, X):
+        """ Reverse transform. """
+
+        check_is_fitted(self, ['initial_order_'])
+
+        if is_dataset(X):
+            return xr.Dataset({
+                v: self._inverse_transform_var(X[v], self.initial_order_[v])
+                for v in X.data_vars})
+        else:
+            return self._inverse_transform_var(X, self.initial_order_)
 
 
 def transpose(X, return_estimator=False, **fit_params):
