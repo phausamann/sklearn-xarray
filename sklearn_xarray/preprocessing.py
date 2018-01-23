@@ -119,6 +119,15 @@ class BaseTransformer(BaseEstimator, TransformerMixin):
             The transformed data.
         """
 
+        if self.type_ == 'Dataset' and not is_dataset(X):
+            raise ValueError(
+                'This estimator was fitted for Dataset inputs, but the '
+                'provided X does not seem to be a Dataset.')
+        elif self.type_ == 'DataArray' and not is_dataarray(X):
+            raise ValueError(
+                'This estimator was fitted for DataArray inputs, but the '
+                'provided X does not seem to be a DataArray.')
+
         if self.groupby is not None:
             return self._call_groupwise(self._transform, X)
         else:
@@ -137,6 +146,15 @@ class BaseTransformer(BaseEstimator, TransformerMixin):
         Xt : xarray DataArray or Dataset
             The transformed data.
         """
+
+        if self.type_ == 'Dataset' and not is_dataset(X):
+            raise ValueError(
+                'This estimator was fitted for Dataset inputs, but the '
+                'provided X does not seem to be a Dataset.')
+        elif self.type_ == 'DataArray' and not is_dataarray(X):
+            raise ValueError(
+                'This estimator was fitted for DataArray inputs, but the '
+                'provided X does not seem to be a DataArray.')
 
         if self.groupby is not None:
             return self._call_groupwise(self._inverse_transform, X)
