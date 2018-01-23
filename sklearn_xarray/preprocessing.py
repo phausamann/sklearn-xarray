@@ -186,9 +186,28 @@ class Transposer(BaseTransformer):
 
         super(Transposer, self).fit(X, y, **fit_params)
 
-        self.initial_order_ = X.dims
+        self.initial_order_ = [d for d in X.dims if d in self.order]
 
         return self
+
+    def _transpose_subset(self, X, target_order):
+        """ Tranpose X with a subset of X.dims. """
+
+        def transpose_array(x):
+            order = []
+            new_order = target_order[::-1]
+            for d in x.dims:
+                if d not in self.order:
+                    order.append(d)
+                else:
+                    order.append(new_order.pop())
+            return x.transpose(*order)
+
+        if is_dataset(X):
+            return xr.Dataset({v: transpose_array(X[v]) for v in X.data_vars},
+                              coords=X.coords)
+        else:
+            return transpose_array(X)
 
     def _transform(self, X):
         """ Transform. """
@@ -197,11 +216,13 @@ class Transposer(BaseTransformer):
 
         if self.order is None:
             return X.transpose()
-        else:
-            if set(X.dims) != set(self.order):
-                raise ValueError(
-                    'The elements in `order` must match the dimensions of X.')
+        elif set(self.order) == set(X.dims):
             return X.transpose(*self.order)
+        elif set(self.order) < set(X.dims):
+            return self._transpose_subset(X, self.order)
+        else:
+            raise ValueError(
+                'The elements in self.order must match the dimensions of X.')
 
     def _inverse_transform(self, X):
         """ Reverse transform. """
@@ -210,11 +231,13 @@ class Transposer(BaseTransformer):
 
         if self.order is None:
             return X.transpose()
-        else:
-            if set(X.dims) != set(self.initial_order_):
-                raise ValueError(
-                    'The dimensions of X must match those of the estimator.')
+        elif set(self.initial_order_) == set(X.dims):
             return X.transpose(*self.initial_order_)
+        elif set(self.initial_order_) < set(X.dims):
+            return self._transpose_subset(X, self.initial_order_)
+        else:
+            raise ValueError(
+                    'The dimensions of X must match those of the estimator.')
 
 
 def transpose(X, return_estimator=False, **fit_params):

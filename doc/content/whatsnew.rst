@@ -1,6 +1,17 @@
 What's New
 ==========
 
+v0.1.4 (???)
+------------
+
+Enhancements
+~~~~~~~~~~~~
+
+- ``preprocessing.Tranposer`` now also accepts a subset of ``X.dims`` for the
+  ``order`` parameter.
+
+
+
 v0.1.3 (January 9, 2018)
 ------------------------
 
