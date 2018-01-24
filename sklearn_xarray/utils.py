@@ -21,7 +21,8 @@ def is_dataarray(X, require_attrs=None):
 
     Returns
     -------
-    Whether the object is a DataArray or not.
+    bool
+        Whether the object is a DataArray or not.
     """
 
     if require_attrs is None:
@@ -32,7 +33,7 @@ def is_dataarray(X, require_attrs=None):
             'to_dataset'
         ]
 
-    return np.all([hasattr(X, name) for name in require_attrs])
+    return all([hasattr(X, name) for name in require_attrs])
 
 
 def is_dataset(X, require_attrs=None):
@@ -48,7 +49,8 @@ def is_dataset(X, require_attrs=None):
 
     Returns
     -------
-    Whether the object is a Dataset or not.
+    bool
+        Whether the object is a Dataset or not.
     """
 
     if require_attrs is None:
@@ -59,7 +61,7 @@ def is_dataset(X, require_attrs=None):
             'to_array'
         ]
 
-    return np.all([hasattr(X, name) for name in require_attrs])
+    return all([hasattr(X, name) for name in require_attrs])
 
 
 def is_target(X, require_attrs=None):
@@ -75,14 +77,15 @@ def is_target(X, require_attrs=None):
 
     Returns
     -------
-    Whether the object is a Target or not.
+    bool
+        Whether the object is a Target or not.
     """
 
     if require_attrs is None:
         require_attrs = (
             name for name in vars(Target) if not name.startswith('_'))
 
-    return np.all([hasattr(X, name) for name in require_attrs])
+    return all([hasattr(X, name) for name in require_attrs])
 
 
 def convert_to_ndarray(X, new_dim_last=True, new_dim_name='variable'):
@@ -93,11 +96,13 @@ def convert_to_ndarray(X, new_dim_last=True, new_dim_name='variable'):
     X : xarray DataArray or Dataset
         The input data.
 
-    new_dim_last : bool
-        TODO
+    new_dim_last : bool, default true
+        If true, put the new dimension last when converting a Dataset with
+        multiple variables.
 
-    new_dim_name : str
-        TODO
+    new_dim_name : str, default 'variable'
+        The name of the new dimension when converting a Dataset with multiple
+        variables.
 
     Returns
     -------

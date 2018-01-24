@@ -1,8 +1,18 @@
 What's New
 ==========
 
-v0.1.4 (???)
-------------
+v0.2 (not yet released)
+-----------------------
+
+Breaking changes
+~~~~~~~~~~~~~~~~
+
+- The ``dataset`` and ``dataarray`` modules have been removed. Wrappers have
+  to be directly imported from ``sklearn_xarray``.
+
+
+v0.1.4 (not yet released)
+-------------------------
 
 Enhancements
 ~~~~~~~~~~~~
@@ -10,6 +20,13 @@ Enhancements
 - ``preprocessing.Tranposer`` now also accepts a subset of ``X.dims`` for the
   ``order`` parameter.
 
+Deprecations
+~~~~~~~~~~~~
+
+- The ``data`` module containing different example datasets is being renamed
+  to ``datasets`` according to the scikit-learn standards. Since the
+  ``dataset`` module will be removed, there will no longer be confusion due
+  to similar naming.
 
 
 v0.1.3 (January 9, 2018)
