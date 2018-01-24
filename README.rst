@@ -73,7 +73,7 @@ The `activity recognition example`_ demonstrates how to use the
 package for cross-validated grid search for an activity recognition task. The
 example is also present as a jupyter notebook.
 
-.. _activity recognition example: https://phausamann.github.io/sklearn-xarray/auto_examples/activity_recognition.html
+.. _activity recognition example: https://phausamann.github.io/sklearn-xarray/auto_examples/plot_activity_recognition.html
 
 
 Contributing
