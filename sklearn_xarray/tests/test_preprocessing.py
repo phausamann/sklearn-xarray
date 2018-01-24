@@ -5,7 +5,7 @@ import numpy.testing as npt
 
 from sklearn_xarray.preprocessing import (
     preprocess, transpose, split, segment, resample, concatenate, featurize,
-    sanitize, reduce, Transposer, Splitter
+    sanitize, reduce, Splitter
 )
 
 
@@ -84,15 +84,23 @@ def test_transpose():
 
     xrt.assert_allclose(Xt_da, X_da)
 
-    # test on Dataset
+    # test on Dataset with subset of dimensions
     X_ds = xr.Dataset(
-        {'var_1': (['sample', 'feature'], np.random.random((100, 10)))},
-        coords={'sample': range(100), 'feature': range(10)}
+        {'var_1': (['sample', 'feat_1', 'feat_2'],
+                   np.random.random((100, 10, 5))),
+         'var_2': (['feat_2', 'sample', 'feat_1'],
+                   np.random.random((5, 100, 10)))},
+        coords={'sample': range(100), 'feat_1': range(10), 'feat_2': range(5)}
     )
 
-    Xt_ds = transpose(X_ds, order=['feature', 'sample'])
+    Xt_ds, estimator = transpose(
+        X_ds, order=['sample', 'feat_1', 'feat_2'], return_estimator=True)
 
-    xrt.assert_allclose(Xt_ds, X_ds.transpose())
+    xrt.assert_allclose(Xt_ds, X_ds.transpose('sample', 'feat_1', 'feat_2'))
+
+    Xt_ds = estimator.inverse_transform(Xt_ds)
+
+    xrt.assert_allclose(Xt_ds, X_ds)
 
 
 def test_split():

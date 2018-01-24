@@ -119,6 +119,15 @@ class BaseTransformer(BaseEstimator, TransformerMixin):
             The transformed data.
         """
 
+        if self.type_ == 'Dataset' and not is_dataset(X):
+            raise ValueError(
+                'This estimator was fitted for Dataset inputs, but the '
+                'provided X does not seem to be a Dataset.')
+        elif self.type_ == 'DataArray' and not is_dataarray(X):
+            raise ValueError(
+                'This estimator was fitted for DataArray inputs, but the '
+                'provided X does not seem to be a DataArray.')
+
         if self.groupby is not None:
             return self._call_groupwise(self._transform, X)
         else:
@@ -137,6 +146,15 @@ class BaseTransformer(BaseEstimator, TransformerMixin):
         Xt : xarray DataArray or Dataset
             The transformed data.
         """
+
+        if self.type_ == 'Dataset' and not is_dataset(X):
+            raise ValueError(
+                'This estimator was fitted for Dataset inputs, but the '
+                'provided X does not seem to be a Dataset.')
+        elif self.type_ == 'DataArray' and not is_dataarray(X):
+            raise ValueError(
+                'This estimator was fitted for DataArray inputs, but the '
+                'provided X does not seem to be a DataArray.')
 
         if self.groupby is not None:
             return self._call_groupwise(self._inverse_transform, X)
@@ -186,35 +204,81 @@ class Transposer(BaseTransformer):
 
         super(Transposer, self).fit(X, y, **fit_params)
 
-        self.initial_order_ = X.dims
+        # we need to determine the initial order for each variable seperately
+        # because they might have a different order than the dataset
+        if self.type_ == 'Dataset':
+            self.initial_order_ = {
+                v: [d for d in X[v].dims if d in self.order]
+                for v in X.data_vars}
+        else:
+            self.initial_order_ = [d for d in X.dims if d in self.order]
 
         return self
+
+    def _transpose_subset(self, X, target_order):
+        """ Transpose X with a subset of X.dims. """
+
+        order = []
+        new_order = target_order[::-1]
+
+        for d in X.dims:
+            if d not in self.order:
+                order.append(d)
+            else:
+                order.append(new_order.pop())
+
+        return X.transpose(*order)
+
+    def _transform_var(self, X):
+        """ Transform a single variable. """
+
+        if self.order is None:
+            return X.transpose()
+        elif set(self.order) == set(X.dims):
+            return X.transpose(*self.order)
+        elif set(self.order) < set(X.dims):
+            return self._transpose_subset(X, self.order)
+        else:
+            raise ValueError(
+                'The elements in self.order must match the dimensions of X.')
+
+    def _inverse_transform_var(self, X, initial_order):
+        """ Inverse transform a single variable. """
+
+        check_is_fitted(self, ['initial_order_'])
+
+        if self.order is None:
+            return X.transpose()
+        elif set(initial_order) == set(X.dims):
+            return X.transpose(*initial_order)
+        elif set(initial_order) < set(X.dims):
+            return self._transpose_subset(X, initial_order)
+        else:
+            raise ValueError(
+                    'The dimensions of X must match those of the estimator.')
 
     def _transform(self, X):
         """ Transform. """
 
         check_is_fitted(self, ['initial_order_'])
 
-        if self.order is None:
-            return X.transpose()
+        if is_dataset(X):
+            return xr.Dataset({
+                v: self._transform_var(X[v]) for v in X.data_vars})
         else:
-            if set(X.dims) != set(self.order):
-                raise ValueError(
-                    'The elements in `order` must match the dimensions of X.')
-            return X.transpose(*self.order)
+            return self._transform_var(X)
 
     def _inverse_transform(self, X):
         """ Reverse transform. """
 
         check_is_fitted(self, ['initial_order_'])
 
-        if self.order is None:
-            return X.transpose()
+        if is_dataset(X):
+            return xr.Dataset({
+                v: self._inverse_transform_var(X[v], self.initial_order_[v])
+                for v in X.data_vars})
         else:
-            if set(X.dims) != set(self.initial_order_):
-                raise ValueError(
-                    'The dimensions of X must match those of the estimator.')
-            return X.transpose(*self.initial_order_)
+            return self._inverse_transform_var(X, self.initial_order_)
 
 
 def transpose(X, return_estimator=False, **fit_params):

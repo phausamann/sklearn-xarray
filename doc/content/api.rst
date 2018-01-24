@@ -21,8 +21,6 @@ Module: :py:mod:`sklearn_xarray`
 DataArray wrappers
 ------------------
 
-.. py:currentmodule:: sklearn_xarray.dataarray
-
 Module: :py:mod:`sklearn_xarray.dataarray`
 
 .. warning::
@@ -32,8 +30,6 @@ Module: :py:mod:`sklearn_xarray.dataarray`
 
 Dataset wrappers
 ----------------
-
-.. py:currentmodule:: sklearn_xarray.dataset
 
 Module: :py:mod:`sklearn_xarray.dataset`
 
@@ -127,9 +123,9 @@ Module: :py:mod:`sklearn_xarray.utils`
 Datasets
 --------
 
-.. py:currentmodule:: sklearn_xarray.data
+.. py:currentmodule:: sklearn_xarray.datasets
 
-Module: :py:mod:`sklearn_xarray.data`
+Module: :py:mod:`sklearn_xarray.datasets`
 
 .. autosummary::
     :nosignatures:
@@ -139,6 +135,15 @@ Module: :py:mod:`sklearn_xarray.data`
     load_digits_dataarray
     load_wisdm_dataarray
 
+Data
+----
+
+Module: :py:mod:`sklearn_xarray.data`
+
+.. warning::
+    This module has been deprecated in favor of the
+    :py:mod:`sklearn_xarray.datasets` module.
+
 
 List of modules
 ---------------
@@ -146,9 +151,7 @@ List of modules
     .. toctree::
 
         api/common
-        api/dataarray
-        api/dataset
         api/preprocessing
         api/model_selection
         api/utils
-        api/data
+        api/datasets

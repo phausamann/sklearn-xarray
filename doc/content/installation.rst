@@ -32,6 +32,17 @@ For the latest version, you can also install from source::
 Testing
 -------
 
-To run the unit tests, install nose_ and run ``python setup.py test``
+To run the unit tests, install ``nose`` and run::
 
-.. _nose: http://nose.readthedocs.io/en/latest/
+    $ python setup.py test
+
+
+Building the docs
+-----------------
+
+To build the documentation, install ``sphinx``, ``sphinx-gallery``,
+``sphinx_rtd_theme`` and ``numpydoc`` and run::
+
+    $ cd doc
+    $ make html
+

@@ -164,60 +164,6 @@ class _CommonEstimatorWrapper(BaseEstimator):
 
         return estimator_
 
-    def _predict(self, estimator, X):
-        """ Predict with ``self.estimator`` and update coords and dims. """
-
-        if self.sample_dim is not None:
-            # transpose to sample dim first, predict and transpose back
-            order = self._get_transpose_order(X)
-            X_arr = np.transpose(X.data, order)
-            yp = estimator.predict(X_arr)
-            if yp.ndim == X.ndim:
-                yp = np.transpose(yp, np.argsort(order))
-        else:
-            yp = estimator.predict(X.data)
-
-        # update coords and dims
-        dims_new = self._update_dims(X, yp)
-
-        return yp, dims_new
-
-    def _transform(self, estimator, X):
-        """ Transform with ``estimator`` and update coords and dims. """
-
-        if self.sample_dim is not None:
-            # transpose to sample dim first, transform and transpose back
-            order = self._get_transpose_order(X)
-            X_arr = np.transpose(X.data, order)
-            Xt = estimator.transform(X_arr)
-            if Xt.ndim == X.ndim:
-                Xt = np.transpose(Xt, np.argsort(order))
-        else:
-            Xt = estimator.transform(X.data)
-
-        # update dims
-        dims_new = self._update_dims(X, Xt)
-
-        return Xt, dims_new
-
-    def _inverse_transform(self, estimator, X):
-        """ Inverse transform with ``estimator`` and update coords and dims. """
-
-        if self.sample_dim is not None:
-            # transpose to sample dim first, transform and transpose back
-            order = self._get_transpose_order(X)
-            X_arr = np.transpose(X.data, order)
-            Xt = estimator.inverse_transform(X_arr)
-            if Xt.ndim == X.ndim:
-                Xt = np.transpose(Xt, np.argsort(order))
-        else:
-            Xt = estimator.inverse_transform(X.data)
-
-        # update dims
-        dims_new = self._update_dims(X, Xt)
-
-        return Xt, dims_new
-
     def get_params(self, deep=True):
         """ Get parameters for this estimator.
 
@@ -276,6 +222,24 @@ class _CommonEstimatorWrapper(BaseEstimator):
 
 class _ImplementsPredictMixin(_CommonEstimatorWrapper):
 
+    def _predict(self, estimator, X):
+        """ Predict with ``self.estimator`` and update coords and dims. """
+
+        if self.sample_dim is not None:
+            # transpose to sample dim first, predict and transpose back
+            order = self._get_transpose_order(X)
+            X_arr = np.transpose(X.data, order)
+            yp = estimator.predict(X_arr)
+            if yp.ndim == X.ndim:
+                yp = np.transpose(yp, np.argsort(order))
+        else:
+            yp = estimator.predict(X.data)
+
+        # update coords and dims
+        dims_new = self._update_dims(X, yp)
+
+        return yp, dims_new
+
     def predict(self, X):
         """ A wrapper around the prediction function.
 
@@ -294,6 +258,42 @@ class _ImplementsPredictMixin(_CommonEstimatorWrapper):
 
 
 class _ImplementsTransformMixin(_CommonEstimatorWrapper, TransformerMixin):
+
+    def _transform(self, estimator, X):
+        """ Transform with ``estimator`` and update coords and dims. """
+
+        if self.sample_dim is not None:
+            # transpose to sample dim first, transform and transpose back
+            order = self._get_transpose_order(X)
+            X_arr = np.transpose(X.data, order)
+            Xt = estimator.transform(X_arr)
+            if Xt.ndim == X.ndim:
+                Xt = np.transpose(Xt, np.argsort(order))
+        else:
+            Xt = estimator.transform(X.data)
+
+        # update dims
+        dims_new = self._update_dims(X, Xt)
+
+        return Xt, dims_new
+
+    def _inverse_transform(self, estimator, X):
+        """ Inverse transform with ``estimator`` and update coords and dims. """
+
+        if self.sample_dim is not None:
+            # transpose to sample dim first, transform and transpose back
+            order = self._get_transpose_order(X)
+            X_arr = np.transpose(X.data, order)
+            Xt = estimator.inverse_transform(X_arr)
+            if Xt.ndim == X.ndim:
+                Xt = np.transpose(Xt, np.argsort(order))
+        else:
+            Xt = estimator.inverse_transform(X.data)
+
+        # update dims
+        dims_new = self._update_dims(X, Xt)
+
+        return Xt, dims_new
 
     def transform(self, X):
         """ A wrapper around the transformation function.
