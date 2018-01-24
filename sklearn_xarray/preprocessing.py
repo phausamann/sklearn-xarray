@@ -215,14 +215,17 @@ class Transposer(BaseTransformer):
 
         return self
 
-    def _transpose_subset(self, X, target_order):
+    @staticmethod
+    def _transpose_subset(X, target_order):
         """ Transpose X with a subset of X.dims. """
 
-        order = []
-        new_order = target_order[::-1]
+        # remove dims not in X.dims
+        new_order = [d for d in reversed(target_order) if d in X.dims]
 
+        # add dims not in target_order
+        order = []
         for d in X.dims:
-            if d not in self.order:
+            if d not in target_order:
                 order.append(d)
             else:
                 order.append(new_order.pop())
@@ -236,26 +239,18 @@ class Transposer(BaseTransformer):
             return X.transpose()
         elif set(self.order) == set(X.dims):
             return X.transpose(*self.order)
-        elif set(self.order) < set(X.dims):
-            return self._transpose_subset(X, self.order)
         else:
-            raise ValueError(
-                'The elements in self.order must match the dimensions of X.')
+            return self._transpose_subset(X, self.order)
 
     def _inverse_transform_var(self, X, initial_order):
         """ Inverse transform a single variable. """
-
-        check_is_fitted(self, ['initial_order_'])
 
         if self.order is None:
             return X.transpose()
         elif set(initial_order) == set(X.dims):
             return X.transpose(*initial_order)
-        elif set(initial_order) < set(X.dims):
-            return self._transpose_subset(X, initial_order)
         else:
-            raise ValueError(
-                    'The dimensions of X must match those of the estimator.')
+            return self._transpose_subset(X, initial_order)
 
     def _transform(self, X):
         """ Transform. """
