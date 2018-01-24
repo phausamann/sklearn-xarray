@@ -99,6 +99,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#required-dependencies">Required dependencies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#instructions">Instructions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-the-docs">Building the docs</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="wrappers.html">Wrappers for sklearn estimators</a></li>
@@ -201,7 +202,19 @@ $ python setup.py install
 </div>
 <div class="section" id="testing">
 <h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
-<p>To run the unit tests, install <a class="reference external" href="http://nose.readthedocs.io/en/latest/">nose</a> and run <code class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">test</span></code></p>
+<p>To run the unit tests, install <code class="docutils literal"><span class="pre">nose</span></code> and run:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ python setup.py test
+</pre></div>
+</div>
+</div>
+<div class="section" id="building-the-docs">
+<h2>Building the docs<a class="headerlink" href="#building-the-docs" title="Permalink to this headline">¶</a></h2>
+<p>To build the documentation, install <code class="docutils literal"><span class="pre">sphinx</span></code>, <code class="docutils literal"><span class="pre">sphinx-gallery</span></code>,
+<code class="docutils literal"><span class="pre">sphinx_rtd_theme</span></code> and <code class="docutils literal"><span class="pre">numpydoc</span></code> and run:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ cd doc
+$ make html
+</pre></div>
+</div>
 </div>
 </div>
 

@@ -188,7 +188,8 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    Whether the object is a DataArray or not.</span>
+<span class="sd">    bool</span>
+<span class="sd">        Whether the object is a DataArray or not.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">require_attrs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -199,7 +200,7 @@
             <span class="s1">&#39;to_dataset&#39;</span>
         <span class="p">]</span>
 
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">([</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">require_attrs</span><span class="p">])</span></div>
+    <span class="k">return</span> <span class="nb">all</span><span class="p">([</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">require_attrs</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="is_dataset"><a class="viewcode-back" href="../../content/api/utils.html#sklearn_xarray.utils.is_dataset">[docs]</a><span class="k">def</span> <span class="nf">is_dataset</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">require_attrs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -215,7 +216,8 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    Whether the object is a Dataset or not.</span>
+<span class="sd">    bool</span>
+<span class="sd">        Whether the object is a Dataset or not.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">require_attrs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -226,7 +228,7 @@
             <span class="s1">&#39;to_array&#39;</span>
         <span class="p">]</span>
 
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">([</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">require_attrs</span><span class="p">])</span></div>
+    <span class="k">return</span> <span class="nb">all</span><span class="p">([</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">require_attrs</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="is_target"><a class="viewcode-back" href="../../content/api/utils.html#sklearn_xarray.utils.is_target">[docs]</a><span class="k">def</span> <span class="nf">is_target</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">require_attrs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -242,14 +244,15 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    Whether the object is a Target or not.</span>
+<span class="sd">    bool</span>
+<span class="sd">        Whether the object is a Target or not.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">require_attrs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">require_attrs</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="n">Target</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">))</span>
 
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">([</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">require_attrs</span><span class="p">])</span></div>
+    <span class="k">return</span> <span class="nb">all</span><span class="p">([</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">require_attrs</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="convert_to_ndarray"><a class="viewcode-back" href="../../content/api/utils.html#sklearn_xarray.utils.convert_to_ndarray">[docs]</a><span class="k">def</span> <span class="nf">convert_to_ndarray</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">new_dim_last</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">new_dim_name</span><span class="o">=</span><span class="s1">&#39;variable&#39;</span><span class="p">):</span>
@@ -260,11 +263,13 @@
 <span class="sd">    X : xarray DataArray or Dataset</span>
 <span class="sd">        The input data.</span>
 
-<span class="sd">    new_dim_last : bool</span>
-<span class="sd">        TODO</span>
+<span class="sd">    new_dim_last : bool, default true</span>
+<span class="sd">        If true, put the new dimension last when converting a Dataset with</span>
+<span class="sd">        multiple variables.</span>
 
-<span class="sd">    new_dim_name : str</span>
-<span class="sd">        TODO</span>
+<span class="sd">    new_dim_name : str, default &#39;variable&#39;</span>
+<span class="sd">        The name of the new dimension when converting a Dataset with multiple</span>
+<span class="sd">        variables.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>

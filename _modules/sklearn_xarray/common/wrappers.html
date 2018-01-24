@@ -178,7 +178,7 @@
 <span class="kn">from</span> <span class="nn">sklearn_xarray.utils</span> <span class="k">import</span> <span class="n">is_dataarray</span><span class="p">,</span> <span class="n">is_dataset</span><span class="p">,</span> <span class="n">is_target</span>
 
 
-<div class="viewcode-block" id="wrap"><a class="viewcode-back" href="../../../content/api/dataset.html#sklearn_xarray.wrap">[docs]</a><span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">reshapes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_dim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compat</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="wrap"><a class="viewcode-back" href="../../../content/api/common.html#sklearn_xarray.wrap">[docs]</a><span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">reshapes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_dim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compat</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Wrap an sklearn estimator for xarray objects by guessing its type.</span>
 
 <span class="sd">    Parameters</span>
@@ -326,7 +326,7 @@
         <span class="k">return</span> <span class="bp">self</span>
 
 
-<div class="viewcode-block" id="TransformerWrapper"><a class="viewcode-back" href="../../../content/api/dataset.html#sklearn_xarray.TransformerWrapper">[docs]</a><span class="k">class</span> <span class="nc">TransformerWrapper</span><span class="p">(</span><span class="n">EstimatorWrapper</span><span class="p">,</span> <span class="n">_ImplementsTransformMixin</span><span class="p">):</span>
+<div class="viewcode-block" id="TransformerWrapper"><a class="viewcode-back" href="../../../content/api/common.html#sklearn_xarray.TransformerWrapper">[docs]</a><span class="k">class</span> <span class="nc">TransformerWrapper</span><span class="p">(</span><span class="n">EstimatorWrapper</span><span class="p">,</span> <span class="n">_ImplementsTransformMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; A wrapper around sklearn transformers compatible with xarray objects.</span>
 
 <span class="sd">    Parameters</span>
@@ -339,7 +339,7 @@
 <span class="sd">    &quot;&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="RegressorWrapper"><a class="viewcode-back" href="../../../content/api/dataset.html#sklearn_xarray.RegressorWrapper">[docs]</a><span class="k">class</span> <span class="nc">RegressorWrapper</span><span class="p">(</span>
+<div class="viewcode-block" id="RegressorWrapper"><a class="viewcode-back" href="../../../content/api/common.html#sklearn_xarray.RegressorWrapper">[docs]</a><span class="k">class</span> <span class="nc">RegressorWrapper</span><span class="p">(</span>
     <span class="n">EstimatorWrapper</span><span class="p">,</span> <span class="n">_ImplementsPredictMixin</span><span class="p">,</span> <span class="n">_ImplementsScoreMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; A wrapper around sklearn regressors compatible with xarray objects.</span>
 
@@ -354,7 +354,7 @@
     <span class="n">_estimator_type</span> <span class="o">=</span> <span class="s2">&quot;regressor&quot;</span></div>
 
 
-<div class="viewcode-block" id="ClassifierWrapper"><a class="viewcode-back" href="../../../content/api/dataset.html#sklearn_xarray.ClassifierWrapper">[docs]</a><span class="k">class</span> <span class="nc">ClassifierWrapper</span><span class="p">(</span>
+<div class="viewcode-block" id="ClassifierWrapper"><a class="viewcode-back" href="../../../content/api/common.html#sklearn_xarray.ClassifierWrapper">[docs]</a><span class="k">class</span> <span class="nc">ClassifierWrapper</span><span class="p">(</span>
     <span class="n">EstimatorWrapper</span><span class="p">,</span> <span class="n">_ImplementsPredictMixin</span><span class="p">,</span> <span class="n">_ImplementsScoreMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; A wrapper around sklearn classifiers compatible with xarray objects.</span>
 

@@ -94,12 +94,21 @@
             
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">What’s New</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#v0-1-3-january-9-2018">v0.1.3 (January 9, 2018)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#v0-2-not-yet-released">v0.2 (not yet released)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#breaking-changes">Breaking changes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-1-4-not-yet-released">v0.1.4 (not yet released)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#enhancements">Enhancements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deprecations">Deprecations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-1-3-january-9-2018">v0.1.3 (January 9, 2018)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Enhancements</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#v0-1-2-december-10-2017">v0.1.2 (December 10, 2017)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id1">Enhancements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Enhancements</a></li>
 </ul>
 </li>
 </ul>
@@ -177,10 +186,39 @@
             
   <div class="section" id="what-s-new">
 <h1>What’s New<a class="headerlink" href="#what-s-new" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="v0-1-3-january-9-2018">
-<h2>v0.1.3 (January 9, 2018)<a class="headerlink" href="#v0-1-3-january-9-2018" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="v0-2-not-yet-released">
+<h2>v0.2 (not yet released)<a class="headerlink" href="#v0-2-not-yet-released" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="breaking-changes">
+<h3>Breaking changes<a class="headerlink" href="#breaking-changes" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The <code class="docutils literal"><span class="pre">dataset</span></code> and <code class="docutils literal"><span class="pre">dataarray</span></code> modules have been removed. Wrappers have
+to be directly imported from <code class="docutils literal"><span class="pre">sklearn_xarray</span></code>.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="v0-1-4-not-yet-released">
+<h2>v0.1.4 (not yet released)<a class="headerlink" href="#v0-1-4-not-yet-released" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="enhancements">
 <h3>Enhancements<a class="headerlink" href="#enhancements" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">preprocessing.Tranposer</span></code> now also accepts a subset of <code class="docutils literal"><span class="pre">X.dims</span></code> for the
+<code class="docutils literal"><span class="pre">order</span></code> parameter.</li>
+</ul>
+</div>
+<div class="section" id="deprecations">
+<h3>Deprecations<a class="headerlink" href="#deprecations" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The <code class="docutils literal"><span class="pre">data</span></code> module containing different example datasets is being renamed
+to <code class="docutils literal"><span class="pre">datasets</span></code> according to the scikit-learn standards. Since the
+<code class="docutils literal"><span class="pre">dataset</span></code> module will be removed, there will no longer be confusion due
+to similar naming.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="v0-1-3-january-9-2018">
+<h2>v0.1.3 (January 9, 2018)<a class="headerlink" href="#v0-1-3-january-9-2018" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>Enhancements<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>The wrapper now passes the DataArray’s <code class="docutils literal"><span class="pre">data</span></code> attribute to the wrapped
 estimator, making it possible to wrap estimators from <a class="reference external" href="http://dask-ml.readthedocs.io/en/latest/index.html">dask-ml</a> and use
 dask-backed DataArrays and Datasets as inputs.</p>
@@ -188,8 +226,8 @@ dask-backed DataArrays and Datasets as inputs.</p>
 </div>
 <div class="section" id="v0-1-2-december-10-2017">
 <h2>v0.1.2 (December 10, 2017)<a class="headerlink" href="#v0-1-2-december-10-2017" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id1">
-<h3>Enhancements<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id2">
+<h3>Enhancements<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p>The wrapping mechanism has been changed to work with both DataArrays and
 Datasets. From now on, you can use <code class="docutils literal"><span class="pre">from</span> <span class="pre">sklearn_xarray</span> <span class="pre">import</span> <span class="pre">wrap</span></code> which
 will automatically determine the type of xarray object when calling <code class="docutils literal"><span class="pre">fit</span></code>.

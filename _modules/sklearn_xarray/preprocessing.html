@@ -286,6 +286,15 @@
 <span class="sd">            The transformed data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;Dataset&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_dataset</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;This estimator was fitted for Dataset inputs, but the &#39;</span>
+                <span class="s1">&#39;provided X does not seem to be a Dataset.&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;DataArray&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_dataarray</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;This estimator was fitted for DataArray inputs, but the &#39;</span>
+                <span class="s1">&#39;provided X does not seem to be a DataArray.&#39;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">groupby</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_groupwise</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_transform</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -304,6 +313,15 @@
 <span class="sd">        Xt : xarray DataArray or Dataset</span>
 <span class="sd">            The transformed data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;Dataset&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_dataset</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;This estimator was fitted for Dataset inputs, but the &#39;</span>
+                <span class="s1">&#39;provided X does not seem to be a Dataset.&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;DataArray&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_dataarray</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;This estimator was fitted for DataArray inputs, but the &#39;</span>
+                <span class="s1">&#39;provided X does not seem to be a DataArray.&#39;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">groupby</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_groupwise</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_inverse_transform</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
@@ -353,35 +371,81 @@
 
         <span class="nb">super</span><span class="p">(</span><span class="n">Transposer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">initial_order_</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">dims</span>
+        <span class="c1"># we need to determine the initial order for each variable seperately</span>
+        <span class="c1"># because they might have a different order than the dataset</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;Dataset&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initial_order_</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">v</span><span class="p">:</span> <span class="p">[</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">X</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span> <span class="k">if</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">X</span><span class="o">.</span><span class="n">data_vars</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initial_order_</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">X</span><span class="o">.</span><span class="n">dims</span> <span class="k">if</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="bp">self</span></div>
+
+    <span class="k">def</span> <span class="nf">_transpose_subset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">target_order</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Transpose X with a subset of X.dims. &quot;&quot;&quot;</span>
+
+        <span class="n">order</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">new_order</span> <span class="o">=</span> <span class="n">target_order</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">X</span><span class="o">.</span><span class="n">dims</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">d</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">:</span>
+                <span class="n">order</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">order</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_order</span><span class="o">.</span><span class="n">pop</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">*</span><span class="n">order</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_transform_var</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Transform a single variable. &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">dims</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">set</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">dims</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transpose_subset</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;The elements in self.order must match the dimensions of X.&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_inverse_transform_var</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">initial_order</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Inverse transform a single variable. &quot;&quot;&quot;</span>
+
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;initial_order_&#39;</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">set</span><span class="p">(</span><span class="n">initial_order</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">dims</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">*</span><span class="n">initial_order</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">set</span><span class="p">(</span><span class="n">initial_order</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">set</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">dims</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transpose_subset</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">initial_order</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s1">&#39;The dimensions of X must match those of the estimator.&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Transform. &quot;&quot;&quot;</span>
 
         <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;initial_order_&#39;</span><span class="p">])</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">is_dataset</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">({</span>
+                <span class="n">v</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform_var</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">X</span><span class="o">.</span><span class="n">data_vars</span><span class="p">})</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s1">&#39;The elements in `order` must match the dimensions of X.&#39;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform_var</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_inverse_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Reverse transform. &quot;&quot;&quot;</span>
 
         <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;initial_order_&#39;</span><span class="p">])</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">is_dataset</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">({</span>
+                <span class="n">v</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_transform_var</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">v</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_order_</span><span class="p">[</span><span class="n">v</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">X</span><span class="o">.</span><span class="n">data_vars</span><span class="p">})</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_order_</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s1">&#39;The dimensions of X must match those of the estimator.&#39;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_order_</span><span class="p">)</span></div>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_transform_var</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_order_</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="transpose"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.transpose">[docs]</a><span class="k">def</span> <span class="nf">transpose</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">return_estimator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>

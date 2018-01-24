@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>sklearn_xarray.data &mdash; sklearn-xarray 0.1.3-alpha documentation</title>
+  <title>sklearn_xarray.datasets &mdash; sklearn-xarray 0.1.3-alpha documentation</title>
   
 
   
@@ -147,7 +147,7 @@
         
           <li><a href="../index.html">Module code</a> &raquo;</li>
         
-      <li>sklearn_xarray.data</li>
+      <li>sklearn_xarray.datasets</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -164,15 +164,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for sklearn_xarray.data</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot; ``sklearn_xarray.data`` &quot;&quot;&quot;</span>
+  <h1>Source code for sklearn_xarray.datasets</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot; ``sklearn_xarray.datasets`` &quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
 
-<div class="viewcode-block" id="load_dummy_dataarray"><a class="viewcode-back" href="../../content/api/data.html#sklearn_xarray.data.load_dummy_dataarray">[docs]</a><span class="k">def</span> <span class="nf">load_dummy_dataarray</span><span class="p">():</span>
+<div class="viewcode-block" id="load_dummy_dataarray"><a class="viewcode-back" href="../../content/api/datasets.html#sklearn_xarray.datasets.load_dummy_dataarray">[docs]</a><span class="k">def</span> <span class="nf">load_dummy_dataarray</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot; Load a DataArray for demonstration purposes. &quot;&quot;&quot;</span>
 
     <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
@@ -182,7 +182,7 @@
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="load_dummy_dataset"><a class="viewcode-back" href="../../content/api/data.html#sklearn_xarray.data.load_dummy_dataset">[docs]</a><span class="k">def</span> <span class="nf">load_dummy_dataset</span><span class="p">():</span>
+<div class="viewcode-block" id="load_dummy_dataset"><a class="viewcode-back" href="../../content/api/datasets.html#sklearn_xarray.datasets.load_dummy_dataset">[docs]</a><span class="k">def</span> <span class="nf">load_dummy_dataset</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot; Load a Dataset for demonstration purposes. &quot;&quot;&quot;</span>
 
     <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
@@ -191,7 +191,7 @@
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="load_digits_dataarray"><a class="viewcode-back" href="../../content/api/data.html#sklearn_xarray.data.load_digits_dataarray">[docs]</a><span class="k">def</span> <span class="nf">load_digits_dataarray</span><span class="p">(</span><span class="n">load_images</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nan_probability</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="load_digits_dataarray"><a class="viewcode-back" href="../../content/api/datasets.html#sklearn_xarray.datasets.load_digits_dataarray">[docs]</a><span class="k">def</span> <span class="nf">load_digits_dataarray</span><span class="p">(</span><span class="n">load_images</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nan_probability</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Load a the &#39;digits&#39; dataset from sklearn as a DataArray.</span>
 
 <span class="sd">    Parameters</span>
@@ -244,7 +244,7 @@
         <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="load_wisdm_dataarray"><a class="viewcode-back" href="../../content/api/data.html#sklearn_xarray.data.load_wisdm_dataarray">[docs]</a><span class="k">def</span> <span class="nf">load_wisdm_dataarray</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;http://www.cis.fordham.edu/wisdm/includes/&#39;</span>
+<div class="viewcode-block" id="load_wisdm_dataarray"><a class="viewcode-back" href="../../content/api/datasets.html#sklearn_xarray.datasets.load_wisdm_dataarray">[docs]</a><span class="k">def</span> <span class="nf">load_wisdm_dataarray</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;http://www.cis.fordham.edu/wisdm/includes/&#39;</span>
                              <span class="s1">&#39;datasets/latest/WISDM_ar_latest.tar.gz&#39;</span><span class="p">,</span>
                          <span class="n">file</span><span class="o">=</span><span class="s1">&#39;WISDM_ar_v1.1/WISDM_ar_v1.1_raw.txt&#39;</span><span class="p">,</span>
                          <span class="n">folder</span><span class="o">=</span><span class="s1">&#39;data/&#39;</span><span class="p">,</span> <span class="n">tmp_file</span><span class="o">=</span><span class="s1">&#39;widsm.tar.gz&#39;</span><span class="p">):</span>
