@@ -94,11 +94,7 @@
             
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">What’s New</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#v0-2-not-yet-released">v0.2 (not yet released)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#breaking-changes">Breaking changes</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#v0-1-4-not-yet-released">v0.1.4 (not yet released)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#github-master-branch">Github master branch</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#enhancements">Enhancements</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#deprecations">Deprecations</a></li>
 </ul>
@@ -186,23 +182,15 @@
             
   <div class="section" id="what-s-new">
 <h1>What’s New<a class="headerlink" href="#what-s-new" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="v0-2-not-yet-released">
-<h2>v0.2 (not yet released)<a class="headerlink" href="#v0-2-not-yet-released" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="breaking-changes">
-<h3>Breaking changes<a class="headerlink" href="#breaking-changes" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li>The <code class="docutils literal"><span class="pre">dataset</span></code> and <code class="docutils literal"><span class="pre">dataarray</span></code> modules have been removed. Wrappers have
-to be directly imported from <code class="docutils literal"><span class="pre">sklearn_xarray</span></code>.</li>
-</ul>
-</div>
-</div>
-<div class="section" id="v0-1-4-not-yet-released">
-<h2>v0.1.4 (not yet released)<a class="headerlink" href="#v0-1-4-not-yet-released" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="github-master-branch">
+<h2>Github master branch<a class="headerlink" href="#github-master-branch" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="enhancements">
 <h3>Enhancements<a class="headerlink" href="#enhancements" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">preprocessing.Tranposer</span></code> now also accepts a subset of <code class="docutils literal"><span class="pre">X.dims</span></code> for the
 <code class="docutils literal"><span class="pre">order</span></code> parameter.</li>
+<li><code class="docutils literal"><span class="pre">preprocessing.Splitter</span></code> and <code class="docutils literal"><span class="pre">preprocessing.Segmenter</span></code> now accept an
+<code class="docutils literal"><span class="pre">axis</span></code> argument that specifies where to insert the new dimension.</li>
 </ul>
 </div>
 <div class="section" id="deprecations">

@@ -646,7 +646,7 @@ determined.</p>
 
 <dl class="class">
 <dt id="sklearn_xarray.preprocessing.Segmenter">
-<em class="property">class </em><code class="descname">Segmenter</code><span class="sig-paren">(</span><em>dim='sample'</em>, <em>new_dim=None</em>, <em>new_len=None</em>, <em>step=None</em>, <em>reduce_index='subsample'</em>, <em>new_index_func=&lt;built-in function arange&gt;</em>, <em>keep_coords_as=None</em>, <em>groupby=None</em>, <em>group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Segmenter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Segmenter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descname">Segmenter</code><span class="sig-paren">(</span><em>dim='sample'</em>, <em>new_dim=None</em>, <em>new_len=None</em>, <em>step=None</em>, <em>axis=None</em>, <em>reduce_index='subsample'</em>, <em>new_index_func=&lt;built-in function arange&gt;</em>, <em>keep_coords_as=None</em>, <em>groupby=None</em>, <em>group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Segmenter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Segmenter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Split into segments along some dimension.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -667,6 +667,11 @@ determined.</p>
 <p><strong>step: int</strong></p>
 <blockquote>
 <div><p>Number of values between the start of a segment and the next one.</p>
+</div></blockquote>
+<p><strong>axis</strong> : int</p>
+<blockquote>
+<div><p>Axis position where new dimension is to be inserted. If None,
+the dimension will be inserted at the end.</p>
 </div></blockquote>
 <p><strong>reduce_index</strong> : str</p>
 <blockquote>
@@ -733,7 +738,7 @@ determined.</p>
 
 <dl class="class">
 <dt id="sklearn_xarray.preprocessing.Splitter">
-<em class="property">class </em><code class="descname">Splitter</code><span class="sig-paren">(</span><em>dim='sample'</em>, <em>new_dim=None</em>, <em>new_len=None</em>, <em>reduce_index='subsample'</em>, <em>new_index_func=&lt;built-in function arange&gt;</em>, <em>keep_coords_as=None</em>, <em>groupby=None</em>, <em>group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Splitter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Splitter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descname">Splitter</code><span class="sig-paren">(</span><em>dim='sample'</em>, <em>new_dim=None</em>, <em>new_len=None</em>, <em>axis=None</em>, <em>reduce_index='subsample'</em>, <em>new_index_func=&lt;built-in function arange&gt;</em>, <em>keep_coords_as=None</em>, <em>groupby=None</em>, <em>group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Splitter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Splitter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Split along some dimension.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -750,6 +755,11 @@ determined.</p>
 <p><strong>new_len</strong> : int</p>
 <blockquote>
 <div><p>Length of the newly added dimension.</p>
+</div></blockquote>
+<p><strong>axis</strong> : int</p>
+<blockquote>
+<div><p>Axis position where new dimension is to be inserted. If None,
+the dimension will be inserted at the end.</p>
 </div></blockquote>
 <p><strong>reduce_index</strong> : str</p>
 <blockquote>
