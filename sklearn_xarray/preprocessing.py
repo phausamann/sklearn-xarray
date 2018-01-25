@@ -317,6 +317,10 @@ class Splitter(BaseTransformer):
     new_len : int
         Length of the newly added dimension.
 
+    axis : int
+        Axis position where new dimension is to be inserted. If None,
+        the dimension will be inserted at the end.
+
     reduce_index : str
         How to reduce the index of the split dimension.
 
@@ -341,19 +345,34 @@ class Splitter(BaseTransformer):
         Name of dimension along which the groups are indexed.
     """
 
-    def __init__(self, dim='sample', new_dim=None, new_len=None,
+    def __init__(self, dim='sample', new_dim=None, new_len=None, axis=None,
                  reduce_index='subsample', new_index_func=np.arange,
                  keep_coords_as=None, groupby=None, group_dim='sample'):
 
         self.dim = dim
         self.new_dim = new_dim
         self.new_len = new_len
+        self.axis = axis
         self.reduce_index = reduce_index
         self.new_index_func = new_index_func
         self.keep_coords_as = keep_coords_as
 
         self.groupby = groupby
         self.group_dim = group_dim
+
+    def _transpose_var(self, xt, *order, dims=None):
+        """ Transpose a single variable. """
+
+        xt = xt.to_dataset(name='tmptmp')
+
+        if dims is not None:
+            if self.axis is None:
+                order = list(dims) + [self.new_dim]
+            else:
+                order = list(dims)[:self.axis] + [self.new_dim] + \
+                        list(dims)[self.axis:]
+
+        return xt.transpose(*order)['tmptmp']
 
     def _transform(self, X):
         """ Transform. """
@@ -395,20 +414,20 @@ class Splitter(BaseTransformer):
         index = pd.MultiIndex.from_product((dim_coord, new_dim_coord),
                                            names=(tmp_dim, self.new_dim))
 
-        # trim length, reshape and move new dimension to the end
+        # trim length and reshape
         Xt = Xt.isel(**{self.dim: slice(len(index))})
         Xt = Xt.assign(**{self.dim: index}).unstack(self.dim)
         Xt = Xt.rename({tmp_dim: self.dim})
 
+        # move new dimension
         if self.type_ == 'Dataset':
             # we have to transpose each variable individually
             for v in X.data_vars:
                 if self.new_dim in Xt[v].dims:
-                    Xt[v] = Xt[v].transpose(
-                        *(tuple(X[v].dims) + (self.new_dim,)))
+                    Xt[v] = self._transpose_var(Xt[v], dims=X[v].dims)
         else:
-            Xt = Xt.transpose(*(tuple(X.dims) + (self.new_dim,)))
-            Xt = Xt['tmp_var'].rename(X.name)
+            Xt = self._transpose_var(Xt['tmp_var'], dims=X.dims)
+            Xt = Xt.rename(X.name)
 
         return Xt
 
@@ -424,18 +443,18 @@ class Splitter(BaseTransformer):
             Xt[tmp_dim] = Xt[self.keep_coords_as]
             Xt = Xt.drop(self.keep_coords_as)
 
-        # tranpose to original dimensions
+        # transpose to original dimensions
         Xt = Xt.rename({tmp_dim: self.dim})
         if self.type_ == 'Dataset':
             # we have to transpose each variable individually
             for v in X.data_vars:
                 old_dims = list(X[v].dims)
                 old_dims.remove(self.new_dim)
-                Xt[v] = Xt[v].transpose(*old_dims)
+                Xt[v] = self._transpose_var(Xt[v], *old_dims)
         else:
             old_dims = list(X.dims)
             old_dims.remove(self.new_dim)
-            Xt = Xt.transpose(*old_dims)
+            Xt = self._transpose_var(Xt, *old_dims)
 
         return Xt
 
@@ -484,6 +503,10 @@ class Segmenter(BaseTransformer):
     step: int
         Number of values between the start of a segment and the next one.
 
+    axis : int
+        Axis position where new dimension is to be inserted. If None,
+        the dimension will be inserted at the end.
+
     reduce_index : str
         How to reduce the index of the split dimension.
 
@@ -512,19 +535,34 @@ class Segmenter(BaseTransformer):
     # TODO: put step calculation in fit()?
 
     def __init__(self, dim='sample', new_dim=None, new_len=None, step=None,
-                 reduce_index='subsample', new_index_func=np.arange,
+                 axis=None, reduce_index='subsample', new_index_func=np.arange,
                  keep_coords_as=None, groupby=None, group_dim='sample'):
 
         self.dim = dim
         self.new_dim = new_dim
         self.new_len = new_len
         self.step = step
+        self.axis = axis
         self.reduce_index = reduce_index
         self.new_index_func = new_index_func
         self.keep_coords_as = keep_coords_as
 
         self.groupby = groupby
         self.group_dim = group_dim
+
+    def _transpose_var(self, xt, *order, dims=None):
+        """ Transpose a single variable. """
+
+        xt = xt.to_dataset(name='tmptmp')
+
+        if dims is not None:
+            if self.axis is None:
+                order = list(dims) + [self.new_dim]
+            else:
+                order = list(dims)[:self.axis] + [self.new_dim] + \
+                        list(dims)[self.axis:]
+
+        return xt.transpose(*order)['tmptmp']
 
     def _segment_array(self, arr, axis):
         """ Segment an array along some axis. """
@@ -700,12 +738,22 @@ class Segmenter(BaseTransformer):
             for v in Xt.data_vars:
                 vars_t[v] = self._transform_var(Xt[v])
             coords_t = self._update_coords(Xt)
-            return xr.Dataset(vars_t, coords=coords_t)
+            Xt = xr.Dataset(vars_t, coords=coords_t)
 
         else:
             new_dims, var_t = self._transform_var(Xt)
             coords_t = self._update_coords(Xt)
-            return xr.DataArray(var_t, coords=coords_t, dims=new_dims)
+            Xt = xr.DataArray(var_t, coords=coords_t, dims=new_dims)
+
+        if self.type_ == 'Dataset':
+            # we have to transpose each variable individually
+            for v in X.data_vars:
+                if self.new_dim in Xt[v].dims:
+                    Xt[v] = self._transpose_var(Xt[v], dims=X[v].dims)
+        else:
+            Xt = self._transpose_var(Xt, dims=X.dims)
+
+        return Xt
 
     def _inverse_transform(self, X):
         """ Reverse transform. """
@@ -721,16 +769,30 @@ class Segmenter(BaseTransformer):
         Xt = X.copy()
 
         if self.type_ == 'Dataset':
-            vars_it = dict()
-            for v in Xt.data_vars:
-                vars_it[v] = self._inverse_transform_var(Xt[v])
+            vars_it = {
+                v: self._inverse_transform_var(Xt[v]) for v in Xt.data_vars}
             coords_it = self._restore_coords(Xt)
-            return xr.Dataset(vars_it, coords=coords_it)
+            Xt = xr.Dataset(vars_it, coords=coords_it)
 
         else:
             new_dims, var_it = self._inverse_transform_var(Xt)
             coords_it = self._restore_coords(Xt)
-            return xr.DataArray(var_it, coords=coords_it, dims=new_dims)
+            Xt = xr.DataArray(var_it, coords=coords_it, dims=new_dims)
+
+        # transpose to original dimensions
+        if self.type_ == 'Dataset':
+            # we have to transpose each variable individually
+            for v in X.data_vars:
+                old_dims = list(X[v].dims)
+                if self.new_dim in old_dims:
+                    old_dims.remove(self.new_dim)
+                Xt[v] = self._transpose_var(Xt[v], *old_dims)
+        else:
+            old_dims = list(X.dims)
+            old_dims.remove(self.new_dim)
+            Xt = self._transpose_var(Xt, *old_dims)
+
+        return Xt
 
 
 def segment(X, return_estimator=False, **fit_params):

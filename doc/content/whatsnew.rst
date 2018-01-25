@@ -1,24 +1,29 @@
 What's New
 ==========
 
-v0.2 (not yet released)
------------------------
-
-Breaking changes
-~~~~~~~~~~~~~~~~
-
-- The ``dataset`` and ``dataarray`` modules have been removed. Wrappers have
-  to be directly imported from ``sklearn_xarray``.
+.. v0.2.0
+.. Breaking changes
+.. The ``dataset`` and ``dataarray`` modules have been removed. Wrappers have
+   to be directly imported from ``sklearn_xarray``.
 
 
-v0.1.4 (not yet released)
--------------------------
+Github develop branch
+---------------------
 
 Enhancements
 ~~~~~~~~~~~~
 
 - ``preprocessing.Tranposer`` now also accepts a subset of ``X.dims`` for the
   ``order`` parameter.
+
+Github master branch
+--------------------
+
+Enhancements
+~~~~~~~~~~~~
+
+- ``preprocessing.Splitter`` and ``preprocessing.Segmenter`` now accept an
+  ``axis`` argument that specifies where to insert the new dimension.
 
 Deprecations
 ~~~~~~~~~~~~
