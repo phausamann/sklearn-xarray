@@ -7,21 +7,14 @@ What's New
    to be directly imported from ``sklearn_xarray``.
 
 
-Github develop branch
----------------------
-
-Enhancements
-~~~~~~~~~~~~
-
-- ``preprocessing.Tranposer`` now also accepts a subset of ``X.dims`` for the
-  ``order`` parameter.
-
 Github master branch
 --------------------
 
 Enhancements
 ~~~~~~~~~~~~
 
+- ``preprocessing.Tranposer`` now also accepts a subset of ``X.dims`` for the
+  ``order`` parameter.
 - ``preprocessing.Splitter`` and ``preprocessing.Segmenter`` now accept an
   ``axis`` argument that specifies where to insert the new dimension.
 

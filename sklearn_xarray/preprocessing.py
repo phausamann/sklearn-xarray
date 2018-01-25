@@ -360,7 +360,7 @@ class Splitter(BaseTransformer):
         self.groupby = groupby
         self.group_dim = group_dim
 
-    def _transpose_var(self, xt, *order, dims=None):
+    def _transpose_var(self, xt, order=None, dims=None):
         """ Transpose a single variable. """
 
         xt = xt.to_dataset(name='tmptmp')
@@ -450,11 +450,11 @@ class Splitter(BaseTransformer):
             for v in X.data_vars:
                 old_dims = list(X[v].dims)
                 old_dims.remove(self.new_dim)
-                Xt[v] = self._transpose_var(Xt[v], *old_dims)
+                Xt[v] = self._transpose_var(Xt[v], old_dims)
         else:
             old_dims = list(X.dims)
             old_dims.remove(self.new_dim)
-            Xt = self._transpose_var(Xt, *old_dims)
+            Xt = self._transpose_var(Xt, old_dims)
 
         return Xt
 
@@ -550,7 +550,7 @@ class Segmenter(BaseTransformer):
         self.groupby = groupby
         self.group_dim = group_dim
 
-    def _transpose_var(self, xt, *order, dims=None):
+    def _transpose_var(self, xt, order=None, dims=None):
         """ Transpose a single variable. """
 
         xt = xt.to_dataset(name='tmptmp')
@@ -786,11 +786,11 @@ class Segmenter(BaseTransformer):
                 old_dims = list(X[v].dims)
                 if self.new_dim in old_dims:
                     old_dims.remove(self.new_dim)
-                Xt[v] = self._transpose_var(Xt[v], *old_dims)
+                Xt[v] = self._transpose_var(Xt[v], old_dims)
         else:
             old_dims = list(X.dims)
             old_dims.remove(self.new_dim)
-            Xt = self._transpose_var(Xt, *old_dims)
+            Xt = self._transpose_var(Xt, old_dims)
 
         return Xt
 

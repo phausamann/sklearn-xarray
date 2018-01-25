@@ -79,5 +79,5 @@ example is also present as a jupyter notebook.
 Contributing
 ------------
 
-Please read the `contribution guide <https://github.com/phausamann/sklearn-xarray/blob/master/CONTRIBUTING.rst>`_
+Please read the `contribution guide <https://github.com/phausamann/sklearn-xarray/blob/master/.github/CONTRIBUTING.rst>`_
 if you want to contribute to this project.
