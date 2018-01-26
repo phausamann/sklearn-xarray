@@ -575,18 +575,35 @@ class Segmenter(BaseTransformer):
         # calculated shape after transformation and create empty array
         new_shape = list(arr.shape)
         new_shape[axis] = (new_shape[axis] - self.new_len + step) // step
-        new_shape.append(self.new_len)
+        if self.axis is None:
+            new_shape.append(self.new_len)
+        else:
+            new_shape.insert(self.axis, self.new_len)
+
+        # check if the new dimension is inserted before the axis
+        if self.axis is not None and self.axis <= axis:
+            axis_new = axis + 1
+        else:
+            axis_new = axis
+
         arr_new = np.zeros(new_shape, dtype=arr.dtype)
 
         # setup up indices
         idx_old = [slice(None)] * arr.ndim
         idx_new = [slice(None)] * len(new_shape)
 
+        # get order of transposition for assigning slices to the new array
+        order = list(range(arr.ndim))
+        if self.axis is None:
+            order[-1], order[axis] = order[axis], order[-1]
+        elif self.axis > axis:
+            order[self.axis-1], order[axis] = order[axis], order[self.axis-1]
+
         # loop over axis
-        for n in range(new_shape[axis]):
+        for n in range(new_shape[axis_new]):
             idx_old[axis] = n * step + np.arange(self.new_len)
-            idx_new[axis] = n
-            arr_new[tuple(idx_new)] = arr[idx_old].T
+            idx_new[axis_new] = n
+            arr_new[tuple(idx_new)] = np.transpose(arr[idx_old], order)
 
         return arr_new
 
@@ -597,18 +614,31 @@ class Segmenter(BaseTransformer):
             step = self.new_len
         else:
             step = self.step
-
-        # calculated shape before transformation and create empty array
+        # calculate shape before transformation and create empty array
         old_shape = list(arr.shape)
         old_shape[axis] = old_shape[axis] * step + self.new_len - step
-        old_shape = old_shape[:-1]
+        if self.axis is None:
+            del old_shape[-1]
+        else:
+            del old_shape[self.axis]
+
+        # check if the new dimension was inserted before the axis
+        if self.axis is not None and self.axis < axis:
+            axis_old = axis - 1
+        else:
+            axis_old = axis
 
         if np.issubdtype(arr.dtype, np.number):
 
             # fast aggregate implementation for vars and numeric coords
             old_ranges = [range(s) for s in old_shape]
-            idx = np.vstack(self._segment_array(g.T, axis).flatten()
-                            for g in np.meshgrid(*old_ranges))
+            if len(old_ranges) > 1:
+                mg_ord = [1, 0] + list(range(2, len(old_ranges)))
+            else:
+                mg_ord = [0]
+            idx = np.vstack(
+                self._segment_array(np.transpose(g, mg_ord), axis_old).flatten()
+                for g in np.meshgrid(*old_ranges))
             return npg.aggregate(
                 idx, arr.flatten().T, size=old_shape, func='mean')
 
@@ -617,15 +647,23 @@ class Segmenter(BaseTransformer):
             # slow implementation for non-numeric coords
             arr_old = np.zeros(old_shape, dtype=arr.dtype)
 
+            # get order of transposition for assigning slices to the new array
+            order = list(range(arr.ndim-1))
+            if self.axis is None:
+                order[-1], order[axis] = order[axis], order[-1]
+            elif self.axis > axis:
+                order[self.axis-1], order[axis] = order[axis], \
+                                                  order[self.axis-1]
+
             # setup up indices
             idx_old = [slice(None)] * len(old_shape)
             idx_new = [slice(None)] * arr.ndim
 
             # loop over axis
             for n in range(arr.shape[axis]):
-                idx_old[axis] = n * step + np.arange(self.new_len)
+                idx_old[axis_old] = n * step + np.arange(self.new_len)
                 idx_new[axis] = n
-                arr_old[tuple(idx_old)] = arr[idx_new].T
+                arr_old[tuple(idx_old)] = np.transpose(arr[idx_new], order)
 
             return arr_old
 
@@ -633,7 +671,11 @@ class Segmenter(BaseTransformer):
         """ Transform a single variable. """
 
         if self.dim in X.dims:
-            new_dims = list(X.dims) + [self.new_dim]
+            new_dims = list(X.dims)
+            if self.axis is None:
+                new_dims.append(self.new_dim)
+            else:
+                new_dims.insert(self.axis, self.new_dim)
             var_t = self._segment_array(
                 X.values, tuple(X.dims).index(self.dim))
         else:
@@ -688,7 +730,11 @@ class Segmenter(BaseTransformer):
 
         for c in X.coords:
             if c != self.dim and self.dim in X[c].dims:
-                new_dims = list(X[c].dims) + [self.new_dim]
+                new_dims = list(X[c].dims)
+                if self.axis is None:
+                    new_dims.append(self.new_dim)
+                else:
+                    new_dims.insert(self.axis, self.new_dim)
                 coords_new[c] = (new_dims,
                     self._segment_array(X[c].values,
                                         tuple(X[c].dims).index(self.dim)))
@@ -711,10 +757,10 @@ class Segmenter(BaseTransformer):
         for c in X.coords:
             if c not in (self.dim, self.new_dim) and self.dim in X[c].dims:
                 new_dims = list(X[c].dims)
+                axis = new_dims.index(self.dim)
                 new_dims.remove(self.new_dim)
                 coords_old[c] = (new_dims,
-                    self._rebuild_array(X[c].values,
-                                        tuple(X[c].dims).index(self.dim)))
+                    self._rebuild_array(X[c].values, axis))
             elif c not in (self.dim, self.new_dim):
                 coords_old[c] = (X[c].dims, X[c])
 
