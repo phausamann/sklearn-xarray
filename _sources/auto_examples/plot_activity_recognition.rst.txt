@@ -206,8 +206,8 @@ Finally, we run the grid search and print out the best parameter combination.
  Out::
 
     Fitting 3 folds for each of 4 candidates, totalling 12 fits
-    Best parameters: {'pca__n_components': 40, 'splitter__new_len': 30}
-    Accuracy: 0.550990603746
+    Best parameters: {'pca__n_components': 40, 'splitter__new_len': 60}
+    Accuracy: 0.529151498791
 
 
 .. note::
@@ -216,7 +216,7 @@ Finally, we run the grid search and print out the best parameter combination.
     for demonstration purposes.
 
 
-**Total running time of the script:** ( 5 minutes  47.160 seconds)
+**Total running time of the script:** ( 5 minutes  9.968 seconds)
 
 
 
