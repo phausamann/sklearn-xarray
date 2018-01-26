@@ -122,6 +122,7 @@ def test_split():
     Xt_da = estimator.fit_transform(X_da)
 
     assert Xt_da.shape == (20, 5, 10)
+    npt.assert_allclose(Xt_da[0, :, 0], X_da[:5, 0])
 
     Xit_da = estimator.inverse_transform(Xt_da)
 
@@ -139,12 +140,13 @@ def test_split():
     )
 
     assert Xt_ds['var_1'].shape == (14, 7, 10)
+    npt.assert_allclose(Xt_ds.var_1[0, :, 0], X_ds.var_1[:7, 0])
 
 
 def test_segment():
 
     X_da = xr.DataArray(
-        np.random.random((100, 10)),
+        np.tile(np.arange(10), (100, 1)),
         coords={'sample': range(100), 'feature': range(10),
                 'coord_1': (['sample', 'feature'],
                             np.tile('Test', (100, 10)))},
@@ -152,28 +154,32 @@ def test_segment():
     )
 
     Xt_da, estimator = segment(
-        X_da, new_dim='split_sample', new_len=10, step=5, axis=0,
+        X_da, new_dim='split_sample', new_len=20, step=5, axis=0,
         reduce_index='subsample', keep_coords_as='backup', return_estimator=True
     )
 
-    assert Xt_da.coord_1.shape == (10, 19, 10)
+    assert Xt_da.coord_1.shape == (20, 17, 10)
+    npt.assert_allclose(Xt_da[:, 0, 0], X_da[:20, 0])
 
-    # xrt.assert_allclose(estimator.inverse_transform(Xt_da), X_da)
+    Xit_da = estimator.inverse_transform(Xt_da)
+
+    xrt.assert_allclose(Xit_da, X_da)
 
     X_ds = xr.Dataset({
-        'var_1': (['sample', 'feature'], np.random.random((100, 10))),
-        'var_2': (['dummy'], np.random.random((10,)))},
-        coords={'sample': range(100), 'feature': range(10), 'dummy': range(10),
-                'coord_1': (['sample', 'feature'],
-                            np.tile('Test', (100, 10)))}
+        'var_1': (['sample', 'feat_1', 'feat_2'],
+                  np.tile(np.arange(10), (100, 10, 1))),
+        'var_2': (['feat_2'], np.random.random((10,)))},
+        coords={'sample': range(100), 'feat_1': range(10), 'feat_2': range(10),
+                'coord_1': (['sample', 'feat_1'], np.tile('Test', (100, 10)))}
     )
 
     Xt_ds, estimator = segment(
-        X_ds, new_dim='split_sample', new_len=10, step=5, reduce_index='head',
+        X_ds, new_dim='split_sample', new_len=20, step=5, reduce_index='head',
         keep_coords_as='backup', return_estimator=True
     )
 
-    assert Xt_ds.coord_1.shape == (19, 10, 10)
+    assert Xt_ds.var_1.shape == (17, 10, 10, 20)
+    npt.assert_allclose(Xt_ds.var_1[0, 0, 0, :], X_ds.var_1[:20, 0, 0])
 
     xrt.assert_allclose(estimator.inverse_transform(Xt_ds), X_ds)
 
