@@ -85,3 +85,37 @@ def test_get_group_indices():
         idx = (np.array(coord_1) == combinations[i][0]) \
             & (np.array(coord_2)[:, 0] == combinations[i][1])
         npt.assert_equal(gg, idx)
+
+
+def test_segment_array():
+
+    from sklearn_xarray.utils import segment_array
+
+    arr = np.array([[0, 1, 2, 3],
+                    [4, 5, 6, 7],
+                    [8, 9, 10, 11],
+                    [12, 13, 14, 15]])
+
+    arr_seg_1 = segment_array(arr, axis=1, new_len=3, step=1)
+    arr_target_1 = np.array([[[0, 1, 2], [1, 2, 3]],
+                             [[4, 5, 6], [5, 6, 7]],
+                             [[8, 9, 10], [9, 10, 11]],
+                             [[12, 13, 14], [13, 14, 15]]])
+
+    npt.assert_allclose(arr_target_1, arr_seg_1)
+
+    arr_seg_2 = segment_array(arr, axis=1, new_len=2, step=2, new_axis=1)
+    arr_target_2 = np.array([[[0, 1], [2, 3]],
+                             [[4, 5], [6, 7]],
+                             [[8, 9], [10, 11]],
+                             [[12, 13], [14, 15]]]).transpose((0, 2, 1))
+
+    npt.assert_allclose(arr_target_2, arr_seg_2)
+
+    arr_seg_3 = segment_array(arr, axis=0, new_len=2, step=1, new_axis=1)
+    arr_target_3 = np.array(
+        [[[0, 4], [1, 5], [2, 6], [3, 7]],
+         [[4, 8], [5, 9], [6, 10], [7, 11]],
+         [[8, 12], [9, 13], [10, 14], [11, 15]]]).transpose((0, 2, 1))
+
+    npt.assert_allclose(arr_target_3, arr_seg_3)

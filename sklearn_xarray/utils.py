@@ -163,3 +163,71 @@ def get_group_indices(X, groupby, group_dim=None):
     idx_all = [np.all(e, axis=0) for e in itertools.product(*idx_groups)]
 
     return [i for i in idx_all if np.any(i)]
+
+
+def segment_array(arr, axis, new_len, step=1, new_axis=None, return_view=False):
+    """ Segment an array along some axis.
+
+    Parameters
+    ----------
+    arr : array-like
+        The input array.
+
+    axis : int
+        The axis along which to segment.
+
+    new_len : int
+        The length of each segment.
+
+    step : int, default 1
+        The offset between the start of each segment.
+
+    new_axis : int, optional
+        The position where the newly created axis is to be inserted. By
+        default, the axis will be added at the end of the array.
+
+    return_view : bool, default False
+        If True, return a view of the segmented array instead of a copy.
+
+    Returns
+    -------
+    arr_seg : array-like
+        The segmented array.
+    """
+
+    from numpy.lib.stride_tricks import as_strided
+
+    old_shape = np.array(arr.shape)
+
+    assert new_len <= old_shape[axis], \
+        "new_len is bigger than input array in axis"
+    seg_shape = old_shape.copy()
+    seg_shape[axis] = new_len
+
+    steps = np.ones_like(old_shape)
+    if step:
+        step = np.array(step, ndmin=1)
+        assert step > 0, "Only positive steps allowed"
+        steps[axis] = step
+
+    arr_strides = np.array(arr.strides)
+
+    shape = tuple((old_shape - seg_shape) // steps + 1) + tuple(seg_shape)
+    strides = tuple(arr_strides * steps) + tuple(arr_strides)
+
+    arr_seg = np.squeeze(
+        as_strided(arr, shape=shape, strides=strides))
+
+    # squeeze will move the segmented axis to the first position
+    arr_seg = np.moveaxis(arr_seg, 0, axis)
+
+    # the new axis comes right after
+    if new_axis is not None:
+        arr_seg = np.moveaxis(arr_seg, axis + 1, new_axis)
+    else:
+        arr_seg = np.moveaxis(arr_seg, axis + 1, -1)
+
+    if return_view:
+        return arr_seg
+    else:
+        return arr_seg.copy()
