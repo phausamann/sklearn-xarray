@@ -205,7 +205,7 @@ def segment_array(arr, axis, new_len, step=1, new_axis=None, return_view=False):
         if new_axis is None:
             return np.moveaxis(arr_seg, (axis, -1), (-1, axis))
         else:
-            return np.moveaxis(arr, (axis, -1), (new_axis, axis))
+            return np.moveaxis(arr_seg, (axis, -1), (new_axis, axis))
 
     old_shape = np.array(arr.shape)
 
