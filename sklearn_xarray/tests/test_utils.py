@@ -119,3 +119,11 @@ def test_segment_array():
          [[8, 12], [9, 13], [10, 14], [11, 15]]]).transpose((0, 2, 1))
 
     npt.assert_allclose(arr_target_3, arr_seg_3)
+
+    arr_seg_4 = segment_array(arr, axis=1, new_len=3, step=2)
+    arr_target_4 = np.array([[[0, 1, 2]],
+                             [[4, 5, 6]],
+                             [[8, 9, 10]],
+                             [[12, 13, 14]]])
+
+    npt.assert_allclose(arr_target_4, arr_seg_4)

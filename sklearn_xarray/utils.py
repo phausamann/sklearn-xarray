@@ -197,6 +197,16 @@ def segment_array(arr, axis, new_len, step=1, new_axis=None, return_view=False):
 
     from numpy.lib.stride_tricks import as_strided
 
+    # handle the case that the segmented axis is singleton after segmentation
+    if (arr.shape[axis] - new_len) // step == 0:
+        idx = [slice(None)] * arr.ndim
+        idx[axis] = slice(new_len)
+        arr_seg = arr[tuple(idx)][..., np.newaxis]
+        if new_axis is None:
+            return np.moveaxis(arr_seg, (axis, -1), (-1, axis))
+        else:
+            return np.moveaxis(arr, (axis, -1), (new_axis, axis))
+
     old_shape = np.array(arr.shape)
 
     assert new_len <= old_shape[axis], \
