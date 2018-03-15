@@ -115,6 +115,7 @@ Module: :py:mod:`sklearn_xarray.utils`
 
     convert_to_ndarray
     get_group_indices
+    segment_array
     is_dataarray
     is_dataset
     is_target

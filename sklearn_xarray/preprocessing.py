@@ -567,45 +567,14 @@ class Segmenter(BaseTransformer):
     def _segment_array(self, arr, axis):
         """ Segment an array along some axis. """
 
+        from sklearn_xarray.utils import segment_array
+
         if self.step is None:
             step = self.new_len
         else:
             step = self.step
 
-        # calculated shape after transformation and create empty array
-        new_shape = list(arr.shape)
-        new_shape[axis] = (new_shape[axis] - self.new_len + step) // step
-        if self.axis is None:
-            new_shape.append(self.new_len)
-        else:
-            new_shape.insert(self.axis, self.new_len)
-
-        # check if the new dimension is inserted before the axis
-        if self.axis is not None and self.axis <= axis:
-            axis_new = axis + 1
-        else:
-            axis_new = axis
-
-        arr_new = np.zeros(new_shape, dtype=arr.dtype)
-
-        # setup up indices
-        idx_old = [slice(None)] * arr.ndim
-        idx_new = [slice(None)] * len(new_shape)
-
-        # get order of transposition for assigning slices to the new array
-        order = list(range(arr.ndim))
-        if self.axis is None:
-            order[-1], order[axis] = order[axis], order[-1]
-        elif self.axis > axis:
-            order[self.axis-1], order[axis] = order[axis], order[self.axis-1]
-
-        # loop over axis
-        for n in range(new_shape[axis_new]):
-            idx_old[axis] = n * step + np.arange(self.new_len)
-            idx_new[axis_new] = n
-            arr_new[tuple(idx_new)] = np.transpose(arr[idx_old], order)
-
-        return arr_new
+        return segment_array(arr, axis, self.new_len, step, self.axis)
 
     def _rebuild_array(self, arr, axis):
         """ Rebuild an array along some axis. """
