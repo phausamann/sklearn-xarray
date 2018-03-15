@@ -190,7 +190,7 @@
             
   <div class="section" id="module-sklearn_xarray">
 <span id="top-level-functions-and-classes"></span><h1>Top-level functions and classes<a class="headerlink" href="#module-sklearn_xarray" title="Permalink to this headline">¶</a></h1>
-<p><code class="docutils literal"><span class="pre">sklearn_xarray</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">sklearn_xarray</span></code></p>
 <dl class="function">
 <dt id="sklearn_xarray.wrap">
 <code class="descname">wrap</code><span class="sig-paren">(</span><em>estimator</em>, <em>reshapes=None</em>, <em>sample_dim=None</em>, <em>compat=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/common/wrappers.html#wrap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.wrap" title="Permalink to this definition">¶</a></dt>
@@ -211,7 +211,7 @@ this dimension (e.g. a binary classifier returning a 1D vector), the
 dimension itself will also be dropped.</p>
 <p>You can specify multiple dimensions mapping to multiple new dimensions
 with a dict whose items are lists of reshaped dimensions, e.g.
-<code class="docutils literal"><span class="pre">{'new_feature':</span> <span class="pre">['feature_1',</span> <span class="pre">'feature_2'],</span> <span class="pre">...}</span></code></p>
+<code class="docutils literal notranslate"><span class="pre">{'new_feature':</span> <span class="pre">['feature_1',</span> <span class="pre">'feature_2'],</span> <span class="pre">...}</span></code></p>
 </div></blockquote>
 <p><strong>sample_dim</strong> : str, optional</p>
 <blockquote>
@@ -220,7 +220,7 @@ the wrapper will assume that this is the first dimension in the array.</p>
 </div></blockquote>
 <p><strong>compat</strong> : bool, optional</p>
 <blockquote>
-<div><p>If True, <code class="docutils literal"><span class="pre">set_params</span></code>/<code class="docutils literal"><span class="pre">get_params</span></code> will only use the wrapper’s
+<div><p>If True, <code class="docutils literal notranslate"><span class="pre">set_params</span></code>/<code class="docutils literal notranslate"><span class="pre">get_params</span></code> will only use the wrapper’s
 actual parameters and not those of the wrapped estimator. This might
 be necessary when the estimator defines parameters with the same name
 as the wrapper.</p>
@@ -279,19 +279,19 @@ as the wrapper.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">fit</span></code>(X[,&nbsp;y])</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(X[,&nbsp;y])</td>
 <td>A wrapper around the fitting function.</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_params</span></code>([deep])</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
 <td>Get parameters for this estimator.</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">predict</span></code>(X)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code>(X)</td>
 <td>A wrapper around the prediction function.</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">score</span></code>(X,&nbsp;y[,&nbsp;sample_weight])</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code>(X,&nbsp;y[,&nbsp;sample_weight])</td>
 <td>Returns the score of the prediction.</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">set_params</span></code>(**params)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</td>
 <td>Set the parameters of this estimator.</td>
 </tr>
 </tbody>
@@ -325,19 +325,19 @@ as the wrapper.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">fit</span></code>(X[,&nbsp;y])</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(X[,&nbsp;y])</td>
 <td>A wrapper around the fitting function.</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_params</span></code>([deep])</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
 <td>Get parameters for this estimator.</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">predict</span></code>(X)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code>(X)</td>
 <td>A wrapper around the prediction function.</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">score</span></code>(X,&nbsp;y[,&nbsp;sample_weight])</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code>(X,&nbsp;y[,&nbsp;sample_weight])</td>
 <td>Returns the score of the prediction.</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">set_params</span></code>(**params)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</td>
 <td>Set the parameters of this estimator.</td>
 </tr>
 </tbody>
@@ -371,22 +371,22 @@ as the wrapper.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">fit</span></code>(X[,&nbsp;y])</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(X[,&nbsp;y])</td>
 <td>A wrapper around the fitting function.</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">fit_transform</span></code>(X[,&nbsp;y])</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(X[,&nbsp;y])</td>
 <td>Fit to data, then transform it.</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_params</span></code>([deep])</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
 <td>Get parameters for this estimator.</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">inverse_transform</span></code>(X)</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform</span></code>(X)</td>
 <td>A wrapper around the inverse transformation function.</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">set_params</span></code>(**params)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</td>
 <td>Set the parameters of this estimator.</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">transform</span></code>(X)</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(X)</td>
 <td>A wrapper around the transformation function.</td>
 </tr>
 </tbody>
@@ -414,13 +414,13 @@ will be used as-is.</p>
 </div></blockquote>
 <p><strong>transformer</strong> : sklearn transformer, optional</p>
 <blockquote>
-<div><p><strong>Deprecated</strong>, use <code class="docutils literal"><span class="pre">transform_func=Transformer().fit_transform</span></code>
+<div><p><strong>Deprecated</strong>, use <code class="docutils literal notranslate"><span class="pre">transform_func=Transformer().fit_transform</span></code>
 instead.</p>
 </div></blockquote>
 <p><strong>lazy</strong> : bool, optinonal</p>
 <blockquote>
 <div><p>If true, the target coordinate is only transformed by the transformer
-when needed. The transformer can implement a <code class="docutils literal"><span class="pre">get_transformed_shape</span></code>
+when needed. The transformer can implement a <code class="docutils literal notranslate"><span class="pre">get_transformed_shape</span></code>
 method that returns the shape after the transformation of the provided
 coordinate without actually transforming the data.</p>
 </div></blockquote>
@@ -432,7 +432,7 @@ dimension/these dimensions.</p>
 <p><strong>reduce_func</strong> : callable, optional</p>
 <blockquote class="last">
 <div><p>A callable that reduces the coordinate(s) to the dimension(s) in
-<code class="docutils literal"><span class="pre">dim</span></code>. If not specified, the values along dimensions not in <code class="docutils literal"><span class="pre">dim</span></code>
+<code class="docutils literal notranslate"><span class="pre">dim</span></code>. If not specified, the values along dimensions not in <code class="docutils literal notranslate"><span class="pre">dim</span></code>
 will be reduced to the first element in each of these dimensions.</p>
 </div></blockquote>
 </td>
@@ -446,10 +446,10 @@ will be reduced to the first element in each of these dimensions.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#sklearn_xarray.Target.ndim" title="sklearn_xarray.Target.ndim"><code class="xref py py-obj docutils literal"><span class="pre">ndim</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#sklearn_xarray.Target.ndim" title="sklearn_xarray.Target.ndim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndim</span></code></a></td>
 <td>The number of dimensions of the transformed target.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#sklearn_xarray.Target.shape" title="sklearn_xarray.Target.shape"><code class="xref py py-obj docutils literal"><span class="pre">shape</span></code></a></td>
+<tr class="row-even"><td><a class="reference internal" href="#sklearn_xarray.Target.shape" title="sklearn_xarray.Target.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></td>
 <td>The shape of the transformed target.</td>
 </tr>
 </tbody>
@@ -461,10 +461,10 @@ will be reduced to the first element in each of these dimensions.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(X)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(…)&nbsp;&lt;==&gt;&nbsp;x(…)</td>
 <td></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#sklearn_xarray.Target.assign_to" title="sklearn_xarray.Target.assign_to"><code class="xref py py-obj docutils literal"><span class="pre">assign_to</span></code></a>(X)</td>
+<tr class="row-even"><td><a class="reference internal" href="#sklearn_xarray.Target.assign_to" title="sklearn_xarray.Target.assign_to"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_to</span></code></a>(X)</td>
 <td>Assign this target to a DataArray or Dataset.</td>
 </tr>
 </tbody>

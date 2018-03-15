@@ -7,7 +7,7 @@ What's New
    to be directly imported from ``sklearn_xarray``.
 
 
-Github master branch
+v0.1.4 (March 15, 2018)
 --------------------
 
 Enhancements
@@ -17,6 +17,10 @@ Enhancements
   ``order`` parameter.
 - ``preprocessing.Splitter`` and ``preprocessing.Segmenter`` now accept an
   ``axis`` argument that specifies where to insert the new dimension.
+- Huge performance improvements for ``preprocessing.Segmenter`` by using
+  ``numpy.lib.stride_tricks.as_strided`` instead of a loop. The
+  general-purpose backend for segmenting can be found in
+  ``utils.segment_array``.
 
 Deprecations
 ~~~~~~~~~~~~

@@ -173,8 +173,8 @@
             
   <div class="section" id="activity-recognition-from-accelerometer-data">
 <span id="sphx-glr-auto-examples-plot-activity-recognition-py"></span><h1>Activity recognition from accelerometer data<a class="headerlink" href="#activity-recognition-from-accelerometer-data" title="Permalink to this headline">¶</a></h1>
-<p>This demo shows how the <strong>sklearn-xarray</strong> package works with the <code class="docutils literal"><span class="pre">Pipeline</span></code>
-and <code class="docutils literal"><span class="pre">GridSearchCV</span></code> methods from scikit-learn providing a metadata-aware
+<p>This demo shows how the <strong>sklearn-xarray</strong> package works with the <code class="docutils literal notranslate"><span class="pre">Pipeline</span></code>
+and <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code> methods from scikit-learn providing a metadata-aware
 grid-searchable pipeline mechansism.</p>
 <p>The package combines the metadata-handling capabilities of xarray with the
 machine-learning framework of sklearn. It enables the user to apply
@@ -185,7 +185,7 @@ feedforward neural network. It uses the <a class="reference external" href="http
 which contains the activities
 walking, jogging, walking upstairs, walking downstairs, sitting and standing
 from 36 different subjects.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
@@ -207,10 +207,10 @@ from 36 different subjects.</p>
 the ‘Walking’ activity.</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p class="last">In the jupyter notebook version, change the first cell to <code class="docutils literal"><span class="pre">%matplotlib</span>
+<p class="last">In the jupyter notebook version, change the first cell to <code class="docutils literal notranslate"><span class="pre">%matplotlib</span>
 <span class="pre">notebook</span></code> in order to get an interactive plot that you can zoom and pan.</p>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">load_wisdm_dataarray</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">load_wisdm_dataarray</span><span class="p">()</span>
 
 <span class="n">X_plot</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">activity</span> <span class="o">==</span> <span class="s1">&#39;Walking&#39;</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">subject</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)]</span>
 <span class="n">X_plot</span> <span class="o">=</span> <span class="n">X_plot</span><span class="p">[:</span><span class="mi">500</span><span class="p">]</span> <span class="o">/</span> <span class="mf">9.81</span>
@@ -237,7 +237,7 @@ segments with <cite>nan</cite> values and standardizing. Since the accelerometer
 three-dimensional but the standardizer and classifier expect a one-dimensional
 feature vector, we have to vectorize the samples.</p>
 <p>Finally, we use PCA and logistic regression to perform the classification.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">pl</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pl</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
     <span class="p">(</span><span class="s1">&#39;splitter&#39;</span><span class="p">,</span> <span class="n">Splitter</span><span class="p">(</span>
         <span class="n">groupby</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">,</span> <span class="s1">&#39;activity&#39;</span><span class="p">],</span> <span class="n">new_dim</span><span class="o">=</span><span class="s1">&#39;timepoint&#39;</span><span class="p">)),</span>
     <span class="p">(</span><span class="s1">&#39;sanitizer&#39;</span><span class="p">,</span> <span class="n">Sanitizer</span><span class="p">()),</span>
@@ -253,7 +253,7 @@ parameters, we define a cross-validator. In order to make sure the model
 performs subject-independent recognition, we use a <cite>GroupShuffleSplit</cite>
 cross-validator that ensures that the same subject will not appear in both
 training and validation set.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">cv</span> <span class="o">=</span> <span class="n">CrossValidatorWrapper</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cv</span> <span class="o">=</span> <span class="n">CrossValidatorWrapper</span><span class="p">(</span>
     <span class="n">GroupShuffleSplit</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">),</span> <span class="n">groupby</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -261,9 +261,9 @@ training and validation set.</p>
 number of PCA components to find the best parameters for this task.</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p class="last">To use multi-processing, set <code class="docutils literal"><span class="pre">n_jobs=-1</span></code>.</p>
+<p class="last">To use multi-processing, set <code class="docutils literal notranslate"><span class="pre">n_jobs=-1</span></code>.</p>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">gs</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gs</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span>
     <span class="n">pl</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">param_grid</span><span class="o">=</span><span class="p">{</span>
         <span class="s1">&#39;splitter__new_len&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">],</span>
         <span class="s1">&#39;pca__n_components&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>
@@ -272,22 +272,22 @@ number of PCA components to find the best parameters for this task.</p>
 </div>
 <p>The label to classify is the activity which we convert to an integer
 representation for the classification.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">Target</span><span class="p">(</span><span class="n">coord</span><span class="o">=</span><span class="s1">&#39;activity&#39;</span><span class="p">,</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">Target</span><span class="p">(</span><span class="n">coord</span><span class="o">=</span><span class="s1">&#39;activity&#39;</span><span class="p">,</span>
            <span class="n">transform_func</span><span class="o">=</span><span class="n">LabelEncoder</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">,</span>
            <span class="n">dim</span><span class="o">=</span><span class="s1">&#39;sample&#39;</span><span class="p">)(</span><span class="n">X</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Finally, we run the grid search and print out the best parameter combination.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>  <span class="c1"># in order for n_jobs=-1 to work on Windows</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>  <span class="c1"># in order for n_jobs=-1 to work on Windows</span>
     <span class="n">gs</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
     <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Best parameters: {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gs</span><span class="o">.</span><span class="n">best_params_</span><span class="p">))</span>
     <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Accuracy: {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gs</span><span class="o">.</span><span class="n">best_score_</span><span class="p">))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="n">Fitting</span> <span class="mi">3</span> <span class="n">folds</span> <span class="k">for</span> <span class="n">each</span> <span class="n">of</span> <span class="mi">4</span> <span class="n">candidates</span><span class="p">,</span> <span class="n">totalling</span> <span class="mi">12</span> <span class="n">fits</span>
+<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Fitting</span> <span class="mi">3</span> <span class="n">folds</span> <span class="k">for</span> <span class="n">each</span> <span class="n">of</span> <span class="mi">4</span> <span class="n">candidates</span><span class="p">,</span> <span class="n">totalling</span> <span class="mi">12</span> <span class="n">fits</span>
 <span class="n">Best</span> <span class="n">parameters</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;pca__n_components&#39;</span><span class="p">:</span> <span class="mi">40</span><span class="p">,</span> <span class="s1">&#39;splitter__new_len&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">}</span>
-<span class="n">Accuracy</span><span class="p">:</span> <span class="mf">0.529151498791</span>
+<span class="n">Accuracy</span><span class="p">:</span> <span class="mf">0.547607995411</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -295,12 +295,12 @@ representation for the classification.</p>
 <p class="last">The performance of this classifier is obviously pretty terrible, it’s only
 for demonstration purposes.</p>
 </div>
-<p><strong>Total running time of the script:</strong> ( 5 minutes  9.968 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 5 minutes  10.255 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/plot_activity_recognition.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_activity_recognition.py</span></code></a></div>
+<a class="reference download internal" href="../_downloads/plot_activity_recognition.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_activity_recognition.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/plot_activity_recognition.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_activity_recognition.ipynb</span></code></a></div>
+<a class="reference download internal" href="../_downloads/plot_activity_recognition.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_activity_recognition.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>

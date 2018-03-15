@@ -188,7 +188,7 @@
             
   <div class="section" id="module-sklearn_xarray.utils">
 <span id="utils"></span><h1>Utils<a class="headerlink" href="#module-sklearn_xarray.utils" title="Permalink to this headline">¶</a></h1>
-<p><code class="docutils literal"><span class="pre">sklearn_xarray.utils</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">sklearn_xarray.utils</span></code></p>
 <dl class="function">
 <dt id="sklearn_xarray.utils.convert_to_ndarray">
 <code class="descname">convert_to_ndarray</code><span class="sig-paren">(</span><em>X</em>, <em>new_dim_last=True</em>, <em>new_dim_name='variable'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/utils.html#convert_to_ndarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.utils.convert_to_ndarray" title="Permalink to this definition">¶</a></dt>
@@ -333,6 +333,51 @@ determined.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">bool</p>
 <blockquote class="last">
 <div><p>Whether the object is a Target or not.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sklearn_xarray.utils.segment_array">
+<code class="descname">segment_array</code><span class="sig-paren">(</span><em>arr</em>, <em>axis</em>, <em>new_len</em>, <em>step=1</em>, <em>new_axis=None</em>, <em>return_view=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/utils.html#segment_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.utils.segment_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Segment an array along some axis.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>arr</strong> : array-like</p>
+<blockquote>
+<div><p>The input array.</p>
+</div></blockquote>
+<p><strong>axis</strong> : int</p>
+<blockquote>
+<div><p>The axis along which to segment.</p>
+</div></blockquote>
+<p><strong>new_len</strong> : int</p>
+<blockquote>
+<div><p>The length of each segment.</p>
+</div></blockquote>
+<p><strong>step</strong> : int, default 1</p>
+<blockquote>
+<div><p>The offset between the start of each segment.</p>
+</div></blockquote>
+<p><strong>new_axis</strong> : int, optional</p>
+<blockquote>
+<div><p>The position where the newly created axis is to be inserted. By
+default, the axis will be added at the end of the array.</p>
+</div></blockquote>
+<p><strong>return_view</strong> : bool, default False</p>
+<blockquote>
+<div><p>If True, return a view of the segmented array instead of a copy.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>arr_seg</strong> : array-like</p>
+<blockquote class="last">
+<div><p>The segmented array.</p>
 </div></blockquote>
 </td>
 </tr>

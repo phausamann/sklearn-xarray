@@ -199,8 +199,8 @@
             <span class="s1">&#39;dims&#39;</span><span class="p">,</span>
             <span class="s1">&#39;to_dataset&#39;</span>
         <span class="p">]</span>
-
-    <span class="k">return</span> <span class="nb">all</span><span class="p">([</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">require_attrs</span><span class="p">])</span></div>
+</div>
+    <span class="k">return</span> <span class="nb">all</span><span class="p">([</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">require_attrs</span><span class="p">])</span>
 
 
 <div class="viewcode-block" id="is_dataset"><a class="viewcode-back" href="../../content/api/utils.html#sklearn_xarray.utils.is_dataset">[docs]</a><span class="k">def</span> <span class="nf">is_dataset</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">require_attrs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -227,8 +227,8 @@
             <span class="s1">&#39;dims&#39;</span><span class="p">,</span>
             <span class="s1">&#39;to_array&#39;</span>
         <span class="p">]</span>
-
-    <span class="k">return</span> <span class="nb">all</span><span class="p">([</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">require_attrs</span><span class="p">])</span></div>
+</div>
+    <span class="k">return</span> <span class="nb">all</span><span class="p">([</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">require_attrs</span><span class="p">])</span>
 
 
 <div class="viewcode-block" id="is_target"><a class="viewcode-back" href="../../content/api/utils.html#sklearn_xarray.utils.is_target">[docs]</a><span class="k">def</span> <span class="nf">is_target</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">require_attrs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -251,8 +251,8 @@
     <span class="k">if</span> <span class="n">require_attrs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">require_attrs</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="n">Target</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">))</span>
-
-    <span class="k">return</span> <span class="nb">all</span><span class="p">([</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">require_attrs</span><span class="p">])</span></div>
+</div>
+    <span class="k">return</span> <span class="nb">all</span><span class="p">([</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">require_attrs</span><span class="p">])</span>
 
 
 <div class="viewcode-block" id="convert_to_ndarray"><a class="viewcode-back" href="../../content/api/utils.html#sklearn_xarray.utils.convert_to_ndarray">[docs]</a><span class="k">def</span> <span class="nf">convert_to_ndarray</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">new_dim_last</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">new_dim_name</span><span class="o">=</span><span class="s1">&#39;variable&#39;</span><span class="p">):</span>
@@ -288,8 +288,8 @@
                 <span class="n">new_order</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_dim_name</span><span class="p">)</span>
                 <span class="n">new_order</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">new_dim_name</span><span class="p">)</span>
                 <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">*</span><span class="n">new_order</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+</div>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="get_group_indices"><a class="viewcode-back" href="../../content/api/utils.html#sklearn_xarray.utils.get_group_indices">[docs]</a><span class="k">def</span> <span class="nf">get_group_indices</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">groupby</span><span class="p">,</span> <span class="n">group_dim</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -328,8 +328,86 @@
         <span class="n">idx_groups</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">values</span> <span class="o">==</span> <span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">values</span><span class="p">)])</span>
 
     <span class="n">idx_all</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">idx_groups</span><span class="p">)]</span>
+</div>
+    <span class="k">return</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idx_all</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
 
-    <span class="k">return</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idx_all</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span></div>
+
+<div class="viewcode-block" id="segment_array"><a class="viewcode-back" href="../../content/api/utils.html#sklearn_xarray.utils.segment_array">[docs]</a><span class="k">def</span> <span class="nf">segment_array</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">new_len</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">new_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_view</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Segment an array along some axis.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    arr : array-like</span>
+<span class="sd">        The input array.</span>
+
+<span class="sd">    axis : int</span>
+<span class="sd">        The axis along which to segment.</span>
+
+<span class="sd">    new_len : int</span>
+<span class="sd">        The length of each segment.</span>
+
+<span class="sd">    step : int, default 1</span>
+<span class="sd">        The offset between the start of each segment.</span>
+
+<span class="sd">    new_axis : int, optional</span>
+<span class="sd">        The position where the newly created axis is to be inserted. By</span>
+<span class="sd">        default, the axis will be added at the end of the array.</span>
+
+<span class="sd">    return_view : bool, default False</span>
+<span class="sd">        If True, return a view of the segmented array instead of a copy.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    arr_seg : array-like</span>
+<span class="sd">        The segmented array.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">numpy.lib.stride_tricks</span> <span class="k">import</span> <span class="n">as_strided</span>
+
+    <span class="c1"># handle the case that the segmented axis is singleton after segmentation</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">-</span> <span class="n">new_len</span><span class="p">)</span> <span class="o">//</span> <span class="n">step</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">arr</span><span class="o">.</span><span class="n">ndim</span>
+        <span class="n">idx</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">new_len</span><span class="p">)</span>
+        <span class="n">arr_seg</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">idx</span><span class="p">)][</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">new_axis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">arr_seg</span><span class="p">,</span> <span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">arr_seg</span><span class="p">,</span> <span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="n">new_axis</span><span class="p">,</span> <span class="n">axis</span><span class="p">))</span>
+
+    <span class="n">old_shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">new_len</span> <span class="o">&lt;=</span> <span class="n">old_shape</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> \
+        <span class="s2">&quot;new_len is bigger than input array in axis&quot;</span>
+    <span class="n">seg_shape</span> <span class="o">=</span> <span class="n">old_shape</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">seg_shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_len</span>
+
+    <span class="n">steps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">old_shape</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">step</span><span class="p">:</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">ndmin</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">step</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Only positive steps allowed&quot;</span>
+        <span class="n">steps</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">step</span>
+
+    <span class="n">arr_strides</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">strides</span><span class="p">)</span>
+
+    <span class="n">shape</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">((</span><span class="n">old_shape</span> <span class="o">-</span> <span class="n">seg_shape</span><span class="p">)</span> <span class="o">//</span> <span class="n">steps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">seg_shape</span><span class="p">)</span>
+    <span class="n">strides</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">arr_strides</span> <span class="o">*</span> <span class="n">steps</span><span class="p">)</span> <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">arr_strides</span><span class="p">)</span>
+
+    <span class="n">arr_seg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span>
+        <span class="n">as_strided</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">))</span>
+
+    <span class="c1"># squeeze will move the segmented axis to the first position</span>
+    <span class="n">arr_seg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">arr_seg</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
+
+    <span class="c1"># the new axis comes right after</span>
+    <span class="k">if</span> <span class="n">new_axis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">arr_seg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">arr_seg</span><span class="p">,</span> <span class="n">axis</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">new_axis</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">arr_seg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">arr_seg</span><span class="p">,</span> <span class="n">axis</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">return_view</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">arr_seg</span>
+    <span class="k">else</span><span class="p">:</span></div>
+        <span class="k">return</span> <span class="n">arr_seg</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 </pre></div>
 
            </div>

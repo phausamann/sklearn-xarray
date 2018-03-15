@@ -227,8 +227,8 @@
 
     <span class="k">if</span> <span class="n">was_array</span><span class="p">:</span>
         <span class="n">Xt</span> <span class="o">=</span> <span class="n">Xt</span><span class="p">[</span><span class="s1">&#39;tmp_var&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">Xt</span></div>
+</div>
+    <span class="k">return</span> <span class="n">Xt</span>
 
 
 <div class="viewcode-block" id="BaseTransformer"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.BaseTransformer">[docs]</a><span class="k">class</span> <span class="nc">BaseTransformer</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
@@ -269,8 +269,8 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="s1">&#39;The input appears to be neither a DataArray nor a Dataset.&#39;</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span></div>
+</div>
+        <span class="k">return</span> <span class="bp">self</span>
 
 <div class="viewcode-block" id="BaseTransformer.transform"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.BaseTransformer.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Transform input data.</span>
@@ -297,8 +297,8 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">groupby</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_groupwise</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_transform</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+        <span class="k">else</span><span class="p">:</span></div>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
 <div class="viewcode-block" id="BaseTransformer.inverse_transform"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.BaseTransformer.inverse_transform">[docs]</a>    <span class="k">def</span> <span class="nf">inverse_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Reverse the transformation.</span>
@@ -325,8 +325,8 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">groupby</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_groupwise</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_inverse_transform</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div></div>
+        <span class="k">else</span><span class="p">:</span></div></div>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Transposer"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.Transposer">[docs]</a><span class="k">class</span> <span class="nc">Transposer</span><span class="p">(</span><span class="n">BaseTransformer</span><span class="p">):</span>
@@ -379,8 +379,8 @@
                 <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">X</span><span class="o">.</span><span class="n">data_vars</span><span class="p">}</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">initial_order_</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">X</span><span class="o">.</span><span class="n">dims</span> <span class="k">if</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">]</span>
-
-        <span class="k">return</span> <span class="bp">self</span></div>
+</div>
+        <span class="k">return</span> <span class="bp">self</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_transpose_subset</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">target_order</span><span class="p">):</span>
@@ -439,8 +439,8 @@
             <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">({</span>
                 <span class="n">v</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_transform_var</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">v</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_order_</span><span class="p">[</span><span class="n">v</span><span class="p">])</span>
                 <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">X</span><span class="o">.</span><span class="n">data_vars</span><span class="p">})</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_transform_var</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_order_</span><span class="p">)</span></div>
+        <span class="k">else</span><span class="p">:</span></div>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_transform_var</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_order_</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="transpose"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.transpose">[docs]</a><span class="k">def</span> <span class="nf">transpose</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">return_estimator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
@@ -466,8 +466,8 @@
 
     <span class="k">if</span> <span class="n">return_estimator</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">estimator</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">Xt</span></div>
+    <span class="k">else</span><span class="p">:</span></div>
+        <span class="k">return</span> <span class="n">Xt</span>
 
 
 <div class="viewcode-block" id="Splitter"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.Splitter">[docs]</a><span class="k">class</span> <span class="nc">Splitter</span><span class="p">(</span><span class="n">BaseTransformer</span><span class="p">):</span>
@@ -622,8 +622,8 @@
             <span class="n">old_dims</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
             <span class="n">old_dims</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_dim</span><span class="p">)</span>
             <span class="n">Xt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transpose_var</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">old_dims</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">Xt</span></div>
+</div>
+        <span class="k">return</span> <span class="n">Xt</span>
 
 
 <div class="viewcode-block" id="split"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.split">[docs]</a><span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">return_estimator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
@@ -649,8 +649,8 @@
 
     <span class="k">if</span> <span class="n">return_estimator</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">estimator</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">Xt</span></div>
+    <span class="k">else</span><span class="p">:</span></div>
+        <span class="k">return</span> <span class="n">Xt</span>
 
 
 <div class="viewcode-block" id="Segmenter"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.Segmenter">[docs]</a><span class="k">class</span> <span class="nc">Segmenter</span><span class="p">(</span><span class="n">BaseTransformer</span><span class="p">):</span>
@@ -734,45 +734,14 @@
     <span class="k">def</span> <span class="nf">_segment_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Segment an array along some axis. &quot;&quot;&quot;</span>
 
+        <span class="kn">from</span> <span class="nn">sklearn_xarray.utils</span> <span class="k">import</span> <span class="n">segment_array</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_len</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span>
 
-        <span class="c1"># calculated shape after transformation and create empty array</span>
-        <span class="n">new_shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-        <span class="n">new_shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">new_shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_len</span> <span class="o">+</span> <span class="n">step</span><span class="p">)</span> <span class="o">//</span> <span class="n">step</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">axis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">new_shape</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_len</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">new_shape</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_len</span><span class="p">)</span>
-
-        <span class="c1"># check if the new dimension is inserted before the axis</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">axis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">axis</span> <span class="o">&lt;=</span> <span class="n">axis</span><span class="p">:</span>
-            <span class="n">axis_new</span> <span class="o">=</span> <span class="n">axis</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">axis_new</span> <span class="o">=</span> <span class="n">axis</span>
-
-        <span class="n">arr_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">new_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">arr</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
-
-        <span class="c1"># setup up indices</span>
-        <span class="n">idx_old</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">arr</span><span class="o">.</span><span class="n">ndim</span>
-        <span class="n">idx_new</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_shape</span><span class="p">)</span>
-
-        <span class="c1"># get order of transposition for assigning slices to the new array</span>
-        <span class="n">order</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">ndim</span><span class="p">))</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">axis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">order</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">order</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">order</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> <span class="n">order</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">axis</span> <span class="o">&gt;</span> <span class="n">axis</span><span class="p">:</span>
-            <span class="n">order</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">axis</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">order</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">order</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> <span class="n">order</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">axis</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-
-        <span class="c1"># loop over axis</span>
-        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">new_shape</span><span class="p">[</span><span class="n">axis_new</span><span class="p">]):</span>
-            <span class="n">idx_old</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">n</span> <span class="o">*</span> <span class="n">step</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_len</span><span class="p">)</span>
-            <span class="n">idx_new</span><span class="p">[</span><span class="n">axis_new</span><span class="p">]</span> <span class="o">=</span> <span class="n">n</span>
-            <span class="n">arr_new</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">idx_new</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">idx_old</span><span class="p">],</span> <span class="n">order</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">arr_new</span>
+        <span class="k">return</span> <span class="n">segment_array</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_len</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axis</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_rebuild_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Rebuild an array along some axis. &quot;&quot;&quot;</span>
@@ -1004,8 +973,8 @@
             <span class="n">old_dims</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
             <span class="n">old_dims</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_dim</span><span class="p">)</span>
             <span class="n">Xt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transpose_var</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">old_dims</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">Xt</span></div>
+</div>
+        <span class="k">return</span> <span class="n">Xt</span>
 
 
 <div class="viewcode-block" id="segment"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.segment">[docs]</a><span class="k">def</span> <span class="nf">segment</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">return_estimator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
@@ -1031,8 +1000,8 @@
 
     <span class="k">if</span> <span class="n">return_estimator</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">estimator</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">Xt</span></div>
+    <span class="k">else</span><span class="p">:</span></div>
+        <span class="k">return</span> <span class="n">Xt</span>
 
 
 <div class="viewcode-block" id="Resampler"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.Resampler">[docs]</a><span class="k">class</span> <span class="nc">Resampler</span><span class="p">(</span><span class="n">BaseTransformer</span><span class="p">):</span>
@@ -1086,8 +1055,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">initial_freq_</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">]</span><span class="o">.</span><span class="n">freq</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">initial_freq_</span> <span class="o">=</span> <span class="kc">None</span>
-
-        <span class="k">return</span> <span class="bp">self</span></div>
+</div>
+        <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">def</span> <span class="nf">_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Transform. &quot;&quot;&quot;</span>
@@ -1149,8 +1118,8 @@
     <span class="k">def</span> <span class="nf">_inverse_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Reverse transform. &quot;&quot;&quot;</span>
 
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s1">&#39;inverse_transform has not yet been implemented for this estimator&#39;</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span></div>
+            <span class="s1">&#39;inverse_transform has not yet been implemented for this estimator&#39;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="resample"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.resample">[docs]</a><span class="k">def</span> <span class="nf">resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">return_estimator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
@@ -1176,8 +1145,8 @@
 
     <span class="k">if</span> <span class="n">return_estimator</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">estimator</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">Xt</span></div>
+    <span class="k">else</span><span class="p">:</span></div>
+        <span class="k">return</span> <span class="n">Xt</span>
 
 
 <div class="viewcode-block" id="Concatenator"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.Concatenator">[docs]</a><span class="k">class</span> <span class="nc">Concatenator</span><span class="p">(</span><span class="n">BaseTransformer</span><span class="p">):</span>
@@ -1267,8 +1236,8 @@
     <span class="k">def</span> <span class="nf">_inverse_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Reverse transform. &quot;&quot;&quot;</span>
 
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s1">&#39;inverse_transform has not yet been implemented for this estimator&#39;</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span></div>
+            <span class="s1">&#39;inverse_transform has not yet been implemented for this estimator&#39;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="concatenate"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.concatenate">[docs]</a><span class="k">def</span> <span class="nf">concatenate</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">return_estimator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
@@ -1294,8 +1263,8 @@
 
     <span class="k">if</span> <span class="n">return_estimator</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">estimator</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">Xt</span></div>
+    <span class="k">else</span><span class="p">:</span></div>
+        <span class="k">return</span> <span class="n">Xt</span>
 
 
 <div class="viewcode-block" id="Featurizer"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.Featurizer">[docs]</a><span class="k">class</span> <span class="nc">Featurizer</span><span class="p">(</span><span class="n">BaseTransformer</span><span class="p">):</span>
@@ -1366,8 +1335,8 @@
     <span class="k">def</span> <span class="nf">_inverse_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Reverse transform. &quot;&quot;&quot;</span>
 
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s1">&#39;inverse_transform has not yet been implemented for this estimator&#39;</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span></div>
+            <span class="s1">&#39;inverse_transform has not yet been implemented for this estimator&#39;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="featurize"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.featurize">[docs]</a><span class="k">def</span> <span class="nf">featurize</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">return_estimator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
@@ -1393,8 +1362,8 @@
 
     <span class="k">if</span> <span class="n">return_estimator</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">estimator</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">Xt</span></div>
+    <span class="k">else</span><span class="p">:</span></div>
+        <span class="k">return</span> <span class="n">Xt</span>
 
 
 <div class="viewcode-block" id="Sanitizer"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.Sanitizer">[docs]</a><span class="k">class</span> <span class="nc">Sanitizer</span><span class="p">(</span><span class="n">BaseTransformer</span><span class="p">):</span>
@@ -1439,8 +1408,8 @@
     <span class="k">def</span> <span class="nf">_inverse_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Reverse transform. &quot;&quot;&quot;</span>
 
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s1">&#39;inverse_transform cannot be implemented for this estimator&#39;</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span></div>
+            <span class="s1">&#39;inverse_transform cannot be implemented for this estimator&#39;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="sanitize"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.sanitize">[docs]</a><span class="k">def</span> <span class="nf">sanitize</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">return_estimator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
@@ -1466,8 +1435,8 @@
 
     <span class="k">if</span> <span class="n">return_estimator</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">estimator</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">Xt</span></div>
+    <span class="k">else</span><span class="p">:</span></div>
+        <span class="k">return</span> <span class="n">Xt</span>
 
 
 <div class="viewcode-block" id="Reducer"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.Reducer">[docs]</a><span class="k">class</span> <span class="nc">Reducer</span><span class="p">(</span><span class="n">BaseTransformer</span><span class="p">):</span>
@@ -1506,8 +1475,8 @@
     <span class="k">def</span> <span class="nf">_inverse_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Reverse transform. &quot;&quot;&quot;</span>
 
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s1">&#39;inverse_transform cannot be implemented for this estimator&#39;</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span></div>
+            <span class="s1">&#39;inverse_transform cannot be implemented for this estimator&#39;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="reduce"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.reduce">[docs]</a><span class="k">def</span> <span class="nf">reduce</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">return_estimator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
@@ -1533,8 +1502,8 @@
 
     <span class="k">if</span> <span class="n">return_estimator</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">estimator</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">Xt</span></div>
+    <span class="k">else</span><span class="p">:</span></div>
+        <span class="k">return</span> <span class="n">Xt</span>
 </pre></div>
 
            </div>

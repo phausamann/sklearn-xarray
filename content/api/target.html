@@ -165,7 +165,7 @@
             
   <div class="section" id="module-sklearn_xarray.target">
 <span id="target"></span><h1>Target<a class="headerlink" href="#module-sklearn_xarray.target" title="Permalink to this headline">¶</a></h1>
-<p><code class="docutils literal"><span class="pre">sklearn_xarray.target</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">sklearn_xarray.target</span></code></p>
 <dl class="class">
 <dt id="sklearn_xarray.target.Target">
 <em class="property">class </em><code class="descname">Target</code><span class="sig-paren">(</span><em>coord=None</em>, <em>transform_func=None</em>, <em>transformer=None</em>, <em>lazy=False</em>, <em>dim=None</em>, <em>reduce_func=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/target.html#Target"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.target.Target" title="Permalink to this definition">¶</a></dt>
@@ -187,13 +187,13 @@ will be used as-is.</p>
 </div></blockquote>
 <p><strong>transformer</strong> : sklearn transformer, optional</p>
 <blockquote>
-<div><p><strong>Deprecated</strong>, use <code class="docutils literal"><span class="pre">transform_func=Transformer().fit_transform</span></code>
+<div><p><strong>Deprecated</strong>, use <code class="docutils literal notranslate"><span class="pre">transform_func=Transformer().fit_transform</span></code>
 instead.</p>
 </div></blockquote>
 <p><strong>lazy</strong> : bool, optinonal</p>
 <blockquote>
 <div><p>If true, the target coordinate is only transformed by the transformer
-when needed. The transformer can implement a <code class="docutils literal"><span class="pre">get_transformed_shape</span></code>
+when needed. The transformer can implement a <code class="docutils literal notranslate"><span class="pre">get_transformed_shape</span></code>
 method that returns the shape after the transformation of the provided
 coordinate without actually transforming the data.</p>
 </div></blockquote>
@@ -205,7 +205,7 @@ dimension/these dimensions.</p>
 <p><strong>reduce_func</strong> : callable, optional</p>
 <blockquote class="last">
 <div><p>A callable that reduces the coordinate(s) to the dimension(s) in
-<code class="docutils literal"><span class="pre">dim</span></code>. If not specified, the values along dimensions not in <code class="docutils literal"><span class="pre">dim</span></code>
+<code class="docutils literal notranslate"><span class="pre">dim</span></code>. If not specified, the values along dimensions not in <code class="docutils literal notranslate"><span class="pre">dim</span></code>
 will be reduced to the first element in each of these dimensions.</p>
 </div></blockquote>
 </td>
@@ -219,10 +219,10 @@ will be reduced to the first element in each of these dimensions.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#sklearn_xarray.target.Target.ndim" title="sklearn_xarray.target.Target.ndim"><code class="xref py py-obj docutils literal"><span class="pre">ndim</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#sklearn_xarray.target.Target.ndim" title="sklearn_xarray.target.Target.ndim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndim</span></code></a></td>
 <td>The number of dimensions of the transformed target.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#sklearn_xarray.target.Target.shape" title="sklearn_xarray.target.Target.shape"><code class="xref py py-obj docutils literal"><span class="pre">shape</span></code></a></td>
+<tr class="row-even"><td><a class="reference internal" href="#sklearn_xarray.target.Target.shape" title="sklearn_xarray.target.Target.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></td>
 <td>The shape of the transformed target.</td>
 </tr>
 </tbody>
@@ -234,10 +234,10 @@ will be reduced to the first element in each of these dimensions.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(X)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(…)&nbsp;&lt;==&gt;&nbsp;x(…)</td>
 <td></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#sklearn_xarray.target.Target.assign_to" title="sklearn_xarray.target.Target.assign_to"><code class="xref py py-obj docutils literal"><span class="pre">assign_to</span></code></a>(X)</td>
+<tr class="row-even"><td><a class="reference internal" href="#sklearn_xarray.target.Target.assign_to" title="sklearn_xarray.target.Target.assign_to"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_to</span></code></a>(X)</td>
 <td>Assign this target to a DataArray or Dataset.</td>
 </tr>
 </tbody>

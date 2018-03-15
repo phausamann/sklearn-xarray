@@ -175,7 +175,7 @@
 <h2>Integration with sklearn pipelines<a class="headerlink" href="#integration-with-sklearn-pipelines" title="Permalink to this headline">¶</a></h2>
 <p>Wrapped estimators can be used in sklearn pipelines without any additional
 overhead:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn_xarray</span> <span class="k">import</span> <span class="n">wrap</span><span class="p">,</span> <span class="n">Target</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn_xarray</span> <span class="k">import</span> <span class="n">wrap</span><span class="p">,</span> <span class="n">Target</span>
 <span class="kn">from</span> <span class="nn">sklearn_xarray.data</span> <span class="k">import</span> <span class="n">load_digits_dataarray</span>
 
 <span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="k">import</span> <span class="n">Pipeline</span>
@@ -203,11 +203,11 @@ overhead:</p>
 <p class="first admonition-title">Note</p>
 <p class="last">This feature is currently only available for DataArrays.</p>
 </div>
-<p>The module <a class="reference internal" href="api/model_selection.html#module-sklearn_xarray.model_selection" title="sklearn_xarray.model_selection"><code class="xref py py-mod docutils literal"><span class="pre">sklearn_xarray.model_selection</span></code></a> contains the
-<a class="reference internal" href="api/model_selection.html#sklearn_xarray.model_selection.CrossValidatorWrapper" title="sklearn_xarray.model_selection.CrossValidatorWrapper"><code class="xref py py-class docutils literal"><span class="pre">CrossValidatorWrapper</span></code></a> class that wraps a cross-validator instance
-from <code class="docutils literal"><span class="pre">sklearn.model_selection</span></code>. With such a wrapped cross-validator, it is
-possible to use xarray data types with a <code class="docutils literal"><span class="pre">GridSearchCV</span></code> estimator:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn_xarray.model_selection</span> <span class="k">import</span> <span class="n">CrossValidatorWrapper</span>
+<p>The module <a class="reference internal" href="api/model_selection.html#module-sklearn_xarray.model_selection" title="sklearn_xarray.model_selection"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn_xarray.model_selection</span></code></a> contains the
+<a class="reference internal" href="api/model_selection.html#sklearn_xarray.model_selection.CrossValidatorWrapper" title="sklearn_xarray.model_selection.CrossValidatorWrapper"><code class="xref py py-class docutils literal notranslate"><span class="pre">CrossValidatorWrapper</span></code></a> class that wraps a cross-validator instance
+from <code class="docutils literal notranslate"><span class="pre">sklearn.model_selection</span></code>. With such a wrapped cross-validator, it is
+possible to use xarray data types with a <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code> estimator:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn_xarray.model_selection</span> <span class="k">import</span> <span class="n">CrossValidatorWrapper</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">GridSearchCV</span><span class="p">,</span> <span class="n">KFold</span>
 
 <span class="n">cv</span> <span class="o">=</span> <span class="n">CrossValidatorWrapper</span><span class="p">(</span><span class="n">KFold</span><span class="p">())</span>

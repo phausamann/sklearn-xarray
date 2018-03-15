@@ -178,8 +178,8 @@
     <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
         <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">)),</span>
         <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span> <span class="s1">&#39;feature&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)},</span>
-        <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;sample&#39;</span><span class="p">,</span> <span class="s1">&#39;feature&#39;</span><span class="p">)</span>
-    <span class="p">)</span></div>
+        <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;sample&#39;</span><span class="p">,</span> <span class="s1">&#39;feature&#39;</span><span class="p">)</span></div>
+    <span class="p">)</span>
 
 
 <div class="viewcode-block" id="load_dummy_dataset"><a class="viewcode-back" href="../../content/api/datasets.html#sklearn_xarray.datasets.load_dummy_dataset">[docs]</a><span class="k">def</span> <span class="nf">load_dummy_dataset</span><span class="p">():</span>
@@ -187,8 +187,8 @@
 
     <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
         <span class="p">{</span><span class="s1">&#39;var_1&#39;</span> <span class="p">:</span> <span class="p">([</span><span class="s1">&#39;sample&#39;</span><span class="p">,</span> <span class="s1">&#39;feature&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">)))},</span>
-        <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span> <span class="s1">&#39;feature&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)}</span>
-    <span class="p">)</span></div>
+        <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span> <span class="s1">&#39;feature&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)}</span></div>
+    <span class="p">)</span>
 
 
 <div class="viewcode-block" id="load_digits_dataarray"><a class="viewcode-back" href="../../content/api/datasets.html#sklearn_xarray.datasets.load_digits_dataarray">[docs]</a><span class="k">def</span> <span class="nf">load_digits_dataarray</span><span class="p">(</span><span class="n">load_images</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nan_probability</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
@@ -240,8 +240,8 @@
             <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;sample&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
                     <span class="s1">&#39;feature&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
                     <span class="s1">&#39;digit&#39;</span><span class="p">:</span> <span class="p">([</span><span class="s1">&#39;sample&#39;</span><span class="p">],</span> <span class="n">target</span><span class="p">)},</span>
-            <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;sample&#39;</span><span class="p">,</span> <span class="s1">&#39;feature&#39;</span><span class="p">)</span>
-        <span class="p">)</span></div>
+            <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;sample&#39;</span><span class="p">,</span> <span class="s1">&#39;feature&#39;</span><span class="p">)</span></div>
+        <span class="p">)</span>
 
 
 <div class="viewcode-block" id="load_wisdm_dataarray"><a class="viewcode-back" href="../../content/api/datasets.html#sklearn_xarray.datasets.load_wisdm_dataarray">[docs]</a><span class="k">def</span> <span class="nf">load_wisdm_dataarray</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;http://www.cis.fordham.edu/wisdm/includes/&#39;</span>
@@ -295,8 +295,8 @@
 
     <span class="n">X</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
         <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">],</span> <span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;sample&#39;</span><span class="p">,</span> <span class="s1">&#39;axis&#39;</span><span class="p">))</span>
-
-    <span class="k">return</span> <span class="n">X</span></div>
+</div>
+    <span class="k">return</span> <span class="n">X</span>
 </pre></div>
 
            </div>

@@ -231,8 +231,8 @@
             <span class="k">return</span> <span class="n">TransformerWrapper</span><span class="p">(</span>
                 <span class="n">estimator</span><span class="p">,</span> <span class="n">reshapes</span><span class="o">=</span><span class="n">reshapes</span><span class="p">,</span> <span class="n">sample_dim</span><span class="o">=</span><span class="n">sample_dim</span><span class="p">,</span>
                 <span class="n">compat</span><span class="o">=</span><span class="n">compat</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Could not determine type&#39;</span><span class="p">)</span></div>
+        <span class="k">else</span><span class="p">:</span></div>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Could not determine type&#39;</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">EstimatorWrapper</span><span class="p">(</span><span class="n">_CommonEstimatorWrapper</span><span class="p">):</span>
@@ -335,8 +335,8 @@
 <span class="sd">        The estimator this instance wraps around.</span>
 
 <span class="sd">    reshapes : str or dict, optional</span>
-<span class="sd">        The dimension reshaped by this estimator.</span>
-<span class="sd">    &quot;&quot;&quot;</span></div>
+<span class="sd">        The dimension reshaped by this estimator.</span></div>
+<span class="sd">    &quot;&quot;&quot;</span>
 
 
 <div class="viewcode-block" id="RegressorWrapper"><a class="viewcode-back" href="../../../content/api/common.html#sklearn_xarray.RegressorWrapper">[docs]</a><span class="k">class</span> <span class="nc">RegressorWrapper</span><span class="p">(</span>
@@ -350,8 +350,8 @@
 
 <span class="sd">    reshapes : str or dict, optional</span>
 <span class="sd">        The dimension reshaped by this estimator.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">_estimator_type</span> <span class="o">=</span> <span class="s2">&quot;regressor&quot;</span></div>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+    <span class="n">_estimator_type</span> <span class="o">=</span> <span class="s2">&quot;regressor&quot;</span>
 
 
 <div class="viewcode-block" id="ClassifierWrapper"><a class="viewcode-back" href="../../../content/api/common.html#sklearn_xarray.ClassifierWrapper">[docs]</a><span class="k">class</span> <span class="nc">ClassifierWrapper</span><span class="p">(</span>
@@ -365,8 +365,8 @@
 
 <span class="sd">    reshapes : str or dict, optional</span>
 <span class="sd">        The dimension reshaped by this estimator.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">_estimator_type</span> <span class="o">=</span> <span class="s2">&quot;classifier&quot;</span></div>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+    <span class="n">_estimator_type</span> <span class="o">=</span> <span class="s2">&quot;classifier&quot;</span>
 </pre></div>
 
            </div>

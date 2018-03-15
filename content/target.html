@@ -175,8 +175,8 @@
 <h1>Using coordinates as targets<a class="headerlink" href="#using-coordinates-as-targets" title="Permalink to this headline">¶</a></h1>
 <p>With sklearn-xarray you can easily point an sklearn estimator to a
 coordinate in an xarray DataArray or Dataset in order to use it as a target
-for supervised learning. This is achieved with a <a class="reference internal" href="api/target.html#sklearn_xarray.target.Target" title="sklearn_xarray.target.Target"><code class="xref py py-class docutils literal"><span class="pre">Target</span></code></a> object:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn_xarray</span> <span class="k">import</span> <span class="n">wrap</span><span class="p">,</span> <span class="n">Target</span>
+for supervised learning. This is achieved with a <a class="reference internal" href="api/target.html#sklearn_xarray.target.Target" title="sklearn_xarray.target.Target"><code class="xref py py-class docutils literal notranslate"><span class="pre">Target</span></code></a> object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn_xarray</span> <span class="k">import</span> <span class="n">wrap</span><span class="p">,</span> <span class="n">Target</span>
 <span class="kn">from</span> <span class="nn">sklearn_xarray.data</span> <span class="k">import</span> <span class="n">load_digits_dataarray</span>
 
 <span class="kn">from</span> <span class="nn">sklearn.linear_model.logistic</span> <span class="k">import</span> <span class="n">LogisticRegression</span>
@@ -215,7 +215,7 @@ argument. When you construct a target without specifying a coordinate, the
 target data will be the Dataset/DataArray itself.</p>
 <p>The Target object can be used as a target for a wrapped estimator in accordance
 with sklearn’s usual syntax:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">wrapper</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span><span class="n">LogisticRegression</span><span class="p">())</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wrapper</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span><span class="n">LogisticRegression</span><span class="p">())</span>
 <span class="n">wrapper</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
 <span class="n">In</span> <span class="p">[]:</span> <span class="n">wrapper</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
@@ -225,16 +225,16 @@ with sklearn’s usual syntax:</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">You don’t have to assign the Target to any data, the wrapper’s fit method
-will automatically call <code class="docutils literal"><span class="pre">y(X)</span></code>.</p>
+will automatically call <code class="docutils literal notranslate"><span class="pre">y(X)</span></code>.</p>
 </div>
 <div class="section" id="pre-processing">
 <h2>Pre-processing<a class="headerlink" href="#pre-processing" title="Permalink to this headline">¶</a></h2>
 <p>In some cases, it is necessary to pre-process the coordinate before it can be
-used as a target. For this, the constructor takes a <code class="docutils literal"><span class="pre">transform_func</span></code> parameter
-which can be used with the <code class="docutils literal"><span class="pre">fit_transform</span></code> method of transformers in
-<code class="docutils literal"><span class="pre">sklearn.preprocessing</span></code> (and also any other object implementing the sklearn
+used as a target. For this, the constructor takes a <code class="docutils literal notranslate"><span class="pre">transform_func</span></code> parameter
+which can be used with the <code class="docutils literal notranslate"><span class="pre">fit_transform</span></code> method of transformers in
+<code class="docutils literal notranslate"><span class="pre">sklearn.preprocessing</span></code> (and also any other object implementing the sklearn
 transformer interface):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.neural_network</span> <span class="k">import</span> <span class="n">MLPClassifier</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.neural_network</span> <span class="k">import</span> <span class="n">MLPClassifier</span>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">LabelBinarizer</span>
 
 <span class="n">y</span> <span class="o">=</span> <span class="n">Target</span><span class="p">(</span><span class="n">coord</span><span class="o">=</span><span class="s1">&#39;digit&#39;</span><span class="p">,</span> <span class="n">transform_func</span><span class="o">=</span><span class="n">LabelBinarizer</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">)(</span><span class="n">X</span><span class="p">)</span>
@@ -246,22 +246,22 @@ transformer interface):</p>
 </div>
 <div class="section" id="indexing">
 <h2>Indexing<a class="headerlink" href="#indexing" title="Permalink to this headline">¶</a></h2>
-<p>A <a class="reference internal" href="api/target.html#sklearn_xarray.target.Target" title="sklearn_xarray.target.Target"><code class="xref py py-class docutils literal"><span class="pre">Target</span></code></a> object can be indexed in the same way as the underlying
-coordinate and interfaces with <code class="docutils literal"><span class="pre">numpy</span></code> by providing an <code class="docutils literal"><span class="pre">__array__</span></code>
-attribute which returns <code class="docutils literal"><span class="pre">numpy.array()</span></code> of the (transformed) coordinate.</p>
+<p>A <a class="reference internal" href="api/target.html#sklearn_xarray.target.Target" title="sklearn_xarray.target.Target"><code class="xref py py-class docutils literal notranslate"><span class="pre">Target</span></code></a> object can be indexed in the same way as the underlying
+coordinate and interfaces with <code class="docutils literal notranslate"><span class="pre">numpy</span></code> by providing an <code class="docutils literal notranslate"><span class="pre">__array__</span></code>
+attribute which returns <code class="docutils literal notranslate"><span class="pre">numpy.array()</span></code> of the (transformed) coordinate.</p>
 </div>
 <div class="section" id="multi-dimensional-coordinates">
 <h2>Multi-dimensional coordinates<a class="headerlink" href="#multi-dimensional-coordinates" title="Permalink to this headline">¶</a></h2>
 <p>In some cases, the target coordinates span multiple dimensions, but the
-transformer expects a lower-dimensional input. With  the <code class="docutils literal"><span class="pre">dim</span></code> parameter of
-the <a class="reference internal" href="api/target.html#sklearn_xarray.target.Target" title="sklearn_xarray.target.Target"><code class="xref py py-class docutils literal"><span class="pre">Target</span></code></a> class you can specify which of the dimensions to keep.
-You can also specify the callable <code class="docutils literal"><span class="pre">reduce_func</span></code> to perform the reduction of
-the other dimensions (e.g. <code class="docutils literal"><span class="pre">numpy.mean</span></code>). Otherwise, the coordinate will
-be reduced to the first element along each dimension that is not <code class="docutils literal"><span class="pre">dim</span></code>.</p>
+transformer expects a lower-dimensional input. With  the <code class="docutils literal notranslate"><span class="pre">dim</span></code> parameter of
+the <a class="reference internal" href="api/target.html#sklearn_xarray.target.Target" title="sklearn_xarray.target.Target"><code class="xref py py-class docutils literal notranslate"><span class="pre">Target</span></code></a> class you can specify which of the dimensions to keep.
+You can also specify the callable <code class="docutils literal notranslate"><span class="pre">reduce_func</span></code> to perform the reduction of
+the other dimensions (e.g. <code class="docutils literal notranslate"><span class="pre">numpy.mean</span></code>). Otherwise, the coordinate will
+be reduced to the first element along each dimension that is not <code class="docutils literal notranslate"><span class="pre">dim</span></code>.</p>
 </div>
 <div class="section" id="lazy-evaluation">
 <h2>Lazy evaluation<a class="headerlink" href="#lazy-evaluation" title="Permalink to this headline">¶</a></h2>
-<p>When you construct a target with a transformer and <code class="docutils literal"><span class="pre">lazy=True</span></code>, the
+<p>When you construct a target with a transformer and <code class="docutils literal notranslate"><span class="pre">lazy=True</span></code>, the
 transformation will only be performed when the target’s data is actually
 accessed. This can significantly improve performance when working with large
 datasets in a pipeline, because the target is assigned in each step of the
@@ -269,7 +269,7 @@ pipeline.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">When you index a target with lazy evaluation, the transformation is
-performed regardless of whether <code class="docutils literal"><span class="pre">lazy</span></code> was set.</p>
+performed regardless of whether <code class="docutils literal notranslate"><span class="pre">lazy</span></code> was set.</p>
 </div>
 </div>
 </div>
