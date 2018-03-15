@@ -7,7 +7,7 @@ What's New
    to be directly imported from ``sklearn_xarray``.
 
 
-Github master branch
+v0.1.4 (March 15, 2018)
 --------------------
 
 Enhancements
