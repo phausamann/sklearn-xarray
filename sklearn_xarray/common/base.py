@@ -341,7 +341,7 @@ class _ImplementsFitTransformMixin(_CommonEstimatorWrapper):
             if Xt.ndim == X.ndim:
                 Xt = np.transpose(Xt, np.argsort(order))
         else:
-            Xt = estimator.transform(X.data, y, **fit_params)
+            Xt = estimator.fit_transform(X.data, y, **fit_params)
 
         # update dims
         dims_new = self._update_dims(X, Xt)

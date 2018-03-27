@@ -24,7 +24,7 @@ v0.1.4 (March 15, 2018)
 Enhancements
 ~~~~~~~~~~~~
 
-- ``preprocessing.Tranposer`` now also accepts a subset of ``X.dims`` for the
+- ``preprocessing.Transposer`` now also accepts a subset of ``X.dims`` for the
   ``order`` parameter.
 - ``preprocessing.Splitter`` and ``preprocessing.Segmenter`` now accept an
   ``axis`` argument that specifies where to insert the new dimension.
