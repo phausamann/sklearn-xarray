@@ -5,8 +5,8 @@ import xarray as xr
 
 import six
 
-from sklearn.base import clone, BaseEstimator, TransformerMixin
-from sklearn.utils.validation import check_is_fitted
+from sklearn.base import clone, BaseEstimator
+from sklearn.utils.validation import check_is_fitted, check_array, check_X_y
 
 from sklearn_xarray.utils import is_dataarray, is_dataset, is_target
 
@@ -257,7 +257,7 @@ class _ImplementsPredictMixin(_CommonEstimatorWrapper):
         return self._call_fitted('predict', X)
 
 
-class _ImplementsTransformMixin(_CommonEstimatorWrapper, TransformerMixin):
+class _ImplementsTransformMixin(_CommonEstimatorWrapper):
 
     def _transform(self, estimator, X):
         """ Transform with ``estimator`` and update coords and dims. """
@@ -305,7 +305,7 @@ class _ImplementsTransformMixin(_CommonEstimatorWrapper, TransformerMixin):
 
         Returns
         -------
-        y : xarray DataArray, Dataset other other array-like
+        Xt : xarray DataArray, Dataset other other array-like
             The transformed output.
         """
 
@@ -321,11 +321,106 @@ class _ImplementsTransformMixin(_CommonEstimatorWrapper, TransformerMixin):
 
         Returns
         -------
-        y : xarray DataArray, Dataset other other array-like
+        Xt : xarray DataArray, Dataset other other array-like
             The transformed output.
         """
 
         return self._call_fitted('inverse_transform', X)
+
+
+class _ImplementsFitTransformMixin(_CommonEstimatorWrapper):
+
+    def _fit_transform(self, estimator, X, y=None, **fit_params):
+        """ Fit and transform with ``estimator`` and update coords and dims. """
+
+        if self.sample_dim is not None:
+            # transpose to sample dim first, transform and transpose back
+            order = self._get_transpose_order(X)
+            X_arr = np.transpose(X.data, order)
+            Xt = estimator.fit_transform(X_arr, y, **fit_params)
+            if Xt.ndim == X.ndim:
+                Xt = np.transpose(Xt, np.argsort(order))
+        else:
+            Xt = estimator.transform(X.data, y, **fit_params)
+
+        # update dims
+        dims_new = self._update_dims(X, Xt)
+
+        return Xt, dims_new
+
+    def fit_transform(self, X, y=None, **fit_params):
+        """ A wrapper around the fit_transform function.
+
+        Parameters
+        ----------
+        X : xarray DataArray, Dataset other other array-like
+            The input samples.
+
+        y : xarray DataArray, Dataset other other array-like
+            The target values.
+
+        Returns
+        -------
+        Xt : xarray DataArray, Dataset other other array-like
+            The transformed output.
+        """
+
+        if self.estimator is None:
+            raise ValueError('You must specify an estimator instance to wrap.')
+
+        if is_target(y):
+            y = y(X)
+
+        if is_dataarray(X):
+
+            self.type_ = 'DataArray'
+            self.estimator_ = clone(self.estimator)
+
+            if self.reshapes is not None:
+                data, dims = self._fit_transform(
+                    self.estimator_, X, y, **fit_params)
+                coords = self._update_coords(X)
+                return xr.DataArray(data, coords=coords, dims=dims)
+            else:
+                return xr.DataArray(
+                    self.estimator_.fit_transform(X.data, y, **fit_params),
+                    coords=X.coords, dims=X.dims)
+
+        elif is_dataset(X):
+
+            self.type_ = 'Dataset'
+            self.estimator_dict_ = {
+                v: clone(self.estimator) for v in X.data_vars}
+
+            if self.reshapes is not None:
+                data_vars = dict()
+                for v, e in six.iteritems(self.estimator_dict_):
+                    yp_v, dims = self._fit_transform(e, X[v], y, **fit_params)
+                    data_vars[v] = (dims, yp_v)
+                coords = self._update_coords(X)
+                return xr.Dataset(data_vars, coords=coords)
+            else:
+                data_vars = {
+                    v: (X[v].dims, e.fit_transform(X[v].data, y, **fit_params))
+                    for v, e in six.iteritems(self.estimator_dict_)}
+                return xr.Dataset(data_vars, coords=X.coords)
+
+        else:
+
+            self.type_ = 'other'
+            if y is None:
+                X = check_array(X)
+            else:
+                X, y = check_X_y(X, y)
+
+            self.estimator_ = clone(self.estimator)
+            Xt = self.estimator_.fit_transform(X, y, **fit_params)
+
+            for v in vars(self.estimator_):
+                if v.endswith('_') and not v.startswith('_'):
+                    setattr(self, v, getattr(self.estimator_, v))
+
+        return Xt
 
 
 class _ImplementsScoreMixin(_CommonEstimatorWrapper):

@@ -7,8 +7,19 @@ What's New
    to be directly imported from ``sklearn_xarray``.
 
 
-v0.1.4 (March 15, 2018)
+Github master branch
 --------------------
+
+Enhancements
+~~~~~~~~~~~~
+
+- Added an ``_ImplementsFitTransformMixin`` for estimators that implement
+  ``fit_transform`` but not ``transform`` (e.g. non-parametric manifold
+  embedding estimators).
+
+
+v0.1.4 (March 15, 2018)
+-----------------------
 
 Enhancements
 ~~~~~~~~~~~~

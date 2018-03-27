@@ -5,7 +5,8 @@ from sklearn.utils.validation import check_X_y, check_array
 
 from .base import (
     _CommonEstimatorWrapper, _ImplementsPredictMixin,
-    _ImplementsScoreMixin, _ImplementsTransformMixin
+    _ImplementsScoreMixin, _ImplementsTransformMixin,
+    _ImplementsFitTransformMixin
 )
 
 from sklearn_xarray.utils import is_dataarray, is_dataset, is_target
@@ -159,7 +160,8 @@ class EstimatorWrapper(_CommonEstimatorWrapper):
         return self
 
 
-class TransformerWrapper(EstimatorWrapper, _ImplementsTransformMixin):
+class TransformerWrapper(EstimatorWrapper, _ImplementsTransformMixin,
+                         _ImplementsFitTransformMixin):
     """ A wrapper around sklearn transformers compatible with xarray objects.
 
     Parameters

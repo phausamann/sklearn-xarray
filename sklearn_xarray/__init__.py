@@ -1,7 +1,8 @@
 """ ``sklearn_xarray`` """
 
 from sklearn_xarray.common.wrappers import (
-    wrap, ClassifierWrapper, RegressorWrapper, TransformerWrapper)
+    wrap, EstimatorWrapper, ClassifierWrapper, RegressorWrapper,
+    TransformerWrapper)
 from sklearn_xarray.common.decorators import (
     classifier, regressor, transformer)
 from sklearn_xarray.target import Target
@@ -16,6 +17,7 @@ __all__ = [
     'classifier',
     'regressor',
     'transformer',
+    'EstimatorWrapper',
     'ClassifierWrapper',
     'RegressorWrapper',
     'TransformerWrapper',
