@@ -1,7 +1,5 @@
 """ ``sklearn_xarray.common.wrappers`` """
 
-import types
-
 from sklearn.base import clone
 from sklearn.utils.validation import check_X_y, check_array
 
@@ -134,13 +132,12 @@ class EstimatorWrapper(_CommonEstimatorWrapper):
         if hasattr(self.estimator, '_estimator_type'):
             setattr(self, '_estimator_type', self.estimator._estimator_type)
 
-        for m_wrapped in _method_map:
-            if hasattr(self.estimator, m_wrapped):
-                for m_self in _method_map[m_wrapped]:
+        for name_wrapped in _method_map:
+            if hasattr(self.estimator, name_wrapped):
+                for name_self in _method_map[name_wrapped]:
+                    method = _method_map[name_wrapped][name_self]
                     setattr(
-                        self, m_self,
-                        types.MethodType(_method_map[m_wrapped][m_self], self)
-                    )
+                        self, name_self, method.__get__(self, EstimatorWrapper))
 
     def fit(self, X, y=None, **fit_params):
         """ A wrapper around the fitting function.
