@@ -1,5 +1,7 @@
 """ ``sklearn_xarray.common.wrappers`` """
 
+import types
+
 from sklearn.base import clone
 from sklearn.utils.validation import check_X_y, check_array
 
@@ -11,14 +13,32 @@ from .base import (
 
 from sklearn_xarray.utils import is_dataarray, is_dataset, is_target
 
+# mapping from wrapped methods to wrapper methods
+_method_map = {
+    'predict':
+        {'predict': _ImplementsPredictMixin.predict,
+         '_predict': _ImplementsPredictMixin._predict},
+    'transform':
+        {'transform': _ImplementsTransformMixin.transform,
+         '_transform': _ImplementsTransformMixin._transform},
+    'inverse_transform':
+        {'inverse_transform': _ImplementsTransformMixin.inverse_transform,
+         '_inverse_transform': _ImplementsTransformMixin._inverse_transform},
+    'fit_transform':
+        {'fit_transform': _ImplementsFitTransformMixin.fit_transform,
+         '_fit_transform': _ImplementsFitTransformMixin._fit_transform},
+    'score':
+        {'score': _ImplementsScoreMixin.score}
+}
 
-def wrap(estimator, reshapes=None, sample_dim=None, compat=False):
-    """ Wrap an sklearn estimator for xarray objects by guessing its type.
+
+def wrap(estimator, reshapes=None, sample_dim=None, compat=False, **kwargs):
+    """ Wrap an sklearn estimator for xarray objects.
 
     Parameters
     ----------
-    estimator : sklearn estimator
-        The estimator instance this instance wraps around.
+    estimator : sklearn estimator class or instance
+        The estimator this instance wraps around.
 
     reshapes : str or dict, optional
         The dimension(s) reshaped by this estimator. Any coordinates in the
@@ -45,28 +65,8 @@ def wrap(estimator, reshapes=None, sample_dim=None, compat=False):
     A wrapped estimator.
     """
 
-    if hasattr(estimator, '_estimator_type'):
-        if estimator._estimator_type == 'classifier':
-            return ClassifierWrapper(
-                estimator, reshapes=reshapes, sample_dim=sample_dim,
-                compat=compat)
-        elif estimator._estimator_type == 'regressor':
-            return RegressorWrapper(
-                estimator, reshapes=reshapes, sample_dim=sample_dim,
-                compat=compat)
-        elif estimator._estimator_type == 'clusterer':
-            raise NotImplementedError(
-                'The wrapper for clustering estimators has not been '
-                'implemented yet.')
-        else:
-            raise ValueError('Could not determine type')
-    else:
-        if hasattr(estimator, 'transform'):
-            return TransformerWrapper(
-                estimator, reshapes=reshapes, sample_dim=sample_dim,
-                compat=compat)
-        else:
-            raise ValueError('Could not determine type')
+    return EstimatorWrapper(estimator, reshapes=reshapes,
+                            sample_dim=sample_dim, compat=compat, **kwargs)
 
 
 class EstimatorWrapper(_CommonEstimatorWrapper):
@@ -99,16 +99,48 @@ class EstimatorWrapper(_CommonEstimatorWrapper):
     """
 
     def __init__(self, estimator=None, reshapes=None, sample_dim=None,
-                 compat=False, **fit_params):
+                 compat=False, **kwargs):
 
         if isinstance(estimator, type):
-            self.estimator = estimator(**fit_params)
+            self.estimator = estimator(**kwargs)
         else:
             self.estimator = estimator
 
         self.reshapes = reshapes
         self.sample_dim = sample_dim
         self.compat = compat
+
+        self._decorate()
+
+    def __getstate__(self):
+
+        state = self.__dict__.copy()
+
+        for m_wrapped in _method_map:
+            if hasattr(self.estimator, m_wrapped):
+                for m_self in _method_map[m_wrapped]:
+                    state.pop(m_self)
+
+        return state
+
+    def __setstate__(self, state):
+
+        self.__dict__ = state
+        self._decorate()
+
+    def _decorate(self):
+        """ Decorate this instance with wrapping methods for the estimator. """
+
+        if hasattr(self.estimator, '_estimator_type'):
+            setattr(self, '_estimator_type', self.estimator._estimator_type)
+
+        for m_wrapped in _method_map:
+            if hasattr(self.estimator, m_wrapped):
+                for m_self in _method_map[m_wrapped]:
+                    setattr(
+                        self, m_self,
+                        types.MethodType(_method_map[m_wrapped][m_self], self)
+                    )
 
     def fit(self, X, y=None, **fit_params):
         """ A wrapper around the fitting function.

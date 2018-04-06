@@ -10,6 +10,12 @@ What's New
 Github master branch
 --------------------
 
+Breaking changes
+~~~~~~~~~~~~~~~~
+- ``wrap`` now returns a decorated ``EstimatorWrapper`` instead of an
+  estimator-specific wrapper class.
+
+
 Enhancements
 ~~~~~~~~~~~~
 

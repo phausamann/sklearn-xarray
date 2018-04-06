@@ -1,4 +1,5 @@
 from sklearn.utils.estimator_checks import check_estimator
+from sklearn_xarray import wrap
 from sklearn_xarray.common.wrappers import (
     TransformerWrapper, ClassifierWrapper, RegressorWrapper)
 from sklearn_xarray.common.decorators import (
@@ -11,20 +12,17 @@ from sklearn.svm import SVC
 
 def test_classifier():
 
-    check_estimator(ClassifierWrapper(SVC))
-    # TODO: check_estimator(classifier(SVC))
+    check_estimator(wrap(SVC))
 
 
 def test_regressor():
 
-    check_estimator(RegressorWrapper(LinearRegression))
-    # TODO: check_estimator(regressor(LinearRegression))
+    check_estimator(wrap(LinearRegression))
 
 
 def test_transformer():
 
-    check_estimator(TransformerWrapper(StandardScaler))
-    # TODO: check_estimator(transformer(StandardScaler))
+    check_estimator(wrap(StandardScaler))
 
 
 def test_decorators():

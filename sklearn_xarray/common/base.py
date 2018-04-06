@@ -245,12 +245,12 @@ class _ImplementsPredictMixin(_CommonEstimatorWrapper):
 
         Parameters
         ----------
-        X : xarray DataArray, Dataset other other array-like
+        X : xarray DataArray, Dataset or other array-like
             The input samples.
 
         Returns
         -------
-        y : xarray DataArray, Dataset other other array-like
+        y : xarray DataArray, Dataset or other array-like
             The predicted output.
         """
 
@@ -300,12 +300,12 @@ class _ImplementsTransformMixin(_CommonEstimatorWrapper):
 
         Parameters
         ----------
-        X : xarray DataArray, Dataset other other array-like
+        X : xarray DataArray, Dataset or other array-like
             The input samples.
 
         Returns
         -------
-        Xt : xarray DataArray, Dataset other other array-like
+        Xt : xarray DataArray, Dataset or other array-like
             The transformed output.
         """
 
@@ -316,12 +316,12 @@ class _ImplementsTransformMixin(_CommonEstimatorWrapper):
 
         Parameters
         ----------
-        X : xarray DataArray, Dataset other other array-like
+        X : xarray DataArray, Dataset or other array-like
             The input samples.
 
         Returns
         -------
-        Xt : xarray DataArray, Dataset other other array-like
+        Xt : xarray DataArray, Dataset or other array-like
             The transformed output.
         """
 
@@ -353,15 +353,15 @@ class _ImplementsFitTransformMixin(_CommonEstimatorWrapper):
 
         Parameters
         ----------
-        X : xarray DataArray, Dataset other other array-like
+        X : xarray DataArray, Dataset or other array-like
             The input samples.
 
-        y : xarray DataArray, Dataset other other array-like
+        y : xarray DataArray, Dataset or other array-like
             The target values.
 
         Returns
         -------
-        Xt : xarray DataArray, Dataset other other array-like
+        Xt : xarray DataArray, Dataset or other array-like
             The transformed output.
         """
 
