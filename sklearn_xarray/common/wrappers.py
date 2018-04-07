@@ -1,9 +1,13 @@
 """ ``sklearn_xarray.common.wrappers`` """
 
+from types import MethodType
+
 from sklearn.base import clone
 from sklearn.utils.validation import check_X_y, check_array
 
 from .base import (
+    _predict, predict, _transform, transform, _inverse_transform,
+    inverse_transform, _fit_transform, fit_transform, score,
     _CommonEstimatorWrapper, _ImplementsPredictMixin,
     _ImplementsScoreMixin, _ImplementsTransformMixin,
     _ImplementsFitTransformMixin
@@ -14,19 +18,19 @@ from sklearn_xarray.utils import is_dataarray, is_dataset, is_target
 # mapping from wrapped methods to wrapper methods
 _method_map = {
     'predict':
-        {'predict': _ImplementsPredictMixin.predict,
-         '_predict': _ImplementsPredictMixin._predict},
+        {'predict': predict,
+         '_predict': _predict},
     'transform':
-        {'transform': _ImplementsTransformMixin.transform,
-         '_transform': _ImplementsTransformMixin._transform},
+        {'transform': transform,
+         '_transform': _transform},
     'inverse_transform':
-        {'inverse_transform': _ImplementsTransformMixin.inverse_transform,
-         '_inverse_transform': _ImplementsTransformMixin._inverse_transform},
+        {'inverse_transform': inverse_transform,
+         '_inverse_transform': _inverse_transform},
     'fit_transform':
-        {'fit_transform': _ImplementsFitTransformMixin.fit_transform,
-         '_fit_transform': _ImplementsFitTransformMixin._fit_transform},
+        {'fit_transform': fit_transform,
+         '_fit_transform': _fit_transform},
     'score':
-        {'score': _ImplementsScoreMixin.score}
+        {'score': score}
 }
 
 
@@ -136,8 +140,11 @@ class EstimatorWrapper(_CommonEstimatorWrapper):
             if hasattr(self.estimator, name_wrapped):
                 for name_self in _method_map[name_wrapped]:
                     method = _method_map[name_wrapped][name_self]
-                    setattr(
-                        self, name_self, method.__get__(self, EstimatorWrapper))
+                    try:
+                        setattr(self, name_self,
+                                MethodType(method, self, EstimatorWrapper))
+                    except TypeError:
+                        setattr(self, name_self, MethodType(method, self))
 
     def fit(self, X, y=None, **fit_params):
         """ A wrapper around the fitting function.
@@ -189,8 +196,8 @@ class EstimatorWrapper(_CommonEstimatorWrapper):
         return self
 
 
-class TransformerWrapper(EstimatorWrapper, _ImplementsTransformMixin,
-                         _ImplementsFitTransformMixin):
+class TransformerWrapper(
+    EstimatorWrapper, _ImplementsTransformMixin, _ImplementsFitTransformMixin):
     """ A wrapper around sklearn transformers compatible with xarray objects.
 
     Parameters
