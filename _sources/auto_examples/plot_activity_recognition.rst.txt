@@ -35,7 +35,7 @@ from 36 different subjects.
     from sklearn_xarray import wrap, Target
     from sklearn_xarray.preprocessing import (Splitter, Sanitizer, Featurizer)
     from sklearn_xarray.model_selection import CrossValidatorWrapper
-    from sklearn_xarray.data import load_wisdm_dataarray
+    from sklearn_xarray.datasets import load_wisdm_dataarray
 
     from sklearn.preprocessing import StandardScaler, LabelEncoder
     from sklearn.decomposition import PCA
@@ -207,7 +207,7 @@ Finally, we run the grid search and print out the best parameter combination.
 
     Fitting 3 folds for each of 4 candidates, totalling 12 fits
     Best parameters: {'pca__n_components': 40, 'splitter__new_len': 60}
-    Accuracy: 0.555870930546
+    Accuracy: 0.527064337051
 
 
 .. note::
@@ -216,7 +216,7 @@ Finally, we run the grid search and print out the best parameter combination.
     for demonstration purposes.
 
 
-**Total running time of the script:** ( 5 minutes  18.253 seconds)
+**Total running time of the script:** ( 5 minutes  25.239 seconds)
 
 
 

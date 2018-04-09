@@ -27,9 +27,9 @@ sklearn for use with a ``DataArray``::
     X = load_dummy_dataarray()
     Xt = wrap(StandardScaler()).fit_transform(X)
 
-The :py:func:`wrap` function will try to guess the type of the estimator it
-wraps and return an object with the corresponding methods for each type of
-estimator (e.g. ``predict`` for classifiers and regressors).
+The :py:func:`wrap` function will return an object with the corresponding
+methods for each type of estimator (e.g. ``predict`` for classifiers and
+regressors).
 
 .. note::
 

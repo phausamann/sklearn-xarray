@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Top-level functions and classes &mdash; sklearn-xarray 0.1.4-alpha documentation</title>
+  <title>Top-level functions and classes &mdash; sklearn-xarray 0.2.0-alpha documentation</title>
   
 
   
@@ -25,28 +25,19 @@
   
 
   
-  
     <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="../../genindex.html"/>
-        <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="sklearn-xarray 0.1.4-alpha documentation" href="../../index.html"/>
-        <link rel="up" title="API Reference" href="../api.html"/>
-        <link rel="prev" title="API Reference" href="../api.html"/> 
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="API Reference" href="../api.html" /> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -68,7 +59,7 @@
             
             
               <div class="version">
-                0.1.4
+                0.2.0
               </div>
             
           
@@ -134,7 +125,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">sklearn-xarray</a>
@@ -142,9 +133,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -193,81 +185,148 @@
 <p><code class="docutils literal notranslate"><span class="pre">sklearn_xarray</span></code></p>
 <dl class="function">
 <dt id="sklearn_xarray.wrap">
-<code class="descname">wrap</code><span class="sig-paren">(</span><em>estimator</em>, <em>reshapes=None</em>, <em>sample_dim=None</em>, <em>compat=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/common/wrappers.html#wrap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.wrap" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrap an sklearn estimator for xarray objects by guessing its type.</p>
+<code class="descname">wrap</code><span class="sig-paren">(</span><em>estimator</em>, <em>reshapes=None</em>, <em>sample_dim=None</em>, <em>compat=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/common/wrappers.html#wrap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.wrap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrap an sklearn estimator for xarray objects.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>estimator</strong> : sklearn estimator</p>
-<blockquote>
-<div><p>The estimator instance this instance wraps around.</p>
-</div></blockquote>
-<p><strong>reshapes</strong> : str or dict, optional</p>
-<blockquote>
-<div><p>The dimension(s) reshaped by this estimator. Any coordinates in the
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>estimator</strong> <span class="classifier-delimiter">:</span> <span class="classifier">sklearn estimator class or instance</span></dt>
+<dd><p class="first last">The estimator this instance wraps around.</p>
+</dd>
+<dt><strong>reshapes</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or dict, optional</span></dt>
+<dd><p class="first">The dimension(s) reshaped by this estimator. Any coordinates in the
 DataArray along these dimensions will be dropped. If the estimator drops
 this dimension (e.g. a binary classifier returning a 1D vector), the
 dimension itself will also be dropped.</p>
-<p>You can specify multiple dimensions mapping to multiple new dimensions
+<p class="last">You can specify multiple dimensions mapping to multiple new dimensions
 with a dict whose items are lists of reshaped dimensions, e.g.
 <code class="docutils literal notranslate"><span class="pre">{'new_feature':</span> <span class="pre">['feature_1',</span> <span class="pre">'feature_2'],</span> <span class="pre">...}</span></code></p>
-</div></blockquote>
-<p><strong>sample_dim</strong> : str, optional</p>
-<blockquote>
-<div><p>The name of the dimension that represents the samples. By default,
+</dd>
+<dt><strong>sample_dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
+<dd><p class="first last">The name of the dimension that represents the samples. By default,
 the wrapper will assume that this is the first dimension in the array.</p>
-</div></blockquote>
-<p><strong>compat</strong> : bool, optional</p>
-<blockquote>
-<div><p>If True, <code class="docutils literal notranslate"><span class="pre">set_params</span></code>/<code class="docutils literal notranslate"><span class="pre">get_params</span></code> will only use the wrapper’s
+</dd>
+<dt><strong>compat</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
+<dd><p class="first last">If True, <code class="docutils literal notranslate"><span class="pre">set_params</span></code>/<code class="docutils literal notranslate"><span class="pre">get_params</span></code> will only use the wrapper’s
 actual parameters and not those of the wrapped estimator. This might
 be necessary when the estimator defines parameters with the same name
 as the wrapper.</p>
-</div></blockquote>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A wrapped estimator.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>A wrapped estimator.</strong></dt>
+<dd></dd>
+</dl>
 </td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-<dl class="function">
-<dt id="sklearn_xarray.classifier">
-<code class="descname">classifier</code><span class="sig-paren">(</span><em>cls</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/common/decorators.html#classifier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.classifier" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decorate an sklearn classifier with a wrapper.</p>
+<dl class="class">
+<dt id="sklearn_xarray.EstimatorWrapper">
+<em class="property">class </em><code class="descname">EstimatorWrapper</code><span class="sig-paren">(</span><em>estimator=None</em>, <em>reshapes=None</em>, <em>sample_dim=None</em>, <em>compat=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/common/wrappers.html#EstimatorWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.EstimatorWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper around sklearn estimators compatible with xarray objects.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>estimator</strong> <span class="classifier-delimiter">:</span> <span class="classifier">sklearn estimator</span></dt>
+<dd><p class="first last">The estimator instance this instance wraps around.</p>
+</dd>
+<dt><strong>reshapes</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or dict, optional</span></dt>
+<dd><p class="first">The dimension(s) reshaped by this estimator. Any coordinates in the
+DataArray along these dimensions will be dropped. If the estimator drops
+this dimension (e.g. a binary classifier returning a 1D vector), the
+dimension itself will also be dropped.</p>
+<p class="last">You can specify multiple dimensions mapping to multiple new dimensions
+with a dict whose items are lists of reshaped dimensions, e.g.
+<code class="docutils literal notranslate"><span class="pre">{'new_feature':</span> <span class="pre">['feature_1',</span> <span class="pre">'feature_2'],</span> <span class="pre">...}</span></code></p>
+</dd>
+<dt><strong>sample_dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
+<dd><p class="first last">The name of the dimension that represents the samples. By default,
+the wrapper will assume that this is the first dimension in the array.</p>
+</dd>
+<dt><strong>compat</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
+<dd><p class="first last">If True, <code class="docutils literal notranslate"><span class="pre">set`_params</span></code>/<code class="docutils literal notranslate"><span class="pre">get_params</span></code> will only use the wrapper’s
+actual parameters and not those of the wrapped estimator. This might
+be necessary when the estimator defines parameters with the same name
+as the wrapper.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#sklearn_xarray.EstimatorWrapper.fit" title="sklearn_xarray.EstimatorWrapper.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[,&nbsp;y])</td>
+<td>A wrapper around the fitting function.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
+<td>Get parameters for this estimator.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</td>
+<td>Set the parameters of this estimator.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="sklearn_xarray.EstimatorWrapper.fit">
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/common/wrappers.html#EstimatorWrapper.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.EstimatorWrapper.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper around the fitting function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray, Dataset other other array-like</span></dt>
+<dd><p class="first last">The training input samples.</p>
+</dd>
+<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray, Dataset other other array-like</span></dt>
+<dd><p class="first last">The target values.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Returns self.</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="function">
-<dt id="sklearn_xarray.regressor">
-<code class="descname">regressor</code><span class="sig-paren">(</span><em>cls</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/common/decorators.html#regressor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.regressor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decorate an sklearn regressor with a wrapper.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="sklearn_xarray.transformer">
-<code class="descname">transformer</code><span class="sig-paren">(</span><em>cls</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/common/decorators.html#transformer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.transformer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decorate an sklearn transformer with a wrapper.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="sklearn_xarray.ClassifierWrapper">
-<em class="property">class </em><code class="descname">ClassifierWrapper</code><span class="sig-paren">(</span><em>estimator=None</em>, <em>reshapes=None</em>, <em>sample_dim=None</em>, <em>compat=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/common/wrappers.html#ClassifierWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.ClassifierWrapper" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descname">ClassifierWrapper</code><span class="sig-paren">(</span><em>estimator=None</em>, <em>reshapes=None</em>, <em>sample_dim=None</em>, <em>compat=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/common/wrappers.html#ClassifierWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.ClassifierWrapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>A wrapper around sklearn classifiers compatible with xarray objects.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>estimator</strong> : sklearn estimator</p>
-<blockquote>
-<div><p>The estimator this instance wraps around.</p>
-</div></blockquote>
-<p><strong>reshapes</strong> : str or dict, optional</p>
-<blockquote class="last">
-<div><p>The dimension reshaped by this estimator.</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>estimator</strong> <span class="classifier-delimiter">:</span> <span class="classifier">sklearn estimator</span></dt>
+<dd><p class="first last">The estimator this instance wraps around.</p>
+</dd>
+<dt><strong>reshapes</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or dict, optional</span></dt>
+<dd><p class="first last">The dimension reshaped by this estimator.</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -300,20 +359,20 @@ as the wrapper.</p>
 
 <dl class="class">
 <dt id="sklearn_xarray.RegressorWrapper">
-<em class="property">class </em><code class="descname">RegressorWrapper</code><span class="sig-paren">(</span><em>estimator=None</em>, <em>reshapes=None</em>, <em>sample_dim=None</em>, <em>compat=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/common/wrappers.html#RegressorWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.RegressorWrapper" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descname">RegressorWrapper</code><span class="sig-paren">(</span><em>estimator=None</em>, <em>reshapes=None</em>, <em>sample_dim=None</em>, <em>compat=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/common/wrappers.html#RegressorWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.RegressorWrapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>A wrapper around sklearn regressors compatible with xarray objects.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>estimator</strong> : sklearn estimator</p>
-<blockquote>
-<div><p>The estimator this instance wraps around.</p>
-</div></blockquote>
-<p><strong>reshapes</strong> : str or dict, optional</p>
-<blockquote class="last">
-<div><p>The dimension reshaped by this estimator.</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>estimator</strong> <span class="classifier-delimiter">:</span> <span class="classifier">sklearn estimator</span></dt>
+<dd><p class="first last">The estimator this instance wraps around.</p>
+</dd>
+<dt><strong>reshapes</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or dict, optional</span></dt>
+<dd><p class="first last">The dimension reshaped by this estimator.</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -346,20 +405,20 @@ as the wrapper.</p>
 
 <dl class="class">
 <dt id="sklearn_xarray.TransformerWrapper">
-<em class="property">class </em><code class="descname">TransformerWrapper</code><span class="sig-paren">(</span><em>estimator=None</em>, <em>reshapes=None</em>, <em>sample_dim=None</em>, <em>compat=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/common/wrappers.html#TransformerWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.TransformerWrapper" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descname">TransformerWrapper</code><span class="sig-paren">(</span><em>estimator=None</em>, <em>reshapes=None</em>, <em>sample_dim=None</em>, <em>compat=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/common/wrappers.html#TransformerWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.TransformerWrapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>A wrapper around sklearn transformers compatible with xarray objects.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>estimator</strong> : sklearn estimator</p>
-<blockquote>
-<div><p>The estimator this instance wraps around.</p>
-</div></blockquote>
-<p><strong>reshapes</strong> : str or dict, optional</p>
-<blockquote class="last">
-<div><p>The dimension reshaped by this estimator.</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>estimator</strong> <span class="classifier-delimiter">:</span> <span class="classifier">sklearn estimator</span></dt>
+<dd><p class="first last">The estimator this instance wraps around.</p>
+</dd>
+<dt><strong>reshapes</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or dict, optional</span></dt>
+<dd><p class="first last">The dimension reshaped by this estimator.</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -375,7 +434,7 @@ as the wrapper.</p>
 <td>A wrapper around the fitting function.</td>
 </tr>
 <tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(X[,&nbsp;y])</td>
-<td>Fit to data, then transform it.</td>
+<td>A wrapper around the fit_transform function.</td>
 </tr>
 <tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
 <td>Get parameters for this estimator.</td>
@@ -401,56 +460,47 @@ as the wrapper.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>coord</strong> : str, optional</p>
-<blockquote>
-<div><p>The coordinate or variable that holds the data of the target. If not
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>coord</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
+<dd><p class="first last">The coordinate or variable that holds the data of the target. If not
 specified, the target will be the entire DataArray/Dataset.</p>
-</div></blockquote>
-<p><strong>transform_func</strong> : callable, optional</p>
-<blockquote>
-<div><p>A function that transforms the coordinate values to an
+</dd>
+<dt><strong>transform_func</strong> <span class="classifier-delimiter">:</span> <span class="classifier">callable, optional</span></dt>
+<dd><p class="first last">A function that transforms the coordinate values to an
 sklearn-compatible type and shape. If not specified, the coordinate(s)
 will be used as-is.</p>
-</div></blockquote>
-<p><strong>transformer</strong> : sklearn transformer, optional</p>
-<blockquote>
-<div><p><strong>Deprecated</strong>, use <code class="docutils literal notranslate"><span class="pre">transform_func=Transformer().fit_transform</span></code>
+</dd>
+<dt><strong>transformer</strong> <span class="classifier-delimiter">:</span> <span class="classifier">sklearn transformer, optional</span></dt>
+<dd><p class="first last"><strong>Deprecated</strong>, use <code class="docutils literal notranslate"><span class="pre">transform_func=Transformer().fit_transform</span></code>
 instead.</p>
-</div></blockquote>
-<p><strong>lazy</strong> : bool, optinonal</p>
-<blockquote>
-<div><p>If true, the target coordinate is only transformed by the transformer
+</dd>
+<dt><strong>lazy</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optinonal</span></dt>
+<dd><p class="first last">If true, the target coordinate is only transformed by the transformer
 when needed. The transformer can implement a <code class="docutils literal notranslate"><span class="pre">get_transformed_shape</span></code>
 method that returns the shape after the transformation of the provided
 coordinate without actually transforming the data.</p>
-</div></blockquote>
-<p><strong>dim</strong> : str or sequence of str, optional</p>
-<blockquote>
-<div><p>When set, multi-dimensional coordinates will be reduced to this
+</dd>
+<dt><strong>dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or sequence of str, optional</span></dt>
+<dd><p class="first last">When set, multi-dimensional coordinates will be reduced to this
 dimension/these dimensions.</p>
-</div></blockquote>
-<p><strong>reduce_func</strong> : callable, optional</p>
-<blockquote class="last">
-<div><p>A callable that reduces the coordinate(s) to the dimension(s) in
+</dd>
+<dt><strong>reduce_func</strong> <span class="classifier-delimiter">:</span> <span class="classifier">callable, optional</span></dt>
+<dd><p class="first last">A callable that reduces the coordinate(s) to the dimension(s) in
 <code class="docutils literal notranslate"><span class="pre">dim</span></code>. If not specified, the values along dimensions not in <code class="docutils literal notranslate"><span class="pre">dim</span></code>
 will be reduced to the first element in each of these dimensions.</p>
-</div></blockquote>
+</dd>
+</dl>
 </td>
 </tr>
-</tbody>
-</table>
-<p class="rubric">Attributes</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#sklearn_xarray.Target.ndim" title="sklearn_xarray.Target.ndim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndim</span></code></a></td>
-<td>The number of dimensions of the transformed target.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#sklearn_xarray.Target.shape" title="sklearn_xarray.Target.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></td>
-<td>The shape of the transformed target.</td>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#sklearn_xarray.Target.ndim" title="sklearn_xarray.Target.ndim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndim</span></code></a></dt>
+<dd><p class="first last">The number of dimensions of the transformed target.</p>
+</dd>
+<dt><a class="reference internal" href="#sklearn_xarray.Target.shape" title="sklearn_xarray.Target.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></dt>
+<dd><p class="first last">The shape of the transformed target.</p>
+</dd>
+</dl>
+</td>
 </tr>
 </tbody>
 </table>
@@ -461,11 +511,19 @@ will be reduced to the first element in each of these dimensions.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(…)&nbsp;&lt;==&gt;&nbsp;x(…)</td>
-<td></td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#sklearn_xarray.Target.assign_to" title="sklearn_xarray.Target.assign_to"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_to</span></code></a>(X)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#sklearn_xarray.Target.assign_to" title="sklearn_xarray.Target.assign_to"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_to</span></code></a>(X)</td>
 <td>Assign this target to a DataArray or Dataset.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="55%" />
+<col width="45%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>__call__</strong></td>
+<td>&#160;</td>
 </tr>
 </tbody>
 </table>
@@ -477,16 +535,18 @@ will be reduced to the first element in each of these dimensions.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : xarray DataArray or Dataset</p>
-<blockquote>
-<div><p>The data whose coordinate is used as the target.</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
+<dd><p class="first last">The data whose coordinate is used as the target.</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">self:</p>
-<blockquote class="last">
-<div><p>The target itself.</p>
-</div></blockquote>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>self:</strong></dt>
+<dd><p class="first last">The target itself.</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -511,9 +571,7 @@ will be reduced to the first element in each of these dimensions.</p>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -533,7 +591,7 @@ will be reduced to the first element in each of these dimensions.</p>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -551,7 +609,8 @@ will be reduced to the first element in each of these dimensions.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.1.4-alpha',
+            VERSION:'0.2.0-alpha',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -569,14 +628,13 @@ will be reduced to the first element in each of these dimensions.</p>
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
   
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

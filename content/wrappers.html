@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Wrappers for sklearn estimators &mdash; sklearn-xarray 0.1.4-alpha documentation</title>
+  <title>Wrappers for sklearn estimators &mdash; sklearn-xarray 0.2.0-alpha documentation</title>
   
 
   
@@ -25,28 +25,20 @@
   
 
   
-  
     <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="sklearn-xarray 0.1.4-alpha documentation" href="../index.html"/>
-        <link rel="next" title="Using coordinates as targets" href="target.html"/>
-        <link rel="prev" title="Installation" href="installation.html"/> 
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Using coordinates as targets" href="target.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -68,7 +60,7 @@
             
             
               <div class="version">
-                0.1.4
+                0.2.0
               </div>
             
           
@@ -120,7 +112,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">sklearn-xarray</a>
@@ -128,9 +120,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -194,9 +187,9 @@ sklearn for use with a <code class="docutils literal notranslate"><span class="p
 <span class="n">Xt</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">())</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The <a class="reference internal" href="api/common.html#sklearn_xarray.wrap" title="sklearn_xarray.wrap"><code class="xref py py-func docutils literal notranslate"><span class="pre">wrap()</span></code></a> function will try to guess the type of the estimator it
-wraps and return an object with the corresponding methods for each type of
-estimator (e.g. <code class="docutils literal notranslate"><span class="pre">predict</span></code> for classifiers and regressors).</p>
+<p>The <a class="reference internal" href="api/common.html#sklearn_xarray.wrap" title="sklearn_xarray.wrap"><code class="xref py py-func docutils literal notranslate"><span class="pre">wrap()</span></code></a> function will return an object with the corresponding
+methods for each type of estimator (e.g. <code class="docutils literal notranslate"><span class="pre">predict</span></code> for classifiers and
+regressors).</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">xarray references axes by name rather than by order. Therefore, you can
@@ -325,9 +318,7 @@ in order to work with dask-backed DataArrays and Datasets:</p>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -349,7 +340,7 @@ in order to work with dask-backed DataArrays and Datasets:</p>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -367,7 +358,8 @@ in order to work with dask-backed DataArrays and Datasets:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.1.4-alpha',
+            VERSION:'0.2.0-alpha',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -385,14 +377,13 @@ in order to work with dask-backed DataArrays and Datasets:</p>
     <script type="text/javascript" src="../_static/js/theme.js"></script>
   
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

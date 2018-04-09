@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Activity recognition from accelerometer data &mdash; sklearn-xarray 0.1.4-alpha documentation</title>
+  <title>Activity recognition from accelerometer data &mdash; sklearn-xarray 0.2.0-alpha documentation</title>
   
 
   
@@ -25,29 +25,20 @@
   
 
   
-  
     <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="sklearn-xarray 0.1.4-alpha documentation" href="../index.html"/>
-        <link rel="up" title="General examples" href="index.html"/>
-        <link rel="next" title="API Reference" href="../content/api.html"/>
-        <link rel="prev" title="General examples" href="index.html"/> 
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API Reference" href="../content/api.html" />
+    <link rel="prev" title="General examples" href="index.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -69,7 +60,7 @@
             
             
               <div class="version">
-                0.1.4
+                0.2.0
               </div>
             
           
@@ -117,7 +108,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">sklearn-xarray</a>
@@ -125,9 +116,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -192,7 +184,7 @@ from 36 different subjects.</p>
 <span class="kn">from</span> <span class="nn">sklearn_xarray</span> <span class="kn">import</span> <span class="n">wrap</span><span class="p">,</span> <span class="n">Target</span>
 <span class="kn">from</span> <span class="nn">sklearn_xarray.preprocessing</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Splitter</span><span class="p">,</span> <span class="n">Sanitizer</span><span class="p">,</span> <span class="n">Featurizer</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">sklearn_xarray.model_selection</span> <span class="kn">import</span> <span class="n">CrossValidatorWrapper</span>
-<span class="kn">from</span> <span class="nn">sklearn_xarray.data</span> <span class="kn">import</span> <span class="n">load_wisdm_dataarray</span>
+<span class="kn">from</span> <span class="nn">sklearn_xarray.datasets</span> <span class="kn">import</span> <span class="n">load_wisdm_dataarray</span>
 
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span><span class="p">,</span> <span class="n">LabelEncoder</span>
 <span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
@@ -287,7 +279,7 @@ representation for the classification.</p>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Fitting</span> <span class="mi">3</span> <span class="n">folds</span> <span class="k">for</span> <span class="n">each</span> <span class="n">of</span> <span class="mi">4</span> <span class="n">candidates</span><span class="p">,</span> <span class="n">totalling</span> <span class="mi">12</span> <span class="n">fits</span>
 <span class="n">Best</span> <span class="n">parameters</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;pca__n_components&#39;</span><span class="p">:</span> <span class="mi">40</span><span class="p">,</span> <span class="s1">&#39;splitter__new_len&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">}</span>
-<span class="n">Accuracy</span><span class="p">:</span> <span class="mf">0.555870930546</span>
+<span class="n">Accuracy</span><span class="p">:</span> <span class="mf">0.527064337051</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -295,7 +287,7 @@ representation for the classification.</p>
 <p class="last">The performance of this classifier is obviously pretty terrible, it’s only
 for demonstration purposes.</p>
 </div>
-<p><strong>Total running time of the script:</strong> ( 5 minutes  18.253 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 5 minutes  25.239 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_activity_recognition.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_activity_recognition.py</span></code></a></div>
@@ -307,9 +299,7 @@ for demonstration purposes.</p>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -331,7 +321,7 @@ for demonstration purposes.</p>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -349,7 +339,8 @@ for demonstration purposes.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.1.4-alpha',
+            VERSION:'0.2.0-alpha',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -367,14 +358,13 @@ for demonstration purposes.</p>
     <script type="text/javascript" src="../_static/js/theme.js"></script>
   
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

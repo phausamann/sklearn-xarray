@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Target &mdash; sklearn-xarray 0.1.4-alpha documentation</title>
+  <title>Target &mdash; sklearn-xarray 0.2.0-alpha documentation</title>
   
 
   
@@ -25,26 +25,18 @@
   
 
   
-  
     <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="../../genindex.html"/>
-        <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="sklearn-xarray 0.1.4-alpha documentation" href="../../index.html"/> 
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -66,7 +58,7 @@
             
             
               <div class="version">
-                0.1.4
+                0.2.0
               </div>
             
           
@@ -111,7 +103,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">sklearn-xarray</a>
@@ -119,9 +111,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -174,56 +167,47 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>coord</strong> : str, optional</p>
-<blockquote>
-<div><p>The coordinate or variable that holds the data of the target. If not
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>coord</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
+<dd><p class="first last">The coordinate or variable that holds the data of the target. If not
 specified, the target will be the entire DataArray/Dataset.</p>
-</div></blockquote>
-<p><strong>transform_func</strong> : callable, optional</p>
-<blockquote>
-<div><p>A function that transforms the coordinate values to an
+</dd>
+<dt><strong>transform_func</strong> <span class="classifier-delimiter">:</span> <span class="classifier">callable, optional</span></dt>
+<dd><p class="first last">A function that transforms the coordinate values to an
 sklearn-compatible type and shape. If not specified, the coordinate(s)
 will be used as-is.</p>
-</div></blockquote>
-<p><strong>transformer</strong> : sklearn transformer, optional</p>
-<blockquote>
-<div><p><strong>Deprecated</strong>, use <code class="docutils literal notranslate"><span class="pre">transform_func=Transformer().fit_transform</span></code>
+</dd>
+<dt><strong>transformer</strong> <span class="classifier-delimiter">:</span> <span class="classifier">sklearn transformer, optional</span></dt>
+<dd><p class="first last"><strong>Deprecated</strong>, use <code class="docutils literal notranslate"><span class="pre">transform_func=Transformer().fit_transform</span></code>
 instead.</p>
-</div></blockquote>
-<p><strong>lazy</strong> : bool, optinonal</p>
-<blockquote>
-<div><p>If true, the target coordinate is only transformed by the transformer
+</dd>
+<dt><strong>lazy</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optinonal</span></dt>
+<dd><p class="first last">If true, the target coordinate is only transformed by the transformer
 when needed. The transformer can implement a <code class="docutils literal notranslate"><span class="pre">get_transformed_shape</span></code>
 method that returns the shape after the transformation of the provided
 coordinate without actually transforming the data.</p>
-</div></blockquote>
-<p><strong>dim</strong> : str or sequence of str, optional</p>
-<blockquote>
-<div><p>When set, multi-dimensional coordinates will be reduced to this
+</dd>
+<dt><strong>dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or sequence of str, optional</span></dt>
+<dd><p class="first last">When set, multi-dimensional coordinates will be reduced to this
 dimension/these dimensions.</p>
-</div></blockquote>
-<p><strong>reduce_func</strong> : callable, optional</p>
-<blockquote class="last">
-<div><p>A callable that reduces the coordinate(s) to the dimension(s) in
+</dd>
+<dt><strong>reduce_func</strong> <span class="classifier-delimiter">:</span> <span class="classifier">callable, optional</span></dt>
+<dd><p class="first last">A callable that reduces the coordinate(s) to the dimension(s) in
 <code class="docutils literal notranslate"><span class="pre">dim</span></code>. If not specified, the values along dimensions not in <code class="docutils literal notranslate"><span class="pre">dim</span></code>
 will be reduced to the first element in each of these dimensions.</p>
-</div></blockquote>
+</dd>
+</dl>
 </td>
 </tr>
-</tbody>
-</table>
-<p class="rubric">Attributes</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#sklearn_xarray.target.Target.ndim" title="sklearn_xarray.target.Target.ndim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndim</span></code></a></td>
-<td>The number of dimensions of the transformed target.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#sklearn_xarray.target.Target.shape" title="sklearn_xarray.target.Target.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></td>
-<td>The shape of the transformed target.</td>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#sklearn_xarray.target.Target.ndim" title="sklearn_xarray.target.Target.ndim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndim</span></code></a></dt>
+<dd><p class="first last">The number of dimensions of the transformed target.</p>
+</dd>
+<dt><a class="reference internal" href="#sklearn_xarray.target.Target.shape" title="sklearn_xarray.target.Target.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></dt>
+<dd><p class="first last">The shape of the transformed target.</p>
+</dd>
+</dl>
+</td>
 </tr>
 </tbody>
 </table>
@@ -234,11 +218,19 @@ will be reduced to the first element in each of these dimensions.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(…)&nbsp;&lt;==&gt;&nbsp;x(…)</td>
-<td></td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#sklearn_xarray.target.Target.assign_to" title="sklearn_xarray.target.Target.assign_to"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_to</span></code></a>(X)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#sklearn_xarray.target.Target.assign_to" title="sklearn_xarray.target.Target.assign_to"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_to</span></code></a>(X)</td>
 <td>Assign this target to a DataArray or Dataset.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="55%" />
+<col width="45%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>__call__</strong></td>
+<td>&#160;</td>
 </tr>
 </tbody>
 </table>
@@ -250,16 +242,18 @@ will be reduced to the first element in each of these dimensions.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : xarray DataArray or Dataset</p>
-<blockquote>
-<div><p>The data whose coordinate is used as the target.</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
+<dd><p class="first last">The data whose coordinate is used as the target.</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">self:</p>
-<blockquote class="last">
-<div><p>The target itself.</p>
-</div></blockquote>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>self:</strong></dt>
+<dd><p class="first last">The target itself.</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -284,9 +278,7 @@ will be reduced to the first element in each of these dimensions.</p>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -299,7 +291,7 @@ will be reduced to the first element in each of these dimensions.</p>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -317,7 +309,8 @@ will be reduced to the first element in each of these dimensions.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.1.4-alpha',
+            VERSION:'0.2.0-alpha',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -335,14 +328,13 @@ will be reduced to the first element in each of these dimensions.</p>
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
   
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

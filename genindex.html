@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; sklearn-xarray 0.1.4-alpha documentation</title>
+  <title>Index &mdash; sklearn-xarray 0.2.0-alpha documentation</title>
   
 
   
@@ -26,26 +26,18 @@
   
 
   
-  
     <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="#"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="sklearn-xarray 0.1.4-alpha documentation" href="index.html"/> 
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -67,7 +59,7 @@
             
             
               <div class="version">
-                0.1.4
+                0.2.0
               </div>
             
           
@@ -112,7 +104,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">sklearn-xarray</a>
@@ -120,9 +112,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -169,6 +162,7 @@
  <a href="#A"><strong>A</strong></a>
  | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
+ | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
  | <a href="#I"><strong>I</strong></a>
@@ -200,8 +194,6 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="content/api/common.html#sklearn_xarray.classifier">classifier() (in module sklearn_xarray)</a>
-</li>
       <li><a href="content/api/common.html#sklearn_xarray.ClassifierWrapper">ClassifierWrapper (class in sklearn_xarray)</a>
 </li>
       <li><a href="content/api/preprocessing.html#sklearn_xarray.preprocessing.concatenate">concatenate() (in module sklearn_xarray.preprocessing)</a>
@@ -217,6 +209,14 @@
   </ul></td>
 </tr></table>
 
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="content/api/common.html#sklearn_xarray.EstimatorWrapper">EstimatorWrapper (class in sklearn_xarray)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -224,11 +224,11 @@
 </li>
       <li><a href="content/api/preprocessing.html#sklearn_xarray.preprocessing.Featurizer">Featurizer (class in sklearn_xarray.preprocessing)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="content/api/preprocessing.html#sklearn_xarray.preprocessing.BaseTransformer.fit">fit() (BaseTransformer method)</a>
 
       <ul>
+        <li><a href="content/api/common.html#sklearn_xarray.EstimatorWrapper.fit">(EstimatorWrapper method)</a>
+</li>
         <li><a href="content/api/preprocessing.html#sklearn_xarray.preprocessing.Resampler.fit">(Resampler method)</a>
 </li>
         <li><a href="content/api/preprocessing.html#sklearn_xarray.preprocessing.Transposer.fit">(Transposer method)</a>
@@ -304,8 +304,6 @@
 </li>
       <li><a href="content/api/preprocessing.html#sklearn_xarray.preprocessing.Reducer">Reducer (class in sklearn_xarray.preprocessing)</a>
 </li>
-      <li><a href="content/api/common.html#sklearn_xarray.regressor">regressor() (in module sklearn_xarray)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="content/api/common.html#sklearn_xarray.RegressorWrapper">RegressorWrapper (class in sklearn_xarray)</a>
@@ -370,8 +368,6 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="content/api/common.html#sklearn_xarray.transformer">transformer() (in module sklearn_xarray)</a>
-</li>
       <li><a href="content/api/common.html#sklearn_xarray.TransformerWrapper">TransformerWrapper (class in sklearn_xarray)</a>
 </li>
       <li><a href="content/api/preprocessing.html#sklearn_xarray.preprocessing.transpose">transpose() (in module sklearn_xarray.preprocessing)</a>
@@ -392,9 +388,7 @@
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -407,7 +401,7 @@
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -425,7 +419,8 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.4-alpha',
+            VERSION:'0.2.0-alpha',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -443,14 +438,13 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
   
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Utils &mdash; sklearn-xarray 0.1.4-alpha documentation</title>
+  <title>Utils &mdash; sklearn-xarray 0.2.0-alpha documentation</title>
   
 
   
@@ -25,28 +25,19 @@
   
 
   
-  
     <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-  
-
-  
-        <link rel="index" title="Index"
-              href="../../genindex.html"/>
-        <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="sklearn-xarray 0.1.4-alpha documentation" href="../../index.html"/>
-        <link rel="up" title="API Reference" href="../api.html"/>
-        <link rel="next" title="Datasets" href="datasets.html"/> 
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Datasets" href="datasets.html" /> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -68,7 +59,7 @@
             
             
               <div class="version">
-                0.1.4
+                0.2.0
               </div>
             
           
@@ -132,7 +123,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">sklearn-xarray</a>
@@ -140,9 +131,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -197,26 +189,26 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : xarray DataArray or Dataset</p>
-<blockquote>
-<div><p>The input data.</p>
-</div></blockquote>
-<p><strong>new_dim_last</strong> : bool, default true</p>
-<blockquote>
-<div><p>If true, put the new dimension last when converting a Dataset with
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
+<dd><p class="first last">The input data.</p>
+</dd>
+<dt><strong>new_dim_last</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, default true</span></dt>
+<dd><p class="first last">If true, put the new dimension last when converting a Dataset with
 multiple variables.</p>
-</div></blockquote>
-<p><strong>new_dim_name</strong> : str, default ‘variable’</p>
-<blockquote>
-<div><p>The name of the new dimension when converting a Dataset with multiple
+</dd>
+<dt><strong>new_dim_name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, default ‘variable’</span></dt>
+<dd><p class="first last">The name of the new dimension when converting a Dataset with multiple
 variables.</p>
-</div></blockquote>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>X_arr</strong> : numpy ndarray</p>
-<blockquote class="last">
-<div><p>The data as an ndarray.</p>
-</div></blockquote>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>X_arr</strong> <span class="classifier-delimiter">:</span> <span class="classifier">numpy ndarray</span></dt>
+<dd><p class="first last">The data as an ndarray.</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -231,25 +223,25 @@ variables.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : xarray DataArray or Dataset</p>
-<blockquote>
-<div><p>The data structure for which to determine the indices.</p>
-</div></blockquote>
-<p><strong>groupby</strong> : str or list</p>
-<blockquote>
-<div><p>Name of coordinate or list of coordinates by which the groups are
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
+<dd><p class="first last">The data structure for which to determine the indices.</p>
+</dd>
+<dt><strong>groupby</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or list</span></dt>
+<dd><p class="first last">Name of coordinate or list of coordinates by which the groups are
 determined.</p>
-</div></blockquote>
-<p><strong>group_dim</strong> : str or None, optional</p>
-<blockquote>
-<div><p>Name of dimension along which the groups are indexed.</p>
-</div></blockquote>
+</dd>
+<dt><strong>group_dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or None, optional</span></dt>
+<dd><p class="first last">Name of dimension along which the groups are indexed.</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">idx: list of boolean numpy vectors</p>
-<blockquote class="last">
-<div><p>List of logical indices for each group.</p>
-</div></blockquote>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>idx: list of boolean numpy vectors</strong></dt>
+<dd><p class="first last">List of logical indices for each group.</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -264,20 +256,21 @@ determined.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : anything</p>
-<blockquote>
-<div><p>The object to be checked.</p>
-</div></blockquote>
-<p><strong>require_attrs</strong> : list of str, optional</p>
-<blockquote>
-<div><p>The attributes the object has to have in order to pass as a DataArray.</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">anything</span></dt>
+<dd><p class="first last">The object to be checked.</p>
+</dd>
+<dt><strong>require_attrs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of str, optional</span></dt>
+<dd><p class="first last">The attributes the object has to have in order to pass as a DataArray.</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">bool</p>
-<blockquote class="last">
-<div><p>Whether the object is a DataArray or not.</p>
-</div></blockquote>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>bool</strong></dt>
+<dd><p class="first last">Whether the object is a DataArray or not.</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -292,20 +285,21 @@ determined.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : anything</p>
-<blockquote>
-<div><p>The object to be checked.</p>
-</div></blockquote>
-<p><strong>require_attrs</strong> : list of str, optional</p>
-<blockquote>
-<div><p>The attributes the object has to have in order to pass as a Dataset.</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">anything</span></dt>
+<dd><p class="first last">The object to be checked.</p>
+</dd>
+<dt><strong>require_attrs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of str, optional</span></dt>
+<dd><p class="first last">The attributes the object has to have in order to pass as a Dataset.</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">bool</p>
-<blockquote class="last">
-<div><p>Whether the object is a Dataset or not.</p>
-</div></blockquote>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>bool</strong></dt>
+<dd><p class="first last">Whether the object is a Dataset or not.</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -320,20 +314,21 @@ determined.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : anything</p>
-<blockquote>
-<div><p>The object to be checked.</p>
-</div></blockquote>
-<p><strong>require_attrs</strong> : list of str, optional</p>
-<blockquote>
-<div><p>The attributes the object has to have in order to pass as a Target.</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">anything</span></dt>
+<dd><p class="first last">The object to be checked.</p>
+</dd>
+<dt><strong>require_attrs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of str, optional</span></dt>
+<dd><p class="first last">The attributes the object has to have in order to pass as a Target.</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">bool</p>
-<blockquote class="last">
-<div><p>Whether the object is a Target or not.</p>
-</div></blockquote>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>bool</strong></dt>
+<dd><p class="first last">Whether the object is a Target or not.</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -348,37 +343,34 @@ determined.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>arr</strong> : array-like</p>
-<blockquote>
-<div><p>The input array.</p>
-</div></blockquote>
-<p><strong>axis</strong> : int</p>
-<blockquote>
-<div><p>The axis along which to segment.</p>
-</div></blockquote>
-<p><strong>new_len</strong> : int</p>
-<blockquote>
-<div><p>The length of each segment.</p>
-</div></blockquote>
-<p><strong>step</strong> : int, default 1</p>
-<blockquote>
-<div><p>The offset between the start of each segment.</p>
-</div></blockquote>
-<p><strong>new_axis</strong> : int, optional</p>
-<blockquote>
-<div><p>The position where the newly created axis is to be inserted. By
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>arr</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like</span></dt>
+<dd><p class="first last">The input array.</p>
+</dd>
+<dt><strong>axis</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">The axis along which to segment.</p>
+</dd>
+<dt><strong>new_len</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">The length of each segment.</p>
+</dd>
+<dt><strong>step</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, default 1</span></dt>
+<dd><p class="first last">The offset between the start of each segment.</p>
+</dd>
+<dt><strong>new_axis</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
+<dd><p class="first last">The position where the newly created axis is to be inserted. By
 default, the axis will be added at the end of the array.</p>
-</div></blockquote>
-<p><strong>return_view</strong> : bool, default False</p>
-<blockquote>
-<div><p>If True, return a view of the segmented array instead of a copy.</p>
-</div></blockquote>
+</dd>
+<dt><strong>return_view</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, default False</span></dt>
+<dd><p class="first last">If True, return a view of the segmented array instead of a copy.</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>arr_seg</strong> : array-like</p>
-<blockquote class="last">
-<div><p>The segmented array.</p>
-</div></blockquote>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>arr_seg</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like</span></dt>
+<dd><p class="first last">The segmented array.</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -389,9 +381,7 @@ default, the axis will be added at the end of the array.</p>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -411,7 +401,7 @@ default, the axis will be added at the end of the array.</p>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -429,7 +419,8 @@ default, the axis will be added at the end of the array.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.1.4-alpha',
+            VERSION:'0.2.0-alpha',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -447,14 +438,13 @@ default, the axis will be added at the end of the array.</p>
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
   
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>
