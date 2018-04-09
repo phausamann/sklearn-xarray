@@ -91,6 +91,24 @@ class _CommonEstimatorWrapper(BaseEstimator):
 
         return coords_new
 
+    def _call_array_method(self, estimator, method, X):
+        """ Call a method (predict, transform, ...) for DataArray input.  """
+
+        if self.sample_dim is not None:
+            # transpose to sample dim first, predict and transpose back
+            order = self._get_transpose_order(X)
+            X_arr = np.transpose(X.data, order)
+            y = getattr(estimator, method)(X_arr)
+            if y.ndim == X.ndim:
+                y = np.transpose(y, np.argsort(order))
+        else:
+            y = getattr(estimator, method)(X.data)
+
+        # update coords and dims
+        dims_new = self._update_dims(X, y)
+
+        return y, dims_new
+
     def _call_fitted(self, method, X):
         """ Call a method of a fitted estimator (predict, transform, ...). """
 
@@ -106,7 +124,7 @@ class _CommonEstimatorWrapper(BaseEstimator):
             check_is_fitted(self, ['estimator_'])
 
             if self.reshapes is not None:
-                data, dims = getattr(self, '_' + method)(self.estimator_, X)
+                data, dims = self._call_array_method(self.estimator_, method, X)
                 coords = self._update_coords(X)
                 return xr.DataArray(data, coords=coords, dims=dims)
             else:
@@ -125,7 +143,7 @@ class _CommonEstimatorWrapper(BaseEstimator):
             if self.reshapes is not None:
                 data_vars = dict()
                 for v, e in six.iteritems(self.estimator_dict_):
-                    yp_v, dims = getattr(self, '_' + method)(e, X[v])
+                    yp_v, dims = self._call_array_method(e, method, X[v])
                     data_vars[v] = (dims, yp_v)
                 coords = self._update_coords(X)
                 return xr.Dataset(data_vars, coords=coords)
@@ -163,6 +181,24 @@ class _CommonEstimatorWrapper(BaseEstimator):
         estimator_ = clone(self.estimator).fit(X_arr, y, **fit_params)
 
         return estimator_
+
+    def _fit_transform(self, estimator, X, y=None, **fit_params):
+        """ Fit and transform with ``estimator`` and update coords and dims. """
+
+        if self.sample_dim is not None:
+            # transpose to sample dim first, transform and transpose back
+            order = self._get_transpose_order(X)
+            X_arr = np.transpose(X.data, order)
+            Xt = estimator.fit_transform(X_arr, y, **fit_params)
+            if Xt.ndim == X.ndim:
+                Xt = np.transpose(Xt, np.argsort(order))
+        else:
+            Xt = estimator.fit_transform(X.data, y, **fit_params)
+
+        # update dims
+        dims_new = self._update_dims(X, Xt)
+
+        return Xt, dims_new
 
     def get_params(self, deep=True):
         """ Get parameters for this estimator.
@@ -220,25 +256,6 @@ class _CommonEstimatorWrapper(BaseEstimator):
         return self
 
 
-def _predict(self, estimator, X):
-    """ Predict with ``self.estimator`` and update coords and dims. """
-
-    if self.sample_dim is not None:
-        # transpose to sample dim first, predict and transpose back
-        order = self._get_transpose_order(X)
-        X_arr = np.transpose(X.data, order)
-        yp = estimator.predict(X_arr)
-        if yp.ndim == X.ndim:
-            yp = np.transpose(yp, np.argsort(order))
-    else:
-        yp = estimator.predict(X.data)
-
-    # update coords and dims
-    dims_new = self._update_dims(X, yp)
-
-    return yp, dims_new
-
-
 def predict(self, X):
     """ A wrapper around the prediction function.
 
@@ -256,42 +273,55 @@ def predict(self, X):
     return self._call_fitted('predict', X)
 
 
-def _transform(self, estimator, X):
-    """ Transform with ``estimator`` and update coords and dims. """
+def predict_proba(self, X):
+    """ A wrapper around the predict_proba function.
 
-    if self.sample_dim is not None:
-        # transpose to sample dim first, transform and transpose back
-        order = self._get_transpose_order(X)
-        X_arr = np.transpose(X.data, order)
-        Xt = estimator.transform(X_arr)
-        if Xt.ndim == X.ndim:
-            Xt = np.transpose(Xt, np.argsort(order))
-    else:
-        Xt = estimator.transform(X.data)
+    Parameters
+    ----------
+    X : xarray DataArray, Dataset or other array-like
+        The input samples.
 
-    # update dims
-    dims_new = self._update_dims(X, Xt)
+    Returns
+    -------
+    y : xarray DataArray, Dataset or other array-like
+        The predicted output.
+    """
 
-    return Xt, dims_new
+    return self._call_fitted('predict_proba', X)
 
 
-def _inverse_transform(self, estimator, X):
-    """ Inverse transform with ``estimator`` and update coords and dims. """
+def predict_log_proba(self, X):
+    """ A wrapper around the predict_log_proba function.
 
-    if self.sample_dim is not None:
-        # transpose to sample dim first, transform and transpose back
-        order = self._get_transpose_order(X)
-        X_arr = np.transpose(X.data, order)
-        Xt = estimator.inverse_transform(X_arr)
-        if Xt.ndim == X.ndim:
-            Xt = np.transpose(Xt, np.argsort(order))
-    else:
-        Xt = estimator.inverse_transform(X.data)
+    Parameters
+    ----------
+    X : xarray DataArray, Dataset or other array-like
+        The input samples.
 
-    # update dims
-    dims_new = self._update_dims(X, Xt)
+    Returns
+    -------
+    y : xarray DataArray, Dataset or other array-like
+        The predicted output.
+    """
 
-    return Xt, dims_new
+    return self._call_fitted('predict_log_proba', X)
+
+
+def decision_function(self, X):
+    """ A wrapper around the decision_function function.
+
+    Parameters
+    ----------
+    X : xarray DataArray, Dataset or other array-like
+        The input samples.
+
+    Returns
+    -------
+    y : xarray DataArray, Dataset or other array-like
+        The predicted output.
+    """
+
+    return self._call_fitted('decision_function', X)
 
 
 def transform(self, X):
@@ -326,25 +356,6 @@ def inverse_transform(self, X):
     """
 
     return self._call_fitted('inverse_transform', X)
-
-
-def _fit_transform(self, estimator, X, y=None, **fit_params):
-    """ Fit and transform with ``estimator`` and update coords and dims. """
-
-    if self.sample_dim is not None:
-        # transpose to sample dim first, transform and transpose back
-        order = self._get_transpose_order(X)
-        X_arr = np.transpose(X.data, order)
-        Xt = estimator.fit_transform(X_arr, y, **fit_params)
-        if Xt.ndim == X.ndim:
-            Xt = np.transpose(Xt, np.argsort(order))
-    else:
-        Xt = estimator.fit_transform(X.data, y, **fit_params)
-
-    # update dims
-    dims_new = self._update_dims(X, Xt)
-
-    return Xt, dims_new
 
 
 def fit_transform(self, X, y=None, **fit_params):
@@ -488,21 +499,17 @@ def score(self, X, y, sample_weight=None):
 
 class _ImplementsPredictMixin(_CommonEstimatorWrapper):
 
-    _predict = _predict
     predict = predict
 
 
 class _ImplementsTransformMixin(_CommonEstimatorWrapper):
 
-    _transform = _transform
-    _inverse_transform = _inverse_transform
     transform = transform
     inverse_transform = inverse_transform
 
 
 class _ImplementsFitTransformMixin(_CommonEstimatorWrapper):
 
-    _fit_transform = _fit_transform
     fit_transform = fit_transform
 
 

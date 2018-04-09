@@ -5,8 +5,7 @@ import numpy.testing as npt
 
 from sklearn.base import BaseEstimator, TransformerMixin
 
-from sklearn_xarray import (
-    wrap, wrap, wrap, wrap)
+from sklearn_xarray import wrap
 
 
 class DummyEstimator(BaseEstimator):
@@ -43,6 +42,7 @@ class DummyTransformer(BaseEstimator):
 
 class ReshapingEstimator(BaseEstimator, TransformerMixin):
     """ A dummy estimator that changes the number of features."""
+
     def __init__(self, new_shape=None):
         self.new_shape = new_shape
 
@@ -223,17 +223,6 @@ def test_ndim_reshaping_estimator():
     yp = estimator.predict(X)
 
     assert_allclose(yp, y)
-
-
-def test_wrap():
-
-    from sklearn.preprocessing import StandardScaler
-    from sklearn.linear_model import LinearRegression
-    from sklearn.svm import SVC
-
-    assert hasattr(wrap(StandardScaler()), 'transform')
-    assert hasattr(wrap(SVC()), 'predict')
-    assert hasattr(wrap(LinearRegression()), 'score')
 
 
 def test_sample_dim():

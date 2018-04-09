@@ -6,8 +6,8 @@ from sklearn.base import clone
 from sklearn.utils.validation import check_X_y, check_array
 
 from .base import (
-    _predict, predict, _transform, transform, _inverse_transform,
-    inverse_transform, _fit_transform, fit_transform, score,
+    predict, predict_proba, predict_log_proba, decision_function,
+    transform, inverse_transform, fit_transform, score,
     _CommonEstimatorWrapper, _ImplementsPredictMixin,
     _ImplementsScoreMixin, _ImplementsTransformMixin,
     _ImplementsFitTransformMixin
@@ -17,20 +17,14 @@ from sklearn_xarray.utils import is_dataarray, is_dataset, is_target
 
 # mapping from wrapped methods to wrapper methods
 _method_map = {
-    'predict':
-        {'predict': predict,
-         '_predict': _predict},
-    'transform':
-        {'transform': transform,
-         '_transform': _transform},
-    'inverse_transform':
-        {'inverse_transform': inverse_transform,
-         '_inverse_transform': _inverse_transform},
-    'fit_transform':
-        {'fit_transform': fit_transform,
-         '_fit_transform': _fit_transform},
-    'score':
-        {'score': score}
+    'predict': predict,
+    'predict_proba': predict_proba,
+    'predict_log_proba': predict_log_proba,
+    'decision_function': decision_function,
+    'transform': transform,
+    'inverse_transform': inverse_transform,
+    'fit_transform': fit_transform,
+    'score': score
 }
 
 
@@ -118,10 +112,9 @@ class EstimatorWrapper(_CommonEstimatorWrapper):
 
         state = self.__dict__.copy()
 
-        for m_wrapped in _method_map:
-            if hasattr(self.estimator, m_wrapped):
-                for m_self in _method_map[m_wrapped]:
-                    state.pop(m_self)
+        for m in _method_map:
+            if hasattr(self.estimator, m):
+                state.pop(m)
 
         return state
 
@@ -136,15 +129,13 @@ class EstimatorWrapper(_CommonEstimatorWrapper):
         if hasattr(self.estimator, '_estimator_type'):
             setattr(self, '_estimator_type', self.estimator._estimator_type)
 
-        for name_wrapped in _method_map:
-            if hasattr(self.estimator, name_wrapped):
-                for name_self in _method_map[name_wrapped]:
-                    method = _method_map[name_wrapped][name_self]
-                    try:
-                        setattr(self, name_self,
-                                MethodType(method, self, EstimatorWrapper))
-                    except TypeError:
-                        setattr(self, name_self, MethodType(method, self))
+        for m in _method_map:
+            if hasattr(self.estimator, m):
+                try:
+                    setattr(self, m,
+                            MethodType(_method_map[m], self, EstimatorWrapper))
+                except TypeError:
+                    setattr(self, m, MethodType(_method_map[m], self))
 
     def fit(self, X, y=None, **fit_params):
         """ A wrapper around the fitting function.

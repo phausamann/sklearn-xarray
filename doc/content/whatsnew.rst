@@ -14,6 +14,9 @@ Breaking changes
 ~~~~~~~~~~~~~~~~
 - ``wrap`` now returns a decorated ``EstimatorWrapper`` instead of an
   estimator-specific wrapper class.
+- The ``common.decorators`` module has been removed, because the decorated
+  estimators could not be pickled and therefore didn't pass the usual sklearn
+  estimator checks.
 
 
 Enhancements
