@@ -236,7 +236,7 @@ def test_featurize():
         dims=('sample', 'feat_1', 'feat_2')
     )
 
-    Xt_da = featurize(X_da)
+    Xt_da, featurizer = featurize(X_da, return_estimator=True)
 
     assert Xt_da.shape == (100, 100)
 
@@ -248,7 +248,8 @@ def test_featurize():
         coords={'sample': range(100), 'feat_1': range(10), 'feat_2': range(10)}
     )
 
-    Xt_ds = featurize(X_ds, return_array=True)
+    Xt_ds, featurizer = featurize(
+        X_ds, return_array=True, return_estimator=True)
 
     assert Xt_ds.shape == (100, 110)
 

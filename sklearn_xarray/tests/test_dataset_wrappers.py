@@ -5,8 +5,7 @@ import numpy.testing as npt
 
 from sklearn.base import BaseEstimator, TransformerMixin
 
-from sklearn_xarray import (
-    wrap, TransformerWrapper, ClassifierWrapper, RegressorWrapper)
+from sklearn_xarray import wrap
 
 
 class DummyEstimator(BaseEstimator):
@@ -76,7 +75,7 @@ def test_dummy_estimator():
         coords={'sample': range(100), 'feature': range(10)}
     )
 
-    estimator = RegressorWrapper(DummyEstimator())
+    estimator = wrap(DummyEstimator())
 
     estimator.fit(X)
     estimator.fit(X, X)
@@ -92,7 +91,7 @@ def test_dummy_transformer():
         coords={'sample': range(100), 'feature': range(10)}
     )
 
-    estimator = TransformerWrapper(DummyTransformer())
+    estimator = wrap(DummyTransformer())
 
     estimator.fit(X)
     yp = estimator.transform(X)
@@ -109,7 +108,8 @@ def test_wrapped_transformer():
         coords={'sample': range(100), 'feature': range(10)}
     )
 
-    estimator = TransformerWrapper(StandardScaler()).fit(X)
+    estimator = wrap(StandardScaler()).partial_fit(X)
+    estimator.partial_fit(X)
 
     assert_allclose(X, estimator.inverse_transform(estimator.transform(X)))
 
@@ -122,7 +122,7 @@ def test_ndim_dummy_estimator():
         coords={'sample': range(100), 'feat_1': range(10), 'feat_2': range(10)}
     )
 
-    estimator = RegressorWrapper(DummyEstimator())
+    estimator = wrap(DummyEstimator())
 
     estimator.fit(X, X)
     yp = estimator.predict(X)
@@ -141,7 +141,7 @@ def test_reshaping_estimator():
     y = X.var_1[:, :2].drop('feature')
     y['dummy'] = y.dummy[:, 0]
 
-    estimator = RegressorWrapper(
+    estimator = wrap(
         ReshapingEstimator(new_shape=(-1, 2)),
         reshapes='feature'
     )
@@ -163,7 +163,7 @@ def test_reshaping_transformer():
     y = X.var_1[:, :2].drop('feature')
     y['dummy'] = y.dummy[:, 0]
 
-    estimator = TransformerWrapper(
+    estimator = wrap(
         ReshapingEstimator(new_shape=(-1, 2)),
         reshapes='feature'
     )
@@ -184,7 +184,7 @@ def test_reshaping_estimator_singleton():
 
     y = X.var_1[:, 0].drop('feature')
 
-    estimator = ClassifierWrapper(
+    estimator = wrap(
         ReshapingEstimator(new_shape=(-1, 0)),
         reshapes='feature'
     )
@@ -208,7 +208,7 @@ def test_ndim_reshaping_estimator():
     y = y.rename({'feat_1': 'feature'})
     y['dummy'] = y.dummy[:, 0]
 
-    estimator = RegressorWrapper(
+    estimator = wrap(
         ReshapingEstimator(new_shape=(-1, 5, 0)),
         reshapes={'feature': ['feat_1', 'feat_2']}
     )
@@ -217,17 +217,6 @@ def test_ndim_reshaping_estimator():
     yp = estimator.predict(X).var_1
 
     assert_allclose(yp, y)
-
-
-def test_wrap():
-
-    from sklearn.preprocessing import StandardScaler
-    from sklearn.linear_model import LinearRegression
-    from sklearn.svm import SVC
-
-    assert isinstance(wrap(StandardScaler()), TransformerWrapper)
-    assert isinstance(wrap(SVC()), ClassifierWrapper)
-    assert isinstance(wrap(LinearRegression()), RegressorWrapper)
 
 
 def test_sample_dim():

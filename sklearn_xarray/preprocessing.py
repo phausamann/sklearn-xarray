@@ -1151,6 +1151,11 @@ class Featurizer(BaseTransformer):
 
         return X.stack(**{self.feature_dim: stack_dims})
 
+    def _inverse_transform_var(self, X):
+        """ Inverse transform a single variable. """
+
+        return X.unstack(self.feature_dim)
+
     def _transform(self, X):
         """ Transform. """
 
