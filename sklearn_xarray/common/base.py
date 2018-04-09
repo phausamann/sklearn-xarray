@@ -25,6 +25,8 @@ class _CommonEstimatorWrapper(BaseEstimator):
         else:
             raise ValueError('Could not figure out how to transpose y.')
 
+        return y
+
     def _get_transpose_order(self, X):
         """ Get the transpose order that puts the sample dim first. """
 

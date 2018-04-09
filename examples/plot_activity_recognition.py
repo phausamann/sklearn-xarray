@@ -27,7 +27,7 @@ import numpy as np
 from sklearn_xarray import wrap, Target
 from sklearn_xarray.preprocessing import (Splitter, Sanitizer, Featurizer)
 from sklearn_xarray.model_selection import CrossValidatorWrapper
-from sklearn_xarray.data import load_wisdm_dataarray
+from sklearn_xarray.datasets import load_wisdm_dataarray
 
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.decomposition import PCA
