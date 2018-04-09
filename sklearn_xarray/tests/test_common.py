@@ -31,6 +31,7 @@ def test_transformer():
 
     ss = wrap(StandardScaler)
     check_estimator(ss)
+    assert hasattr(ss, 'partial_fit')
     assert hasattr(ss, 'transform')
     assert hasattr(ss, 'inverse_transform')
     assert hasattr(ss, 'fit_transform')

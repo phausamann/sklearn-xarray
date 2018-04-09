@@ -14,6 +14,17 @@ from sklearn_xarray.utils import is_dataarray, is_dataset, is_target
 class _CommonEstimatorWrapper(BaseEstimator):
     """ Base class for DataArray and Dataset wrappers. """
 
+    @staticmethod
+    def _transpose_y(X, y, order):
+        """ Transpose y. """
+
+        if y.ndim == X.ndim:
+            y = np.transpose(np.array(y), order)
+        elif y.ndim == 1:
+            y = np.array(y)
+        else:
+            raise ValueError('Could not figure out how to transpose y.')
+
     def _get_transpose_order(self, X):
         """ Get the transpose order that puts the sample dim first. """
 
@@ -169,18 +180,26 @@ class _CommonEstimatorWrapper(BaseEstimator):
             order = self._get_transpose_order(X)
             X_arr = np.transpose(X.data, order)
             if y is not None:
-                if y.ndim == X.ndim:
-                    y = np.transpose(np.array(y), order)
-                elif y.ndim == 1:
-                    y = np.array(y)
-                else:
-                    raise ValueError('Could not figure out how to transpose y.')
+                y = self._transpose_y(X, y, order)
         else:
             X_arr = X.data
 
         estimator_ = clone(self.estimator).fit(X_arr, y, **fit_params)
 
         return estimator_
+
+    def _partial_fit(self, estimator, X, y=None, **fit_params):
+        """ Tranpose if necessary and partial_fit. """
+
+        if self.sample_dim is not None:
+            order = self._get_transpose_order(X)
+            X_arr = np.transpose(X.data, order)
+            if y is not None:
+                y = self._transpose_y(X, y, order)
+        else:
+            X_arr = X.data
+
+        return estimator.partial_fit(X_arr, y, **fit_params)
 
     def _fit_transform(self, estimator, X, y=None, **fit_params):
         """ Fit and transform with ``estimator`` and update coords and dims. """
@@ -189,8 +208,11 @@ class _CommonEstimatorWrapper(BaseEstimator):
             # transpose to sample dim first, transform and transpose back
             order = self._get_transpose_order(X)
             X_arr = np.transpose(X.data, order)
+            if y is not None:
+                y = self._transpose_y(X, y, order)
             Xt = estimator.fit_transform(X_arr, y, **fit_params)
             if Xt.ndim == X.ndim:
+                # TODO: handle the other case
                 Xt = np.transpose(Xt, np.argsort(order))
         else:
             Xt = estimator.fit_transform(X.data, y, **fit_params)
@@ -254,6 +276,74 @@ class _CommonEstimatorWrapper(BaseEstimator):
             self.estimator.set_params(**params)
 
         return self
+
+
+# -- Wrapper methods --
+def partial_fit(self, X, y=None, **fit_params):
+    """ A wrapper around the partial_fit function.
+
+    Parameters
+    ----------
+    X : xarray DataArray, Dataset or other array-like
+        The input samples.
+
+    y : xarray DataArray, Dataset or other array-like
+        The target values.
+    """
+
+    if self.estimator is None:
+        raise ValueError('You must specify an estimator instance to wrap.')
+
+    if is_target(y):
+        y = y(X)
+
+    if is_dataarray(X):
+
+        if not hasattr(self, 'type_'):
+            self.type_ = 'DataArray'
+            self.estimator_ = self._fit(X, y, **fit_params)
+        elif self.type_ == 'DataArray':
+            self.estimator_ = self._partial_fit(
+                self.estimator_, X, y, **fit_params)
+        else:
+            raise ValueError(
+                'This wrapper was not fitted for DataArray inputs.')
+
+    elif is_dataset(X):
+
+        if not hasattr(self, 'type_'):
+            self.type_ = 'Dataset'
+            self.estimator_dict_ = {
+                v: self._fit(X[v], y, **fit_params) for v in X.data_vars}
+        elif self.type_ == 'Dataset':
+            self.estimator_dict_ = {
+                v: self._partial_fit(
+                    self.estimator_dict_[v], X[v], y, **fit_params)
+                for v in X.data_vars}
+        else:
+            raise ValueError(
+                'This wrapper was not fitted for Dataset inputs.')
+
+    else:
+
+        if not hasattr(self, 'type_'):
+            self.type_ = 'other'
+            if y is None:
+                X = check_array(X)
+            else:
+                X, y = check_X_y(X, y)
+            self.estimator_ = clone(self.estimator).fit(X, y, **fit_params)
+        elif self.type_ == 'other':
+            self.estimator_ = self.estimator_.partial_fit(X, y, **fit_params)
+        else:
+            raise ValueError(
+                'This wrapper was not fitted for other inputs.')
+
+        for v in vars(self.estimator_):
+            if v.endswith('_') and not v.startswith('_'):
+                setattr(self, v, getattr(self.estimator_, v))
+
+    return self
 
 
 def predict(self, X):
@@ -497,14 +587,39 @@ def score(self, X, y, sample_weight=None):
         raise ValueError('Unexpected type_.')
 
 
+# -- Wrapper mixins --
+class _ImplementsPartialFitMixin(_CommonEstimatorWrapper):
+
+    partial_fit = partial_fit
+
+
 class _ImplementsPredictMixin(_CommonEstimatorWrapper):
 
     predict = predict
 
 
+class _ImplementsPredictProbaMixin(_CommonEstimatorWrapper):
+
+    predict_proba = predict_proba
+
+
+class _ImplementsPredictLogProbaMixin(_CommonEstimatorWrapper):
+
+    predict_log_proba = predict_log_proba
+
+
+class _ImplementsDecisionFunctionMixin(_CommonEstimatorWrapper):
+
+    decision_function = decision_function
+
+
 class _ImplementsTransformMixin(_CommonEstimatorWrapper):
 
     transform = transform
+
+
+class _ImplementsInverseTransformMixin(_CommonEstimatorWrapper):
+
     inverse_transform = inverse_transform
 
 

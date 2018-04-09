@@ -6,17 +6,19 @@ from sklearn.base import clone
 from sklearn.utils.validation import check_X_y, check_array
 
 from .base import (
-    predict, predict_proba, predict_log_proba, decision_function,
+    partial_fit, predict, predict_proba, predict_log_proba, decision_function,
     transform, inverse_transform, fit_transform, score,
     _CommonEstimatorWrapper, _ImplementsPredictMixin,
     _ImplementsScoreMixin, _ImplementsTransformMixin,
-    _ImplementsFitTransformMixin
+    _ImplementsFitTransformMixin, _ImplementsInverseTransformMixin
 )
 
 from sklearn_xarray.utils import is_dataarray, is_dataset, is_target
 
+
 # mapping from wrapped methods to wrapper methods
 _method_map = {
+    'partial_fit': partial_fit,
     'predict': predict,
     'predict_proba': predict_proba,
     'predict_log_proba': predict_log_proba,
@@ -188,7 +190,8 @@ class EstimatorWrapper(_CommonEstimatorWrapper):
 
 
 class TransformerWrapper(
-    EstimatorWrapper, _ImplementsTransformMixin, _ImplementsFitTransformMixin):
+    EstimatorWrapper, _ImplementsTransformMixin,
+    _ImplementsFitTransformMixin, _ImplementsInverseTransformMixin):
     """ A wrapper around sklearn transformers compatible with xarray objects.
 
     Parameters

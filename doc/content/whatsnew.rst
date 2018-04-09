@@ -1,30 +1,27 @@
 What's New
 ==========
 
-.. v0.2.0
-.. Breaking changes
-.. The ``dataset`` and ``dataarray`` modules have been removed. Wrappers have
-   to be directly imported from ``sklearn_xarray``.
 
-
-Github master branch
+v0.2.0
 --------------------
 
 Breaking changes
 ~~~~~~~~~~~~~~~~
 - ``wrap`` now returns a decorated ``EstimatorWrapper`` instead of an
   estimator-specific wrapper class.
-- The ``common.decorators`` module has been removed, because the decorated
+- Removed the ``common.decorators`` module, because the decorated
   estimators could not be pickled and therefore didn't pass the usual sklearn
   estimator checks.
+- Removed the ``dataset`` and ``dataarray`` modules. Wrappers have
+  to be directly imported from ``sklearn_xarray``.
+- Removed the ``data`` module (now called ``datasets``).
 
 
 Enhancements
 ~~~~~~~~~~~~
 
-- Added an ``_ImplementsFitTransformMixin`` for estimators that implement
-  ``fit_transform`` but not ``transform`` (e.g. non-parametric manifold
-  embedding estimators).
+- Added wrappers for ``fit_transform``, ``partial_fit``, ``predict_proba``,
+  ``predict_log_proba`` and ``decision_function``.
 
 
 v0.1.4 (March 15, 2018)

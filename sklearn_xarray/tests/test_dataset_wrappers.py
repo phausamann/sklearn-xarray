@@ -108,7 +108,8 @@ def test_wrapped_transformer():
         coords={'sample': range(100), 'feature': range(10)}
     )
 
-    estimator = wrap(StandardScaler()).fit(X)
+    estimator = wrap(StandardScaler()).partial_fit(X)
+    estimator.partial_fit(X)
 
     assert_allclose(X, estimator.inverse_transform(estimator.transform(X)))
 
