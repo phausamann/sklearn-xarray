@@ -52,6 +52,7 @@ Object interface:
     Resampler
     Sanitizer
     Segmenter
+    Selector
     Splitter
     Transposer
 
@@ -68,6 +69,7 @@ Functional interface:
     resample
     sanitize
     segment
+    select
     split
     transpose
 
