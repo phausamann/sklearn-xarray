@@ -21,7 +21,7 @@ First, we look at a basic example that shows how to wrap an estimator from
 sklearn for use with a ``DataArray``::
 
     from sklearn_xarray import wrap
-    from sklearn_xarray.data import load_dummy_dataarray
+    from sklearn_xarray.datasets import load_dummy_dataarray
     from sklearn.preprocessing import StandardScaler
 
     X = load_dummy_dataarray()
@@ -128,7 +128,7 @@ wrapper will fit one estimator for each variable in the Dataset. The fitted
 estimators are stored in the attribute ``estimator_dict_``::
 
     from sklearn_xarray import wrap
-    from sklearn_xarray.data import load_dummy_dataset
+    from sklearn_xarray.datasets import load_dummy_dataset
     from sklearn.preprocessing import StandardScaler
 
     X = load_dummy_dataset()

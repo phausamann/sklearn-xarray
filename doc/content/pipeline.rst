@@ -9,7 +9,7 @@ Wrapped estimators can be used in sklearn pipelines without any additional
 overhead::
 
     from sklearn_xarray import wrap, Target
-    from sklearn_xarray.data import load_digits_dataarray
+    from sklearn_xarray.datasets import load_digits_dataarray
 
     from sklearn.pipeline import Pipeline
     from sklearn.decomposition import PCA
