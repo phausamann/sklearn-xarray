@@ -170,7 +170,7 @@
 coordinate in an xarray DataArray or Dataset in order to use it as a target
 for supervised learning. This is achieved with a <a class="reference internal" href="api/target.html#sklearn_xarray.target.Target" title="sklearn_xarray.target.Target"><code class="xref py py-class docutils literal notranslate"><span class="pre">Target</span></code></a> object:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn_xarray</span> <span class="k">import</span> <span class="n">wrap</span><span class="p">,</span> <span class="n">Target</span>
-<span class="kn">from</span> <span class="nn">sklearn_xarray.data</span> <span class="k">import</span> <span class="n">load_digits_dataarray</span>
+<span class="kn">from</span> <span class="nn">sklearn_xarray.datasets</span> <span class="k">import</span> <span class="n">load_digits_dataarray</span>
 
 <span class="kn">from</span> <span class="nn">sklearn.linear_model.logistic</span> <span class="k">import</span> <span class="n">LogisticRegression</span>
 
@@ -330,9 +330,7 @@ performed regardless of whether <code class="docutils literal notranslate"><span
 
   <script type="text/javascript">
       jQuery(function () {
-          
-          SphinxRtdTheme.Navigation.enableSticky();
-          
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script> 
 

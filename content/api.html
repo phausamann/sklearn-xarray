@@ -95,14 +95,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">General examples</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#wrappers">Wrappers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#dataarray-wrappers">DataArray wrappers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#dataset-wrappers">Dataset wrappers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#target">Target</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pre-processing">Pre-processing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model-selection">Model selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#utility-functions">Utility functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#datasets">Datasets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#data">Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#list-of-modules">List of modules</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/common.html">Top-level functions and classes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/preprocessing.html">Preprocessing</a></li>
@@ -203,24 +200,6 @@
 </tbody>
 </table>
 </div>
-<div class="section" id="dataarray-wrappers">
-<h2>DataArray wrappers<a class="headerlink" href="#dataarray-wrappers" title="Permalink to this headline">¶</a></h2>
-<p>Module: <code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn_xarray.dataarray</span></code></p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This module has been deprecated in favor of the more flexible top-level
-functions and classes (see <a class="reference internal" href="#api-wrappers"><span class="std std-ref">Wrappers</span></a>).</p>
-</div>
-</div>
-<div class="section" id="dataset-wrappers">
-<h2>Dataset wrappers<a class="headerlink" href="#dataset-wrappers" title="Permalink to this headline">¶</a></h2>
-<p>Module: <code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn_xarray.dataset</span></code></p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This module has been deprecated in favor of the more flexible top-level
-functions and classes (see <a class="reference internal" href="#api-wrappers"><span class="std std-ref">Wrappers</span></a>).</p>
-</div>
-</div>
 <div class="section" id="target">
 <h2>Target<a class="headerlink" href="#target" title="Permalink to this headline">¶</a></h2>
 <p>Module: <a class="reference internal" href="api/common.html#module-sklearn_xarray" title="sklearn_xarray"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn_xarray</span></code></a></p>
@@ -264,10 +243,13 @@ functions and classes (see <a class="reference internal" href="#api-wrappers"><s
 <tr class="row-even"><td><a class="reference internal" href="api/preprocessing.html#sklearn_xarray.preprocessing.Segmenter" title="sklearn_xarray.preprocessing.Segmenter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Segmenter</span></code></a></td>
 <td>Split into segments along some dimension.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="api/preprocessing.html#sklearn_xarray.preprocessing.Splitter" title="sklearn_xarray.preprocessing.Splitter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Splitter</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="api/preprocessing.html#sklearn_xarray.preprocessing.Selector" title="sklearn_xarray.preprocessing.Selector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Selector</span></code></a></td>
+<td>Selects a subset of the samples.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="api/preprocessing.html#sklearn_xarray.preprocessing.Splitter" title="sklearn_xarray.preprocessing.Splitter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Splitter</span></code></a></td>
 <td>Split along some dimension.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="api/preprocessing.html#sklearn_xarray.preprocessing.Transposer" title="sklearn_xarray.preprocessing.Transposer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Transposer</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="api/preprocessing.html#sklearn_xarray.preprocessing.Transposer" title="sklearn_xarray.preprocessing.Transposer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Transposer</span></code></a></td>
 <td>Reorder data dimensions.</td>
 </tr>
 </tbody>
@@ -300,10 +282,13 @@ functions and classes (see <a class="reference internal" href="#api-wrappers"><s
 <tr class="row-odd"><td><a class="reference internal" href="api/preprocessing.html#sklearn_xarray.preprocessing.segment" title="sklearn_xarray.preprocessing.segment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">segment</span></code></a></td>
 <td>Segments X along some dimension.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="api/preprocessing.html#sklearn_xarray.preprocessing.split" title="sklearn_xarray.preprocessing.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a></td>
+<tr class="row-even"><td><a class="reference internal" href="api/preprocessing.html#sklearn_xarray.preprocessing.select" title="sklearn_xarray.preprocessing.select"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select</span></code></a></td>
+<td>Selects a subset of the samples.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="api/preprocessing.html#sklearn_xarray.preprocessing.split" title="sklearn_xarray.preprocessing.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a></td>
 <td>Splits X along some dimension.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="api/preprocessing.html#sklearn_xarray.preprocessing.transpose" title="sklearn_xarray.preprocessing.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a></td>
+<tr class="row-even"><td><a class="reference internal" href="api/preprocessing.html#sklearn_xarray.preprocessing.transpose" title="sklearn_xarray.preprocessing.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a></td>
 <td>Reorders data dimensions.</td>
 </tr>
 </tbody>
@@ -377,15 +362,6 @@ functions and classes (see <a class="reference internal" href="#api-wrappers"><s
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="data">
-<h2>Data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h2>
-<p>Module: <code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn_xarray.data</span></code></p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This module has been deprecated in favor of the
-<a class="reference internal" href="api/datasets.html#module-sklearn_xarray.datasets" title="sklearn_xarray.datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn_xarray.datasets</span></code></a> module.</p>
-</div>
 </div>
 <div class="section" id="list-of-modules">
 <h2>List of modules<a class="headerlink" href="#list-of-modules" title="Permalink to this headline">¶</a></h2>
@@ -472,9 +448,7 @@ functions and classes (see <a class="reference internal" href="#api-wrappers"><s
 
   <script type="text/javascript">
       jQuery(function () {
-          
-          SphinxRtdTheme.Navigation.enableSticky();
-          
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script> 
 

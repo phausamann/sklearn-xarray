@@ -681,6 +681,9 @@
 <span class="sd">        separate coordinate with this name. This allows ``inverse_transform``</span>
 <span class="sd">        to reconstruct the original coordinate.</span>
 
+<span class="sd">    return_view : bool, default False</span>
+<span class="sd">        If true, return a view instead of a copy of the segmented array.</span>
+
 <span class="sd">    groupby : str or list, optional</span>
 <span class="sd">        Name of coordinate or list of coordinates by which the groups are</span>
 <span class="sd">        determined.</span>
@@ -693,7 +696,8 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="s1">&#39;sample&#39;</span><span class="p">,</span> <span class="n">new_dim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">new_len</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reduce_index</span><span class="o">=</span><span class="s1">&#39;subsample&#39;</span><span class="p">,</span> <span class="n">new_index_func</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">,</span>
-                 <span class="n">keep_coords_as</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groupby</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group_dim</span><span class="o">=</span><span class="s1">&#39;sample&#39;</span><span class="p">):</span>
+                 <span class="n">keep_coords_as</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groupby</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group_dim</span><span class="o">=</span><span class="s1">&#39;sample&#39;</span><span class="p">,</span>
+                 <span class="n">return_view</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="n">dim</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">new_dim</span> <span class="o">=</span> <span class="n">new_dim</span>
@@ -703,6 +707,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">reduce_index</span> <span class="o">=</span> <span class="n">reduce_index</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">new_index_func</span> <span class="o">=</span> <span class="n">new_index_func</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">keep_coords_as</span> <span class="o">=</span> <span class="n">keep_coords_as</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">return_view</span> <span class="o">=</span> <span class="n">return_view</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">groupby</span> <span class="o">=</span> <span class="n">groupby</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">group_dim</span> <span class="o">=</span> <span class="n">group_dim</span>
@@ -721,7 +726,7 @@
 
         <span class="k">return</span> <span class="n">xt</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="o">*</span><span class="n">order</span><span class="p">)[</span><span class="s1">&#39;tmptmp&#39;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">_segment_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_segment_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">return_view</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Segment an array along some axis. &quot;&quot;&quot;</span>
 
         <span class="kn">from</span> <span class="nn">sklearn_xarray.utils</span> <span class="k">import</span> <span class="n">segment_array</span>
@@ -731,7 +736,8 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span>
 
-        <span class="k">return</span> <span class="n">segment_array</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_len</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axis</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">segment_array</span><span class="p">(</span>
+            <span class="n">arr</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_len</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axis</span><span class="p">,</span> <span class="n">return_view</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_rebuild_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Rebuild an array along some axis. &quot;&quot;&quot;</span>
@@ -763,7 +769,8 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">mg_ord</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_segment_array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">mg_ord</span><span class="p">),</span> <span class="n">axis_old</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_segment_array</span><span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">mg_ord</span><span class="p">),</span> <span class="n">axis_old</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
                 <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="o">*</span><span class="n">old_ranges</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">npg</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span>
                 <span class="n">idx</span><span class="p">,</span> <span class="n">arr</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">old_shape</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
@@ -803,7 +810,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">new_dims</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_dim</span><span class="p">)</span>
             <span class="n">var_t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_segment_array</span><span class="p">(</span>
-                <span class="n">X</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
+                <span class="n">X</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_view</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">new_dims</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">dims</span>
             <span class="n">var_t</span> <span class="o">=</span> <span class="n">X</span>
@@ -863,7 +870,8 @@
                     <span class="n">new_dims</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_dim</span><span class="p">)</span>
                 <span class="n">coords_new</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">new_dims</span><span class="p">,</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_segment_array</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
-                                        <span class="nb">tuple</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)))</span>
+                                        <span class="nb">tuple</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">),</span>
+                                        <span class="bp">self</span><span class="o">.</span><span class="n">return_view</span><span class="p">))</span>
             <span class="k">elif</span> <span class="n">c</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">:</span>
                 <span class="n">coords_new</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="n">c</span><span class="p">])</span>
 
@@ -1361,6 +1369,85 @@
         <span class="k">return</span> <span class="n">Xt</span></div>
 
 
+<div class="viewcode-block" id="Selector"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.Selector">[docs]</a><span class="k">class</span> <span class="nc">Selector</span><span class="p">(</span><span class="n">BaseTransformer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Selects a subset of the samples.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dim : str</span>
+<span class="sd">        Name of the sample dimension.</span>
+
+<span class="sd">    coord : str</span>
+<span class="sd">        The name of the coordinate that acts as the selector.</span>
+
+<span class="sd">    groupby : str or list, optional</span>
+<span class="sd">        Name of coordinate or list of coordinates by which the groups are</span>
+<span class="sd">        determined.</span>
+
+<span class="sd">    group_dim : str, optional</span>
+<span class="sd">        Name of dimension along which the groups are indexed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="s1">&#39;sample&#39;</span><span class="p">,</span> <span class="n">coord</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groupby</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">group_dim</span><span class="o">=</span><span class="s1">&#39;sample&#39;</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">coord</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;coord must be specified.&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="n">dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coord</span> <span class="o">=</span> <span class="n">coord</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groupby</span> <span class="o">=</span> <span class="n">groupby</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_dim</span> <span class="o">=</span> <span class="n">group_dim</span>
+
+    <span class="k">def</span> <span class="nf">_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Transform. &quot;&quot;&quot;</span>
+
+        <span class="n">X_c</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">coord</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">X_c</span><span class="o">.</span><span class="n">dims</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The specified coord does not contain the &#39;</span>
+                             <span class="s1">&#39;dimension &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+
+        <span class="n">X_c</span> <span class="o">=</span> <span class="n">X_c</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="n">d</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">X_c</span><span class="o">.</span><span class="n">dims</span> <span class="k">if</span> <span class="n">d</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">})</span>
+
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X_c</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">:</span> <span class="n">idx</span><span class="p">})</span>
+
+    <span class="k">def</span> <span class="nf">_inverse_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Reverse transform. &quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="s1">&#39;inverse_transform cannot be implemented for this estimator&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="select"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.select">[docs]</a><span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">return_estimator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Selects a subset of the samples.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X : xarray DataArray or Dataset</span>
+<span class="sd">        The input data.</span>
+
+<span class="sd">    return_estimator : bool</span>
+<span class="sd">        Whether to return the fitted estimator along with the transformed data.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Xt : xarray DataArray or Dataset</span>
+<span class="sd">        The transformed data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">estimator</span> <span class="o">=</span> <span class="n">Selector</span><span class="p">(</span><span class="o">**</span><span class="n">fit_params</span><span class="p">)</span>
+
+    <span class="n">Xt</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">return_estimator</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">estimator</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Xt</span></div>
+
+
 <div class="viewcode-block" id="Sanitizer"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.Sanitizer">[docs]</a><span class="k">class</span> <span class="nc">Sanitizer</span><span class="p">(</span><span class="n">BaseTransformer</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Remove elements containing NaNs.</span>
 
@@ -1387,7 +1474,7 @@
     <span class="k">def</span> <span class="nf">_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Transform. &quot;&quot;&quot;</span>
 
-        <span class="n">idx_nan</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="n">idx_nan</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;Dataset&#39;</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">X</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
@@ -1554,9 +1641,7 @@
 
   <script type="text/javascript">
       jQuery(function () {
-          
-          SphinxRtdTheme.Navigation.enableSticky();
-          
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script> 
 

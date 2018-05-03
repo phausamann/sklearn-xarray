@@ -180,7 +180,7 @@ DataArray or a Dataset as your training data.</p>
 <p>First, we look at a basic example that shows how to wrap an estimator from
 sklearn for use with a <code class="docutils literal notranslate"><span class="pre">DataArray</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn_xarray</span> <span class="k">import</span> <span class="n">wrap</span>
-<span class="kn">from</span> <span class="nn">sklearn_xarray.data</span> <span class="k">import</span> <span class="n">load_dummy_dataarray</span>
+<span class="kn">from</span> <span class="nn">sklearn_xarray.datasets</span> <span class="k">import</span> <span class="n">load_dummy_dataarray</span>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span>
 
 <span class="n">X</span> <span class="o">=</span> <span class="n">load_dummy_dataarray</span><span class="p">()</span>
@@ -278,7 +278,7 @@ will be stored in the <code class="docutils literal notranslate"><span class="pr
 wrapper will fit one estimator for each variable in the Dataset. The fitted
 estimators are stored in the attribute <code class="docutils literal notranslate"><span class="pre">estimator_dict_</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn_xarray</span> <span class="k">import</span> <span class="n">wrap</span>
-<span class="kn">from</span> <span class="nn">sklearn_xarray.data</span> <span class="k">import</span> <span class="n">load_dummy_dataset</span>
+<span class="kn">from</span> <span class="nn">sklearn_xarray.datasets</span> <span class="k">import</span> <span class="n">load_dummy_dataset</span>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span>
 
 <span class="n">X</span> <span class="o">=</span> <span class="n">load_dummy_dataset</span><span class="p">()</span>
@@ -379,9 +379,7 @@ in order to work with dask-backed DataArrays and Datasets:</p>
 
   <script type="text/javascript">
       jQuery(function () {
-          
-          SphinxRtdTheme.Navigation.enableSticky();
-          
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script> 
 
