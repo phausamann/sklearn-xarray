@@ -5,7 +5,7 @@ import numpy.testing as npt
 
 from sklearn_xarray.preprocessing import (
     preprocess, transpose, split, segment, resample, concatenate, featurize,
-    sanitize, reduce, Splitter
+    select, sanitize, reduce, Splitter
 )
 
 
@@ -252,6 +252,23 @@ def test_featurize():
         X_ds, return_array=True, return_estimator=True)
 
     assert Xt_ds.shape == (100, 110)
+
+
+def test_select():
+
+    X_da = xr.DataArray(
+        np.random.random((100, 10)),
+        coords={'sample': range(100), 'feature': range(10)},
+        dims=('sample', 'feature')
+    )
+
+    selector = np.zeros((100, 10))
+    selector[[5, 10, 15], 0] = 1
+    X_da['selector'] = (['sample', 'feature'], selector)
+
+    Xt_da = select(X_da, coord='selector')
+
+    npt.assert_equal(Xt_da.sample.values, np.array((5, 10, 15)))
 
 
 def test_sanitize():

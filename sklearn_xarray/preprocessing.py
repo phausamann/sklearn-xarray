@@ -524,6 +524,9 @@ class Segmenter(BaseTransformer):
         separate coordinate with this name. This allows ``inverse_transform``
         to reconstruct the original coordinate.
 
+    return_view : bool, default False
+        If true, return a view instead of a copy of the segmented array.
+
     groupby : str or list, optional
         Name of coordinate or list of coordinates by which the groups are
         determined.
@@ -536,7 +539,8 @@ class Segmenter(BaseTransformer):
 
     def __init__(self, dim='sample', new_dim=None, new_len=None, step=None,
                  axis=None, reduce_index='subsample', new_index_func=np.arange,
-                 keep_coords_as=None, groupby=None, group_dim='sample'):
+                 keep_coords_as=None, groupby=None, group_dim='sample',
+                 return_view=False):
 
         self.dim = dim
         self.new_dim = new_dim
@@ -546,6 +550,7 @@ class Segmenter(BaseTransformer):
         self.reduce_index = reduce_index
         self.new_index_func = new_index_func
         self.keep_coords_as = keep_coords_as
+        self.return_view = return_view
 
         self.groupby = groupby
         self.group_dim = group_dim
@@ -564,7 +569,7 @@ class Segmenter(BaseTransformer):
 
         return xt.transpose(*order)['tmptmp']
 
-    def _segment_array(self, arr, axis):
+    def _segment_array(self, arr, axis, return_view):
         """ Segment an array along some axis. """
 
         from sklearn_xarray.utils import segment_array
@@ -574,7 +579,8 @@ class Segmenter(BaseTransformer):
         else:
             step = self.step
 
-        return segment_array(arr, axis, self.new_len, step, self.axis)
+        return segment_array(
+            arr, axis, self.new_len, step, self.axis, return_view)
 
     def _rebuild_array(self, arr, axis):
         """ Rebuild an array along some axis. """
@@ -606,7 +612,8 @@ class Segmenter(BaseTransformer):
             else:
                 mg_ord = [0]
             idx = np.vstack(
-                self._segment_array(np.transpose(g, mg_ord), axis_old).flatten()
+                self._segment_array(
+                    np.transpose(g, mg_ord), axis_old, True).flatten()
                 for g in np.meshgrid(*old_ranges))
             return npg.aggregate(
                 idx, arr.flatten().T, size=old_shape, func='mean')
@@ -646,7 +653,7 @@ class Segmenter(BaseTransformer):
             else:
                 new_dims.insert(self.axis, self.new_dim)
             var_t = self._segment_array(
-                X.values, tuple(X.dims).index(self.dim))
+                X.values, tuple(X.dims).index(self.dim), self.return_view)
         else:
             new_dims = X.dims
             var_t = X
@@ -706,7 +713,8 @@ class Segmenter(BaseTransformer):
                     new_dims.insert(self.axis, self.new_dim)
                 coords_new[c] = (new_dims,
                     self._segment_array(X[c].values,
-                                        tuple(X[c].dims).index(self.dim)))
+                                        tuple(X[c].dims).index(self.dim),
+                                        self.return_view))
             elif c != self.dim:
                 coords_new[c] = (X[c].dims, X[c])
 
@@ -1204,6 +1212,85 @@ def featurize(X, return_estimator=False, **fit_params):
         return Xt
 
 
+class Selector(BaseTransformer):
+    """ Selects a subset of the samples.
+
+    Parameters
+    ----------
+    dim : str
+        Name of the sample dimension.
+
+    coord : str
+        The name of the coordinate that acts as the selector.
+
+    groupby : str or list, optional
+        Name of coordinate or list of coordinates by which the groups are
+        determined.
+
+    group_dim : str, optional
+        Name of dimension along which the groups are indexed.
+    """
+
+    def __init__(self, dim='sample', coord=None, groupby=None,
+                 group_dim='sample'):
+
+        if coord is None:
+            raise ValueError('coord must be specified.')
+
+        self.dim = dim
+        self.coord = coord
+        self.groupby = groupby
+        self.group_dim = group_dim
+
+    def _transform(self, X):
+        """ Transform. """
+
+        X_c = X[self.coord]
+
+        if self.dim not in X_c.dims:
+            raise ValueError('The specified coord does not contain the '
+                             'dimension ' + self.dim)
+
+        X_c = X_c.isel(**{d: 0 for d in X_c.dims if d != self.dim})
+
+        idx = np.array(X_c, dtype=bool)
+
+        return X.isel(**{self.dim: idx})
+
+    def _inverse_transform(self, X):
+        """ Reverse transform. """
+
+        raise NotImplementedError(
+            'inverse_transform cannot be implemented for this estimator')
+
+
+def select(X, return_estimator=False, **fit_params):
+    """ Selects a subset of the samples.
+
+    Parameters
+    ----------
+    X : xarray DataArray or Dataset
+        The input data.
+
+    return_estimator : bool
+        Whether to return the fitted estimator along with the transformed data.
+
+    Returns
+    -------
+    Xt : xarray DataArray or Dataset
+        The transformed data.
+    """
+
+    estimator = Selector(**fit_params)
+
+    Xt = estimator.fit_transform(X)
+
+    if return_estimator:
+        return Xt, estimator
+    else:
+        return Xt
+
+
 class Sanitizer(BaseTransformer):
     """ Remove elements containing NaNs.
 
@@ -1230,7 +1317,7 @@ class Sanitizer(BaseTransformer):
     def _transform(self, X):
         """ Transform. """
 
-        idx_nan = np.zeros(len(X[self.dim]), dtype=bool)
+        idx_nan = np.zeros(X.sizes[self.dim], dtype=bool)
 
         if self.type_ == 'Dataset':
             for v in X.data_vars:

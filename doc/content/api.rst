@@ -18,25 +18,6 @@ Module: :py:mod:`sklearn_xarray`
     RegressorWrapper
     TransformerWrapper
 
-DataArray wrappers
-------------------
-
-Module: :py:mod:`sklearn_xarray.dataarray`
-
-.. warning::
-    This module has been deprecated in favor of the more flexible top-level
-    functions and classes (see :ref:`API/Wrappers`).
-
-
-Dataset wrappers
-----------------
-
-Module: :py:mod:`sklearn_xarray.dataset`
-
-.. warning::
-    This module has been deprecated in favor of the more flexible top-level
-    functions and classes (see :ref:`API/Wrappers`).
-
 
 Target
 ------
@@ -49,6 +30,7 @@ Module: :py:mod:`sklearn_xarray`
     :nosignatures:
 
     Target
+
 
 .. _API/Pre-processing:
 
@@ -70,6 +52,7 @@ Object interface:
     Resampler
     Sanitizer
     Segmenter
+    Selector
     Splitter
     Transposer
 
@@ -86,6 +69,7 @@ Functional interface:
     resample
     sanitize
     segment
+    select
     split
     transpose
 
@@ -135,15 +119,6 @@ Module: :py:mod:`sklearn_xarray.datasets`
     load_dummy_dataset
     load_digits_dataarray
     load_wisdm_dataarray
-
-Data
-----
-
-Module: :py:mod:`sklearn_xarray.data`
-
-.. warning::
-    This module has been deprecated in favor of the
-    :py:mod:`sklearn_xarray.datasets` module.
 
 
 List of modules

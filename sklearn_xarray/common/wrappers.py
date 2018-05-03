@@ -4,6 +4,7 @@ from types import MethodType
 
 from sklearn.base import clone
 from sklearn.utils.validation import check_X_y, check_array
+from sklearn.externals import six
 
 from .base import (
     partial_fit, predict, predict_proba, predict_log_proba, decision_function,
@@ -133,10 +134,10 @@ class EstimatorWrapper(_CommonEstimatorWrapper):
 
         for m in _method_map:
             if hasattr(self.estimator, m):
-                try:
+                if six.PY2:
                     setattr(self, m,
                             MethodType(_method_map[m], self, EstimatorWrapper))
-                except TypeError:
+                else:
                     setattr(self, m, MethodType(_method_map[m], self))
 
     def fit(self, X, y=None, **fit_params):
