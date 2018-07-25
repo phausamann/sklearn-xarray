@@ -8,7 +8,7 @@ coordinate in an xarray DataArray or Dataset in order to use it as a target
 for supervised learning. This is achieved with a :py:class:`Target` object::
 
     from sklearn_xarray import wrap, Target
-    from sklearn_xarray.data import load_digits_dataarray
+    from sklearn_xarray.datasets import load_digits_dataarray
 
     from sklearn.linear_model.logistic import LogisticRegression
 

@@ -33,7 +33,7 @@ transformer removes these samples from the dataset::
 
     from sklearn_xarray import wrap, Target
     from sklearn_xarray.preprocessing import Sanitizer
-    from sklearn_xarray.data import load_digits_dataarray
+    from sklearn_xarray.datasets import load_digits_dataarray
 
     from sklearn.pipeline import Pipeline
     from sklearn.linear_model.logistic import LogisticRegression
@@ -70,7 +70,7 @@ could get non-continuous samples from different recording times in the same
 segment. In order to perform transformations in a groupwise manner, we
 specify the ``groupby`` parameter::
 
-    from sklearn_xarray.data import load_wisdm_dataarray
+    from sklearn_xarray.datasets import load_wisdm_dataarray
     from sklearn_xarray.preprocessing import Segmenter
 
     segmenter = Segmenter(
