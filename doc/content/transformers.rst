@@ -62,7 +62,7 @@ there are cases when you don't want to apply the resampling operation to your
 whole dataset, but rather groups of data.
 
 One example is the WISDM activity recognition dataset found in the
-:py:mod:`sklearn_xarray.data` module. It contains time series accelerometer
+:py:mod:`sklearn_xarray.datasets` module. It contains time series accelerometer
 data from different subjects performing different activities. If, for
 example, we wanted to split this dataset into segments of 20 samples, we
 should do this in groups of subject/activity pairs, because otherwise we
