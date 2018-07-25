@@ -80,16 +80,20 @@ class _CommonEstimatorWrapper(BaseEstimator):
 
         # dict syntax
         if hasattr(self.reshapes, 'items'):
-            # drop all coords along the reshaped dimensions
+
+            all_old_dims = []
             for _, old_dims in self.reshapes.items():
-                for c in X.coords:
-                    old_dims_in_c = [x for x in X[c].dims if x in old_dims]
-                    if any(old_dims_in_c) and c not in old_dims:
-                        c_t = X[c].isel(**{d: 0 for d in old_dims_in_c})
-                        new_dims = [d for d in X[c].dims if d not in old_dims]
-                        coords_new[c] = (new_dims, c_t.drop(old_dims_in_c))
-                    elif c not in old_dims:
-                        coords_new[c] = X[c]
+                all_old_dims += old_dims
+
+            # drop all coords along the reshaped dimensions
+            for c in X.coords:
+                old_dims_in_c = [x for x in X[c].dims if x in all_old_dims]
+                if any(old_dims_in_c) and c not in all_old_dims:
+                    c_t = X[c].isel(**{d: 0 for d in old_dims_in_c})
+                    new_dims = [d for d in X[c].dims if d not in all_old_dims]
+                    coords_new[c] = (new_dims, c_t.drop(old_dims_in_c))
+                elif c not in all_old_dims:
+                    coords_new[c] = X[c]
 
         # string syntax
         else:
