@@ -58,7 +58,6 @@ class _CommonEstimatorWrapper(BaseEstimator):
                 raise ValueError(
                     'Inconsistent dimensions returned by estimator')
 
-            # get new dims
             for new_dim, old_dims in self.reshapes.items():
                 for d in old_dims:
                     dims_new.remove(d)
@@ -72,6 +71,50 @@ class _CommonEstimatorWrapper(BaseEstimator):
                 dims_new.remove(self.reshapes)
 
         return dims_new
+
+    def _restore_dims(self, X_in, X_out):
+        """ Restore the dimensions of a reshaped DataArray. """
+
+        # dict syntax
+        if hasattr(self.reshapes, 'items'):
+
+            # check if new dims are dropped by estimator
+            all_old_dims = []
+            for _, old_dims in self.reshapes.items():
+                all_old_dims += old_dims
+
+            if X_in.ndim == X_out.ndim - len(all_old_dims) + len(self.reshapes):
+                drop_new_dims = False
+            elif X_in.ndim == X_out.ndim - len(all_old_dims):
+                drop_new_dims = True
+            else:
+                raise ValueError(
+                    'Inconsistent dimensions returned by estimator')
+
+            # get new dims
+            dims_new = list(X_in.dims)
+            dims_old = []
+            for d in dims_new:
+                if d in self.reshapes:
+                    dims_old += self.reshapes[d]
+                else:
+                    dims_old.append(d)
+
+            if drop_new_dims:
+                # TODO: figure out where to insert the dropped dims
+                for d in all_old_dims:
+                    if d not in dims_old:
+                        dims_old.append(d)
+
+        # string syntax
+        else:
+            dims_old = list(X_in.dims)
+            # check if dim is dropped by estimator
+            if X_out.ndim < X_in.ndim:
+                # TODO: figure out where to insert the dropped dim
+                dims_old.append(self.reshapes)
+
+        return dims_old
 
     def _update_coords(self, X):
         """ Update the coordinates of a reshaped DataArray. """
@@ -121,8 +164,11 @@ class _CommonEstimatorWrapper(BaseEstimator):
         else:
             y = getattr(estimator, method)(X.data)
 
-        # update coords and dims
-        dims_new = self._update_dims(X, y)
+        # update dims
+        if method == 'inverse_transform':
+            dims_new = self._restore_dims(X, y)
+        else:
+            dims_new = self._update_dims(X, y)
 
         return y, dims_new
 
