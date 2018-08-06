@@ -35,6 +35,9 @@ if [[ "$COVERAGE" == "true" ]]; then
     conda install -c conda-forge --yes coverage coveralls
 fi
 
+conda install -y \
+    matplotlib sphinx pillow sphinx-gallery sphinx_rtd_theme numpydoc
+
 python --version
 python -c "import numpy; print('numpy %s' % numpy.__version__)"
 python -c "import scipy; print('scipy %s' % scipy.__version__)"
