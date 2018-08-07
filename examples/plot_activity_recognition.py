@@ -31,7 +31,7 @@ from sklearn_xarray.datasets import load_wisdm_dataarray
 
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.decomposition import PCA
-from sklearn.linear_model import LogisticRegression
+from sklearn.naive_bayes import GaussianNB
 from sklearn.model_selection import GroupShuffleSplit, GridSearchCV
 from sklearn.pipeline import Pipeline
 
@@ -74,16 +74,16 @@ axarr[2].set_title('Acceleration along z-axis')
 # three-dimensional but the standardizer and classifier expect a one-dimensional
 # feature vector, we have to vectorize the samples.
 #
-# Finally, we use PCA and logistic regression to perform the classification.
+# Finally, we use PCA and a naive Bayes classifier for classification.
 
 pl = Pipeline([
     ('splitter', Splitter(
-        groupby=['subject', 'activity'], new_dim='timepoint')),
+        groupby=['subject', 'activity'], new_dim='timepoint', new_len=30)),
     ('sanitizer', Sanitizer()),
     ('featurizer', Featurizer()),
     ('scaler', wrap(StandardScaler)),
     ('pca', wrap(PCA, reshapes='feature')),
-    ('lr', wrap(LogisticRegression, reshapes='feature'))
+    ('cls', wrap(GaussianNB, reshapes='feature'))
 ])
 
 ##############################################################################
@@ -94,20 +94,19 @@ pl = Pipeline([
 # training and validation set.
 
 cv = CrossValidatorWrapper(
-    GroupShuffleSplit(n_splits=3, test_size=0.3), groupby=['subject'])
+    GroupShuffleSplit(n_splits=2, test_size=0.5), groupby=['subject'])
 
 ##############################################################################
-# The grid search will try different combinations of segment length and
-# number of PCA components to find the best parameters for this task.
+# The grid search will try different numbers of PCA components to find the best
+# parameters for this task.
 #
 # .. tip::
 #
 #     To use multi-processing, set ``n_jobs=-1``.
 
 gs = GridSearchCV(
-    pl, cv=cv, n_jobs=1, verbose=2, param_grid={
-        'splitter__new_len': [30, 60],
-        'pca__n_components': [20, 40]
+    pl, cv=cv, n_jobs=1, verbose=1, param_grid={
+        'pca__n_components': [10, 20]
     })
 
 ##############################################################################
@@ -129,5 +128,5 @@ if __name__ == '__main__':  # in order for n_jobs=-1 to work on Windows
 ##############################################################################
 # .. note::
 #
-#     The performance of this classifier is obviously pretty terrible, it's only
-#     for demonstration purposes.
+#     The performance of this classifier is obviously pretty bad,
+#     it was chosen for execution speed, not accuracy.
