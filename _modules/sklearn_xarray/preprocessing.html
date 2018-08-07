@@ -24,8 +24,7 @@
 
   
 
-  
-    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -303,15 +302,6 @@
 <span class="sd">        Xt : xarray DataArray or Dataset</span>
 <span class="sd">            The transformed data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;Dataset&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_dataset</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s1">&#39;This estimator was fitted for Dataset inputs, but the &#39;</span>
-                <span class="s1">&#39;provided X does not seem to be a Dataset.&#39;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;DataArray&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_dataarray</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s1">&#39;This estimator was fitted for DataArray inputs, but the &#39;</span>
-                <span class="s1">&#39;provided X does not seem to be a DataArray.&#39;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">groupby</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_groupwise</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_inverse_transform</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
@@ -1194,11 +1184,39 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">groupby</span> <span class="o">=</span> <span class="n">groupby</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">group_dim</span> <span class="o">=</span> <span class="n">group_dim</span>
 
+<div class="viewcode-block" id="Concatenator.fit"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.Concatenator.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Fit estimator to data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : xarray DataArray or Dataset</span>
+<span class="sd">            Training set.</span>
+
+<span class="sd">        y : xarray DataArray or Dataset</span>
+<span class="sd">            Target values.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self:</span>
+<span class="sd">            The estimator itself.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">is_dataset</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">=</span> <span class="s1">&#39;Dataset&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The Concatenator can only be applied to Datasets&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_vars_</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">data_vars</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dim_vals_</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
     <span class="k">def</span> <span class="nf">_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Transform. &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;DataArray&#39;</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The Concatenator can only be applied to Datasets&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">data_vars</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_vars_</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;This estimator was fitted for a different set of variables.&#39;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
@@ -1211,7 +1229,13 @@
                 <span class="k">return</span> <span class="n">Xt</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">Xt</span><span class="o">.</span><span class="n">to_dataset</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">new_var</span><span class="p">)</span>
+
         <span class="k">else</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_array</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s1">&#39;Cannot return a DataArray when a subset of variables is &#39;</span>
+                    <span class="s1">&#39;concatenated.&#39;</span><span class="p">)</span>
 
             <span class="n">Xt</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">X</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
 
@@ -1224,18 +1248,48 @@
             <span class="n">X_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">X</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">X</span><span class="o">.</span><span class="n">data_vars</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">]</span>
             <span class="n">X_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Xt</span><span class="o">.</span><span class="n">to_dataset</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">new_var</span><span class="p">))</span>
 
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_array</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s1">&#39;Cannot return a DataArray when a subset of variables is &#39;</span>
-                    <span class="s1">&#39;concatenated.&#39;</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">X_list</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">X_list</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_inverse_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Reverse transform. &quot;&quot;&quot;</span>
 
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s1">&#39;inverse_transform has not yet been implemented for this estimator&#39;</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">is_dataarray</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_array</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;This estimator can only inverse_transform Dataset inputs.&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">is_dataset</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_array</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;This estimator can only inverse_transform DataArray inputs.&#39;</span><span class="p">)</span>
+
+        <span class="n">tmp_dim</span> <span class="o">=</span> <span class="s1">&#39;tmp&#39;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">vars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_vars_</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">vars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span>
+
+        <span class="n">ind</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_product</span><span class="p">(</span>
+            <span class="p">(</span><span class="nb">vars</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim_vals_</span><span class="p">),</span> <span class="n">names</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;variable&#39;</span><span class="p">,</span> <span class="n">tmp_dim</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_dim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_dim</span>
+
+        <span class="k">if</span> <span class="n">is_dataset</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+            <span class="n">Xt</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">new_var</span><span class="p">]</span><span class="o">.</span><span class="n">to_dataset</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">Xt</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">to_dataset</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">new_var</span><span class="p">)</span>
+
+        <span class="n">Xt</span> <span class="o">=</span> <span class="n">Xt</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="n">dim</span><span class="p">:</span> <span class="n">ind</span><span class="p">})</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
+        <span class="n">Xt</span> <span class="o">=</span> <span class="n">Xt</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="n">tmp_dim</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">})</span>
+        <span class="n">Xt</span> <span class="o">=</span> <span class="n">Xt</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">new_var</span><span class="p">]</span><span class="o">.</span><span class="n">to_dataset</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;variable&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Xt</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">Xt</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">X</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">reindex</span><span class="p">({</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim_vals_</span><span class="p">})</span>
+                        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">X</span><span class="o">.</span><span class="n">data_vars</span> <span class="k">if</span> <span class="n">v</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_var</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">Xt</span></div>
 
 
 <div class="viewcode-block" id="concatenate"><a class="viewcode-back" href="../../content/api/preprocessing.html#sklearn_xarray.preprocessing.concatenate">[docs]</a><span class="k">def</span> <span class="nf">concatenate</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">return_estimator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
@@ -1634,10 +1688,7 @@
 
   
 
-  
-  
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
   <script type="text/javascript">
       jQuery(function () {

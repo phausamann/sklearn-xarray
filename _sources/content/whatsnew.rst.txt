@@ -2,6 +2,15 @@ What's New
 ==========
 
 
+Github master branch
+--------------------
+
+Enhancements
+~~~~~~~~~~~~
+
+- Added ``inverse_transform`` to ``preprocessing.Concatenator``.
+
+
 v0.2.0 (April 9, 2018)
 ----------------------
 

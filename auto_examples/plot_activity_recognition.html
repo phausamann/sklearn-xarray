@@ -24,8 +24,7 @@
 
   
 
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
@@ -163,7 +162,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="activity-recognition-from-accelerometer-data">
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-activity-recognition-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="activity-recognition-from-accelerometer-data">
 <span id="sphx-glr-auto-examples-plot-activity-recognition-py"></span><h1>Activity recognition from accelerometer data<a class="headerlink" href="#activity-recognition-from-accelerometer-data" title="Permalink to this headline">¶</a></h1>
 <p>This demo shows how the <strong>sklearn-xarray</strong> package works with the <code class="docutils literal notranslate"><span class="pre">Pipeline</span></code>
 and <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code> methods from scikit-learn providing a metadata-aware
@@ -188,7 +191,7 @@ from 36 different subjects.</p>
 
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span><span class="p">,</span> <span class="n">LabelEncoder</span>
 <span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
-<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">GaussianNB</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GroupShuffleSplit</span><span class="p">,</span> <span class="n">GridSearchCV</span>
 <span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
 
@@ -222,21 +225,21 @@ the ‘Walking’ activity.</p>
 <span class="n">axarr</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Acceleration along z-axis&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../_images/sphx_glr_plot_activity_recognition_001.png" class="align-center" src="../_images/sphx_glr_plot_activity_recognition_001.png" />
+<img alt="../_images/sphx_glr_plot_activity_recognition_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_activity_recognition_001.png" />
 <p>Then we define a pipeline with various preprocessing steps and a classifier.</p>
 <p>The preprocessing consists of splitting the data into segments, removing
 segments with <cite>nan</cite> values and standardizing. Since the accelerometer data is
 three-dimensional but the standardizer and classifier expect a one-dimensional
 feature vector, we have to vectorize the samples.</p>
-<p>Finally, we use PCA and logistic regression to perform the classification.</p>
+<p>Finally, we use PCA and a naive Bayes classifier for classification.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pl</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
     <span class="p">(</span><span class="s1">&#39;splitter&#39;</span><span class="p">,</span> <span class="n">Splitter</span><span class="p">(</span>
-        <span class="n">groupby</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">,</span> <span class="s1">&#39;activity&#39;</span><span class="p">],</span> <span class="n">new_dim</span><span class="o">=</span><span class="s1">&#39;timepoint&#39;</span><span class="p">)),</span>
+        <span class="n">groupby</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">,</span> <span class="s1">&#39;activity&#39;</span><span class="p">],</span> <span class="n">new_dim</span><span class="o">=</span><span class="s1">&#39;timepoint&#39;</span><span class="p">,</span> <span class="n">new_len</span><span class="o">=</span><span class="mi">30</span><span class="p">)),</span>
     <span class="p">(</span><span class="s1">&#39;sanitizer&#39;</span><span class="p">,</span> <span class="n">Sanitizer</span><span class="p">()),</span>
     <span class="p">(</span><span class="s1">&#39;featurizer&#39;</span><span class="p">,</span> <span class="n">Featurizer</span><span class="p">()),</span>
     <span class="p">(</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span> <span class="n">wrap</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">)),</span>
     <span class="p">(</span><span class="s1">&#39;pca&#39;</span><span class="p">,</span> <span class="n">wrap</span><span class="p">(</span><span class="n">PCA</span><span class="p">,</span> <span class="n">reshapes</span><span class="o">=</span><span class="s1">&#39;feature&#39;</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s1">&#39;lr&#39;</span><span class="p">,</span> <span class="n">wrap</span><span class="p">(</span><span class="n">LogisticRegression</span><span class="p">,</span> <span class="n">reshapes</span><span class="o">=</span><span class="s1">&#39;feature&#39;</span><span class="p">))</span>
+    <span class="p">(</span><span class="s1">&#39;cls&#39;</span><span class="p">,</span> <span class="n">wrap</span><span class="p">(</span><span class="n">GaussianNB</span><span class="p">,</span> <span class="n">reshapes</span><span class="o">=</span><span class="s1">&#39;feature&#39;</span><span class="p">))</span>
 <span class="p">])</span>
 </pre></div>
 </div>
@@ -246,19 +249,18 @@ performs subject-independent recognition, we use a <cite>GroupShuffleSplit</cite
 cross-validator that ensures that the same subject will not appear in both
 training and validation set.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cv</span> <span class="o">=</span> <span class="n">CrossValidatorWrapper</span><span class="p">(</span>
-    <span class="n">GroupShuffleSplit</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">),</span> <span class="n">groupby</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">])</span>
+    <span class="n">GroupShuffleSplit</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span> <span class="n">groupby</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>The grid search will try different combinations of segment length and
-number of PCA components to find the best parameters for this task.</p>
+<p>The grid search will try different numbers of PCA components to find the best
+parameters for this task.</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
 <p class="last">To use multi-processing, set <code class="docutils literal notranslate"><span class="pre">n_jobs=-1</span></code>.</p>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gs</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span>
     <span class="n">pl</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">param_grid</span><span class="o">=</span><span class="p">{</span>
-        <span class="s1">&#39;splitter__new_len&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">],</span>
-        <span class="s1">&#39;pca__n_components&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>
+        <span class="s1">&#39;pca__n_components&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
     <span class="p">})</span>
 </pre></div>
 </div>
@@ -277,18 +279,18 @@ representation for the classification.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Fitting</span> <span class="mi">3</span> <span class="n">folds</span> <span class="k">for</span> <span class="n">each</span> <span class="n">of</span> <span class="mi">4</span> <span class="n">candidates</span><span class="p">,</span> <span class="n">totalling</span> <span class="mi">12</span> <span class="n">fits</span>
-<span class="n">Best</span> <span class="n">parameters</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;pca__n_components&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s1">&#39;splitter__new_len&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">}</span>
-<span class="n">Accuracy</span><span class="p">:</span> <span class="mf">0.521411163849</span>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting 2 folds for each of 2 candidates, totalling 4 fits
+Best parameters: {&#39;pca__n_components&#39;: 20}
+Accuracy: 0.799235230926
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The performance of this classifier is obviously pretty terrible, it’s only
-for demonstration purposes.</p>
+<p class="last">The performance of this classifier is obviously pretty bad,
+it was chosen for execution speed, not accuracy.</p>
 </div>
-<p><strong>Total running time of the script:</strong> ( 5 minutes  20.752 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<p><strong>Total running time of the script:</strong> ( 5 minutes  10.267 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-activity-recognition-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_activity_recognition.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_activity_recognition.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
@@ -353,10 +355,7 @@ for demonstration purposes.</p>
 
   
 
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
 
   <script type="text/javascript">
       jQuery(function () {
