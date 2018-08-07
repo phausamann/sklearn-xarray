@@ -217,15 +217,21 @@ def test_concatenate():
         coords={'sample': range(100), 'feature': range(10)}
     )
 
-    Xt_ds = concatenate(X_ds)
+    Xt_da, concatenator = concatenate(
+        X_ds, return_array=True, return_estimator=True)
 
-    assert Xt_ds.Feature.shape == (100, 30)
+    assert Xt_da.shape == (100, 30)
 
-    Xt_ds2 = concatenate(
-        X_ds, variables=['var_1', 'var_2'], new_index_func=np.arange)
+    xrt.assert_allclose(concatenator.inverse_transform(Xt_da), X_ds)
+
+    Xt_ds2, concatenator2 = concatenate(
+        X_ds, variables=['var_1', 'var_2'], new_index_func=np.arange,
+        return_estimator=True)
 
     assert Xt_ds2.Feature.shape == (100, 20)
     npt.assert_equal(Xt_ds2.feature.values, np.arange(20))
+
+    xrt.assert_allclose(concatenator2.inverse_transform(Xt_ds2), X_ds)
 
 
 def test_featurize():

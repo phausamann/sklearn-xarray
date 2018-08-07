@@ -24,10 +24,9 @@ popd
 
 # Configure the conda environment and put it in the path using the
 # provided versions
-conda create -n testenv --yes python=$PYTHON_VERSION pip nose \
-        --file requirements.txt
-
-# numpy=$NUMPY_VERSION scipy=$SCIPY_VERSION cython=$CYTHON_VERSION
+conda create -n testenv -y -c conda-forge python=$PYTHON_VERSION \
+    nose matplotlib sphinx pillow sphinx-gallery sphinx_rtd_theme numpydoc \
+    --file requirements.txt
 
 source activate testenv
 

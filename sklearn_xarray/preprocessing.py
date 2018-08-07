@@ -147,15 +147,6 @@ class BaseTransformer(BaseEstimator, TransformerMixin):
             The transformed data.
         """
 
-        if self.type_ == 'Dataset' and not is_dataset(X):
-            raise ValueError(
-                'This estimator was fitted for Dataset inputs, but the '
-                'provided X does not seem to be a Dataset.')
-        elif self.type_ == 'DataArray' and not is_dataarray(X):
-            raise ValueError(
-                'This estimator was fitted for DataArray inputs, but the '
-                'provided X does not seem to be a DataArray.')
-
         if self.groupby is not None:
             return self._call_groupwise(self._inverse_transform, X)
         else:
@@ -1037,11 +1028,39 @@ class Concatenator(BaseTransformer):
         self.groupby = groupby
         self.group_dim = group_dim
 
+    def fit(self, X, y=None, **fit_params):
+        """ Fit estimator to data.
+
+        Parameters
+        ----------
+        X : xarray DataArray or Dataset
+            Training set.
+
+        y : xarray DataArray or Dataset
+            Target values.
+
+        Returns
+        -------
+        self:
+            The estimator itself.
+        """
+
+        if is_dataset(X):
+            self.type_ = 'Dataset'
+        else:
+            raise ValueError('The Concatenator can only be applied to Datasets')
+
+        self.data_vars_ = list(X.data_vars)
+        self.dim_vals_ = X[self.dim].values
+
+        return self
+
     def _transform(self, X):
         """ Transform. """
 
-        if self.type_ == 'DataArray':
-            raise ValueError('The Concatenator can only be applied to Datasets')
+        if set(X.data_vars) != set(self.data_vars_):
+            raise ValueError(
+                'This estimator was fitted for a different set of variables.')
 
         if self.variables is None:
 
@@ -1054,7 +1073,13 @@ class Concatenator(BaseTransformer):
                 return Xt
             else:
                 return Xt.to_dataset(name=self.new_var)
+
         else:
+
+            if self.return_array:
+                raise ValueError(
+                    'Cannot return a DataArray when a subset of variables is '
+                    'concatenated.')
 
             Xt = xr.concat([X[v] for v in self.variables], dim=self.dim)
 
@@ -1067,18 +1092,48 @@ class Concatenator(BaseTransformer):
             X_list = [X[v] for v in X.data_vars if v not in self.variables]
             X_list.append(Xt.to_dataset(name=self.new_var))
 
-            if self.return_array:
-                raise ValueError(
-                    'Cannot return a DataArray when a subset of variables is '
-                    'concatenated.')
-            else:
-                return xr.merge(X_list)
+            return xr.merge(X_list)
 
     def _inverse_transform(self, X):
         """ Reverse transform. """
 
-        raise NotImplementedError(
-            'inverse_transform has not yet been implemented for this estimator')
+        if is_dataarray(X) and not self.return_array:
+            raise ValueError(
+                'This estimator can only inverse_transform Dataset inputs.')
+        elif is_dataset(X) and self.return_array:
+            raise ValueError(
+                'This estimator can only inverse_transform DataArray inputs.')
+
+        tmp_dim = 'tmp'
+
+        if self.variables is None:
+            vars = self.data_vars_
+        else:
+            vars = self.variables
+
+        ind = pd.MultiIndex.from_product(
+            (vars, self.dim_vals_), names=('variable', tmp_dim))
+
+        if self.new_dim is None:
+            dim = self.dim
+        else:
+            dim = self.new_dim
+
+        if is_dataset(X):
+            Xt = X[self.new_var].to_dataset()
+        else:
+            Xt = X.to_dataset(name=self.new_var)
+
+        Xt = Xt.assign(**{dim: ind}).unstack(dim)
+        Xt = Xt.rename(**{tmp_dim: self.dim})
+        Xt = Xt[self.new_var].to_dataset(dim='variable')
+
+        if self.variables is not None:
+            Xt = xr.merge(
+                [Xt] + [X[v].reindex({self.dim: self.dim_vals_})
+                        for v in X.data_vars if v != self.new_var])
+
+        return Xt
 
 
 def concatenate(X, return_estimator=False, **fit_params):

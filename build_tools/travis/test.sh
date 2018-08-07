@@ -5,6 +5,7 @@ set -e
 mkdir -p $TEST_DIR
 cp .coveragerc $TEST_DIR/.coveragerc
 
+wd=$(pwd)
 cd $TEST_DIR
 
 if [[ "$COVERAGE" == "true" ]]; then
@@ -12,3 +13,5 @@ if [[ "$COVERAGE" == "true" ]]; then
 else
     nosetests -s $MODULE
 fi
+
+cd $wd
