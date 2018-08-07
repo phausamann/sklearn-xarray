@@ -27,9 +27,10 @@ popd
 conda create -n testenv --yes python=$PYTHON_VERSION pip nose \
         --file requirements.txt
 
-# numpy=$NUMPY_VERSION scipy=$SCIPY_VERSION cython=$CYTHON_VERSION
-
 source activate testenv
+
+conda install -y -c conda-forge \
+    matplotlib sphinx pillow sphinx-gallery sphinx_rtd_theme numpydoc
 
 if [[ "$COVERAGE" == "true" ]]; then
     conda install -c conda-forge --yes coverage coveralls

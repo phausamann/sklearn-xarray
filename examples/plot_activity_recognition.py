@@ -105,7 +105,7 @@ cv = CrossValidatorWrapper(
 #     To use multi-processing, set ``n_jobs=-1``.
 
 gs = GridSearchCV(
-    pl, cv=cv, n_jobs=1, verbose=1, param_grid={
+    pl, cv=cv, n_jobs=1, verbose=2, param_grid={
         'splitter__new_len': [30, 60],
         'pca__n_components': [20, 40]
     })
