@@ -39,7 +39,7 @@ regressors).
     wrapper will assume that the first dimension in the array is the sample
     dimension.
 
-When we run the example, we see that he data in the array is scaled, but the
+When we run the example, we see that the data in the array is scaled, but the
 coordinates and dimensions have not changed::
 
     In []: X

@@ -630,7 +630,8 @@ class Segmenter(BaseTransformer):
             for n in range(arr.shape[axis]):
                 idx_old[axis_old] = n * step + np.arange(self.new_len)
                 idx_new[axis] = n
-                arr_old[tuple(idx_old)] = np.transpose(arr[idx_new], order)
+                arr_old[tuple(idx_old)] = np.transpose(
+                    arr[tuple(idx_new)], order)
 
             return arr_old
 
