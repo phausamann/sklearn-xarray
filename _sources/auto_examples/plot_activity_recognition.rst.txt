@@ -20,8 +20,8 @@ preprocessing steps group by group, use transformers that change the number
 of samples, use metadata directly as labels for classification tasks and more.
 
 The example performs activity recognition from raw accelerometer data with a
-feedforward neural network. It uses the `WISDM activity prediction dataset`_
-which contains the activities
+Gaussian naive Bayes classifier. It uses the
+`WISDM activity prediction dataset`_ which contains the activities
 walking, jogging, walking upstairs, walking downstairs, sitting and standing
 from 36 different subjects.
 
@@ -212,7 +212,7 @@ Finally, we run the grid search and print out the best parameter combination.
 
     Fitting 2 folds for each of 2 candidates, totalling 4 fits
     Best parameters: {'pca__n_components': 20}
-    Accuracy: 0.7762684789813995
+    Accuracy: 0.765933247701
 
 
 .. note::
@@ -221,7 +221,7 @@ Finally, we run the grid search and print out the best parameter combination.
     it was chosen for execution speed, not accuracy.
 
 
-**Total running time of the script:** ( 5 minutes  50.629 seconds)
+**Total running time of the script:** ( 0 minutes  25.337 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_activity_recognition.py:
