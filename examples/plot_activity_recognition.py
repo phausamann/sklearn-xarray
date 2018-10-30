@@ -12,8 +12,8 @@ preprocessing steps group by group, use transformers that change the number
 of samples, use metadata directly as labels for classification tasks and more.
 
 The example performs activity recognition from raw accelerometer data with a
-feedforward neural network. It uses the `WISDM activity prediction dataset`_
-which contains the activities
+Gaussian naive Bayes classifier. It uses the
+`WISDM activity prediction dataset`_ which contains the activities
 walking, jogging, walking upstairs, walking downstairs, sitting and standing
 from 36 different subjects.
 

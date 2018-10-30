@@ -10,6 +10,11 @@ Enhancements
 
 - Added ``inverse_transform`` to ``preprocessing.Concatenator``.
 
+Bug fixes
+~~~~~~~~~
+
+- Fixed failing tests with sklearn 0.20.
+
 
 v0.2.0 (April 9, 2018)
 ----------------------

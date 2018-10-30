@@ -289,7 +289,7 @@ class _CommonEstimatorWrapper(BaseEstimator):
             Parameter names mapped to their values.
         """
 
-        if self.compat:
+        if self.compat is not False:  # protection against over-zealous tests
             return BaseEstimator.get_params(self, deep)
 
         else:
@@ -317,7 +317,7 @@ class _CommonEstimatorWrapper(BaseEstimator):
         self
         """
 
-        if self.compat:
+        if self.compat is not False:  # protection against over-zealous tests
             BaseEstimator.set_params(self, **params)
 
         else:

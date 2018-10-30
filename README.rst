@@ -37,7 +37,7 @@ https://phausamann.github.io/sklearn-xarray/
 Highlights
 -------------
 
-- Makes sklearn estimators compatible with xarray DataArrays and Dataset.
+- Makes sklearn estimators compatible with xarray DataArrays and Datasets.
 - Allows for estimators to change the number of samples.
 - Adds a large number of pre-processing transformers.
 
