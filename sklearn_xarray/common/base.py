@@ -7,11 +7,12 @@ import six
 
 from sklearn.base import clone, BaseEstimator
 from sklearn.utils.validation import check_is_fitted, check_array, check_X_y
+from sklearn.utils.metaestimators import _BaseComposition
 
 from sklearn_xarray.utils import is_dataarray, is_dataset, is_target
 
 
-class _CommonEstimatorWrapper(BaseEstimator):
+class _CommonEstimatorWrapper(_BaseComposition):
     """ Base class for DataArray and Dataset wrappers. """
 
     @staticmethod
@@ -293,7 +294,7 @@ class _CommonEstimatorWrapper(BaseEstimator):
             return BaseEstimator.get_params(self, deep)
 
         else:
-            if self.estimator is not None:
+            if hasattr(self.estimator, 'get_params'):
                 params = self.estimator.get_params(deep)
             else:
                 # TODO: check if this is necessary
@@ -325,7 +326,8 @@ class _CommonEstimatorWrapper(BaseEstimator):
                 if p in params:
                     setattr(self, p, params.pop(p))
 
-            self.estimator.set_params(**params)
+            if hasattr(self.estimator, 'set_params'):
+                self.estimator.set_params(**params)
 
         return self
 

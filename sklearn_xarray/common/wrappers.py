@@ -64,7 +64,7 @@ def wrap(estimator, reshapes=None, sample_dim=None, compat=False, **kwargs):
     A wrapped estimator.
     """
 
-    return EstimatorWrapper(estimator, reshapes=reshapes,
+    return EstimatorWrapper(estimator=estimator, reshapes=reshapes,
                             sample_dim=sample_dim, compat=compat, **kwargs)
 
 
