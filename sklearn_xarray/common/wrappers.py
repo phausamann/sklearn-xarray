@@ -2,6 +2,8 @@
 
 from types import MethodType
 
+import warnings
+
 from sklearn.base import clone
 from sklearn.utils.validation import check_X_y, check_array
 from sklearn.externals import six
@@ -100,13 +102,26 @@ class EstimatorWrapper(_CommonEstimatorWrapper):
     def __init__(self, estimator=None, reshapes=None, sample_dim=None,
                  compat=False, **kwargs):
 
-        if isinstance(estimator, type):
-            self.estimator = estimator(**kwargs)
-        else:
+        if not isinstance(estimator, type):
             self.estimator = estimator
+            self.params = estimator.get_params()
+            self.params.update(kwargs)
+        else:
+            self.estimator = estimator(**kwargs)
+            self.params = self.estimator.get_params()
 
         self.reshapes = reshapes
         self.sample_dim = sample_dim
+
+        self._set_attributes()
+
+        if compat is not False:
+            warnings.simplefilter('always', DeprecationWarning)
+            warnings.warn(
+                'The compat argument of EstimatorWrapper is deprecated and '
+                'will be removed in a future version.', DeprecationWarning)
+            warnings.simplefilter('ignore', DeprecationWarning)
+
         self.compat = compat
 
         self._decorate()
@@ -181,7 +196,8 @@ class EstimatorWrapper(_CommonEstimatorWrapper):
             else:
                 X, y = check_X_y(X, y)
 
-            self.estimator_ = clone(self.estimator).fit(X, y, **fit_params)
+            self.estimator_ = clone(self.estimator).set_params(**self.params)
+            self.estimator_.fit(X, y, **fit_params)
 
             for v in vars(self.estimator_):
                 if v.endswith('_') and not v.startswith('_'):

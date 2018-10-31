@@ -314,7 +314,7 @@ class PublicInterfaceTests(TestCase):
 
 def test_classifier():
 
-    lr = wrap(LogisticRegression, compat=True)
+    lr = wrap(LogisticRegression)
     check_estimator(lr)
     assert hasattr(lr, 'predict')
     assert hasattr(lr, 'decision_function')
@@ -326,7 +326,7 @@ def test_classifier():
 
 def test_regressor():
 
-    lr = wrap(LinearRegression, compat=True)
+    lr = wrap(LinearRegression)
     check_estimator(lr)
     assert hasattr(lr, 'predict')
     assert hasattr(lr, 'score')
@@ -334,7 +334,7 @@ def test_regressor():
 
 def test_transformer():
 
-    tr = wrap(KernelCenterer, compat=True)
+    tr = wrap(KernelCenterer)
     check_estimator(tr)
     assert hasattr(tr, 'transform')
 

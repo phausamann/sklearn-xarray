@@ -237,7 +237,8 @@ class _CommonEstimatorWrapper(_BaseComposition):
         else:
             X_arr = X.data
 
-        estimator_ = clone(self.estimator).fit(X_arr, y, **fit_params)
+        estimator_ = type(self.estimator)(**self.params)
+        estimator_.fit(X_arr, y, **fit_params)
 
         return estimator_
 
@@ -275,6 +276,12 @@ class _CommonEstimatorWrapper(_BaseComposition):
 
         return Xt, dims_new
 
+    def _set_attributes(self):
+        """ Set parameters as class attributes. """
+
+        for p in self.params:
+            setattr(self, p, self.params[p])
+
     def get_params(self, deep=True):
         """ Get parameters for this estimator.
 
@@ -290,20 +297,25 @@ class _CommonEstimatorWrapper(_BaseComposition):
             Parameter names mapped to their values.
         """
 
-        if self.compat is not False:  # protection against over-zealous tests
-            return BaseEstimator.get_params(self, deep)
+        # if self.compat is not False:  # protection against over-zealous tests
+        #     return BaseEstimator.get_params(self, deep)
+        #
+        # else:
+        #     if hasattr(self.estimator, 'get_params'):
+        #         params = self.estimator.get_params(deep)
+        #     else:
+        #         # TODO: check if this is necessary
+        #         params = dict()
+        #
+        #     for p in self._get_param_names():
+        #         params[p] = getattr(self, p, None)
+        #
+        #     return params
 
-        else:
-            if hasattr(self.estimator, 'get_params'):
-                params = self.estimator.get_params(deep)
-            else:
-                # TODO: check if this is necessary
-                params = dict()
+        params = BaseEstimator.get_params(self, deep)
+        params.update(self.params)
 
-            for p in self._get_param_names():
-                params[p] = getattr(self, p, None)
-
-            return params
+        return params
 
     def set_params(self, **params):
         """ Set the parameters of this estimator.
@@ -318,16 +330,24 @@ class _CommonEstimatorWrapper(_BaseComposition):
         self
         """
 
-        if self.compat is not False:  # protection against over-zealous tests
-            BaseEstimator.set_params(self, **params)
+        # if self.compat is not False:  # protection against over-zealous tests
+        #     BaseEstimator.set_params(self, **params)
+        #
+        # else:
+        #     for p in self._get_param_names():
+        #         if p in params:
+        #             setattr(self, p, params.pop(p))
+        #
+        #     if hasattr(self.estimator, 'set_params'):
+        #         self.estimator.set_params(**params)
 
-        else:
-            for p in self._get_param_names():
-                if p in params:
-                    setattr(self, p, params.pop(p))
+        for p in self._get_param_names():
+            if p in params:
+                setattr(self, p, params.pop(p))
 
-            if hasattr(self.estimator, 'set_params'):
-                self.estimator.set_params(**params)
+        self.params.update(params)
+
+        self._set_attributes()
 
         return self
 
