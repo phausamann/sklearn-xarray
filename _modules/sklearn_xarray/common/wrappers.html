@@ -158,7 +158,9 @@
 
 <span class="kn">from</span> <span class="nn">types</span> <span class="k">import</span> <span class="n">MethodType</span>
 
-<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="k">import</span> <span class="n">clone</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="k">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">clone</span>
 <span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="k">import</span> <span class="n">check_X_y</span><span class="p">,</span> <span class="n">check_array</span>
 <span class="kn">from</span> <span class="nn">sklearn.externals</span> <span class="k">import</span> <span class="n">six</span>
 
@@ -209,19 +211,22 @@
 <span class="sd">        The name of the dimension that represents the samples. By default,</span>
 <span class="sd">        the wrapper will assume that this is the first dimension in the array.</span>
 
-<span class="sd">    compat : bool, optional</span>
-<span class="sd">        If True, ``set_params``/``get_params`` will only use the wrapper&#39;s</span>
-<span class="sd">        actual parameters and not those of the wrapped estimator. This might</span>
-<span class="sd">        be necessary when the estimator defines parameters with the same name</span>
-<span class="sd">        as the wrapper.</span>
+<span class="sd">    compat : bool, default False</span>
+<span class="sd">        If True, the method will return a ``CompatEstimatorWrapper`` instead</span>
+<span class="sd">        of an ``EstimatorWrapper``. This might be necessary when the</span>
+<span class="sd">        estimator defines parameters with the same name as the wrapper.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    A wrapped estimator.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">return</span> <span class="n">EstimatorWrapper</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">reshapes</span><span class="o">=</span><span class="n">reshapes</span><span class="p">,</span>
-                            <span class="n">sample_dim</span><span class="o">=</span><span class="n">sample_dim</span><span class="p">,</span> <span class="n">compat</span><span class="o">=</span><span class="n">compat</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+    <span class="k">if</span> <span class="n">compat</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">CompatEstimatorWrapper</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">estimator</span><span class="p">,</span> <span class="n">reshapes</span><span class="o">=</span><span class="n">reshapes</span><span class="p">,</span>
+                                      <span class="n">sample_dim</span><span class="o">=</span><span class="n">sample_dim</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">EstimatorWrapper</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">estimator</span><span class="p">,</span> <span class="n">reshapes</span><span class="o">=</span><span class="n">reshapes</span><span class="p">,</span>
+                                <span class="n">sample_dim</span><span class="o">=</span><span class="n">sample_dim</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="EstimatorWrapper"><a class="viewcode-back" href="../../../content/api/common.html#sklearn_xarray.EstimatorWrapper">[docs]</a><span class="k">class</span> <span class="nc">EstimatorWrapper</span><span class="p">(</span><span class="n">_CommonEstimatorWrapper</span><span class="p">):</span>
@@ -245,25 +250,35 @@
 <span class="sd">    sample_dim : str, optional</span>
 <span class="sd">        The name of the dimension that represents the samples. By default,</span>
 <span class="sd">        the wrapper will assume that this is the first dimension in the array.</span>
-
-<span class="sd">    compat : bool, optional</span>
-<span class="sd">        If True, ``set`_params``/``get_params`` will only use the wrapper&#39;s</span>
-<span class="sd">        actual parameters and not those of the wrapped estimator. This might</span>
-<span class="sd">        be necessary when the estimator defines parameters with the same name</span>
-<span class="sd">        as the wrapper.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reshapes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_dim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">compat</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                 <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="s1">&#39;compat&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;compat&#39;</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;always&#39;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s1">&#39;The compat argument of EstimatorWrapper is deprecated and &#39;</span>
+                <span class="s1">&#39;will be removed in a future version.&#39;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span> <span class="o">=</span> <span class="n">estimator</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">get_params</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span> <span class="o">=</span> <span class="n">estimator</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">get_params</span><span class="p">()</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">reshapes</span> <span class="o">=</span> <span class="n">reshapes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sample_dim</span> <span class="o">=</span> <span class="n">sample_dim</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">compat</span> <span class="o">=</span> <span class="n">compat</span>
+
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="n">p</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_param_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_names</span><span class="p">()</span> <span class="o">+</span> \
+                            <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">_get_param_names</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_decorate</span><span class="p">()</span>
 
@@ -285,6 +300,7 @@
     <span class="k">def</span> <span class="nf">_decorate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Decorate this instance with wrapping methods for the estimator. &quot;&quot;&quot;</span>
 
+        <span class="c1"># TODO: check if this needs to be removed for compat wrappers</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="p">,</span> <span class="s1">&#39;_estimator_type&#39;</span><span class="p">):</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_estimator_type&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">_estimator_type</span><span class="p">)</span>
 
@@ -295,6 +311,64 @@
                             <span class="n">MethodType</span><span class="p">(</span><span class="n">_method_map</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="bp">self</span><span class="p">,</span> <span class="n">EstimatorWrapper</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">MethodType</span><span class="p">(</span><span class="n">_method_map</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="bp">self</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_make_estimator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return an instance of the wrapped estimator. &quot;&quot;&quot;</span>
+
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="n">p</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+                  <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">_get_param_names</span><span class="p">()}</span>
+
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="p">)(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Reset internal data-dependent state of the wrapper.</span>
+
+<span class="sd">        __init__ parameters are not touched.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">v</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">):</span>
+                <span class="nb">delattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+<div class="viewcode-block" id="EstimatorWrapper.get_params"><a class="viewcode-back" href="../../../content/api/common.html#sklearn_xarray.EstimatorWrapper.get_params">[docs]</a>    <span class="k">def</span> <span class="nf">get_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Get parameters for this estimator.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        deep : boolean, optional</span>
+<span class="sd">            If True, will return the parameters for this estimator and</span>
+<span class="sd">            contained subobjects that are estimators.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        params : mapping of string to any</span>
+<span class="sd">            Parameter names mapped to their values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># TODO: check if this causes problems for wrapped nested estimators</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">BaseEstimator</span><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">p</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param_names</span><span class="p">})</span>
+
+        <span class="k">return</span> <span class="n">params</span></div>
+
+<div class="viewcode-block" id="EstimatorWrapper.set_params"><a class="viewcode-back" href="../../../content/api/common.html#sklearn_xarray.EstimatorWrapper.set_params">[docs]</a>    <span class="k">def</span> <span class="nf">set_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Set the parameters of this estimator.</span>
+
+<span class="sd">        The method works on simple estimators as well as on nested objects</span>
+<span class="sd">        (such as pipelines). The latter have parameters of the form</span>
+<span class="sd">        ``&lt;component&gt;__&lt;parameter&gt;`` so that it&#39;s possible to update each</span>
+<span class="sd">        component of a nested object.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param_names</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="n">p</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="EstimatorWrapper.fit"><a class="viewcode-back" href="../../../content/api/common.html#sklearn_xarray.EstimatorWrapper.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; A wrapper around the fitting function.</span>
@@ -315,6 +389,8 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You must specify an estimator instance to wrap.&#39;</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
+
         <span class="k">if</span> <span class="n">is_target</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
             <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
@@ -323,11 +399,25 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">=</span> <span class="s1">&#39;DataArray&#39;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">estimator_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">)</span>
 
+            <span class="c1"># TODO: check if this needs to be removed for compat wrappers</span>
+            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimator_</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">v</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">):</span>
+                    <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimator_</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+
         <span class="k">elif</span> <span class="n">is_dataset</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">=</span> <span class="s1">&#39;Dataset&#39;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">estimator_dict_</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="n">v</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">v</span><span class="p">],</span> <span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">X</span><span class="o">.</span><span class="n">data_vars</span><span class="p">}</span>
+
+            <span class="c1"># TODO: check if this needs to be removed for compat wrappers</span>
+            <span class="k">for</span> <span class="n">e_name</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimator_dict_</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">v</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+                            <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">e_name</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">v</span><span class="p">)})</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="p">{</span><span class="n">e_name</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">v</span><span class="p">)})</span>
 
         <span class="k">else</span><span class="p">:</span>
 
@@ -337,13 +427,93 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">check_X_y</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">estimator_</span> <span class="o">=</span> <span class="n">clone</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">estimator_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_estimator</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">)</span>
 
+            <span class="c1"># TODO: check if this needs to be removed for compat wrappers</span>
             <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimator_</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">v</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">):</span>
                     <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimator_</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="bp">self</span></div></div>
+
+
+<span class="k">class</span> <span class="nc">CompatEstimatorWrapper</span><span class="p">(</span><span class="n">EstimatorWrapper</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; A wrapper around sklearn estimators compatible with xarray objects.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    estimator : sklearn estimator</span>
+<span class="sd">        The estimator instance this instance wraps around.</span>
+
+<span class="sd">    reshapes : str or dict, optional</span>
+<span class="sd">        The dimension(s) reshaped by this estimator. Any coordinates in the</span>
+<span class="sd">        DataArray along these dimensions will be dropped. If the estimator drops</span>
+<span class="sd">        this dimension (e.g. a binary classifier returning a 1D vector), the</span>
+<span class="sd">        dimension itself will also be dropped.</span>
+
+<span class="sd">        You can specify multiple dimensions mapping to multiple new dimensions</span>
+<span class="sd">        with a dict whose items are lists of reshaped dimensions, e.g.</span>
+<span class="sd">        ``{&#39;new_feature&#39;: [&#39;feature_1&#39;, &#39;feature_2&#39;], ...}``</span>
+
+<span class="sd">    sample_dim : str, optional</span>
+<span class="sd">        The name of the dimension that represents the samples. By default,</span>
+<span class="sd">        the wrapper will assume that this is the first dimension in the array.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reshapes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_dim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span> <span class="o">=</span> <span class="n">estimator</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span> <span class="o">=</span> <span class="n">estimator</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">reshapes</span> <span class="o">=</span> <span class="n">reshapes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_dim</span> <span class="o">=</span> <span class="n">sample_dim</span>
+
+        <span class="k">if</span> <span class="s1">&#39;compat&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;always&#39;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s1">&#39;The compat argument of EstimatorWrapper is deprecated and &#39;</span>
+                <span class="s1">&#39;will be removed in a future version.&#39;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_decorate</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_make_estimator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return an instance of the wrapped estimator. &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">clone</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get parameters for this estimator.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        deep : boolean, optional</span>
+<span class="sd">            If True, will return the parameters for this estimator and</span>
+<span class="sd">            contained subobjects that are estimators.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        params : mapping of string to any</span>
+<span class="sd">            Parameter names mapped to their values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">BaseEstimator</span><span class="o">.</span><span class="n">get_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="n">deep</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the parameters of this estimator.</span>
+
+<span class="sd">        Valid parameter keys can be listed with ``get_params()``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">BaseEstimator</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="TransformerWrapper"><a class="viewcode-back" href="../../../content/api/common.html#sklearn_xarray.TransformerWrapper">[docs]</a><span class="k">class</span> <span class="nc">TransformerWrapper</span><span class="p">(</span>

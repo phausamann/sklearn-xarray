@@ -270,6 +270,13 @@ will be stored in the <code class="docutils literal notranslate"><span class="pr
         <span class="mf">0.522414</span>  <span class="p">,</span>  <span class="mf">0.46496134</span><span class="p">,</span>  <span class="mf">0.52299264</span><span class="p">,</span>  <span class="mf">0.48772645</span><span class="p">,</span>  <span class="mf">0.49043086</span><span class="p">])</span>
 </pre></div>
 </div>
+<p>The wrapper also directly reflects the fitted attributes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[]:</span> <span class="n">wrapper</span><span class="o">.</span><span class="n">mean_</span>
+<span class="n">Out</span><span class="p">[]:</span>
+<span class="n">array</span><span class="p">([</span> <span class="mf">0.46156856</span><span class="p">,</span>  <span class="mf">0.47165326</span><span class="p">,</span>  <span class="mf">0.48397815</span><span class="p">,</span>  <span class="mf">0.48958361</span><span class="p">,</span>  <span class="mf">0.4730579</span> <span class="p">,</span>
+        <span class="mf">0.522414</span>  <span class="p">,</span>  <span class="mf">0.46496134</span><span class="p">,</span>  <span class="mf">0.52299264</span><span class="p">,</span>  <span class="mf">0.48772645</span><span class="p">,</span>  <span class="mf">0.49043086</span><span class="p">])</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="wrapping-estimators-for-datasets">
 <h2>Wrapping estimators for Datasets<a class="headerlink" href="#wrapping-estimators-for-datasets" title="Permalink to this headline">¶</a></h2>
@@ -286,6 +293,14 @@ estimators are stored in the attribute <code class="docutils literal notranslate
 
 <span class="n">In</span> <span class="p">[]:</span> <span class="n">wrapper</span><span class="o">.</span><span class="n">estimator_dict_</span>
 <span class="n">Out</span><span class="p">[]:</span> <span class="p">{</span><span class="s1">&#39;var_1&#39;</span><span class="p">:</span> <span class="n">StandardScaler</span><span class="p">(</span><span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_mean</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_std</span><span class="o">=</span><span class="kc">True</span><span class="p">)}</span>
+</pre></div>
+</div>
+<p>The wrapper also directly reflects the fitted attributes as dictionaries with
+one entry for each variable:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[]:</span> <span class="n">wrapper</span><span class="o">.</span><span class="n">mean_</span><span class="p">[</span><span class="s1">&#39;var_1&#39;</span><span class="p">]</span>
+<span class="n">Out</span><span class="p">[]:</span>
+<span class="n">array</span><span class="p">([</span> <span class="mf">0.46156856</span><span class="p">,</span>  <span class="mf">0.47165326</span><span class="p">,</span>  <span class="mf">0.48397815</span><span class="p">,</span>  <span class="mf">0.48958361</span><span class="p">,</span>  <span class="mf">0.4730579</span> <span class="p">,</span>
+        <span class="mf">0.522414</span>  <span class="p">,</span>  <span class="mf">0.46496134</span><span class="p">,</span>  <span class="mf">0.52299264</span><span class="p">,</span>  <span class="mf">0.48772645</span><span class="p">,</span>  <span class="mf">0.49043086</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
