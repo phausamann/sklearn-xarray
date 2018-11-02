@@ -117,6 +117,13 @@ will be stored in the ``estimator_`` attribute::
     array([ 0.46156856,  0.47165326,  0.48397815,  0.48958361,  0.4730579 ,
             0.522414  ,  0.46496134,  0.52299264,  0.48772645,  0.49043086])
 
+The wrapper also directly reflects the fitted attributes::
+
+    In []: wrapper.mean_
+    Out[]:
+    array([ 0.46156856,  0.47165326,  0.48397815,  0.48958361,  0.4730579 ,
+            0.522414  ,  0.46496134,  0.52299264,  0.48772645,  0.49043086])
+
 
 Wrapping estimators for Datasets
 --------------------------------
@@ -137,6 +144,14 @@ estimators are stored in the attribute ``estimator_dict_``::
 
     In []: wrapper.estimator_dict_
     Out[]: {'var_1': StandardScaler(copy=True, with_mean=True, with_std=True)}
+
+The wrapper also directly reflects the fitted attributes as dictionaries with
+one entry for each variable::
+
+    In []: wrapper.mean_['var_1']
+    Out[]:
+    array([ 0.46156856,  0.47165326,  0.48397815,  0.48958361,  0.4730579 ,
+            0.522414  ,  0.46496134,  0.52299264,  0.48772645,  0.49043086])
 
 
 Wrapping dask-ml estimators

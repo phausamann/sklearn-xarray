@@ -236,7 +236,7 @@ class _CommonEstimatorWrapper(BaseEstimator):
         else:
             X_arr = X.data
 
-        estimator_ = clone(self.estimator).fit(X_arr, y, **fit_params)
+        estimator_ = self._make_estimator().fit(X_arr, y, **fit_params)
 
         return estimator_
 
@@ -274,61 +274,6 @@ class _CommonEstimatorWrapper(BaseEstimator):
 
         return Xt, dims_new
 
-    def get_params(self, deep=True):
-        """ Get parameters for this estimator.
-
-        Parameters
-        ----------
-        deep : boolean, optional
-            If True, will return the parameters for this estimator and
-            contained subobjects that are estimators.
-
-        Returns
-        -------
-        params : mapping of string to any
-            Parameter names mapped to their values.
-        """
-
-        if self.compat is not False:  # protection against over-zealous tests
-            return BaseEstimator.get_params(self, deep)
-
-        else:
-            if self.estimator is not None:
-                params = self.estimator.get_params(deep)
-            else:
-                # TODO: check if this is necessary
-                params = dict()
-
-            for p in self._get_param_names():
-                params[p] = getattr(self, p, None)
-
-            return params
-
-    def set_params(self, **params):
-        """ Set the parameters of this estimator.
-
-        The method works on simple estimators as well as on nested objects
-        (such as pipelines). The latter have parameters of the form
-        ``<component>__<parameter>`` so that it's possible to update each
-        component of a nested object.
-
-        Returns
-        -------
-        self
-        """
-
-        if self.compat is not False:  # protection against over-zealous tests
-            BaseEstimator.set_params(self, **params)
-
-        else:
-            for p in self._get_param_names():
-                if p in params:
-                    setattr(self, p, params.pop(p))
-
-            self.estimator.set_params(**params)
-
-        return self
-
 
 # -- Wrapper methods --
 def partial_fit(self, X, y=None, **fit_params):
@@ -361,6 +306,11 @@ def partial_fit(self, X, y=None, **fit_params):
             raise ValueError(
                 'This wrapper was not fitted for DataArray inputs.')
 
+        # TODO: check if this needs to be removed for compat wrappers
+        for v in vars(self.estimator_):
+            if v.endswith('_') and not v.startswith('_'):
+                setattr(self, v, getattr(self.estimator_, v))
+
     elif is_dataset(X):
 
         if not hasattr(self, 'type_'):
@@ -375,6 +325,15 @@ def partial_fit(self, X, y=None, **fit_params):
         else:
             raise ValueError(
                 'This wrapper was not fitted for Dataset inputs.')
+
+        # TODO: check if this needs to be removed for compat wrappers
+        for e_name, e in six.iteritems(self.estimator_dict_):
+            for v in vars(e):
+                if v.endswith('_') and not v.startswith('_'):
+                    if hasattr(self, v):
+                        getattr(self, v).update({e_name: getattr(e, v)})
+                    else:
+                        setattr(self, v, {e_name: getattr(e, v)})
 
     else:
 
@@ -391,6 +350,7 @@ def partial_fit(self, X, y=None, **fit_params):
             raise ValueError(
                 'This wrapper was not fitted for other inputs.')
 
+        # TODO: check if this needs to be removed for compat wrappers
         for v in vars(self.estimator_):
             if v.endswith('_') and not v.startswith('_'):
                 setattr(self, v, getattr(self.estimator_, v))

@@ -1,6 +1,4 @@
-"""
-``sklearn_xarray.utils``
-"""
+""" ``sklearn_xarray.utils`` """
 
 
 import numpy as np

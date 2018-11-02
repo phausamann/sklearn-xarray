@@ -8,6 +8,7 @@ import numpy.testing as npt
 from sklearn.utils.estimator_checks import check_estimator
 from sklearn_xarray import wrap
 
+from sklearn.base import clone
 from sklearn.preprocessing import StandardScaler, KernelCenterer
 from sklearn.linear_model import LinearRegression, LogisticRegression
 from sklearn.svm import SVC
@@ -54,6 +55,45 @@ class EstimatorWrapperTests(TestCase):
     def test_update_coords(self):
 
         pass
+
+    def test_params(self):
+
+        estimator = StandardScaler(with_mean=False)
+        params = estimator.get_params()
+        params.update(
+            {'estimator': estimator, 'reshapes': None, 'sample_dim': None})
+
+        # check params set in constructor
+        wrapper = wrap(estimator)
+        self.assertEqual(wrapper.get_params(), params)
+        self.assertEqual(wrapper.with_mean, False)
+
+        # check params set by attribute
+        wrapper.with_std = False
+        params.update({'with_std': False})
+        self.assertEqual(wrapper.get_params(), params)
+
+        # check params set with set_params
+        wrapper.set_params(copy=False)
+        params.update({'copy': False})
+        self.assertEqual(wrapper.get_params(), params)
+
+    def test_attributes(self):
+
+        estimator = wrap(StandardScaler())
+
+        # check pass-through wrapper
+        estimator.fit(self.X.var_2d.values)
+        npt.assert_allclose(estimator.mean_, estimator.estimator_.mean_)
+
+        # check DataArray wrapper
+        estimator.fit(self.X.var_2d)
+        npt.assert_allclose(estimator.mean_, estimator.estimator_.mean_)
+
+        # check Dataset wrapper
+        estimator.fit(self.X.var_2d.to_dataset())
+        npt.assert_allclose(estimator.mean_['var_2d'],
+                            estimator.estimator_dict_['var_2d'].mean_)
 
 
 class PublicInterfaceTests(TestCase):
@@ -109,8 +149,6 @@ class PublicInterfaceTests(TestCase):
         assert_equal(yp, X_ds)
 
     def test_wrapped_transformer(self):
-
-        from sklearn.preprocessing import StandardScaler
 
         estimator = wrap(StandardScaler())
 
@@ -311,6 +349,39 @@ class PublicInterfaceTests(TestCase):
 
         wrapper.score(X_ds, y)
 
+    def test_partial_fit(self):
+
+        estimator = wrap(StandardScaler())
+
+        # check pass-through wrapper
+        estimator.partial_fit(self.X.var_2d.values)
+        assert hasattr(estimator, 'mean_')
+
+        with self.assertRaises(ValueError):
+            estimator.partial_fit(self.X.var_2d)
+        with self.assertRaises(ValueError):
+            estimator.partial_fit(self.X)
+
+        # check DataArray wrapper
+        estimator = clone(estimator)
+        estimator.partial_fit(self.X.var_2d)
+
+        with self.assertRaises(ValueError):
+            estimator.partial_fit(self.X.var_2d.values)
+        with self.assertRaises(ValueError):
+            estimator.partial_fit(self.X)
+        assert hasattr(estimator, 'mean_')
+
+        # check Dataset wrapper
+        estimator = clone(estimator)
+        estimator.partial_fit(self.X.var_2d.to_dataset())
+
+        with self.assertRaises(ValueError):
+            estimator.partial_fit(self.X.var_2d.values)
+        with self.assertRaises(ValueError):
+            estimator.partial_fit(self.X.var_2d)
+        assert hasattr(estimator, 'mean_')
+
 
 def test_classifier():
 
@@ -319,7 +390,13 @@ def test_classifier():
     assert hasattr(lr, 'predict')
     assert hasattr(lr, 'decision_function')
 
+    lr = wrap(LogisticRegression)
+    check_estimator(lr)
+    assert hasattr(lr, 'C')
+
     svc_proba = wrap(SVC(probability=True))
+    # check_estimator(svc_proba) fails because the wrapper is not excluded
+    # from tests that are known to fail for SVC...
     assert hasattr(svc_proba, 'predict_proba')
     assert hasattr(svc_proba, 'predict_log_proba')
 
@@ -331,14 +408,23 @@ def test_regressor():
     assert hasattr(lr, 'predict')
     assert hasattr(lr, 'score')
 
+    lr = wrap(LinearRegression)
+    check_estimator(lr)
+    assert hasattr(lr, 'normalize')
+
 
 def test_transformer():
 
     tr = wrap(KernelCenterer, compat=True)
     check_estimator(tr)
+
+    tr = wrap(KernelCenterer)
+    check_estimator(tr)
     assert hasattr(tr, 'transform')
 
     ss = wrap(StandardScaler)
+    # check_estimator(ss) fails because the wrapper is not excluded
+    # from tests that are known to fail for StandardScaler...
     assert hasattr(ss, 'partial_fit')
     assert hasattr(ss, 'inverse_transform')
     assert hasattr(ss, 'fit_transform')
