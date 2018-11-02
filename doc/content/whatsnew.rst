@@ -5,9 +5,21 @@ What's New
 Github master branch
 --------------------
 
+Breaking changes
+~~~~~~~~~~~~~~~~
+
+- ``wrap`` now returns a new class ``CompatEstimatorWrapper`` when
+  ``compat=True``.
+- The standard ``EstimatorWrapper`` directly reflects the parameters of the
+  underlying estimator as instance attributes, regardless of the value of
+  ``compat`` (which is deprecated and has no effect).
+
 Enhancements
 ~~~~~~~~~~~~
 
+- Added the ``CompatEstimatorWrapper`` which acts like a standard sklearn
+  estimator (with the wrapped estimator as nested) and does not
+  present the attributes of the underlying estimator.
 - Added ``inverse_transform`` to ``preprocessing.Concatenator``.
 
 Bug fixes
