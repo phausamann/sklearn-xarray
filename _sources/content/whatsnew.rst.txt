@@ -2,8 +2,8 @@ What's New
 ==========
 
 
-Github master branch
---------------------
+v0.3.0 (November 5, 2018)
+-------------------------
 
 Breaking changes
 ~~~~~~~~~~~~~~~~
@@ -17,6 +17,11 @@ Breaking changes
 Enhancements
 ~~~~~~~~~~~~
 
+- ``EstimatorWrapper`` now directly reflects both the parameters and the
+  fitted attributes (e.g. ``mean_``) of the underlying estimator. The
+  ``estimator`` attribute is still an instance of the actual estimator but is
+  treated mostly as just the ``type`` of the instance (It's not stored as
+  the type for compatibility with ``clone``).
 - Added the ``CompatEstimatorWrapper`` which acts like a standard sklearn
   estimator (with the wrapped estimator as nested) and does not
   present the attributes of the underlying estimator.

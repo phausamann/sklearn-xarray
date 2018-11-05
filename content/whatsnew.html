@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>What’s New &mdash; sklearn-xarray 0.2.0-alpha documentation</title>
+  <title>What’s New &mdash; sklearn-xarray 0.3.0-alpha documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.2.0
+                0.3.0
               </div>
             
           
@@ -85,7 +85,7 @@
             
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">What’s New</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#github-master-branch">Github master branch</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#v0-3-0-november-5-2018">v0.3.0 (November 5, 2018)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#breaking-changes">Breaking changes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#enhancements">Enhancements</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bug-fixes">Bug fixes</a></li>
@@ -185,8 +185,8 @@
             
   <div class="section" id="what-s-new">
 <h1>What’s New<a class="headerlink" href="#what-s-new" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="github-master-branch">
-<h2>Github master branch<a class="headerlink" href="#github-master-branch" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="v0-3-0-november-5-2018">
+<h2>v0.3.0 (November 5, 2018)<a class="headerlink" href="#v0-3-0-november-5-2018" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="breaking-changes">
 <h3>Breaking changes<a class="headerlink" href="#breaking-changes" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
@@ -200,6 +200,11 @@ underlying estimator as instance attributes, regardless of the value of
 <div class="section" id="enhancements">
 <h3>Enhancements<a class="headerlink" href="#enhancements" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">EstimatorWrapper</span></code> now directly reflects both the parameters and the
+fitted attributes (e.g. <code class="docutils literal notranslate"><span class="pre">mean_</span></code>) of the underlying estimator. The
+<code class="docutils literal notranslate"><span class="pre">estimator</span></code> attribute is still an instance of the actual estimator but is
+treated mostly as just the <code class="docutils literal notranslate"><span class="pre">type</span></code> of the instance (It’s not stored as
+the type for compatibility with <code class="docutils literal notranslate"><span class="pre">clone</span></code>).</li>
 <li>Added the <code class="docutils literal notranslate"><span class="pre">CompatEstimatorWrapper</span></code> which acts like a standard sklearn
 estimator (with the wrapped estimator as nested) and does not
 present the attributes of the underlying estimator.</li>
