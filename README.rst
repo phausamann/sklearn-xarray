@@ -58,9 +58,7 @@ The package can be installed from ``pip``::
 
 For the latest version, you can also install from source::
 
-    $ git clone https://github.com/phausamann/sklearn-xarray.git
-    $ cd sklearn-xarray
-    $ python setup.py install
+    $ pip install https://github.com/phausamann/sklearn-xarray/archive/master.zip
 
 
 Example
