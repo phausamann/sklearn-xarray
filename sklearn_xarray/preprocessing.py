@@ -703,10 +703,10 @@ class Segmenter(BaseTransformer):
                     new_dims.append(self.new_dim)
                 else:
                     new_dims.insert(self.axis, self.new_dim)
-                coords_new[c] = (new_dims,
-                    self._segment_array(X[c].values,
-                                        tuple(X[c].dims).index(self.dim),
-                                        self.return_view))
+                coords_new[c] = (
+                    new_dims, self._segment_array(
+                        X[c].values, tuple(X[c].dims).index(self.dim),
+                        self.return_view))
             elif c != self.dim:
                 coords_new[c] = (X[c].dims, X[c])
 
@@ -729,7 +729,7 @@ class Segmenter(BaseTransformer):
                 axis = new_dims.index(self.dim)
                 new_dims.remove(self.new_dim)
                 coords_old[c] = (new_dims,
-                    self._rebuild_array(X[c].values, axis))
+                                 self._rebuild_array(X[c].values, axis))
             elif c not in (self.dim, self.new_dim):
                 coords_old[c] = (X[c].dims, X[c])
 
@@ -930,9 +930,9 @@ class Resampler(BaseTransformer):
                     axis = X[v].dims.index(self.dim)
                     v_t = sig.resample_poly(X[v], num, den, axis=axis)
                     # trim the results because the length might be greater
-                    I = [slice(None)] * v_t.ndim
-                    I[axis] = np.arange(len(Xt_dim[self.dim]))
-                    vars_t[v] = (X[v].dims, v_t[tuple(I)])
+                    idx = [slice(None)] * v_t.ndim
+                    idx[axis] = np.arange(len(Xt_dim[self.dim]))
+                    vars_t[v] = (X[v].dims, v_t[tuple(idx)])
 
             # combine to new dataset
             return xr.Dataset(vars_t, coords=coords_t)
@@ -942,8 +942,8 @@ class Resampler(BaseTransformer):
             axis = X.dims.index(self.dim)
             x_t = sig.resample_poly(X, num, den, axis=axis)
             # trim the results because the length might be greater
-            I = [slice(None)] * x_t.ndim
-            I[axis] = np.arange(len(Xt_dim[self.dim]))
+            idx = [slice(None)] * x_t.ndim
+            idx[axis] = np.arange(len(Xt_dim[self.dim]))
 
             # combine to new array
             return xr.DataArray(x_t, coords=coords_t, dims=X.dims)
@@ -1226,7 +1226,7 @@ class Featurizer(BaseTransformer):
         # stack all dimensions except for sample dimension
         if self.type_ == 'Dataset':
             X = xr.concat([self._transform_var(X[v]) for v in X.data_vars],
-                           dim=self.feature_dim)
+                          dim=self.feature_dim)
             if self.return_array:
                 return X
             else:

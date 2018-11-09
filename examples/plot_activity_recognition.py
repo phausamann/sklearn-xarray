@@ -13,11 +13,11 @@ of samples, use metadata directly as labels for classification tasks and more.
 
 The example performs activity recognition from raw accelerometer data with a
 Gaussian naive Bayes classifier. It uses the
-`WISDM activity prediction dataset`_ which contains the activities
+`WISDM`_ activity prediction dataset which contains the activities
 walking, jogging, walking upstairs, walking downstairs, sitting and standing
 from 36 different subjects.
 
-.. _WISDM activity prediction dataset: http://www.cis.fordham.edu/wisdm/dataset.php
+.. _WISDM: http://www.cis.fordham.edu/wisdm/dataset.php
 """
 
 from __future__ import print_function
@@ -72,7 +72,7 @@ axarr[2].set_title('Acceleration along z-axis')
 # The preprocessing consists of splitting the data into segments, removing
 # segments with `nan` values and standardizing. Since the accelerometer data is
 # three-dimensional but the standardizer and classifier expect a one-dimensional
-# feature vector, we have to vectorize the samples.
+#  feature vector, we have to vectorize the samples.
 #
 # Finally, we use PCA and a naive Bayes classifier for classification.
 

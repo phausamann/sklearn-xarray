@@ -52,14 +52,14 @@ class ReshapingEstimator(BaseEstimator, TransformerMixin):
 
         Xt = np.array(X)
 
-        I = [slice(None)]*Xt.ndim
+        idx = [slice(None)]*Xt.ndim
         for i in range(len(self.new_shape)):
             if self.new_shape[i] > 0:
-                I[i] = slice(None, self.new_shape[i])
+                idx[i] = slice(None, self.new_shape[i])
             elif self.new_shape[i] == 0:
-                I[i] = 0
+                idx[i] = 0
 
-        return Xt[tuple(I)]
+        return Xt[tuple(idx)]
 
     def transform(self, X):
 
@@ -69,13 +69,13 @@ class ReshapingEstimator(BaseEstimator, TransformerMixin):
 
         Xt = np.zeros(self.shape_)
 
-        I = [slice(None)]*Xt.ndim
+        idx = [slice(None)]*Xt.ndim
         for i in range(len(self.new_shape)):
             if self.new_shape[i] > 0:
-                I[i] = slice(None, self.new_shape[i])
+                idx[i] = slice(None, self.new_shape[i])
             elif self.new_shape[i] == 0:
-                I[i] = 0
+                idx[i] = 0
 
-        Xt[tuple(I)] = X
+        Xt[tuple(idx)] = X
 
         return Xt

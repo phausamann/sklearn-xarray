@@ -4,3 +4,4 @@ pandas>=0.20
 cython>=0.25
 numpy>=1.12
 scipy>=1.0
+six

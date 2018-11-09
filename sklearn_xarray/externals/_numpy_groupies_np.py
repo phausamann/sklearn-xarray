@@ -53,9 +53,9 @@ _doc_str = """
         (see above).
 """
 
-_funcs_common = 'first last len mean var std allnan anynan max min argmax argmin'.split()
+_funcs_common = \
+    'first last len mean var std allnan anynan max min argmax argmin'.split()
 _no_separate_nan_version = {'sort', 'rsort', 'array', 'allnan', 'anynan'}
-
 
 _alias_str = {
     'or': 'any',
@@ -113,6 +113,7 @@ def get_aliasing(*extra):
             alias[key] = key
     return alias
 
+
 aliasing_purepy = get_aliasing()
 
 
@@ -142,13 +143,14 @@ def check_boolean(x):
 
 try:
     basestring  # Attempt to evaluate basestring
+
+
     def isstr(s):
         return isinstance(s, basestring)
 except NameError:
     # Probably Python 3.x
     def isstr(s):
         return isinstance(s, str)
-
 
 try:
     import numpy as np
@@ -198,11 +200,13 @@ else:
 
     aliasing = get_aliasing(_alias_numpy, _alias_bottleneck)
 
+
     def fill_untouched(idx, ret, fill_value):
         """any elements of ret not indexed by idx are set to fill_value."""
         untouched = np.ones_like(ret, dtype=bool)
         untouched[idx] = False
         ret[untouched] = fill_value
+
 
     _next_int_dtype = dict(
         bool=np.int8,
@@ -220,6 +224,7 @@ else:
         float64=np.complex64,
         complex64=np.complex128
     )
+
 
     def minimum_dtype(x, dtype=np.bool_):
         """returns the "most basic" dtype which represents `x` properly, which
@@ -256,9 +261,10 @@ else:
 
     def minimum_dtype_scalar(x, dtype, a):
         if dtype is None:
-            dtype = np.dtype(type(a)) if isinstance(a, (int, float))\
-                                      else a.dtype
+            dtype = np.dtype(type(a)) if isinstance(a, (int, float)) \
+                else a.dtype
         return minimum_dtype(x, dtype)
+
 
     _forced_types = {
         'array': np.object,
@@ -289,11 +295,13 @@ else:
             # dtype set by the user
             # Careful here: np.bool != np.bool_ !
             if np.issubdtype(dtype, np.bool_) and \
-                    not('all' in func_str or 'any' in func_str):
+                    not ('all' in func_str or 'any' in func_str):
                 raise TypeError("function %s requires a more complex datatype "
                                 "than bool" % func_str)
-            if not np.issubdtype(dtype, np.integer) and func_str in ('len', 'nanlen'):
-                raise TypeError("function %s requires an integer datatype" % func_str)
+            if not np.issubdtype(dtype, np.integer) \
+                    and func_str in ('len', 'nanlen'):
+                raise TypeError(
+                    "function %s requires an integer datatype" % func_str)
             # TODO: Maybe have some more checks here
             return np.dtype(dtype)
         else:
@@ -371,8 +379,9 @@ else:
         # multi-dimensional indexing along the specified axis.
         if axis is None:
             if ndim_a > 1:
-                raise ValueError("a must be scalar or 1 dimensional, use .ravel to"
-                                 " flatten. Alternatively specify axis.")
+                raise ValueError(
+                    "a must be scalar or 1 dimensional, use .ravel to"
+                    " flatten. Alternatively specify axis.")
         elif axis >= ndim_a or axis < -ndim_a:
             raise ValueError("axis arg too large for np.ndim(a)")
         else:
@@ -383,7 +392,8 @@ else:
                 raise NotImplementedError("only 1d indexing currently"
                                           "supported with axis arg.")
             elif a.shape[axis] != len(group_idx):
-                raise ValueError("a.shape[axis] doesn't match length of group_idx.")
+                raise ValueError(
+                    "a.shape[axis] doesn't match length of group_idx.")
             elif size is not None and not np.isscalar(size):
                 raise NotImplementedError("when using axis arg, size must be"
                                           "None or scalar.")
@@ -491,9 +501,9 @@ def _sum(group_idx, a, size, fill_value, dtype=None):
         if np.iscomplexobj(a):
             ret = np.empty(size, dtype=dtype)
             ret.real = np.bincount(group_idx, weights=a.real,
-                              minlength=size)
+                                   minlength=size)
             ret.imag = np.bincount(group_idx, weights=a.imag,
-                              minlength=size)
+                                   minlength=size)
         else:
             ret = np.bincount(group_idx, weights=a,
                               minlength=size).astype(dtype)
@@ -559,7 +569,7 @@ def _any(group_idx, a, size, fill_value, dtype=None):
 
 def _min(group_idx, a, size, fill_value, dtype=None):
     dtype = minimum_dtype(fill_value, dtype or a.dtype)
-    dmax = np.iinfo(a.dtype).max if issubclass(a.dtype.type, np.integer)\
+    dmax = np.iinfo(a.dtype).max if issubclass(a.dtype.type, np.integer) \
         else np.finfo(a.dtype).max
     ret = np.full(size, fill_value, dtype=dtype)
     if fill_value != dmax:
@@ -570,7 +580,7 @@ def _min(group_idx, a, size, fill_value, dtype=None):
 
 def _max(group_idx, a, size, fill_value, dtype=None):
     dtype = minimum_dtype(fill_value, dtype or a.dtype)
-    dmin = np.iinfo(a.dtype).min if issubclass(a.dtype.type, np.integer)\
+    dmin = np.iinfo(a.dtype).min if issubclass(a.dtype.type, np.integer) \
         else np.finfo(a.dtype).min
     ret = np.full(size, fill_value, dtype=dtype)
     if fill_value != dmin:
@@ -578,29 +588,34 @@ def _max(group_idx, a, size, fill_value, dtype=None):
     np.maximum.at(ret, group_idx, a)
     return ret
 
+
 def _argmax(group_idx, a, size, fill_value, dtype=None):
     dtype = minimum_dtype(fill_value, dtype or int)
-    dmin = np.iinfo(a.dtype).min if issubclass(a.dtype.type, np.integer)\
+    dmin = np.iinfo(a.dtype).min if issubclass(a.dtype.type, np.integer) \
         else np.finfo(a.dtype).min
     group_max = _max(group_idx, a, size, dmin)
     is_max = a == group_max[group_idx]
     ret = np.full(size, fill_value, dtype=dtype)
     group_idx_max = group_idx[is_max]
     argmax, = is_max.nonzero()
-    ret[group_idx_max[::-1]] = argmax[::-1]  # reverse to ensure first value for each group wins
+    ret[group_idx_max[::-1]] = \
+        argmax[::-1]  # reverse to ensure first value for each group wins
     return ret
+
 
 def _argmin(group_idx, a, size, fill_value, dtype=None):
     dtype = minimum_dtype(fill_value, dtype or int)
-    dmax = np.iinfo(a.dtype).max if issubclass(a.dtype.type, np.integer)\
+    dmax = np.iinfo(a.dtype).max if issubclass(a.dtype.type, np.integer) \
         else np.finfo(a.dtype).max
     group_min = _min(group_idx, a, size, dmax)
     is_min = a == group_min[group_idx]
     ret = np.full(size, fill_value, dtype=dtype)
     group_idx_min = group_idx[is_min]
     argmin, = is_min.nonzero()
-    ret[group_idx_min[::-1]] = argmin[::-1]  # reverse to ensure first value for each group wins
+    ret[group_idx_min[::-1]] = \
+        argmin[::-1]  # reverse to ensure first value for each group wins
     return ret
+
 
 def _mean(group_idx, a, size, fill_value, dtype=np.dtype(np.float64)):
     if np.ndim(a) == 0:
@@ -668,6 +683,7 @@ def _generic_callable(group_idx, a, size, fill_value, dtype=None,
             ret[i] = func(grp)
     return ret
 
+
 _impl_dict = dict(min=_min, max=_max, sum=_sum, prod=_prod, last=_last,
                   first=_first, all=_all, any=_any, mean=_mean, std=_std,
                   var=_var, anynan=_anynan, allnan=_allnan, sort=_sort,
@@ -681,7 +697,9 @@ def _aggregate_base(group_idx, a, func='sum', size=None, fill_value=0,
                     order='C', dtype=None, axis=None, _impl_dict=_impl_dict,
                     _nansqueeze=False, **kwargs):
     group_idx, a, flat_size, ndim_idx, size = input_validation(group_idx, a,
-                                             size=size, order=order, axis=axis)
+                                                               size=size,
+                                                               order=order,
+                                                               axis=axis)
     func = get_func(func, aliasing, _impl_dict)
     if not isstr(func):
         # do simple grouping and execute function in loop
@@ -713,6 +731,7 @@ def aggregate(group_idx, a, func='sum', size=None, fill_value=0, order='C',
     return _aggregate_base(group_idx, a, size=size, fill_value=fill_value,
                            order=order, dtype=dtype, func=func, axis=axis,
                            _impl_dict=_impl_dict, _nansqueeze=True, **kwargs)
+
 
 aggregate.__doc__ = """
     This is the pure numpy implementation of aggregate.
