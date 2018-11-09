@@ -277,8 +277,8 @@
         <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="n">p</span><span class="p">])</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_param_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_names</span><span class="p">()</span> <span class="o">+</span> \
-                            <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">_get_param_names</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_param_names</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_names</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">_get_param_names</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_decorate</span><span class="p">()</span>
 
@@ -517,8 +517,8 @@
 
 
 <div class="viewcode-block" id="TransformerWrapper"><a class="viewcode-back" href="../../../content/api/common.html#sklearn_xarray.TransformerWrapper">[docs]</a><span class="k">class</span> <span class="nc">TransformerWrapper</span><span class="p">(</span>
-    <span class="n">EstimatorWrapper</span><span class="p">,</span> <span class="n">_ImplementsTransformMixin</span><span class="p">,</span>
-    <span class="n">_ImplementsFitTransformMixin</span><span class="p">,</span> <span class="n">_ImplementsInverseTransformMixin</span><span class="p">):</span>
+        <span class="n">EstimatorWrapper</span><span class="p">,</span> <span class="n">_ImplementsTransformMixin</span><span class="p">,</span>
+        <span class="n">_ImplementsFitTransformMixin</span><span class="p">,</span> <span class="n">_ImplementsInverseTransformMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; A wrapper around sklearn transformers compatible with xarray objects.</span>
 
 <span class="sd">    Parameters</span>
@@ -532,7 +532,7 @@
 
 
 <div class="viewcode-block" id="RegressorWrapper"><a class="viewcode-back" href="../../../content/api/common.html#sklearn_xarray.RegressorWrapper">[docs]</a><span class="k">class</span> <span class="nc">RegressorWrapper</span><span class="p">(</span>
-    <span class="n">EstimatorWrapper</span><span class="p">,</span> <span class="n">_ImplementsPredictMixin</span><span class="p">,</span> <span class="n">_ImplementsScoreMixin</span><span class="p">):</span>
+        <span class="n">EstimatorWrapper</span><span class="p">,</span> <span class="n">_ImplementsPredictMixin</span><span class="p">,</span> <span class="n">_ImplementsScoreMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; A wrapper around sklearn regressors compatible with xarray objects.</span>
 
 <span class="sd">    Parameters</span>
@@ -547,7 +547,7 @@
 
 
 <div class="viewcode-block" id="ClassifierWrapper"><a class="viewcode-back" href="../../../content/api/common.html#sklearn_xarray.ClassifierWrapper">[docs]</a><span class="k">class</span> <span class="nc">ClassifierWrapper</span><span class="p">(</span>
-    <span class="n">EstimatorWrapper</span><span class="p">,</span> <span class="n">_ImplementsPredictMixin</span><span class="p">,</span> <span class="n">_ImplementsScoreMixin</span><span class="p">):</span>
+        <span class="n">EstimatorWrapper</span><span class="p">,</span> <span class="n">_ImplementsPredictMixin</span><span class="p">,</span> <span class="n">_ImplementsScoreMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; A wrapper around sklearn classifiers compatible with xarray objects.</span>
 
 <span class="sd">    Parameters</span>

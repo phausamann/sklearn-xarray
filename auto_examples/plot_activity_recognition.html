@@ -177,7 +177,7 @@ preprocessing steps group by group, use transformers that change the number
 of samples, use metadata directly as labels for classification tasks and more.</p>
 <p>The example performs activity recognition from raw accelerometer data with a
 Gaussian naive Bayes classifier. It uses the
-<a class="reference external" href="http://www.cis.fordham.edu/wisdm/dataset.php">WISDM activity prediction dataset</a> which contains the activities
+<a class="reference external" href="http://www.cis.fordham.edu/wisdm/dataset.php">WISDM</a> activity prediction dataset which contains the activities
 walking, jogging, walking upstairs, walking downstairs, sitting and standing
 from 36 different subjects.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
@@ -229,8 +229,9 @@ the ‘Walking’ activity.</p>
 <p>Then we define a pipeline with various preprocessing steps and a classifier.</p>
 <p>The preprocessing consists of splitting the data into segments, removing
 segments with <cite>nan</cite> values and standardizing. Since the accelerometer data is
-three-dimensional but the standardizer and classifier expect a one-dimensional
-feature vector, we have to vectorize the samples.</p>
+three-dimensional but the standardizer and classifier expect a one-dimensional</p>
+<blockquote>
+<div>feature vector, we have to vectorize the samples.</div></blockquote>
 <p>Finally, we use PCA and a naive Bayes classifier for classification.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pl</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
     <span class="p">(</span><span class="s1">&#39;splitter&#39;</span><span class="p">,</span> <span class="n">Splitter</span><span class="p">(</span>
@@ -281,7 +282,7 @@ representation for the classification.</p>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting 2 folds for each of 2 candidates, totalling 4 fits
 Best parameters: {&#39;pca__n_components&#39;: 10}
-Accuracy: 0.7041406833185531
+Accuracy: 0.67839499414
 </pre></div>
 </div>
 <div class="admonition note">
@@ -289,7 +290,7 @@ Accuracy: 0.7041406833185531
 <p class="last">The performance of this classifier is obviously pretty bad,
 it was chosen for execution speed, not accuracy.</p>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  27.471 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 1 minutes  42.635 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-activity-recognition-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" download="" href="../_downloads/b1735498accaf8faafdfd3b5ccc6e75e/plot_activity_recognition.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_activity_recognition.py</span></code></a></div>
