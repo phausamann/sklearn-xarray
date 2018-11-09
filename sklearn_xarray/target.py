@@ -1,7 +1,6 @@
 """``sklearn_xarray.target``"""
 
 import numpy as np
-import xarray as xr
 
 
 class Target(object):
@@ -31,7 +30,7 @@ class Target(object):
     dim : str or sequence of str, optional
         When set, multi-dimensional coordinates will be reduced to this
         dimension/these dimensions.
-        
+
     reduce_func : callable, optional
         A callable that reduces the coordinate(s) to the dimension(s) in
         ``dim``. If not specified, the values along dimensions not in ``dim``
@@ -168,8 +167,6 @@ class Target(object):
         self:
             The target itself.
         """
-
-        from .utils import convert_to_ndarray
 
         if self.coord is not None:
             self.values = self._reduce(X[self.coord])

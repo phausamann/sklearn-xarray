@@ -4,6 +4,7 @@ import xarray as xr
 from sklearn_xarray.model_selection import CrossValidatorWrapper
 from sklearn.model_selection import KFold, GroupKFold
 
+
 def test_cross_validator():
 
     X_da = xr.DataArray(

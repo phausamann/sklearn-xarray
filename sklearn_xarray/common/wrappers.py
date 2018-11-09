@@ -121,8 +121,8 @@ class EstimatorWrapper(_CommonEstimatorWrapper):
         for p in params:
             setattr(self, p, params[p])
 
-        self._param_names = self._get_param_names() + \
-                            self.estimator._get_param_names()
+        self._param_names = \
+            self._get_param_names() + self.estimator._get_param_names()
 
         self._decorate()
 
@@ -361,8 +361,8 @@ class CompatEstimatorWrapper(EstimatorWrapper):
 
 
 class TransformerWrapper(
-    EstimatorWrapper, _ImplementsTransformMixin,
-    _ImplementsFitTransformMixin, _ImplementsInverseTransformMixin):
+        EstimatorWrapper, _ImplementsTransformMixin,
+        _ImplementsFitTransformMixin, _ImplementsInverseTransformMixin):
     """ A wrapper around sklearn transformers compatible with xarray objects.
 
     Parameters
@@ -376,7 +376,7 @@ class TransformerWrapper(
 
 
 class RegressorWrapper(
-    EstimatorWrapper, _ImplementsPredictMixin, _ImplementsScoreMixin):
+        EstimatorWrapper, _ImplementsPredictMixin, _ImplementsScoreMixin):
     """ A wrapper around sklearn regressors compatible with xarray objects.
 
     Parameters
@@ -391,7 +391,7 @@ class RegressorWrapper(
 
 
 class ClassifierWrapper(
-    EstimatorWrapper, _ImplementsPredictMixin, _ImplementsScoreMixin):
+        EstimatorWrapper, _ImplementsPredictMixin, _ImplementsScoreMixin):
     """ A wrapper around sklearn classifiers compatible with xarray objects.
 
     Parameters

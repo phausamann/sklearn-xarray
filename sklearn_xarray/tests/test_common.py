@@ -288,7 +288,7 @@ class PublicInterfaceTests(TestCase):
 
         estimator.fit(X_da)
         Xt_da = estimator.transform(X_da)
-        Xr_da = estimator.inverse_transform(Xt_da)
+        estimator.inverse_transform(Xt_da)
 
         assert_allclose(Xt_da, Xt)
 
@@ -308,8 +308,8 @@ class PublicInterfaceTests(TestCase):
 
         from sklearn.decomposition import PCA
 
-        estimator = wrap(PCA(n_components=5), reshapes='feat_1',
-                       sample_dim='sample')
+        estimator = wrap(
+            PCA(n_components=5), reshapes='feat_1', sample_dim='sample')
 
         # test DataArray
         X_da = self.X.var_2d

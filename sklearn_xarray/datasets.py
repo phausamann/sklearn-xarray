@@ -19,7 +19,7 @@ def load_dummy_dataset():
     """ Load a Dataset for demonstration purposes. """
 
     return xr.Dataset(
-        {'var_1' : (['sample', 'feature'], np.random.random((100, 10)))},
+        {'var_1': (['sample', 'feature'], np.random.random((100, 10)))},
         coords={'sample': range(100), 'feature': range(10)}
     )
 

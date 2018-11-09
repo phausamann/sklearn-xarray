@@ -27,7 +27,7 @@ def test_preprocess():
     xrt.assert_allclose(Xt_da, Xt_da_gt)
 
     X_ds = xr.Dataset(
-        {'var_1' : (['sample', 'feature'], np.random.random((100, 10)))},
+        {'var_1': (['sample', 'feature'], np.random.random((100, 10)))},
         coords={'sample': range(100), 'feature': range(10)}
     )
 
@@ -51,7 +51,7 @@ def test_groupwise():
     )
 
     # test wrapped sklearn estimator
-    Xt_ds = preprocess(X_ds, scale, groupby='coord_1')
+    preprocess(X_ds, scale, groupby='coord_1')
 
     # test newly defined estimator
     Xt_ds2, estimator = split(
@@ -195,7 +195,7 @@ def test_resample():
         dims=('sample', 'feature')
     )
 
-    Xt_da = resample(X_da, freq='20ms')
+    resample(X_da, freq='20ms')
 
     X_ds = xr.Dataset(
         {'var_1': (['sample', 'feature'], np.random.random((100, 10)))},
@@ -203,9 +203,8 @@ def test_resample():
                 'feature': range(10)}
     )
 
-    Xt_ds = resample(X_ds, freq='20ms')
-
-    #TODO: check result
+    # TODO: check result
+    resample(X_ds, freq='20ms')
 
 
 def test_concatenate():

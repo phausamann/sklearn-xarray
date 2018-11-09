@@ -1,6 +1,5 @@
 import numpy as np
 import xarray as xr
-import xarray.testing as xrt
 import numpy.testing as npt
 
 from sklearn_xarray import Target
