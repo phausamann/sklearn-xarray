@@ -212,7 +212,7 @@ Finally, we run the grid search and print out the best parameter combination.
 
     Fitting 2 folds for each of 2 candidates, totalling 4 fits
     Best parameters: {'pca__n_components': 10}
-    Accuracy: 0.67839499414
+    Accuracy: 0.6942540635795388
 
 
 .. note::
@@ -221,7 +221,7 @@ Finally, we run the grid search and print out the best parameter combination.
     it was chosen for execution speed, not accuracy.
 
 
-**Total running time of the script:** ( 1 minutes  42.635 seconds)
+**Total running time of the script:** ( 0 minutes  27.217 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_activity_recognition.py:
