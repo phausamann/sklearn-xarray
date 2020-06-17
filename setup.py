@@ -1,5 +1,4 @@
 from __future__ import print_function
-import sys
 from setuptools import setup, find_packages
 from distutils.util import convert_path
 
@@ -10,18 +9,6 @@ main_ns = {}
 ver_path = convert_path('sklearn_xarray/version.py')
 with open(ver_path) as ver_file:
     exec(ver_file.read(), main_ns)
-
-try:
-    import numpy
-except ImportError:
-    print('numpy is required during installation')
-    sys.exit(1)
-
-try:
-    import scipy
-except ImportError:
-    print('scipy is required during installation')
-    sys.exit(1)
 
 with open('README.rst') as f:
     readme = f.read()

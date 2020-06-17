@@ -4,9 +4,9 @@ from types import MethodType
 
 import warnings
 
+import six
 from sklearn.base import BaseEstimator, clone
 from sklearn.utils.validation import check_X_y, check_array
-from sklearn.externals import six
 
 from .base import (
     partial_fit, predict, predict_proba, predict_log_proba, decision_function,

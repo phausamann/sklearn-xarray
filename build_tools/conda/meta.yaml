@@ -1,24 +1,39 @@
+{% set data = load_setup_py_data() %}
+
 package:
   name: sklearn-xarray
-  version: 0.3.0
+  version: {{ data['version'] }}
 
 source:
-  git_rev: "0.3.0"
-  git_url: https://github.com/phausamann/sklearn-xarray.git
+  path: ../..
+
+build:
+  noarch: python
+  number: 1
+  ignore_run_exports:
+    - python_abi
 
 requirements:
   build:
     - python
     - setuptools
-    - numpy
-    - scipy
-
   run:
     - python
+    - numpy
+    - scipy
     - scikit-learn
     - xarray
     - pandas
     - six
+
+test:
+  source_files:
+    - sklearn_xarray/tests
+  requires:
+    - pytest
+    - pytest-cov
+  commands:
+    - pytest --cov=sklearn_xarray
 
 about:
   home: https://github.com/phausamann/sklearn-xarray

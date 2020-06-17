@@ -119,7 +119,7 @@ def load_wisdm_dataarray(url='http://www.cis.fordham.edu/wisdm/includes/'
     df = pd.read_csv(os.path.join(folder, file), header=None,
                      names=column_names, comment=';')
 
-    time = pd.TimedeltaIndex(start=0, periods=df.shape[0], freq='50ms')
+    time = pd.date_range(start=0, periods=df.shape[0], freq='50ms')
 
     coords = {'subject': ('sample', df.subject),
               'activity': ('sample', df.activity),

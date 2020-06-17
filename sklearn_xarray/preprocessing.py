@@ -1213,7 +1213,13 @@ class Featurizer(BaseTransformer):
         else:
             stack_dims = tuple(set(X.dims) - {self.sample_dim})
 
-        return X.stack(**{self.feature_dim: stack_dims})
+        if len(stack_dims) == 0:
+            # TODO write a test for this (nothing to stack)
+            Xt = X.copy()
+            Xt[self.feature_dim] = 0
+            return Xt
+        else:
+            return X.stack(**{self.feature_dim: stack_dims})
 
     def _inverse_transform_var(self, X):
         """ Inverse transform a single variable. """
