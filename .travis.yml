@@ -11,8 +11,9 @@ env:
   - TEST_DIR=/tmp/test_dir/
   - MODULE=sklearn_xarray
   matrix:
-  - DISTRIB="conda" PYTHON_VERSION="2.7"
-  - DISTRIB="conda" PYTHON_VERSION="3.5" COVERAGE="true"
+  - DISTRIB="conda" PYTHON_VERSION="3.6"
+  - DISTRIB="conda" PYTHON_VERSION="3.7"
+  - DISTRIB="conda" PYTHON_VERSION="3.8" COVERAGE="true"
 
 install: source build_tools/travis/install.sh
 script:
@@ -20,8 +21,8 @@ script:
   - bash build_tools/travis/make_docs.sh
 
 after_success:
-  - source build_tools/travis/success.sh
-#  - chmod +x build_tools/travis/deploy_anaconda.sh
+  - bash build_tools/travis/success.sh
+  - chmod +x build_tools/travis/deploy_anaconda.sh
 
 deploy:
 
