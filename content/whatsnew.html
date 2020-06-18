@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>What’s New &mdash; sklearn-xarray 0.3.0-alpha documentation</title>
+  <title>What’s New &mdash; sklearn-xarray 0.4.0 documentation</title>
   
 
   
@@ -17,35 +17,41 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Introduction" href="intro.html" />
     <link rel="prev" title="sklearn-xarray: Using scikit-learn with xarray" href="../index.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -59,7 +65,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.4.0
               </div>
             
           
@@ -85,28 +91,33 @@
             
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">What’s New</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#v0-3-0-november-5-2018">v0.3.0 (November 5, 2018)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#v0-4-0-june-18-2020">v0.4.0 (June 18, 2020)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#breaking-changes">Breaking changes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#enhancements">Enhancements</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-3-0-november-5-2018">v0.3.0 (November 5, 2018)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Breaking changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Enhancements</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bug-fixes">Bug fixes</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#v0-2-0-april-9-2018">v0.2.0 (April 9, 2018)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id1">Breaking changes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id2">Enhancements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Breaking changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Enhancements</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#v0-1-4-march-15-2018">v0.1.4 (March 15, 2018)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id3">Enhancements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">Enhancements</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#deprecations">Deprecations</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#v0-1-3-january-9-2018">v0.1.3 (January 9, 2018)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id4">Enhancements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">Enhancements</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#v0-1-2-december-10-2017">v0.1.2 (December 10, 2017)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id5">Enhancements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">Enhancements</a></li>
 </ul>
 </li>
 </ul>
@@ -185,91 +196,111 @@
             
   <div class="section" id="what-s-new">
 <h1>What’s New<a class="headerlink" href="#what-s-new" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="v0-3-0-november-5-2018">
-<h2>v0.3.0 (November 5, 2018)<a class="headerlink" href="#v0-3-0-november-5-2018" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="v0-4-0-june-18-2020">
+<h2>v0.4.0 (June 18, 2020)<a class="headerlink" href="#v0-4-0-june-18-2020" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="breaking-changes">
 <h3>Breaking changes<a class="headerlink" href="#breaking-changes" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">wrap</span></code> now returns a new class <code class="docutils literal notranslate"><span class="pre">CompatEstimatorWrapper</span></code> when
-<code class="docutils literal notranslate"><span class="pre">compat=True</span></code>.</li>
-<li>The standard <code class="docutils literal notranslate"><span class="pre">EstimatorWrapper</span></code> directly reflects the parameters of the
-underlying estimator as instance attributes, regardless of the value of
-<code class="docutils literal notranslate"><span class="pre">compat</span></code> (which is deprecated and has no effect).</li>
+<li><p>Python &lt;3.6 is no longer officially supported. The package might still work,
+but we don’t test against these versions anymore.</p></li>
 </ul>
 </div>
 <div class="section" id="enhancements">
 <h3>Enhancements<a class="headerlink" href="#enhancements" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">EstimatorWrapper</span></code> now directly reflects both the parameters and the
-fitted attributes (e.g. <code class="docutils literal notranslate"><span class="pre">mean_</span></code>) of the underlying estimator. The
-<code class="docutils literal notranslate"><span class="pre">estimator</span></code> attribute is still an instance of the actual estimator but is
-treated mostly as just the <code class="docutils literal notranslate"><span class="pre">type</span></code> of the instance (It’s not stored as
-the type for compatibility with <code class="docutils literal notranslate"><span class="pre">clone</span></code>).</li>
-<li>Added the <code class="docutils literal notranslate"><span class="pre">CompatEstimatorWrapper</span></code> which acts like a standard sklearn
-estimator (with the wrapped estimator as nested) and does not
-present the attributes of the underlying estimator.</li>
-<li>Added <code class="docutils literal notranslate"><span class="pre">inverse_transform</span></code> to <code class="docutils literal notranslate"><span class="pre">preprocessing.Concatenator</span></code>.</li>
-</ul>
+<ul>
+<li><p>The package can now be installed via conda:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">phausamann</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">sklearn</span><span class="o">-</span><span class="n">xarray</span>
+</pre></div>
 </div>
-<div class="section" id="bug-fixes">
-<h3>Bug fixes<a class="headerlink" href="#bug-fixes" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li>Fixed failing tests with sklearn 0.20.</li>
+</li>
 </ul>
 </div>
 </div>
-<div class="section" id="v0-2-0-april-9-2018">
-<h2>v0.2.0 (April 9, 2018)<a class="headerlink" href="#v0-2-0-april-9-2018" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="v0-3-0-november-5-2018">
+<h2>v0.3.0 (November 5, 2018)<a class="headerlink" href="#v0-3-0-november-5-2018" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id1">
 <h3>Breaking changes<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">wrap</span></code> now returns a decorated <code class="docutils literal notranslate"><span class="pre">EstimatorWrapper</span></code> instead of an
-estimator-specific wrapper class.</li>
-<li>Removed the <code class="docutils literal notranslate"><span class="pre">common.decorators</span></code> module, because the decorated
-estimators could not be pickled and therefore didn’t pass the usual sklearn
-estimator checks.</li>
-<li>Removed the <code class="docutils literal notranslate"><span class="pre">dataset</span></code> and <code class="docutils literal notranslate"><span class="pre">dataarray</span></code> modules. Wrappers have
-to be directly imported from <code class="docutils literal notranslate"><span class="pre">sklearn_xarray</span></code>.</li>
-<li>Removed the <code class="docutils literal notranslate"><span class="pre">data</span></code> module (now called <code class="docutils literal notranslate"><span class="pre">datasets</span></code>).</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wrap</span></code> now returns a new class <code class="docutils literal notranslate"><span class="pre">CompatEstimatorWrapper</span></code> when
+<code class="docutils literal notranslate"><span class="pre">compat=True</span></code>.</p></li>
+<li><p>The standard <code class="docutils literal notranslate"><span class="pre">EstimatorWrapper</span></code> directly reflects the parameters of the
+underlying estimator as instance attributes, regardless of the value of
+<code class="docutils literal notranslate"><span class="pre">compat</span></code> (which is deprecated and has no effect).</p></li>
 </ul>
 </div>
 <div class="section" id="id2">
 <h3>Enhancements<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Added wrappers for <code class="docutils literal notranslate"><span class="pre">fit_transform</span></code>, <code class="docutils literal notranslate"><span class="pre">partial_fit</span></code>, <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code>,
-<code class="docutils literal notranslate"><span class="pre">predict_log_proba</span></code> and <code class="docutils literal notranslate"><span class="pre">decision_function</span></code>.</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EstimatorWrapper</span></code> now directly reflects both the parameters and the
+fitted attributes (e.g. <code class="docutils literal notranslate"><span class="pre">mean_</span></code>) of the underlying estimator. The
+<code class="docutils literal notranslate"><span class="pre">estimator</span></code> attribute is still an instance of the actual estimator but is
+treated mostly as just the <code class="docutils literal notranslate"><span class="pre">type</span></code> of the instance (It’s not stored as
+the type for compatibility with <code class="docutils literal notranslate"><span class="pre">clone</span></code>).</p></li>
+<li><p>Added the <code class="docutils literal notranslate"><span class="pre">CompatEstimatorWrapper</span></code> which acts like a standard sklearn
+estimator (with the wrapped estimator as nested) and does not
+present the attributes of the underlying estimator.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">inverse_transform</span></code> to <code class="docutils literal notranslate"><span class="pre">preprocessing.Concatenator</span></code>.</p></li>
+</ul>
+</div>
+<div class="section" id="bug-fixes">
+<h3>Bug fixes<a class="headerlink" href="#bug-fixes" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Fixed failing tests with sklearn 0.20.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="v0-2-0-april-9-2018">
+<h2>v0.2.0 (April 9, 2018)<a class="headerlink" href="#v0-2-0-april-9-2018" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h3>Breaking changes<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">wrap</span></code> now returns a decorated <code class="docutils literal notranslate"><span class="pre">EstimatorWrapper</span></code> instead of an
+estimator-specific wrapper class.</p></li>
+<li><p>Removed the <code class="docutils literal notranslate"><span class="pre">common.decorators</span></code> module, because the decorated
+estimators could not be pickled and therefore didn’t pass the usual sklearn
+estimator checks.</p></li>
+<li><p>Removed the <code class="docutils literal notranslate"><span class="pre">dataset</span></code> and <code class="docutils literal notranslate"><span class="pre">dataarray</span></code> modules. Wrappers have
+to be directly imported from <code class="docutils literal notranslate"><span class="pre">sklearn_xarray</span></code>.</p></li>
+<li><p>Removed the <code class="docutils literal notranslate"><span class="pre">data</span></code> module (now called <code class="docutils literal notranslate"><span class="pre">datasets</span></code>).</p></li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h3>Enhancements<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Added wrappers for <code class="docutils literal notranslate"><span class="pre">fit_transform</span></code>, <code class="docutils literal notranslate"><span class="pre">partial_fit</span></code>, <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code>,
+<code class="docutils literal notranslate"><span class="pre">predict_log_proba</span></code> and <code class="docutils literal notranslate"><span class="pre">decision_function</span></code>.</p></li>
 </ul>
 </div>
 </div>
 <div class="section" id="v0-1-4-march-15-2018">
 <h2>v0.1.4 (March 15, 2018)<a class="headerlink" href="#v0-1-4-march-15-2018" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id3">
-<h3>Enhancements<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id5">
+<h3>Enhancements<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">preprocessing.Transposer</span></code> now also accepts a subset of <code class="docutils literal notranslate"><span class="pre">X.dims</span></code> for the
-<code class="docutils literal notranslate"><span class="pre">order</span></code> parameter.</li>
-<li><code class="docutils literal notranslate"><span class="pre">preprocessing.Splitter</span></code> and <code class="docutils literal notranslate"><span class="pre">preprocessing.Segmenter</span></code> now accept an
-<code class="docutils literal notranslate"><span class="pre">axis</span></code> argument that specifies where to insert the new dimension.</li>
-<li>Huge performance improvements for <code class="docutils literal notranslate"><span class="pre">preprocessing.Segmenter</span></code> by using
+<li><p><code class="docutils literal notranslate"><span class="pre">preprocessing.Transposer</span></code> now also accepts a subset of <code class="docutils literal notranslate"><span class="pre">X.dims</span></code> for the
+<code class="docutils literal notranslate"><span class="pre">order</span></code> parameter.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">preprocessing.Splitter</span></code> and <code class="docutils literal notranslate"><span class="pre">preprocessing.Segmenter</span></code> now accept an
+<code class="docutils literal notranslate"><span class="pre">axis</span></code> argument that specifies where to insert the new dimension.</p></li>
+<li><p>Huge performance improvements for <code class="docutils literal notranslate"><span class="pre">preprocessing.Segmenter</span></code> by using
 <code class="docutils literal notranslate"><span class="pre">numpy.lib.stride_tricks.as_strided</span></code> instead of a loop. The
 general-purpose backend for segmenting can be found in
-<code class="docutils literal notranslate"><span class="pre">utils.segment_array</span></code>.</li>
+<code class="docutils literal notranslate"><span class="pre">utils.segment_array</span></code>.</p></li>
 </ul>
 </div>
 <div class="section" id="deprecations">
 <h3>Deprecations<a class="headerlink" href="#deprecations" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>The <code class="docutils literal notranslate"><span class="pre">data</span></code> module containing different example datasets is being renamed
+<li><p>The <code class="docutils literal notranslate"><span class="pre">data</span></code> module containing different example datasets is being renamed
 to <code class="docutils literal notranslate"><span class="pre">datasets</span></code> according to the scikit-learn standards. Since the
 <code class="docutils literal notranslate"><span class="pre">dataset</span></code> module will be removed, there will no longer be confusion due
-to similar naming.</li>
+to similar naming.</p></li>
 </ul>
 </div>
 </div>
 <div class="section" id="v0-1-3-january-9-2018">
 <h2>v0.1.3 (January 9, 2018)<a class="headerlink" href="#v0-1-3-january-9-2018" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id4">
-<h3>Enhancements<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id6">
+<h3>Enhancements<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <p>The wrapper now passes the DataArray’s <code class="docutils literal notranslate"><span class="pre">data</span></code> attribute to the wrapped
 estimator, making it possible to wrap estimators from <a class="reference external" href="http://dask-ml.readthedocs.io/en/latest/index.html">dask-ml</a> and use
 dask-backed DataArrays and Datasets as inputs.</p>
@@ -277,8 +308,8 @@ dask-backed DataArrays and Datasets as inputs.</p>
 </div>
 <div class="section" id="v0-1-2-december-10-2017">
 <h2>v0.1.2 (December 10, 2017)<a class="headerlink" href="#v0-1-2-december-10-2017" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id5">
-<h3>Enhancements<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id7">
+<h3>Enhancements<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <p>The wrapping mechanism has been changed to work with both DataArrays and
 Datasets. From now on, you can use <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">sklearn_xarray</span> <span class="pre">import</span> <span class="pre">wrap</span></code> which
 will automatically determine the type of xarray object when calling <code class="docutils literal notranslate"><span class="pre">fit</span></code>.
@@ -302,7 +333,7 @@ wrapper.</p>
         <a href="intro.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-neutral" title="sklearn-xarray: Using scikit-learn with xarray" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-neutral float-left" title="sklearn-xarray: Using scikit-learn with xarray" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -311,7 +342,7 @@ wrapper.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Peter Hausamann
+        &copy; Copyright 2020, Peter Hausamann
 
     </p>
   </div>
@@ -328,26 +359,16 @@ wrapper.</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Model Selection &mdash; sklearn-xarray 0.3.0-alpha documentation</title>
+  <title>Model Selection &mdash; sklearn-xarray 0.4.0 documentation</title>
   
 
   
@@ -17,33 +17,41 @@
   
 
   
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
-
-  
-  <script src="../../_static/js/modernizr.min.js"></script>
-
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Utils" href="utils.html" />
+    <link rel="prev" title="Preprocessing" href="preprocessing.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -57,7 +65,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.4.0
               </div>
             
           
@@ -100,9 +108,7 @@
 <li class="toctree-l2 current"><a class="reference internal" href="../api.html#list-of-modules">List of modules</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="common.html">Top-level functions and classes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="preprocessing.html">Preprocessing</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Model Selection</a><ul class="simple">
-</ul>
-</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Model Selection</a></li>
 <li class="toctree-l3"><a class="reference internal" href="utils.html">Utils</a></li>
 <li class="toctree-l3"><a class="reference internal" href="datasets.html">Datasets</a></li>
 </ul>
@@ -180,110 +186,86 @@
 <p><code class="docutils literal notranslate"><span class="pre">sklearn_xarray.model_selection</span></code></p>
 <dl class="class">
 <dt id="sklearn_xarray.model_selection.CrossValidatorWrapper">
-<em class="property">class </em><code class="descname">CrossValidatorWrapper</code><span class="sig-paren">(</span><em>cross_validator</em>, <em>dim='sample'</em>, <em>groupby=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/model_selection.html#CrossValidatorWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.model_selection.CrossValidatorWrapper" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">CrossValidatorWrapper</code><span class="sig-paren">(</span><em class="sig-param">cross_validator</em>, <em class="sig-param">dim='sample'</em>, <em class="sig-param">groupby=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/model_selection.html#CrossValidatorWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.model_selection.CrossValidatorWrapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrap an sklearn cross validator for use with xarray.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>cross_validator</strong> <span class="classifier-delimiter">:</span> <span class="classifier">sklearn cross-validator</span></dt>
-<dd><p class="first last">An instance of a cross-validator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cross_validator</strong><span class="classifier">sklearn cross-validator</span></dt><dd><p>An instance of a cross-validator.</p>
 </dd>
-<dt><strong>dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">The dimension along which to perform the split.</p>
+<dt><strong>dim</strong><span class="classifier">str</span></dt><dd><p>The dimension along which to perform the split.</p>
 </dd>
-<dt><strong>groupby</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or list</span></dt>
-<dd><p class="first last">Name of coordinate or list of coordinates by which the groups are
+<dt><strong>groupby</strong><span class="classifier">str or list</span></dt><dd><p>Name of coordinate or list of coordinates by which the groups are
 determined.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#sklearn_xarray.model_selection.CrossValidatorWrapper.get_n_splits" title="sklearn_xarray.model_selection.CrossValidatorWrapper.get_n_splits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_n_splits</span></code></a>([X,&nbsp;y,&nbsp;groups])</td>
-<td>Returns the number of splitting iterations in the cross-validator.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sklearn_xarray.model_selection.CrossValidatorWrapper.get_n_splits" title="sklearn_xarray.model_selection.CrossValidatorWrapper.get_n_splits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_n_splits</span></code></a>(self[, X, y, groups])</p></td>
+<td><p>Returns the number of splitting iterations in the cross-validator.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#sklearn_xarray.model_selection.CrossValidatorWrapper.split" title="sklearn_xarray.model_selection.CrossValidatorWrapper.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a>(X[,&nbsp;y,&nbsp;groups])</td>
-<td>Generate indices to split data into training and test set.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sklearn_xarray.model_selection.CrossValidatorWrapper.split" title="sklearn_xarray.model_selection.CrossValidatorWrapper.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a>(self, X[, y, groups])</p></td>
+<td><p>Generate indices to split data into training and test set.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="sklearn_xarray.model_selection.CrossValidatorWrapper.get_n_splits">
-<code class="descname">get_n_splits</code><span class="sig-paren">(</span><em>X=None</em>, <em>y=None</em>, <em>groups=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/model_selection.html#CrossValidatorWrapper.get_n_splits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.model_selection.CrossValidatorWrapper.get_n_splits" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_n_splits</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X=None</em>, <em class="sig-param">y=None</em>, <em class="sig-param">groups=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/model_selection.html#CrossValidatorWrapper.get_n_splits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.model_selection.CrossValidatorWrapper.get_n_splits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the number of splitting iterations in the cross-validator.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><p class="first last">Always ignored, exists for compatibility.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">object</span></dt><dd><p>Always ignored, exists for compatibility.</p>
 </dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><p class="first last">Always ignored, exists for compatibility.</p>
+<dt><strong>y</strong><span class="classifier">object</span></dt><dd><p>Always ignored, exists for compatibility.</p>
 </dd>
-<dt><strong>groups</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><p class="first last">Always ignored, exists for compatibility.</p>
+<dt><strong>groups</strong><span class="classifier">object</span></dt><dd><p>Always ignored, exists for compatibility.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>n_splits</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Returns the number of splitting iterations in the cross-validator.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>n_splits</strong><span class="classifier">int</span></dt><dd><p>Returns the number of splitting iterations in the cross-validator.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="sklearn_xarray.model_selection.CrossValidatorWrapper.split">
-<code class="descname">split</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>groups=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/model_selection.html#CrossValidatorWrapper.split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.model_selection.CrossValidatorWrapper.split" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">split</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em>, <em class="sig-param">groups=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/model_selection.html#CrossValidatorWrapper.split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.model_selection.CrossValidatorWrapper.split" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate indices to split data into training and test set.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">Training data, where n_samples is the number of samples
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>Training data, where n_samples is the number of samples
 and n_features is the number of features.</p>
 </dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_samples,)</span></dt>
-<dd><p class="first last">The target variable for supervised learning problems.</p>
+<dt><strong>y</strong><span class="classifier">array-like, shape (n_samples,)</span></dt><dd><p>The target variable for supervised learning problems.</p>
 </dd>
-<dt><strong>groups</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, with shape (n_samples,), optional</span></dt>
-<dd><p class="first last">Group labels for the samples used while splitting the dataset into
+<dt><strong>groups</strong><span class="classifier">array-like, with shape (n_samples,), optional</span></dt><dd><p>Group labels for the samples used while splitting the dataset into
 train/test set.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>train</strong> <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span></dt>
-<dd><p class="first last">The training set indices for that split.</p>
 </dd>
-<dt><strong>test</strong> <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span></dt>
-<dd><p class="first last">The testing set indices for that split.</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>train</strong><span class="classifier">ndarray</span></dt><dd><p>The training set indices for that split.</p>
+</dd>
+<dt><strong>test</strong><span class="classifier">ndarray</span></dt><dd><p>The testing set indices for that split.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -296,12 +278,21 @@ train/test set.</p>
           </div>
           <footer>
   
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="utils.html" class="btn btn-neutral float-right" title="Utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="preprocessing.html" class="btn btn-neutral float-left" title="Preprocessing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Peter Hausamann
+        &copy; Copyright 2020, Peter Hausamann
 
     </p>
   </div>
@@ -318,26 +309,16 @@ train/test set.</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

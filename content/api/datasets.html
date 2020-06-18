@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Datasets &mdash; sklearn-xarray 0.3.0-alpha documentation</title>
+  <title>Datasets &mdash; sklearn-xarray 0.4.0 documentation</title>
   
 
   
@@ -17,34 +17,40 @@
   
 
   
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="prev" title="Utils" href="utils.html" /> 
-
-  
-  <script src="../../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -58,7 +64,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.4.0
               </div>
             
           
@@ -179,73 +185,58 @@
 <p><code class="docutils literal notranslate"><span class="pre">sklearn_xarray.datasets</span></code></p>
 <dl class="function">
 <dt id="sklearn_xarray.datasets.load_digits_dataarray">
-<code class="descname">load_digits_dataarray</code><span class="sig-paren">(</span><em>load_images=False</em>, <em>nan_probability=0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/datasets.html#load_digits_dataarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.datasets.load_digits_dataarray" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">load_digits_dataarray</code><span class="sig-paren">(</span><em class="sig-param">load_images=False</em>, <em class="sig-param">nan_probability=0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/datasets.html#load_digits_dataarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.datasets.load_digits_dataarray" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load a the ‘digits’ dataset from sklearn as a DataArray.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>load_images</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
-<dd><p class="first last">If true, the DataArray will contain the two-dimensional images as
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>load_images</strong><span class="classifier">bool, optional</span></dt><dd><p>If true, the DataArray will contain the two-dimensional images as
 data instead of the vectorized samples.</p>
 </dd>
-<dt><strong>nan_probability</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float between 0 and 1</span></dt>
-<dd><p class="first last">The probability with which a sample is injected with NaN values. For
+<dt><strong>nan_probability</strong><span class="classifier">float between 0 and 1</span></dt><dd><p>The probability with which a sample is injected with NaN values. For
 demonstration purposes only.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sklearn_xarray.datasets.load_dummy_dataarray">
-<code class="descname">load_dummy_dataarray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/datasets.html#load_dummy_dataarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.datasets.load_dummy_dataarray" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">load_dummy_dataarray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/datasets.html#load_dummy_dataarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.datasets.load_dummy_dataarray" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load a DataArray for demonstration purposes.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="sklearn_xarray.datasets.load_dummy_dataset">
-<code class="descname">load_dummy_dataset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/datasets.html#load_dummy_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.datasets.load_dummy_dataset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">load_dummy_dataset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/datasets.html#load_dummy_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.datasets.load_dummy_dataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load a Dataset for demonstration purposes.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="sklearn_xarray.datasets.load_wisdm_dataarray">
-<code class="descname">load_wisdm_dataarray</code><span class="sig-paren">(</span><em>url='http://www.cis.fordham.edu/wisdm/includes/datasets/latest/WISDM_ar_latest.tar.gz'</em>, <em>file='WISDM_ar_v1.1/WISDM_ar_v1.1_raw.txt'</em>, <em>folder='data/'</em>, <em>tmp_file='widsm.tar.gz'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/datasets.html#load_wisdm_dataarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.datasets.load_wisdm_dataarray" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">load_wisdm_dataarray</code><span class="sig-paren">(</span><em class="sig-param">url='http://www.cis.fordham.edu/wisdm/includes/datasets/latest/WISDM_ar_latest.tar.gz'</em>, <em class="sig-param">file='WISDM_ar_v1.1/WISDM_ar_v1.1_raw.txt'</em>, <em class="sig-param">folder='data/'</em>, <em class="sig-param">tmp_file='widsm.tar.gz'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/datasets.html#load_wisdm_dataarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.datasets.load_wisdm_dataarray" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load the WISDM activity recognition dataset.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>url</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
-<dd><p class="first last">The URL of the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>url</strong><span class="classifier">str, optional</span></dt><dd><p>The URL of the dataset.</p>
 </dd>
-<dt><strong>file</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
-<dd><p class="first last">The file containing the data.</p>
+<dt><strong>file</strong><span class="classifier">str, optional</span></dt><dd><p>The file containing the data.</p>
 </dd>
-<dt><strong>folder</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
-<dd><p class="first last">The folder where the data will be downloaded and extracted to.</p>
+<dt><strong>folder</strong><span class="classifier">str, optional</span></dt><dd><p>The folder where the data will be downloaded and extracted to.</p>
 </dd>
-<dt><strong>tmp_file</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
-<dd><p class="first last">The name of the temporary .tar file in the folder.</p>
+<dt><strong>tmp_file</strong><span class="classifier">str, optional</span></dt><dd><p>The name of the temporary .tar file in the folder.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>X: xarray DataArray</strong></dt>
-<dd><p class="first last">The loaded dataset.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>X: xarray DataArray</dt><dd><p>The loaded dataset.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -259,7 +250,7 @@ demonstration purposes only.</p>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="utils.html" class="btn btn-neutral" title="Utils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="utils.html" class="btn btn-neutral float-left" title="Utils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -268,7 +259,7 @@ demonstration purposes only.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Peter Hausamann
+        &copy; Copyright 2020, Peter Hausamann
 
     </p>
   </div>
@@ -285,26 +276,16 @@ demonstration purposes only.</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

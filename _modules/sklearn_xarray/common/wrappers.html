@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>sklearn_xarray.common.wrappers &mdash; sklearn-xarray 0.3.0-alpha documentation</title>
+  <title>sklearn_xarray.common.wrappers &mdash; sklearn-xarray 0.4.0 documentation</title>
   
 
   
@@ -17,33 +17,39 @@
   
 
   
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery-dataframe.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
-
-  
-  <script src="../../../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -57,7 +63,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.4.0
               </div>
             
           
@@ -156,36 +162,46 @@
   <h1>Source code for sklearn_xarray.common.wrappers</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot; ``sklearn_xarray.common.wrappers`` &quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">types</span> <span class="k">import</span> <span class="n">MethodType</span>
+<span class="kn">from</span> <span class="nn">types</span> <span class="kn">import</span> <span class="n">MethodType</span>
 
 <span class="kn">import</span> <span class="nn">warnings</span>
 
-<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="k">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">clone</span>
-<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="k">import</span> <span class="n">check_X_y</span><span class="p">,</span> <span class="n">check_array</span>
-<span class="kn">from</span> <span class="nn">sklearn.externals</span> <span class="k">import</span> <span class="n">six</span>
+<span class="kn">import</span> <span class="nn">six</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">clone</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="kn">import</span> <span class="n">check_X_y</span><span class="p">,</span> <span class="n">check_array</span>
 
-<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="p">(</span>
-    <span class="n">partial_fit</span><span class="p">,</span> <span class="n">predict</span><span class="p">,</span> <span class="n">predict_proba</span><span class="p">,</span> <span class="n">predict_log_proba</span><span class="p">,</span> <span class="n">decision_function</span><span class="p">,</span>
-    <span class="n">transform</span><span class="p">,</span> <span class="n">inverse_transform</span><span class="p">,</span> <span class="n">fit_transform</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span>
-    <span class="n">_CommonEstimatorWrapper</span><span class="p">,</span> <span class="n">_ImplementsPredictMixin</span><span class="p">,</span>
-    <span class="n">_ImplementsScoreMixin</span><span class="p">,</span> <span class="n">_ImplementsTransformMixin</span><span class="p">,</span>
-    <span class="n">_ImplementsFitTransformMixin</span><span class="p">,</span> <span class="n">_ImplementsInverseTransformMixin</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">partial_fit</span><span class="p">,</span>
+    <span class="n">predict</span><span class="p">,</span>
+    <span class="n">predict_proba</span><span class="p">,</span>
+    <span class="n">predict_log_proba</span><span class="p">,</span>
+    <span class="n">decision_function</span><span class="p">,</span>
+    <span class="n">transform</span><span class="p">,</span>
+    <span class="n">inverse_transform</span><span class="p">,</span>
+    <span class="n">fit_transform</span><span class="p">,</span>
+    <span class="n">score</span><span class="p">,</span>
+    <span class="n">_CommonEstimatorWrapper</span><span class="p">,</span>
+    <span class="n">_ImplementsPredictMixin</span><span class="p">,</span>
+    <span class="n">_ImplementsScoreMixin</span><span class="p">,</span>
+    <span class="n">_ImplementsTransformMixin</span><span class="p">,</span>
+    <span class="n">_ImplementsFitTransformMixin</span><span class="p">,</span>
+    <span class="n">_ImplementsInverseTransformMixin</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">sklearn_xarray.utils</span> <span class="k">import</span> <span class="n">is_dataarray</span><span class="p">,</span> <span class="n">is_dataset</span><span class="p">,</span> <span class="n">is_target</span>
+<span class="kn">from</span> <span class="nn">sklearn_xarray.utils</span> <span class="kn">import</span> <span class="n">is_dataarray</span><span class="p">,</span> <span class="n">is_dataset</span><span class="p">,</span> <span class="n">is_target</span>
 
 
 <span class="c1"># mapping from wrapped methods to wrapper methods</span>
 <span class="n">_method_map</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;partial_fit&#39;</span><span class="p">:</span> <span class="n">partial_fit</span><span class="p">,</span>
-    <span class="s1">&#39;predict&#39;</span><span class="p">:</span> <span class="n">predict</span><span class="p">,</span>
-    <span class="s1">&#39;predict_proba&#39;</span><span class="p">:</span> <span class="n">predict_proba</span><span class="p">,</span>
-    <span class="s1">&#39;predict_log_proba&#39;</span><span class="p">:</span> <span class="n">predict_log_proba</span><span class="p">,</span>
-    <span class="s1">&#39;decision_function&#39;</span><span class="p">:</span> <span class="n">decision_function</span><span class="p">,</span>
-    <span class="s1">&#39;transform&#39;</span><span class="p">:</span> <span class="n">transform</span><span class="p">,</span>
-    <span class="s1">&#39;inverse_transform&#39;</span><span class="p">:</span> <span class="n">inverse_transform</span><span class="p">,</span>
-    <span class="s1">&#39;fit_transform&#39;</span><span class="p">:</span> <span class="n">fit_transform</span><span class="p">,</span>
-    <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="n">score</span>
+    <span class="s2">&quot;partial_fit&quot;</span><span class="p">:</span> <span class="n">partial_fit</span><span class="p">,</span>
+    <span class="s2">&quot;predict&quot;</span><span class="p">:</span> <span class="n">predict</span><span class="p">,</span>
+    <span class="s2">&quot;predict_proba&quot;</span><span class="p">:</span> <span class="n">predict_proba</span><span class="p">,</span>
+    <span class="s2">&quot;predict_log_proba&quot;</span><span class="p">:</span> <span class="n">predict_log_proba</span><span class="p">,</span>
+    <span class="s2">&quot;decision_function&quot;</span><span class="p">:</span> <span class="n">decision_function</span><span class="p">,</span>
+    <span class="s2">&quot;transform&quot;</span><span class="p">:</span> <span class="n">transform</span><span class="p">,</span>
+    <span class="s2">&quot;inverse_transform&quot;</span><span class="p">:</span> <span class="n">inverse_transform</span><span class="p">,</span>
+    <span class="s2">&quot;fit_transform&quot;</span><span class="p">:</span> <span class="n">fit_transform</span><span class="p">,</span>
+    <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="n">score</span><span class="p">,</span>
 <span class="p">}</span>
 
 
@@ -199,9 +215,9 @@
 
 <span class="sd">    reshapes : str or dict, optional</span>
 <span class="sd">        The dimension(s) reshaped by this estimator. Any coordinates in the</span>
-<span class="sd">        DataArray along these dimensions will be dropped. If the estimator drops</span>
-<span class="sd">        this dimension (e.g. a binary classifier returning a 1D vector), the</span>
-<span class="sd">        dimension itself will also be dropped.</span>
+<span class="sd">        DataArray along these dimensions will be dropped. If the estimator</span>
+<span class="sd">        drops this dimension (e.g. a binary classifier returning a 1D vector),</span>
+<span class="sd">        the dimension itself will also be dropped.</span>
 
 <span class="sd">        You can specify multiple dimensions mapping to multiple new dimensions</span>
 <span class="sd">        with a dict whose items are lists of reshaped dimensions, e.g.</span>
@@ -222,11 +238,19 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">compat</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">CompatEstimatorWrapper</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">estimator</span><span class="p">,</span> <span class="n">reshapes</span><span class="o">=</span><span class="n">reshapes</span><span class="p">,</span>
-                                      <span class="n">sample_dim</span><span class="o">=</span><span class="n">sample_dim</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">CompatEstimatorWrapper</span><span class="p">(</span>
+            <span class="n">estimator</span><span class="o">=</span><span class="n">estimator</span><span class="p">,</span>
+            <span class="n">reshapes</span><span class="o">=</span><span class="n">reshapes</span><span class="p">,</span>
+            <span class="n">sample_dim</span><span class="o">=</span><span class="n">sample_dim</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">EstimatorWrapper</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">estimator</span><span class="p">,</span> <span class="n">reshapes</span><span class="o">=</span><span class="n">reshapes</span><span class="p">,</span>
-                                <span class="n">sample_dim</span><span class="o">=</span><span class="n">sample_dim</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">EstimatorWrapper</span><span class="p">(</span>
+            <span class="n">estimator</span><span class="o">=</span><span class="n">estimator</span><span class="p">,</span>
+            <span class="n">reshapes</span><span class="o">=</span><span class="n">reshapes</span><span class="p">,</span>
+            <span class="n">sample_dim</span><span class="o">=</span><span class="n">sample_dim</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="EstimatorWrapper"><a class="viewcode-back" href="../../../content/api/common.html#sklearn_xarray.EstimatorWrapper">[docs]</a><span class="k">class</span> <span class="nc">EstimatorWrapper</span><span class="p">(</span><span class="n">_CommonEstimatorWrapper</span><span class="p">):</span>
@@ -239,9 +263,9 @@
 
 <span class="sd">    reshapes : str or dict, optional</span>
 <span class="sd">        The dimension(s) reshaped by this estimator. Any coordinates in the</span>
-<span class="sd">        DataArray along these dimensions will be dropped. If the estimator drops</span>
-<span class="sd">        this dimension (e.g. a binary classifier returning a 1D vector), the</span>
-<span class="sd">        dimension itself will also be dropped.</span>
+<span class="sd">        DataArray along these dimensions will be dropped. If the estimator</span>
+<span class="sd">        drops this dimension (e.g. a binary classifier returning a 1D vector),</span>
+<span class="sd">        the dimension itself will also be dropped.</span>
 
 <span class="sd">        You can specify multiple dimensions mapping to multiple new dimensions</span>
 <span class="sd">        with a dict whose items are lists of reshaped dimensions, e.g.</span>
@@ -252,16 +276,19 @@
 <span class="sd">        the wrapper will assume that this is the first dimension in the array.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reshapes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_dim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reshapes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_dim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
 
-        <span class="k">if</span> <span class="s1">&#39;compat&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;compat&#39;</span><span class="p">)</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;always&#39;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;compat&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;compat&quot;</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;always&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="s1">&#39;The compat argument of EstimatorWrapper is deprecated and &#39;</span>
-                <span class="s1">&#39;will be removed in a future version.&#39;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+                <span class="s2">&quot;The compat argument of EstimatorWrapper is deprecated and &quot;</span>
+                <span class="s2">&quot;will be removed in a future version.&quot;</span><span class="p">,</span>
+                <span class="ne">DeprecationWarning</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span> <span class="o">=</span> <span class="n">estimator</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -277,8 +304,9 @@
         <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="n">p</span><span class="p">])</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_param_names</span> <span class="o">=</span> \
+        <span class="bp">self</span><span class="o">.</span><span class="n">_param_names</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_get_param_names</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">_get_param_names</span><span class="p">()</span>
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_decorate</span><span class="p">()</span>
 
@@ -301,22 +329,26 @@
         <span class="sd">&quot;&quot;&quot; Decorate this instance with wrapping methods for the estimator. &quot;&quot;&quot;</span>
 
         <span class="c1"># TODO: check if this needs to be removed for compat wrappers</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="p">,</span> <span class="s1">&#39;_estimator_type&#39;</span><span class="p">):</span>
-            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_estimator_type&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">_estimator_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="p">,</span> <span class="s2">&quot;_estimator_type&quot;</span><span class="p">):</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_estimator_type&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">_estimator_type</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">_method_map</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">six</span><span class="o">.</span><span class="n">PY2</span><span class="p">:</span>
-                    <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span>
-                            <span class="n">MethodType</span><span class="p">(</span><span class="n">_method_map</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="bp">self</span><span class="p">,</span> <span class="n">EstimatorWrapper</span><span class="p">))</span>
+                    <span class="nb">setattr</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="p">,</span>
+                        <span class="n">m</span><span class="p">,</span>
+                        <span class="n">MethodType</span><span class="p">(</span><span class="n">_method_map</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="bp">self</span><span class="p">,</span> <span class="n">EstimatorWrapper</span><span class="p">),</span>
+                    <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">MethodType</span><span class="p">(</span><span class="n">_method_map</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> <span class="bp">self</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">_make_estimator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return an instance of the wrapped estimator. &quot;&quot;&quot;</span>
 
-        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="n">p</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
-                  <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">_get_param_names</span><span class="p">()}</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">p</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">_get_param_names</span><span class="p">()</span>
+        <span class="p">}</span>
 
         <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimator</span><span class="p">)(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
 
@@ -327,7 +359,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">v</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">v</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
                 <span class="nb">delattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 
 <div class="viewcode-block" id="EstimatorWrapper.get_params"><a class="viewcode-back" href="../../../content/api/common.html#sklearn_xarray.EstimatorWrapper.get_params">[docs]</a>    <span class="k">def</span> <span class="nf">get_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -387,7 +419,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You must specify an estimator instance to wrap.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;You must specify an estimator instance to wrap.&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
 
@@ -396,24 +428,25 @@
 
         <span class="k">if</span> <span class="n">is_dataarray</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">=</span> <span class="s1">&#39;DataArray&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">=</span> <span class="s2">&quot;DataArray&quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">estimator_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">)</span>
 
             <span class="c1"># TODO: check if this needs to be removed for compat wrappers</span>
             <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimator_</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">v</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">v</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
                     <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimator_</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
 
         <span class="k">elif</span> <span class="n">is_dataset</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">=</span> <span class="s1">&#39;Dataset&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">=</span> <span class="s2">&quot;Dataset&quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">estimator_dict_</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="n">v</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">v</span><span class="p">],</span> <span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">X</span><span class="o">.</span><span class="n">data_vars</span><span class="p">}</span>
+                <span class="n">v</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">v</span><span class="p">],</span> <span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">X</span><span class="o">.</span><span class="n">data_vars</span>
+            <span class="p">}</span>
 
             <span class="c1"># TODO: check if this needs to be removed for compat wrappers</span>
             <span class="k">for</span> <span class="n">e_name</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimator_dict_</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
-                    <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">v</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">v</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
                         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
                             <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">e_name</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">v</span><span class="p">)})</span>
                         <span class="k">else</span><span class="p">:</span>
@@ -421,7 +454,7 @@
 
         <span class="k">else</span><span class="p">:</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">=</span> <span class="s1">&#39;other&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">=</span> <span class="s2">&quot;other&quot;</span>
             <span class="k">if</span> <span class="n">y</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
@@ -431,7 +464,7 @@
 
             <span class="c1"># TODO: check if this needs to be removed for compat wrappers</span>
             <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimator_</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">v</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">v</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
                     <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimator_</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="bp">self</span></div></div>
@@ -447,9 +480,9 @@
 
 <span class="sd">    reshapes : str or dict, optional</span>
 <span class="sd">        The dimension(s) reshaped by this estimator. Any coordinates in the</span>
-<span class="sd">        DataArray along these dimensions will be dropped. If the estimator drops</span>
-<span class="sd">        this dimension (e.g. a binary classifier returning a 1D vector), the</span>
-<span class="sd">        dimension itself will also be dropped.</span>
+<span class="sd">        DataArray along these dimensions will be dropped. If the estimator</span>
+<span class="sd">        drops this dimension (e.g. a binary classifier returning a 1D vector),</span>
+<span class="sd">        the dimension itself will also be dropped.</span>
 
 <span class="sd">        You can specify multiple dimensions mapping to multiple new dimensions</span>
 <span class="sd">        with a dict whose items are lists of reshaped dimensions, e.g.</span>
@@ -460,8 +493,9 @@
 <span class="sd">        the wrapper will assume that this is the first dimension in the array.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reshapes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_dim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reshapes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_dim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">estimator</span> <span class="o">=</span> <span class="n">estimator</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -472,12 +506,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">reshapes</span> <span class="o">=</span> <span class="n">reshapes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sample_dim</span> <span class="o">=</span> <span class="n">sample_dim</span>
 
-        <span class="k">if</span> <span class="s1">&#39;compat&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;always&#39;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;compat&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;always&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="s1">&#39;The compat argument of EstimatorWrapper is deprecated and &#39;</span>
-                <span class="s1">&#39;will be removed in a future version.&#39;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+                <span class="s2">&quot;The compat argument of EstimatorWrapper is deprecated and &quot;</span>
+                <span class="s2">&quot;will be removed in a future version.&quot;</span><span class="p">,</span>
+                <span class="ne">DeprecationWarning</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_decorate</span><span class="p">()</span>
 
@@ -517,8 +553,11 @@
 
 
 <div class="viewcode-block" id="TransformerWrapper"><a class="viewcode-back" href="../../../content/api/common.html#sklearn_xarray.TransformerWrapper">[docs]</a><span class="k">class</span> <span class="nc">TransformerWrapper</span><span class="p">(</span>
-        <span class="n">EstimatorWrapper</span><span class="p">,</span> <span class="n">_ImplementsTransformMixin</span><span class="p">,</span>
-        <span class="n">_ImplementsFitTransformMixin</span><span class="p">,</span> <span class="n">_ImplementsInverseTransformMixin</span><span class="p">):</span>
+    <span class="n">EstimatorWrapper</span><span class="p">,</span>
+    <span class="n">_ImplementsTransformMixin</span><span class="p">,</span>
+    <span class="n">_ImplementsFitTransformMixin</span><span class="p">,</span>
+    <span class="n">_ImplementsInverseTransformMixin</span><span class="p">,</span>
+<span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; A wrapper around sklearn transformers compatible with xarray objects.</span>
 
 <span class="sd">    Parameters</span>
@@ -532,7 +571,8 @@
 
 
 <div class="viewcode-block" id="RegressorWrapper"><a class="viewcode-back" href="../../../content/api/common.html#sklearn_xarray.RegressorWrapper">[docs]</a><span class="k">class</span> <span class="nc">RegressorWrapper</span><span class="p">(</span>
-        <span class="n">EstimatorWrapper</span><span class="p">,</span> <span class="n">_ImplementsPredictMixin</span><span class="p">,</span> <span class="n">_ImplementsScoreMixin</span><span class="p">):</span>
+    <span class="n">EstimatorWrapper</span><span class="p">,</span> <span class="n">_ImplementsPredictMixin</span><span class="p">,</span> <span class="n">_ImplementsScoreMixin</span>
+<span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; A wrapper around sklearn regressors compatible with xarray objects.</span>
 
 <span class="sd">    Parameters</span>
@@ -543,11 +583,13 @@
 <span class="sd">    reshapes : str or dict, optional</span>
 <span class="sd">        The dimension reshaped by this estimator.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">_estimator_type</span> <span class="o">=</span> <span class="s2">&quot;regressor&quot;</span></div>
 
 
 <div class="viewcode-block" id="ClassifierWrapper"><a class="viewcode-back" href="../../../content/api/common.html#sklearn_xarray.ClassifierWrapper">[docs]</a><span class="k">class</span> <span class="nc">ClassifierWrapper</span><span class="p">(</span>
-        <span class="n">EstimatorWrapper</span><span class="p">,</span> <span class="n">_ImplementsPredictMixin</span><span class="p">,</span> <span class="n">_ImplementsScoreMixin</span><span class="p">):</span>
+    <span class="n">EstimatorWrapper</span><span class="p">,</span> <span class="n">_ImplementsPredictMixin</span><span class="p">,</span> <span class="n">_ImplementsScoreMixin</span>
+<span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; A wrapper around sklearn classifiers compatible with xarray objects.</span>
 
 <span class="sd">    Parameters</span>
@@ -558,6 +600,7 @@
 <span class="sd">    reshapes : str or dict, optional</span>
 <span class="sd">        The dimension reshaped by this estimator.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">_estimator_type</span> <span class="o">=</span> <span class="s2">&quot;classifier&quot;</span></div>
 </pre></div>
 
@@ -571,7 +614,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Peter Hausamann
+        &copy; Copyright 2020, Peter Hausamann
 
     </p>
   </div>
@@ -588,26 +631,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

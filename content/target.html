@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using coordinates as targets &mdash; sklearn-xarray 0.3.0-alpha documentation</title>
+  <title>Using coordinates as targets &mdash; sklearn-xarray 0.4.0 documentation</title>
   
 
   
@@ -17,35 +17,41 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Pipelining and cross-validation" href="pipeline.html" />
     <link rel="prev" title="Wrappers for sklearn estimators" href="wrappers.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -59,7 +65,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.4.0
               </div>
             
           
@@ -168,37 +174,32 @@
 <p>With sklearn-xarray you can easily point an sklearn estimator to a
 coordinate in an xarray DataArray or Dataset in order to use it as a target
 for supervised learning. This is achieved with a <a class="reference internal" href="api/target.html#sklearn_xarray.target.Target" title="sklearn_xarray.target.Target"><code class="xref py py-class docutils literal notranslate"><span class="pre">Target</span></code></a> object:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn_xarray</span> <span class="k">import</span> <span class="n">wrap</span><span class="p">,</span> <span class="n">Target</span>
-<span class="kn">from</span> <span class="nn">sklearn_xarray.datasets</span> <span class="k">import</span> <span class="n">load_digits_dataarray</span>
-
-<span class="kn">from</span> <span class="nn">sklearn.linear_model.logistic</span> <span class="k">import</span> <span class="n">LogisticRegression</span>
-
-<span class="n">X</span> <span class="o">=</span> <span class="n">load_digits_dataarray</span><span class="p">()</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">Target</span><span class="p">(</span><span class="n">coord</span><span class="o">=</span><span class="s1">&#39;digit&#39;</span><span class="p">)(</span><span class="n">X</span><span class="p">)</span>
-
-<span class="n">In</span> <span class="p">[]:</span> <span class="n">X</span>
-<span class="n">Out</span><span class="p">[]:</span>
-<span class="o">&lt;</span><span class="n">xarray</span><span class="o">.</span><span class="n">DataArray</span> <span class="p">(</span><span class="n">sample</span><span class="p">:</span> <span class="mi">1797</span><span class="p">,</span> <span class="n">feature</span><span class="p">:</span> <span class="mi">64</span><span class="p">)</span><span class="o">&gt;</span>
-<span class="n">array</span><span class="p">([[</span>  <span class="mf">0.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">,</span>   <span class="mf">5.</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">],</span>
-       <span class="p">[</span>  <span class="mf">0.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span>  <span class="mf">10.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">],</span>
-       <span class="p">[</span>  <span class="mf">0.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span>  <span class="mf">16.</span><span class="p">,</span>   <span class="mf">9.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">],</span>
-       <span class="o">...</span><span class="p">,</span>
-       <span class="p">[</span>  <span class="mf">0.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">,</span>   <span class="mf">1.</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span>   <span class="mf">6.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">],</span>
-       <span class="p">[</span>  <span class="mf">0.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">,</span>   <span class="mf">2.</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span>  <span class="mf">12.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">],</span>
-       <span class="p">[</span>  <span class="mf">0.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">,</span>  <span class="mf">10.</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span>  <span class="mf">12.</span><span class="p">,</span>   <span class="mf">1.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">]])</span>
-<span class="n">Coordinates</span><span class="p">:</span>
-  <span class="o">*</span> <span class="n">sample</span>   <span class="p">(</span><span class="n">sample</span><span class="p">)</span> <span class="n">int32</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">10</span> <span class="mi">11</span> <span class="mi">12</span> <span class="mi">13</span> <span class="mi">14</span> <span class="mi">15</span> <span class="mi">16</span> <span class="mi">17</span> <span class="mi">18</span> <span class="o">...</span>
-  <span class="o">*</span> <span class="n">feature</span>  <span class="p">(</span><span class="n">feature</span><span class="p">)</span> <span class="n">int32</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">10</span> <span class="mi">11</span> <span class="mi">12</span> <span class="mi">13</span> <span class="mi">14</span> <span class="mi">15</span> <span class="mi">16</span> <span class="mi">17</span> <span class="mi">18</span> <span class="o">...</span>
-    <span class="n">digit</span>    <span class="p">(</span><span class="n">sample</span><span class="p">)</span> <span class="n">int32</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="o">...</span>
-
-<span class="n">In</span> <span class="p">[]:</span> <span class="n">y</span>
-<span class="n">Out</span><span class="p">[]:</span>
-<span class="n">sklearn_xarray</span><span class="o">.</span><span class="n">Target</span> <span class="k">with</span> <span class="n">data</span><span class="p">:</span>
-<span class="o">&lt;</span><span class="n">xarray</span><span class="o">.</span><span class="n">DataArray</span> <span class="s1">&#39;digit&#39;</span> <span class="p">(</span><span class="n">sample</span><span class="p">:</span> <span class="mi">1797</span><span class="p">)</span><span class="o">&gt;</span>
-<span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
-<span class="n">Coordinates</span><span class="p">:</span>
-  <span class="o">*</span> <span class="n">sample</span>   <span class="p">(</span><span class="n">sample</span><span class="p">)</span> <span class="n">int32</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">10</span> <span class="mi">11</span> <span class="mi">12</span> <span class="mi">13</span> <span class="mi">14</span> <span class="mi">15</span> <span class="mi">16</span> <span class="mi">17</span> <span class="mi">18</span> <span class="o">...</span>
-    <span class="n">digit</span>    <span class="p">(</span><span class="n">sample</span><span class="p">)</span> <span class="n">int32</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="o">...</span>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn_xarray</span> <span class="kn">import</span> <span class="n">wrap</span><span class="p">,</span> <span class="n">Target</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn_xarray.datasets</span> <span class="kn">import</span> <span class="n">load_digits_dataarray</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model.logistic</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">load_digits_dataarray</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">Target</span><span class="p">(</span><span class="n">coord</span><span class="o">=</span><span class="s1">&#39;digit&#39;</span><span class="p">)(</span><span class="n">X</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span>
+<span class="go">&lt;xarray.DataArray (sample: 1797, feature: 64)&gt;</span>
+<span class="go">array([[ 0.,  0.,  5., ...,  0.,  0.,  0.],</span>
+<span class="go">       [ 0.,  0.,  0., ..., 10.,  0.,  0.],</span>
+<span class="go">       [ 0.,  0.,  0., ..., 16.,  9.,  0.],</span>
+<span class="go">       ...,</span>
+<span class="go">       [ 0.,  0.,  1., ...,  6.,  0.,  0.],</span>
+<span class="go">       [ 0.,  0.,  2., ..., 12.,  0.,  0.],</span>
+<span class="go">       [ 0.,  0., 10., ..., 12.,  1.,  0.]])</span>
+<span class="go">Coordinates:</span>
+<span class="go">  * sample   (sample) int64 0 1 2 3 4 5 6 ... 1790 1791 1792 1793 1794 1795 1796</span>
+<span class="go">  * feature  (feature) int64 0 1 2 3 4 5 6 7 8 9 ... 55 56 57 58 59 60 61 62 63</span>
+<span class="go">    digit    (sample) int64 0 1 2 3 4 5 6 7 8 9 0 1 ... 7 9 5 4 8 8 4 9 0 8 9 8</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span>
+<span class="go">sklearn_xarray.Target with data:</span>
+<span class="go">&lt;xarray.DataArray &#39;digit&#39; (sample: 1797)&gt;</span>
+<span class="go">array([0, 1, 2, ..., 8, 9, 8])</span>
+<span class="go">Coordinates:</span>
+<span class="go">  * sample   (sample) int64 0 1 2 3 4 5 6 ... 1790 1791 1792 1793 1794 1795 1796</span>
+<span class="go">    digit    (sample) int64 0 1 2 3 4 5 6 7 8 9 0 1 ... 7 9 5 4 8 8 4 9 0 8 9 8</span>
 </pre></div>
 </div>
 <p>The target can point to any DataArray or Dataset that contains the specified
@@ -207,16 +208,16 @@ argument. When you construct a target without specifying a coordinate, the
 target data will be the Dataset/DataArray itself.</p>
 <p>The Target object can be used as a target for a wrapped estimator in accordance
 with sklearn’s usual syntax:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wrapper</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span><span class="n">LogisticRegression</span><span class="p">())</span>
-<span class="n">wrapper</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-
-<span class="n">In</span> <span class="p">[]:</span> <span class="n">wrapper</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="n">Out</span><span class="p">[]:</span> <span class="mf">0.99332220367278801</span>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">wrapper</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span><span class="n">LogisticRegression</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wrapper</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> 
+<span class="go">EstimatorWrapper(...)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wrapper</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="go">1.0</span>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">You don’t have to assign the Target to any data, the wrapper’s fit method
+<p class="admonition-title">Note</p>
+<p>You don’t have to assign the Target to any data, the wrapper’s fit method
 will automatically call <code class="docutils literal notranslate"><span class="pre">y(X)</span></code>.</p>
 </div>
 <div class="section" id="pre-processing">
@@ -226,13 +227,13 @@ used as a target. For this, the constructor takes a <code class="docutils litera
 which can be used with the <code class="docutils literal notranslate"><span class="pre">fit_transform</span></code> method of transformers in
 <code class="docutils literal notranslate"><span class="pre">sklearn.preprocessing</span></code> (and also any other object implementing the sklearn
 transformer interface):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.neural_network</span> <span class="k">import</span> <span class="n">MLPClassifier</span>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">LabelBinarizer</span>
-
-<span class="n">y</span> <span class="o">=</span> <span class="n">Target</span><span class="p">(</span><span class="n">coord</span><span class="o">=</span><span class="s1">&#39;digit&#39;</span><span class="p">,</span> <span class="n">transform_func</span><span class="o">=</span><span class="n">LabelBinarizer</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">)(</span><span class="n">X</span><span class="p">)</span>
-
-<span class="n">wrapper</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span><span class="n">MLPClassifier</span><span class="p">())</span>
-<span class="n">wrapper</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.neural_network</span> <span class="kn">import</span> <span class="n">MLPClassifier</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">LabelBinarizer</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">Target</span><span class="p">(</span><span class="n">coord</span><span class="o">=</span><span class="s1">&#39;digit&#39;</span><span class="p">,</span> <span class="n">transform_func</span><span class="o">=</span><span class="n">LabelBinarizer</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">)(</span><span class="n">X</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wrapper</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span><span class="n">MLPClassifier</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wrapper</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> 
+<span class="go">EstimatorWrapper(...)</span>
 </pre></div>
 </div>
 </div>
@@ -259,8 +260,8 @@ accessed. This can significantly improve performance when working with large
 datasets in a pipeline, because the target is assigned in each step of the
 pipeline.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">When you index a target with lazy evaluation, the transformation is
+<p class="admonition-title">Note</p>
+<p>When you index a target with lazy evaluation, the transformation is
 performed regardless of whether <code class="docutils literal notranslate"><span class="pre">lazy</span></code> was set.</p>
 </div>
 </div>
@@ -277,7 +278,7 @@ performed regardless of whether <code class="docutils literal notranslate"><span
         <a href="pipeline.html" class="btn btn-neutral float-right" title="Pipelining and cross-validation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="wrappers.html" class="btn btn-neutral" title="Wrappers for sklearn estimators" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="wrappers.html" class="btn btn-neutral float-left" title="Wrappers for sklearn estimators" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -286,7 +287,7 @@ performed regardless of whether <code class="docutils literal notranslate"><span
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Peter Hausamann
+        &copy; Copyright 2020, Peter Hausamann
 
     </p>
   </div>
@@ -303,26 +304,16 @@ performed regardless of whether <code class="docutils literal notranslate"><span
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

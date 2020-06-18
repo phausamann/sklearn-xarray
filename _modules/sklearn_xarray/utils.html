@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>sklearn_xarray.utils &mdash; sklearn-xarray 0.3.0-alpha documentation</title>
+  <title>sklearn_xarray.utils &mdash; sklearn-xarray 0.4.0 documentation</title>
   
 
   
@@ -17,33 +17,39 @@
   
 
   
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
-
-  
-  <script src="../../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -57,7 +63,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.4.0
               </div>
             
           
@@ -159,7 +165,7 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">.target</span> <span class="k">import</span> <span class="n">Target</span>
+<span class="kn">from</span> <span class="nn">.target</span> <span class="kn">import</span> <span class="n">Target</span>
 
 
 <div class="viewcode-block" id="is_dataarray"><a class="viewcode-back" href="../../content/api/utils.html#sklearn_xarray.utils.is_dataarray">[docs]</a><span class="k">def</span> <span class="nf">is_dataarray</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">require_attrs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -180,12 +186,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">require_attrs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">require_attrs</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s1">&#39;values&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;coords&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;dims&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;to_dataset&#39;</span>
-        <span class="p">]</span>
+        <span class="n">require_attrs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;values&quot;</span><span class="p">,</span> <span class="s2">&quot;coords&quot;</span><span class="p">,</span> <span class="s2">&quot;dims&quot;</span><span class="p">,</span> <span class="s2">&quot;to_dataset&quot;</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="nb">all</span><span class="p">([</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">require_attrs</span><span class="p">])</span></div>
 
@@ -208,12 +209,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">require_attrs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">require_attrs</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s1">&#39;data_vars&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;coords&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;dims&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;to_array&#39;</span>
-        <span class="p">]</span>
+        <span class="n">require_attrs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;data_vars&quot;</span><span class="p">,</span> <span class="s2">&quot;coords&quot;</span><span class="p">,</span> <span class="s2">&quot;dims&quot;</span><span class="p">,</span> <span class="s2">&quot;to_array&quot;</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="nb">all</span><span class="p">([</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">require_attrs</span><span class="p">])</span></div>
 
@@ -237,12 +233,13 @@
 
     <span class="k">if</span> <span class="n">require_attrs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">require_attrs</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="n">Target</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">))</span>
+            <span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="n">Target</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
 
     <span class="k">return</span> <span class="nb">all</span><span class="p">([</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">require_attrs</span><span class="p">])</span></div>
 
 
-<div class="viewcode-block" id="convert_to_ndarray"><a class="viewcode-back" href="../../content/api/utils.html#sklearn_xarray.utils.convert_to_ndarray">[docs]</a><span class="k">def</span> <span class="nf">convert_to_ndarray</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">new_dim_last</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">new_dim_name</span><span class="o">=</span><span class="s1">&#39;variable&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="convert_to_ndarray"><a class="viewcode-back" href="../../content/api/utils.html#sklearn_xarray.utils.convert_to_ndarray">[docs]</a><span class="k">def</span> <span class="nf">convert_to_ndarray</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">new_dim_last</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">new_dim_name</span><span class="o">=</span><span class="s2">&quot;variable&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Convert xarray DataArray or Dataset to numpy ndarray.</span>
 
 <span class="sd">    Parameters</span>
@@ -319,7 +316,9 @@
     <span class="k">return</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idx_all</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span></div>
 
 
-<div class="viewcode-block" id="segment_array"><a class="viewcode-back" href="../../content/api/utils.html#sklearn_xarray.utils.segment_array">[docs]</a><span class="k">def</span> <span class="nf">segment_array</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">new_len</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">new_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_view</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="segment_array"><a class="viewcode-back" href="../../content/api/utils.html#sklearn_xarray.utils.segment_array">[docs]</a><span class="k">def</span> <span class="nf">segment_array</span><span class="p">(</span>
+    <span class="n">arr</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">new_len</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">new_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_view</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Segment an array along some axis.</span>
 
 <span class="sd">    Parameters</span>
@@ -349,7 +348,7 @@
 <span class="sd">        The segmented array.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">from</span> <span class="nn">numpy.lib.stride_tricks</span> <span class="k">import</span> <span class="n">as_strided</span>
+    <span class="kn">from</span> <span class="nn">numpy.lib.stride_tricks</span> <span class="kn">import</span> <span class="n">as_strided</span>
 
     <span class="c1"># handle the case that the segmented axis is singleton after segmentation</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">-</span> <span class="n">new_len</span><span class="p">)</span> <span class="o">//</span> <span class="n">step</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -363,8 +362,9 @@
 
     <span class="n">old_shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
-    <span class="k">assert</span> <span class="n">new_len</span> <span class="o">&lt;=</span> <span class="n">old_shape</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> \
-        <span class="s2">&quot;new_len is bigger than input array in axis&quot;</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">new_len</span> <span class="o">&lt;=</span> <span class="n">old_shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span>
+    <span class="p">),</span> <span class="s2">&quot;new_len is bigger than input array in axis&quot;</span>
     <span class="n">seg_shape</span> <span class="o">=</span> <span class="n">old_shape</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">seg_shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_len</span>
 
@@ -379,8 +379,7 @@
     <span class="n">shape</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">((</span><span class="n">old_shape</span> <span class="o">-</span> <span class="n">seg_shape</span><span class="p">)</span> <span class="o">//</span> <span class="n">steps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">seg_shape</span><span class="p">)</span>
     <span class="n">strides</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">arr_strides</span> <span class="o">*</span> <span class="n">steps</span><span class="p">)</span> <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">arr_strides</span><span class="p">)</span>
 
-    <span class="n">arr_seg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span>
-        <span class="n">as_strided</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">))</span>
+    <span class="n">arr_seg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">as_strided</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">))</span>
 
     <span class="c1"># squeeze will move the segmented axis to the first position</span>
     <span class="n">arr_seg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">arr_seg</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
@@ -407,7 +406,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Peter Hausamann
+        &copy; Copyright 2020, Peter Hausamann
 
     </p>
   </div>
@@ -424,26 +423,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

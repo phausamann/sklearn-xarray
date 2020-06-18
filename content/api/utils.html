@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Utils &mdash; sklearn-xarray 0.3.0-alpha documentation</title>
+  <title>Utils &mdash; sklearn-xarray 0.4.0 documentation</title>
   
 
   
@@ -17,34 +17,41 @@
   
 
   
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Datasets" href="datasets.html" /> 
-
-  
-  <script src="../../_static/js/modernizr.min.js"></script>
-
+    <link rel="next" title="Datasets" href="datasets.html" />
+    <link rel="prev" title="Model Selection" href="model_selection.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -58,7 +65,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.4.0
               </div>
             
           
@@ -179,198 +186,150 @@
 <p><code class="docutils literal notranslate"><span class="pre">sklearn_xarray.utils</span></code></p>
 <dl class="function">
 <dt id="sklearn_xarray.utils.convert_to_ndarray">
-<code class="descname">convert_to_ndarray</code><span class="sig-paren">(</span><em>X</em>, <em>new_dim_last=True</em>, <em>new_dim_name='variable'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/utils.html#convert_to_ndarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.utils.convert_to_ndarray" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">convert_to_ndarray</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">new_dim_last=True</em>, <em class="sig-param">new_dim_name='variable'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/utils.html#convert_to_ndarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.utils.convert_to_ndarray" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert xarray DataArray or Dataset to numpy ndarray.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The input data.</p>
 </dd>
-<dt><strong>new_dim_last</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, default true</span></dt>
-<dd><p class="first last">If true, put the new dimension last when converting a Dataset with
+<dt><strong>new_dim_last</strong><span class="classifier">bool, default true</span></dt><dd><p>If true, put the new dimension last when converting a Dataset with
 multiple variables.</p>
 </dd>
-<dt><strong>new_dim_name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, default ‘variable’</span></dt>
-<dd><p class="first last">The name of the new dimension when converting a Dataset with multiple
+<dt><strong>new_dim_name</strong><span class="classifier">str, default ‘variable’</span></dt><dd><p>The name of the new dimension when converting a Dataset with multiple
 variables.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>X_arr</strong> <span class="classifier-delimiter">:</span> <span class="classifier">numpy ndarray</span></dt>
-<dd><p class="first last">The data as an ndarray.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>X_arr</strong><span class="classifier">numpy ndarray</span></dt><dd><p>The data as an ndarray.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sklearn_xarray.utils.get_group_indices">
-<code class="descname">get_group_indices</code><span class="sig-paren">(</span><em>X</em>, <em>groupby</em>, <em>group_dim=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/utils.html#get_group_indices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.utils.get_group_indices" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_group_indices</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">groupby</em>, <em class="sig-param">group_dim=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/utils.html#get_group_indices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.utils.get_group_indices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get logical index vectors for each group.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The data structure for which to determine the indices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The data structure for which to determine the indices.</p>
 </dd>
-<dt><strong>groupby</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or list</span></dt>
-<dd><p class="first last">Name of coordinate or list of coordinates by which the groups are
+<dt><strong>groupby</strong><span class="classifier">str or list</span></dt><dd><p>Name of coordinate or list of coordinates by which the groups are
 determined.</p>
 </dd>
-<dt><strong>group_dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or None, optional</span></dt>
-<dd><p class="first last">Name of dimension along which the groups are indexed.</p>
+<dt><strong>group_dim</strong><span class="classifier">str or None, optional</span></dt><dd><p>Name of dimension along which the groups are indexed.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>idx: list of boolean numpy vectors</strong></dt>
-<dd><p class="first last">List of logical indices for each group.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>idx: list of boolean numpy vectors</dt><dd><p>List of logical indices for each group.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sklearn_xarray.utils.is_dataarray">
-<code class="descname">is_dataarray</code><span class="sig-paren">(</span><em>X</em>, <em>require_attrs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/utils.html#is_dataarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.utils.is_dataarray" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">is_dataarray</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">require_attrs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/utils.html#is_dataarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.utils.is_dataarray" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether an object is a DataArray.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">anything</span></dt>
-<dd><p class="first last">The object to be checked.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">anything</span></dt><dd><p>The object to be checked.</p>
 </dd>
-<dt><strong>require_attrs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of str, optional</span></dt>
-<dd><p class="first last">The attributes the object has to have in order to pass as a DataArray.</p>
+<dt><strong>require_attrs</strong><span class="classifier">list of str, optional</span></dt><dd><p>The attributes the object has to have in order to pass as a DataArray.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>bool</strong></dt>
-<dd><p class="first last">Whether the object is a DataArray or not.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>bool</dt><dd><p>Whether the object is a DataArray or not.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sklearn_xarray.utils.is_dataset">
-<code class="descname">is_dataset</code><span class="sig-paren">(</span><em>X</em>, <em>require_attrs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/utils.html#is_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.utils.is_dataset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">is_dataset</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">require_attrs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/utils.html#is_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.utils.is_dataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether an object is a Dataset.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">anything</span></dt>
-<dd><p class="first last">The object to be checked.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">anything</span></dt><dd><p>The object to be checked.</p>
 </dd>
-<dt><strong>require_attrs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of str, optional</span></dt>
-<dd><p class="first last">The attributes the object has to have in order to pass as a Dataset.</p>
+<dt><strong>require_attrs</strong><span class="classifier">list of str, optional</span></dt><dd><p>The attributes the object has to have in order to pass as a Dataset.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>bool</strong></dt>
-<dd><p class="first last">Whether the object is a Dataset or not.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>bool</dt><dd><p>Whether the object is a Dataset or not.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sklearn_xarray.utils.is_target">
-<code class="descname">is_target</code><span class="sig-paren">(</span><em>X</em>, <em>require_attrs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/utils.html#is_target"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.utils.is_target" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">is_target</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">require_attrs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/utils.html#is_target"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.utils.is_target" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether an object is a Target.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">anything</span></dt>
-<dd><p class="first last">The object to be checked.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">anything</span></dt><dd><p>The object to be checked.</p>
 </dd>
-<dt><strong>require_attrs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of str, optional</span></dt>
-<dd><p class="first last">The attributes the object has to have in order to pass as a Target.</p>
+<dt><strong>require_attrs</strong><span class="classifier">list of str, optional</span></dt><dd><p>The attributes the object has to have in order to pass as a Target.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>bool</strong></dt>
-<dd><p class="first last">Whether the object is a Target or not.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>bool</dt><dd><p>Whether the object is a Target or not.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sklearn_xarray.utils.segment_array">
-<code class="descname">segment_array</code><span class="sig-paren">(</span><em>arr</em>, <em>axis</em>, <em>new_len</em>, <em>step=1</em>, <em>new_axis=None</em>, <em>return_view=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/utils.html#segment_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.utils.segment_array" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">segment_array</code><span class="sig-paren">(</span><em class="sig-param">arr</em>, <em class="sig-param">axis</em>, <em class="sig-param">new_len</em>, <em class="sig-param">step=1</em>, <em class="sig-param">new_axis=None</em>, <em class="sig-param">return_view=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/utils.html#segment_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.utils.segment_array" title="Permalink to this definition">¶</a></dt>
 <dd><p>Segment an array along some axis.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>arr</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like</span></dt>
-<dd><p class="first last">The input array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>arr</strong><span class="classifier">array-like</span></dt><dd><p>The input array.</p>
 </dd>
-<dt><strong>axis</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">The axis along which to segment.</p>
+<dt><strong>axis</strong><span class="classifier">int</span></dt><dd><p>The axis along which to segment.</p>
 </dd>
-<dt><strong>new_len</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">The length of each segment.</p>
+<dt><strong>new_len</strong><span class="classifier">int</span></dt><dd><p>The length of each segment.</p>
 </dd>
-<dt><strong>step</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, default 1</span></dt>
-<dd><p class="first last">The offset between the start of each segment.</p>
+<dt><strong>step</strong><span class="classifier">int, default 1</span></dt><dd><p>The offset between the start of each segment.</p>
 </dd>
-<dt><strong>new_axis</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
-<dd><p class="first last">The position where the newly created axis is to be inserted. By
+<dt><strong>new_axis</strong><span class="classifier">int, optional</span></dt><dd><p>The position where the newly created axis is to be inserted. By
 default, the axis will be added at the end of the array.</p>
 </dd>
-<dt><strong>return_view</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, default False</span></dt>
-<dd><p class="first last">If True, return a view of the segmented array instead of a copy.</p>
+<dt><strong>return_view</strong><span class="classifier">bool, default False</span></dt><dd><p>If True, return a view of the segmented array instead of a copy.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>arr_seg</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like</span></dt>
-<dd><p class="first last">The segmented array.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>arr_seg</strong><span class="classifier">array-like</span></dt><dd><p>The segmented array.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -386,6 +345,8 @@ default, the axis will be added at the end of the array.</p>
         <a href="datasets.html" class="btn btn-neutral float-right" title="Datasets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
+        <a href="model_selection.html" class="btn btn-neutral float-left" title="Model Selection" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
   
 
@@ -393,7 +354,7 @@ default, the axis will be added at the end of the array.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Peter Hausamann
+        &copy; Copyright 2020, Peter Hausamann
 
     </p>
   </div>
@@ -410,26 +371,16 @@ default, the axis will be added at the end of the array.</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

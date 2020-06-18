@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Activity recognition from accelerometer data &mdash; sklearn-xarray 0.3.0-alpha documentation</title>
+  <title>Activity recognition from accelerometer data &mdash; sklearn-xarray 0.4.0 documentation</title>
   
 
   
@@ -17,35 +17,41 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="API Reference" href="../content/api.html" />
     <link rel="prev" title="General examples" href="index.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -59,7 +65,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.4.0
               </div>
             
           
@@ -163,8 +169,8 @@
            <div itemprop="articleBody">
             
   <div class="sphx-glr-download-link-note admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-activity-recognition-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-activity-recognition-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="activity-recognition-from-accelerometer-data">
 <span id="sphx-glr-auto-examples-plot-activity-recognition-py"></span><h1>Activity recognition from accelerometer data<a class="headerlink" href="#activity-recognition-from-accelerometer-data" title="Permalink to this headline">¶</a></h1>
@@ -180,12 +186,12 @@ Gaussian naive Bayes classifier. It uses the
 <a class="reference external" href="http://www.cis.fordham.edu/wisdm/dataset.php">WISDM</a> activity prediction dataset which contains the activities
 walking, jogging, walking upstairs, walking downstairs, sitting and standing
 from 36 different subjects.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">sklearn_xarray</span> <span class="kn">import</span> <span class="n">wrap</span><span class="p">,</span> <span class="n">Target</span>
-<span class="kn">from</span> <span class="nn">sklearn_xarray.preprocessing</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Splitter</span><span class="p">,</span> <span class="n">Sanitizer</span><span class="p">,</span> <span class="n">Featurizer</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">sklearn_xarray.preprocessing</span> <span class="kn">import</span> <span class="n">Splitter</span><span class="p">,</span> <span class="n">Sanitizer</span><span class="p">,</span> <span class="n">Featurizer</span>
 <span class="kn">from</span> <span class="nn">sklearn_xarray.model_selection</span> <span class="kn">import</span> <span class="n">CrossValidatorWrapper</span>
 <span class="kn">from</span> <span class="nn">sklearn_xarray.datasets</span> <span class="kn">import</span> <span class="n">load_wisdm_dataarray</span>
 
@@ -195,53 +201,64 @@ from 36 different subjects.</p>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GroupShuffleSplit</span><span class="p">,</span> <span class="n">GridSearchCV</span>
 <span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
 
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 </pre></div>
 </div>
 <p>First, we load the dataset and plot an example of one subject performing
 the ‘Walking’ activity.</p>
 <div class="admonition tip">
-<p class="first admonition-title">Tip</p>
-<p class="last">In the jupyter notebook version, change the first cell to <code class="docutils literal notranslate"><span class="pre">%matplotlib</span>
+<p class="admonition-title">Tip</p>
+<p>In the jupyter notebook version, change the first cell to <code class="docutils literal notranslate"><span class="pre">%matplotlib</span>
 <span class="pre">notebook</span></code> in order to get an interactive plot that you can zoom and pan.</p>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">load_wisdm_dataarray</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">load_wisdm_dataarray</span><span class="p">()</span>
 
-<span class="n">X_plot</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">activity</span> <span class="o">==</span> <span class="s1">&#39;Walking&#39;</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">subject</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)]</span>
+<span class="n">X_plot</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">activity</span> <span class="o">==</span> <span class="s2">&quot;Walking&quot;</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">subject</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)]</span>
 <span class="n">X_plot</span> <span class="o">=</span> <span class="n">X_plot</span><span class="p">[:</span><span class="mi">500</span><span class="p">]</span> <span class="o">/</span> <span class="mf">9.81</span>
-<span class="n">X_plot</span><span class="p">[</span><span class="s1">&#39;sample&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_plot</span><span class="o">.</span><span class="n">sample</span> <span class="o">-</span> <span class="n">X_plot</span><span class="o">.</span><span class="n">sample</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span>
+<span class="n">X_plot</span><span class="p">[</span><span class="s2">&quot;sample&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_plot</span><span class="o">.</span><span class="n">sample</span> <span class="o">-</span> <span class="n">X_plot</span><span class="o">.</span><span class="n">sample</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">)</span>
 
-<span class="n">f</span><span class="p">,</span> <span class="n">axarr</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">f</span><span class="p">,</span> <span class="n">axarr</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="n">axarr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X_plot</span><span class="o">.</span><span class="n">sample</span><span class="p">,</span> <span class="n">X_plot</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#1f77b4&#39;</span><span class="p">)</span>
-<span class="n">axarr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Acceleration along x-axis&#39;</span><span class="p">)</span>
+<span class="n">axarr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X_plot</span><span class="o">.</span><span class="n">sample</span><span class="p">,</span> <span class="n">X_plot</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#1f77b4&quot;</span><span class="p">)</span>
+<span class="n">axarr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Acceleration along x-axis&quot;</span><span class="p">)</span>
 
-<span class="n">axarr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X_plot</span><span class="o">.</span><span class="n">sample</span><span class="p">,</span> <span class="n">X_plot</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#ff7f0e&#39;</span><span class="p">)</span>
-<span class="n">axarr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Acceleration [g]&#39;</span><span class="p">)</span>
-<span class="n">axarr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Acceleration along y-axis&#39;</span><span class="p">)</span>
+<span class="n">axarr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X_plot</span><span class="o">.</span><span class="n">sample</span><span class="p">,</span> <span class="n">X_plot</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#ff7f0e&quot;</span><span class="p">)</span>
+<span class="n">axarr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Acceleration [g]&quot;</span><span class="p">)</span>
+<span class="n">axarr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Acceleration along y-axis&quot;</span><span class="p">)</span>
 
-<span class="n">axarr</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X_plot</span><span class="o">.</span><span class="n">sample</span><span class="p">,</span> <span class="n">X_plot</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;z&#39;</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#2ca02c&#39;</span><span class="p">)</span>
-<span class="n">axarr</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time [s]&#39;</span><span class="p">)</span>
-<span class="n">axarr</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Acceleration along z-axis&#39;</span><span class="p">)</span>
+<span class="n">axarr</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X_plot</span><span class="o">.</span><span class="n">sample</span><span class="p">,</span> <span class="n">X_plot</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;z&quot;</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#2ca02c&quot;</span><span class="p">)</span>
+<span class="n">axarr</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time [s]&quot;</span><span class="p">)</span>
+<span class="n">axarr</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Acceleration along z-axis&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../_images/sphx_glr_plot_activity_recognition_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_activity_recognition_001.png" />
+<img alt="Acceleration along x-axis, Acceleration along y-axis, Acceleration along z-axis" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_activity_recognition_001.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Acceleration along z-axis&#39;)
+</pre></div>
+</div>
 <p>Then we define a pipeline with various preprocessing steps and a classifier.</p>
 <p>The preprocessing consists of splitting the data into segments, removing
 segments with <cite>nan</cite> values and standardizing. Since the accelerometer data is
-three-dimensional but the standardizer and classifier expect a one-dimensional</p>
-<blockquote>
-<div>feature vector, we have to vectorize the samples.</div></blockquote>
+three-dimensional but the standardizer and classifier expect a
+one-dimensional feature vector, we have to vectorize the samples.</p>
 <p>Finally, we use PCA and a naive Bayes classifier for classification.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pl</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
-    <span class="p">(</span><span class="s1">&#39;splitter&#39;</span><span class="p">,</span> <span class="n">Splitter</span><span class="p">(</span>
-        <span class="n">groupby</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">,</span> <span class="s1">&#39;activity&#39;</span><span class="p">],</span> <span class="n">new_dim</span><span class="o">=</span><span class="s1">&#39;timepoint&#39;</span><span class="p">,</span> <span class="n">new_len</span><span class="o">=</span><span class="mi">30</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s1">&#39;sanitizer&#39;</span><span class="p">,</span> <span class="n">Sanitizer</span><span class="p">()),</span>
-    <span class="p">(</span><span class="s1">&#39;featurizer&#39;</span><span class="p">,</span> <span class="n">Featurizer</span><span class="p">()),</span>
-    <span class="p">(</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span> <span class="n">wrap</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s1">&#39;pca&#39;</span><span class="p">,</span> <span class="n">wrap</span><span class="p">(</span><span class="n">PCA</span><span class="p">,</span> <span class="n">reshapes</span><span class="o">=</span><span class="s1">&#39;feature&#39;</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s1">&#39;cls&#39;</span><span class="p">,</span> <span class="n">wrap</span><span class="p">(</span><span class="n">GaussianNB</span><span class="p">,</span> <span class="n">reshapes</span><span class="o">=</span><span class="s1">&#39;feature&#39;</span><span class="p">))</span>
-<span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pl</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">(</span>
+            <span class="s2">&quot;splitter&quot;</span><span class="p">,</span>
+            <span class="n">Splitter</span><span class="p">(</span>
+                <span class="n">groupby</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;subject&quot;</span><span class="p">,</span> <span class="s2">&quot;activity&quot;</span><span class="p">],</span>
+                <span class="n">new_dim</span><span class="o">=</span><span class="s2">&quot;timepoint&quot;</span><span class="p">,</span>
+                <span class="n">new_len</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;sanitizer&quot;</span><span class="p">,</span> <span class="n">Sanitizer</span><span class="p">()),</span>
+        <span class="p">(</span><span class="s2">&quot;featurizer&quot;</span><span class="p">,</span> <span class="n">Featurizer</span><span class="p">()),</span>
+        <span class="p">(</span><span class="s2">&quot;scaler&quot;</span><span class="p">,</span> <span class="n">wrap</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s2">&quot;pca&quot;</span><span class="p">,</span> <span class="n">wrap</span><span class="p">(</span><span class="n">PCA</span><span class="p">,</span> <span class="n">reshapes</span><span class="o">=</span><span class="s2">&quot;feature&quot;</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s2">&quot;cls&quot;</span><span class="p">,</span> <span class="n">wrap</span><span class="p">(</span><span class="n">GaussianNB</span><span class="p">,</span> <span class="n">reshapes</span><span class="o">=</span><span class="s2">&quot;feature&quot;</span><span class="p">)),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 <p>Since we want to use cross-validated grid search to find the best model
@@ -249,55 +266,59 @@ parameters, we define a cross-validator. In order to make sure the model
 performs subject-independent recognition, we use a <cite>GroupShuffleSplit</cite>
 cross-validator that ensures that the same subject will not appear in both
 training and validation set.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cv</span> <span class="o">=</span> <span class="n">CrossValidatorWrapper</span><span class="p">(</span>
-    <span class="n">GroupShuffleSplit</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span> <span class="n">groupby</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cv</span> <span class="o">=</span> <span class="n">CrossValidatorWrapper</span><span class="p">(</span>
+    <span class="n">GroupShuffleSplit</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span> <span class="n">groupby</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;subject&quot;</span><span class="p">]</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 <p>The grid search will try different numbers of PCA components to find the best
 parameters for this task.</p>
 <div class="admonition tip">
-<p class="first admonition-title">Tip</p>
-<p class="last">To use multi-processing, set <code class="docutils literal notranslate"><span class="pre">n_jobs=-1</span></code>.</p>
+<p class="admonition-title">Tip</p>
+<p>To use multi-processing, set <code class="docutils literal notranslate"><span class="pre">n_jobs=-1</span></code>.</p>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gs</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span>
-    <span class="n">pl</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">param_grid</span><span class="o">=</span><span class="p">{</span>
-        <span class="s1">&#39;pca__n_components&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
-    <span class="p">})</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gs</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span>
+    <span class="n">pl</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">param_grid</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;pca__n_components&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]}</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 <p>The label to classify is the activity which we convert to an integer
 representation for the classification.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">Target</span><span class="p">(</span><span class="n">coord</span><span class="o">=</span><span class="s1">&#39;activity&#39;</span><span class="p">,</span>
-           <span class="n">transform_func</span><span class="o">=</span><span class="n">LabelEncoder</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">,</span>
-           <span class="n">dim</span><span class="o">=</span><span class="s1">&#39;sample&#39;</span><span class="p">)(</span><span class="n">X</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">Target</span><span class="p">(</span>
+    <span class="n">coord</span><span class="o">=</span><span class="s2">&quot;activity&quot;</span><span class="p">,</span> <span class="n">transform_func</span><span class="o">=</span><span class="n">LabelEncoder</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="s2">&quot;sample&quot;</span>
+<span class="p">)(</span><span class="n">X</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Finally, we run the grid search and print out the best parameter combination.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>  <span class="c1"># in order for n_jobs=-1 to work on Windows</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>  <span class="c1"># in order for n_jobs=-1 to work on Windows</span>
     <span class="n">gs</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Best parameters: {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gs</span><span class="o">.</span><span class="n">best_params_</span><span class="p">))</span>
-    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Accuracy: {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gs</span><span class="o">.</span><span class="n">best_score_</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best parameters: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gs</span><span class="o">.</span><span class="n">best_params_</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gs</span><span class="o">.</span><span class="n">best_score_</span><span class="p">))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting 2 folds for each of 2 candidates, totalling 4 fits
+[Parallel(n_jobs=1)]: Using backend SequentialBackend with 1 concurrent workers.
+[Parallel(n_jobs=1)]: Done   4 out of   4 | elapsed:   12.5s finished
 Best parameters: {&#39;pca__n_components&#39;: 10}
-Accuracy: 0.6942540635795388
+Accuracy: 0.6762617694729489
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The performance of this classifier is obviously pretty bad,
+<p class="admonition-title">Note</p>
+<p>The performance of this classifier is obviously pretty bad,
 it was chosen for execution speed, not accuracy.</p>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  27.217 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  18.789 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-activity-recognition-py">
-<div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../_downloads/b1735498accaf8faafdfd3b5ccc6e75e/plot_activity_recognition.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_activity_recognition.py</span></code></a></div>
-<div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../_downloads/eb0c623cd85ffe415da68f890a843b7f/plot_activity_recognition.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_activity_recognition.ipynb</span></code></a></div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/46dae35710c16f78d157c03d2c4ba6cb/plot_activity_recognition.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_activity_recognition.py</span></code></a></p>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/d1184036868548d7975f7a966da7e0f2/plot_activity_recognition.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_activity_recognition.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
 
 
@@ -311,7 +332,7 @@ it was chosen for execution speed, not accuracy.</p>
         <a href="../content/api.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="General examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="General examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -320,7 +341,7 @@ it was chosen for execution speed, not accuracy.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Peter Hausamann
+        &copy; Copyright 2020, Peter Hausamann
 
     </p>
   </div>
@@ -337,26 +358,16 @@ it was chosen for execution speed, not accuracy.</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

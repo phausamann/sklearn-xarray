@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Preprocessing &mdash; sklearn-xarray 0.3.0-alpha documentation</title>
+  <title>Preprocessing &mdash; sklearn-xarray 0.4.0 documentation</title>
   
 
   
@@ -17,33 +17,41 @@
   
 
   
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
-
-  
-  <script src="../../_static/js/modernizr.min.js"></script>
-
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Model Selection" href="model_selection.html" />
+    <link rel="prev" title="Top-level functions and classes" href="common.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -57,7 +65,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.4.0
               </div>
             
           
@@ -99,9 +107,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../api.html#datasets">Datasets</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../api.html#list-of-modules">List of modules</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="common.html">Top-level functions and classes</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Preprocessing</a><ul class="simple">
-</ul>
-</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Preprocessing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="model_selection.html">Model Selection</a></li>
 <li class="toctree-l3"><a class="reference internal" href="utils.html">Utils</a></li>
 <li class="toctree-l3"><a class="reference internal" href="datasets.html">Datasets</a></li>
@@ -181,277 +187,228 @@
 methods that work on xarray DataArrays and Datasets.</p>
 <dl class="class">
 <dt id="sklearn_xarray.preprocessing.BaseTransformer">
-<em class="property">class </em><code class="descname">BaseTransformer</code><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#BaseTransformer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.BaseTransformer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">BaseTransformer</code><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#BaseTransformer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.BaseTransformer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for transformers.</p>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#sklearn_xarray.preprocessing.BaseTransformer.fit" title="sklearn_xarray.preprocessing.BaseTransformer.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[,&nbsp;y])</td>
-<td>Fit estimator to data.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sklearn_xarray.preprocessing.BaseTransformer.fit" title="sklearn_xarray.preprocessing.BaseTransformer.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(self, X[, y])</p></td>
+<td><p>Fit estimator to data.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(X[,&nbsp;y])</td>
-<td>Fit to data, then transform it.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(self, X[, y])</p></td>
+<td><p>Fit to data, then transform it.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
-<td>Get parameters for this estimator.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>(self[, deep])</p></td>
+<td><p>Get parameters for this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#sklearn_xarray.preprocessing.BaseTransformer.inverse_transform" title="sklearn_xarray.preprocessing.BaseTransformer.inverse_transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform</span></code></a>(X)</td>
-<td>Reverse the transformation.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sklearn_xarray.preprocessing.BaseTransformer.inverse_transform" title="sklearn_xarray.preprocessing.BaseTransformer.inverse_transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform</span></code></a>(self, X)</p></td>
+<td><p>Reverse the transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</td>
-<td>Set the parameters of this estimator.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(self, **params)</p></td>
+<td><p>Set the parameters of this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#sklearn_xarray.preprocessing.BaseTransformer.transform" title="sklearn_xarray.preprocessing.BaseTransformer.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X)</td>
-<td>Transform input data.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sklearn_xarray.preprocessing.BaseTransformer.transform" title="sklearn_xarray.preprocessing.BaseTransformer.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(self, X)</p></td>
+<td><p>Transform input data.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="sklearn_xarray.preprocessing.BaseTransformer.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#BaseTransformer.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.BaseTransformer.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em>, <em class="sig-param">**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#BaseTransformer.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.BaseTransformer.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit estimator to data.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">Training set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>Training set.</p>
 </dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">Target values.</p>
+<dt><strong>y</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>Target values.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>self:</strong></dt>
-<dd><p class="first last">The estimator itself.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>self:</dt><dd><p>The estimator itself.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="sklearn_xarray.preprocessing.BaseTransformer.inverse_transform">
-<code class="descname">inverse_transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#BaseTransformer.inverse_transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.BaseTransformer.inverse_transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">inverse_transform</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#BaseTransformer.inverse_transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.BaseTransformer.inverse_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reverse the transformation.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The input data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>Xt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The transformed data.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>Xt</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The transformed data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="sklearn_xarray.preprocessing.BaseTransformer.transform">
-<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#BaseTransformer.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.BaseTransformer.transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#BaseTransformer.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.BaseTransformer.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform input data.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The input data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>Xt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The transformed data.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>Xt</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The transformed data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="sklearn_xarray.preprocessing.Concatenator">
-<em class="property">class </em><code class="descname">Concatenator</code><span class="sig-paren">(</span><em>dim='feature'</em>, <em>new_dim=None</em>, <em>variables=None</em>, <em>new_var='Feature'</em>, <em>new_index_func=None</em>, <em>return_array=False</em>, <em>groupby=None</em>, <em>group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Concatenator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Concatenator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">Concatenator</code><span class="sig-paren">(</span><em class="sig-param">dim='feature'</em>, <em class="sig-param">new_dim=None</em>, <em class="sig-param">variables=None</em>, <em class="sig-param">new_var='Feature'</em>, <em class="sig-param">new_index_func=None</em>, <em class="sig-param">return_array=False</em>, <em class="sig-param">groupby=None</em>, <em class="sig-param">group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Concatenator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Concatenator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Concatenate variables along a dimension.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">Name of the dimension along which to concatenate the Dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dim</strong><span class="classifier">str</span></dt><dd><p>Name of the dimension along which to concatenate the Dataset.</p>
 </dd>
-<dt><strong>new_dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">New name of the dimension, if desired.</p>
+<dt><strong>new_dim</strong><span class="classifier">str</span></dt><dd><p>New name of the dimension, if desired.</p>
 </dd>
-<dt><strong>variables</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list or tuple</span></dt>
-<dd><p class="first last">Names of the variables to concatenate, default all.</p>
+<dt><strong>variables</strong><span class="classifier">list or tuple</span></dt><dd><p>Names of the variables to concatenate, default all.</p>
 </dd>
-<dt><strong>new_var :</strong></dt>
-<dd><p class="first last">Name of the new variable created by the concatenation.</p>
+<dt><strong>new_var :</strong></dt><dd><p>Name of the new variable created by the concatenation.</p>
 </dd>
-<dt><strong>new_index_func</strong> <span class="classifier-delimiter">:</span> <span class="classifier">function</span></dt>
-<dd><p class="first last">A function that takes the length of the concatenated dimension as a
+<dt><strong>new_index_func</strong><span class="classifier">function</span></dt><dd><p>A function that takes the length of the concatenated dimension as a
 parameter and returns a vector of this length to be used as the
 index for that dimension.</p>
 </dd>
-<dt><strong>return_array: bool</strong></dt>
-<dd><p class="first last">Whether to return a DataArray when a Dataset was passed.</p>
+<dt><strong>return_array: bool</strong></dt><dd><p>Whether to return a DataArray when a Dataset was passed.</p>
 </dd>
-<dt><strong>groupby</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or list, optional</span></dt>
-<dd><p class="first last">Name of coordinate or list of coordinates by which the groups are
+<dt><strong>groupby</strong><span class="classifier">str or list, optional</span></dt><dd><p>Name of coordinate or list of coordinates by which the groups are
 determined.</p>
 </dd>
-<dt><strong>group_dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
-<dd><p class="first last">Name of dimension along which the groups are indexed.</p>
+<dt><strong>group_dim</strong><span class="classifier">str, optional</span></dt><dd><p>Name of dimension along which the groups are indexed.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#sklearn_xarray.preprocessing.Concatenator.fit" title="sklearn_xarray.preprocessing.Concatenator.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[,&nbsp;y])</td>
-<td>Fit estimator to data.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sklearn_xarray.preprocessing.Concatenator.fit" title="sklearn_xarray.preprocessing.Concatenator.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(self, X[, y])</p></td>
+<td><p>Fit estimator to data.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(X[,&nbsp;y])</td>
-<td>Fit to data, then transform it.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(self, X[, y])</p></td>
+<td><p>Fit to data, then transform it.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
-<td>Get parameters for this estimator.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>(self[, deep])</p></td>
+<td><p>Get parameters for this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform</span></code>(X)</td>
-<td>Reverse the transformation.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform</span></code>(self, X)</p></td>
+<td><p>Reverse the transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</td>
-<td>Set the parameters of this estimator.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(self, **params)</p></td>
+<td><p>Set the parameters of this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(X)</td>
-<td>Transform input data.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(self, X)</p></td>
+<td><p>Transform input data.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="sklearn_xarray.preprocessing.Concatenator.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Concatenator.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Concatenator.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em>, <em class="sig-param">**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Concatenator.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Concatenator.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit estimator to data.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">Training set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>Training set.</p>
 </dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">Target values.</p>
+<dt><strong>y</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>Target values.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>self:</strong></dt>
-<dd><p class="first last">The estimator itself.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>self:</dt><dd><p>The estimator itself.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="sklearn_xarray.preprocessing.Featurizer">
-<em class="property">class </em><code class="descname">Featurizer</code><span class="sig-paren">(</span><em>sample_dim='sample'</em>, <em>feature_dim='feature'</em>, <em>var_name='Features'</em>, <em>order=None</em>, <em>return_array=False</em>, <em>groupby=None</em>, <em>group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Featurizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Featurizer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">Featurizer</code><span class="sig-paren">(</span><em class="sig-param">sample_dim='sample'</em>, <em class="sig-param">feature_dim='feature'</em>, <em class="sig-param">var_name='Features'</em>, <em class="sig-param">order=None</em>, <em class="sig-param">return_array=False</em>, <em class="sig-param">groupby=None</em>, <em class="sig-param">group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Featurizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Featurizer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stack all dimensions and variables except for sample dimension.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>sample_dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">Name of the sample dimension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sample_dim</strong><span class="classifier">str</span></dt><dd><p>Name of the sample dimension.</p>
 </dd>
-<dt><strong>feature_dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">Name of the feature dimension.</p>
+<dt><strong>feature_dim</strong><span class="classifier">str</span></dt><dd><p>Name of the feature dimension.</p>
 </dd>
-<dt><strong>var_name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">Name of the new variable (for Datasets).</p>
+<dt><strong>var_name</strong><span class="classifier">str</span></dt><dd><p>Name of the new variable (for Datasets).</p>
 </dd>
-<dt><strong>order</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list or tuple</span></dt>
-<dd><p class="first last">Order of dimension stacking.</p>
+<dt><strong>order</strong><span class="classifier">list or tuple</span></dt><dd><p>Order of dimension stacking.</p>
 </dd>
-<dt><strong>return_array: bool</strong></dt>
-<dd><p class="first last">Whether to return a DataArray when a Dataset was passed.</p>
+<dt><strong>return_array: bool</strong></dt><dd><p>Whether to return a DataArray when a Dataset was passed.</p>
 </dd>
-<dt><strong>groupby</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or list, optional</span></dt>
-<dd><p class="first last">Name of coordinate or list of coordinates by which the groups are
+<dt><strong>groupby</strong><span class="classifier">str or list, optional</span></dt><dd><p>Name of coordinate or list of coordinates by which the groups are
 determined.</p>
 </dd>
-<dt><strong>group_dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
-<dd><p class="first last">Name of dimension along which the groups are indexed.</p>
+<dt><strong>group_dim</strong><span class="classifier">str, optional</span></dt><dd><p>Name of dimension along which the groups are indexed.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(X[,&nbsp;y])</td>
-<td>Fit estimator to data.</td>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(self, X[, y])</p></td>
+<td><p>Fit estimator to data.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(X[,&nbsp;y])</td>
-<td>Fit to data, then transform it.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(self, X[, y])</p></td>
+<td><p>Fit to data, then transform it.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
-<td>Get parameters for this estimator.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>(self[, deep])</p></td>
+<td><p>Get parameters for this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform</span></code>(X)</td>
-<td>Reverse the transformation.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform</span></code>(self, X)</p></td>
+<td><p>Reverse the transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</td>
-<td>Set the parameters of this estimator.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(self, **params)</p></td>
+<td><p>Set the parameters of this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(X)</td>
-<td>Transform input data.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(self, X)</p></td>
+<td><p>Transform input data.</p></td>
 </tr>
 </tbody>
 </table>
@@ -459,55 +416,47 @@ determined.</p>
 
 <dl class="class">
 <dt id="sklearn_xarray.preprocessing.Reducer">
-<em class="property">class </em><code class="descname">Reducer</code><span class="sig-paren">(</span><em>dim='feature'</em>, <em>func=&lt;function norm&gt;</em>, <em>groupby=None</em>, <em>group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Reducer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Reducer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">Reducer</code><span class="sig-paren">(</span><em class="sig-param">dim='feature'</em>, <em class="sig-param">func=&lt;function norm&gt;</em>, <em class="sig-param">groupby=None</em>, <em class="sig-param">group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Reducer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Reducer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reduce data along some dimension.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">Name of the dimension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dim</strong><span class="classifier">str</span></dt><dd><p>Name of the dimension.</p>
 </dd>
-<dt><strong>func</strong> <span class="classifier-delimiter">:</span> <span class="classifier">function</span></dt>
-<dd><p class="first last">Reduction function.</p>
+<dt><strong>func</strong><span class="classifier">function</span></dt><dd><p>Reduction function.</p>
 </dd>
-<dt><strong>groupby</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or list, optional</span></dt>
-<dd><p class="first last">Name of coordinate or list of coordinates by which the groups are
+<dt><strong>groupby</strong><span class="classifier">str or list, optional</span></dt><dd><p>Name of coordinate or list of coordinates by which the groups are
 determined.</p>
 </dd>
-<dt><strong>group_dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
-<dd><p class="first last">Name of dimension along which the groups are indexed.</p>
+<dt><strong>group_dim</strong><span class="classifier">str, optional</span></dt><dd><p>Name of dimension along which the groups are indexed.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(X[,&nbsp;y])</td>
-<td>Fit estimator to data.</td>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(self, X[, y])</p></td>
+<td><p>Fit estimator to data.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(X[,&nbsp;y])</td>
-<td>Fit to data, then transform it.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(self, X[, y])</p></td>
+<td><p>Fit to data, then transform it.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
-<td>Get parameters for this estimator.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>(self[, deep])</p></td>
+<td><p>Get parameters for this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform</span></code>(X)</td>
-<td>Reverse the transformation.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform</span></code>(self, X)</p></td>
+<td><p>Reverse the transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</td>
-<td>Set the parameters of this estimator.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(self, **params)</p></td>
+<td><p>Set the parameters of this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(X)</td>
-<td>Transform input data.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(self, X)</p></td>
+<td><p>Transform input data.</p></td>
 </tr>
 </tbody>
 </table>
@@ -515,137 +464,115 @@ determined.</p>
 
 <dl class="class">
 <dt id="sklearn_xarray.preprocessing.Resampler">
-<em class="property">class </em><code class="descname">Resampler</code><span class="sig-paren">(</span><em>freq=None</em>, <em>dim='sample'</em>, <em>groupby=None</em>, <em>group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Resampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Resampler" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">Resampler</code><span class="sig-paren">(</span><em class="sig-param">freq=None</em>, <em class="sig-param">dim='sample'</em>, <em class="sig-param">groupby=None</em>, <em class="sig-param">group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Resampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Resampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resample along some dimension.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>freq</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">Frequency after resampling.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>freq</strong><span class="classifier">str</span></dt><dd><p>Frequency after resampling.</p>
 </dd>
-<dt><strong>dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">Name of the dimension along which to resample.</p>
+<dt><strong>dim</strong><span class="classifier">str</span></dt><dd><p>Name of the dimension along which to resample.</p>
 </dd>
-<dt><strong>groupby</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or list, optional</span></dt>
-<dd><p class="first last">Name of coordinate or list of coordinates by which the groups are
+<dt><strong>groupby</strong><span class="classifier">str or list, optional</span></dt><dd><p>Name of coordinate or list of coordinates by which the groups are
 determined.</p>
 </dd>
-<dt><strong>group_dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
-<dd><p class="first last">Name of dimension along which the groups are indexed.</p>
+<dt><strong>group_dim</strong><span class="classifier">str, optional</span></dt><dd><p>Name of dimension along which the groups are indexed.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#sklearn_xarray.preprocessing.Resampler.fit" title="sklearn_xarray.preprocessing.Resampler.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[,&nbsp;y])</td>
-<td>Fit the estimator.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sklearn_xarray.preprocessing.Resampler.fit" title="sklearn_xarray.preprocessing.Resampler.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(self, X[, y])</p></td>
+<td><p>Fit the estimator.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(X[,&nbsp;y])</td>
-<td>Fit to data, then transform it.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(self, X[, y])</p></td>
+<td><p>Fit to data, then transform it.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
-<td>Get parameters for this estimator.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>(self[, deep])</p></td>
+<td><p>Get parameters for this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform</span></code>(X)</td>
-<td>Reverse the transformation.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform</span></code>(self, X)</p></td>
+<td><p>Reverse the transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</td>
-<td>Set the parameters of this estimator.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(self, **params)</p></td>
+<td><p>Set the parameters of this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(X)</td>
-<td>Transform input data.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(self, X)</p></td>
+<td><p>Transform input data.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="sklearn_xarray.preprocessing.Resampler.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Resampler.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Resampler.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em>, <em class="sig-param">**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Resampler.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Resampler.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the estimator.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The input data.</p>
 </dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
-<dd><p class="first last">For compatibility.</p>
+<dt><strong>y</strong><span class="classifier">None</span></dt><dd><p>For compatibility.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>self :</strong></dt>
-<dd><p class="first last">The estimator itself.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>self :</dt><dd><p>The estimator itself.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="sklearn_xarray.preprocessing.Sanitizer">
-<em class="property">class </em><code class="descname">Sanitizer</code><span class="sig-paren">(</span><em>dim='sample'</em>, <em>groupby=None</em>, <em>group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Sanitizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Sanitizer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">Sanitizer</code><span class="sig-paren">(</span><em class="sig-param">dim='sample'</em>, <em class="sig-param">groupby=None</em>, <em class="sig-param">group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Sanitizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Sanitizer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove elements containing NaNs.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">Name of the sample dimension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dim</strong><span class="classifier">str</span></dt><dd><p>Name of the sample dimension.</p>
 </dd>
-<dt><strong>groupby</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or list, optional</span></dt>
-<dd><p class="first last">Name of coordinate or list of coordinates by which the groups are
+<dt><strong>groupby</strong><span class="classifier">str or list, optional</span></dt><dd><p>Name of coordinate or list of coordinates by which the groups are
 determined.</p>
 </dd>
-<dt><strong>group_dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
-<dd><p class="first last">Name of dimension along which the groups are indexed.</p>
+<dt><strong>group_dim</strong><span class="classifier">str, optional</span></dt><dd><p>Name of dimension along which the groups are indexed.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(X[,&nbsp;y])</td>
-<td>Fit estimator to data.</td>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(self, X[, y])</p></td>
+<td><p>Fit estimator to data.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(X[,&nbsp;y])</td>
-<td>Fit to data, then transform it.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(self, X[, y])</p></td>
+<td><p>Fit to data, then transform it.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
-<td>Get parameters for this estimator.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>(self[, deep])</p></td>
+<td><p>Get parameters for this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform</span></code>(X)</td>
-<td>Reverse the transformation.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform</span></code>(self, X)</p></td>
+<td><p>Reverse the transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</td>
-<td>Set the parameters of this estimator.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(self, **params)</p></td>
+<td><p>Set the parameters of this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(X)</td>
-<td>Transform input data.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(self, X)</p></td>
+<td><p>Transform input data.</p></td>
 </tr>
 </tbody>
 </table>
@@ -653,86 +580,71 @@ determined.</p>
 
 <dl class="class">
 <dt id="sklearn_xarray.preprocessing.Segmenter">
-<em class="property">class </em><code class="descname">Segmenter</code><span class="sig-paren">(</span><em>dim='sample'</em>, <em>new_dim=None</em>, <em>new_len=None</em>, <em>step=None</em>, <em>axis=None</em>, <em>reduce_index='subsample'</em>, <em>new_index_func=&lt;built-in function arange&gt;</em>, <em>keep_coords_as=None</em>, <em>groupby=None</em>, <em>group_dim='sample'</em>, <em>return_view=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Segmenter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Segmenter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">Segmenter</code><span class="sig-paren">(</span><em class="sig-param">dim='sample'</em>, <em class="sig-param">new_dim=None</em>, <em class="sig-param">new_len=None</em>, <em class="sig-param">step=None</em>, <em class="sig-param">axis=None</em>, <em class="sig-param">reduce_index='subsample'</em>, <em class="sig-param">new_index_func=&lt;built-in function arange&gt;</em>, <em class="sig-param">keep_coords_as=None</em>, <em class="sig-param">groupby=None</em>, <em class="sig-param">group_dim='sample'</em>, <em class="sig-param">return_view=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Segmenter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Segmenter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Split into segments along some dimension.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">Name of the dimension along which to split.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dim</strong><span class="classifier">str</span></dt><dd><p>Name of the dimension along which to split.</p>
 </dd>
-<dt><strong>new_dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">Name of the newly added dimension.</p>
+<dt><strong>new_dim</strong><span class="classifier">str</span></dt><dd><p>Name of the newly added dimension.</p>
 </dd>
-<dt><strong>new_len</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Length of the newly added dimension.</p>
+<dt><strong>new_len</strong><span class="classifier">int</span></dt><dd><p>Length of the newly added dimension.</p>
 </dd>
-<dt><strong>step: int</strong></dt>
-<dd><p class="first last">Number of values between the start of a segment and the next one.</p>
+<dt><strong>step: int</strong></dt><dd><p>Number of values between the start of a segment and the next one.</p>
 </dd>
-<dt><strong>axis</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Axis position where new dimension is to be inserted. If None,
+<dt><strong>axis</strong><span class="classifier">int</span></dt><dd><p>Axis position where new dimension is to be inserted. If None,
 the dimension will be inserted at the end.</p>
 </dd>
-<dt><strong>reduce_index</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first">How to reduce the index of the split dimension.</p>
-<ul class="last simple">
-<li><code class="docutils literal notranslate"><span class="pre">'head'</span></code> : Take the first <cite>n</cite> values where <cite>n</cite> is the length of the
-dimension after segmenting.</li>
-<li><code class="docutils literal notranslate"><span class="pre">'subsample'</span></code> : Take the values corresponding to the first element
-of every segment.</li>
+<dt><strong>reduce_index</strong><span class="classifier">str</span></dt><dd><p>How to reduce the index of the split dimension.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'head'</span></code> : Take the first <cite>n</cite> values where <cite>n</cite> is the length of the
+dimension after segmenting.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'subsample'</span></code> : Take the values corresponding to the first element
+of every segment.</p></li>
 </ul>
 </dd>
-<dt><strong>new_index_func</strong> <span class="classifier-delimiter">:</span> <span class="classifier">callable</span></dt>
-<dd><p class="first last">A function that takes <code class="docutils literal notranslate"><span class="pre">new_len</span></code> as a parameter and returns a vector of
-length <code class="docutils literal notranslate"><span class="pre">new_len</span></code> to be used as the indices for the new dimension.</p>
+<dt><strong>new_index_func</strong><span class="classifier">callable</span></dt><dd><p>A function that takes <code class="docutils literal notranslate"><span class="pre">new_len</span></code> as a parameter and returns a vector
+of length <code class="docutils literal notranslate"><span class="pre">new_len</span></code> to be used as the indices for the new dimension.</p>
 </dd>
-<dt><strong>keep_coords_as</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or None</span></dt>
-<dd><p class="first last">If set, the coordinate of the split dimension will be kept as a
+<dt><strong>keep_coords_as</strong><span class="classifier">str or None</span></dt><dd><p>If set, the coordinate of the split dimension will be kept as a
 separate coordinate with this name. This allows <code class="docutils literal notranslate"><span class="pre">inverse_transform</span></code>
 to reconstruct the original coordinate.</p>
 </dd>
-<dt><strong>return_view</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, default False</span></dt>
-<dd><p class="first last">If true, return a view instead of a copy of the segmented array.</p>
+<dt><strong>return_view</strong><span class="classifier">bool, default False</span></dt><dd><p>If true, return a view instead of a copy of the segmented array.</p>
 </dd>
-<dt><strong>groupby</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or list, optional</span></dt>
-<dd><p class="first last">Name of coordinate or list of coordinates by which the groups are
+<dt><strong>groupby</strong><span class="classifier">str or list, optional</span></dt><dd><p>Name of coordinate or list of coordinates by which the groups are
 determined.</p>
 </dd>
-<dt><strong>group_dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
-<dd><p class="first last">Name of dimension along which the groups are indexed.</p>
+<dt><strong>group_dim</strong><span class="classifier">str, optional</span></dt><dd><p>Name of dimension along which the groups are indexed.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(X[,&nbsp;y])</td>
-<td>Fit estimator to data.</td>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(self, X[, y])</p></td>
+<td><p>Fit estimator to data.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(X[,&nbsp;y])</td>
-<td>Fit to data, then transform it.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(self, X[, y])</p></td>
+<td><p>Fit to data, then transform it.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
-<td>Get parameters for this estimator.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>(self[, deep])</p></td>
+<td><p>Get parameters for this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform</span></code>(X)</td>
-<td>Reverse the transformation.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform</span></code>(self, X)</p></td>
+<td><p>Reverse the transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</td>
-<td>Set the parameters of this estimator.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(self, **params)</p></td>
+<td><p>Set the parameters of this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(X)</td>
-<td>Transform input data.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(self, X)</p></td>
+<td><p>Transform input data.</p></td>
 </tr>
 </tbody>
 </table>
@@ -740,55 +652,47 @@ determined.</p>
 
 <dl class="class">
 <dt id="sklearn_xarray.preprocessing.Selector">
-<em class="property">class </em><code class="descname">Selector</code><span class="sig-paren">(</span><em>dim='sample'</em>, <em>coord=None</em>, <em>groupby=None</em>, <em>group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Selector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Selector" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">Selector</code><span class="sig-paren">(</span><em class="sig-param">dim='sample'</em>, <em class="sig-param">coord=None</em>, <em class="sig-param">groupby=None</em>, <em class="sig-param">group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Selector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Selector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Selects a subset of the samples.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">Name of the sample dimension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dim</strong><span class="classifier">str</span></dt><dd><p>Name of the sample dimension.</p>
 </dd>
-<dt><strong>coord</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">The name of the coordinate that acts as the selector.</p>
+<dt><strong>coord</strong><span class="classifier">str</span></dt><dd><p>The name of the coordinate that acts as the selector.</p>
 </dd>
-<dt><strong>groupby</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or list, optional</span></dt>
-<dd><p class="first last">Name of coordinate or list of coordinates by which the groups are
+<dt><strong>groupby</strong><span class="classifier">str or list, optional</span></dt><dd><p>Name of coordinate or list of coordinates by which the groups are
 determined.</p>
 </dd>
-<dt><strong>group_dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
-<dd><p class="first last">Name of dimension along which the groups are indexed.</p>
+<dt><strong>group_dim</strong><span class="classifier">str, optional</span></dt><dd><p>Name of dimension along which the groups are indexed.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(X[,&nbsp;y])</td>
-<td>Fit estimator to data.</td>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(self, X[, y])</p></td>
+<td><p>Fit estimator to data.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(X[,&nbsp;y])</td>
-<td>Fit to data, then transform it.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(self, X[, y])</p></td>
+<td><p>Fit to data, then transform it.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
-<td>Get parameters for this estimator.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>(self[, deep])</p></td>
+<td><p>Get parameters for this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform</span></code>(X)</td>
-<td>Reverse the transformation.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform</span></code>(self, X)</p></td>
+<td><p>Reverse the transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</td>
-<td>Set the parameters of this estimator.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(self, **params)</p></td>
+<td><p>Set the parameters of this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(X)</td>
-<td>Transform input data.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(self, X)</p></td>
+<td><p>Transform input data.</p></td>
 </tr>
 </tbody>
 </table>
@@ -796,79 +700,66 @@ determined.</p>
 
 <dl class="class">
 <dt id="sklearn_xarray.preprocessing.Splitter">
-<em class="property">class </em><code class="descname">Splitter</code><span class="sig-paren">(</span><em>dim='sample'</em>, <em>new_dim=None</em>, <em>new_len=None</em>, <em>axis=None</em>, <em>reduce_index='subsample'</em>, <em>new_index_func=&lt;built-in function arange&gt;</em>, <em>keep_coords_as=None</em>, <em>groupby=None</em>, <em>group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Splitter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Splitter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">Splitter</code><span class="sig-paren">(</span><em class="sig-param">dim='sample'</em>, <em class="sig-param">new_dim=None</em>, <em class="sig-param">new_len=None</em>, <em class="sig-param">axis=None</em>, <em class="sig-param">reduce_index='subsample'</em>, <em class="sig-param">new_index_func=&lt;built-in function arange&gt;</em>, <em class="sig-param">keep_coords_as=None</em>, <em class="sig-param">groupby=None</em>, <em class="sig-param">group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Splitter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Splitter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Split along some dimension.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">Name of the dimension along which to split.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dim</strong><span class="classifier">str</span></dt><dd><p>Name of the dimension along which to split.</p>
 </dd>
-<dt><strong>new_dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">Name of the newly added dimension.</p>
+<dt><strong>new_dim</strong><span class="classifier">str</span></dt><dd><p>Name of the newly added dimension.</p>
 </dd>
-<dt><strong>new_len</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Length of the newly added dimension.</p>
+<dt><strong>new_len</strong><span class="classifier">int</span></dt><dd><p>Length of the newly added dimension.</p>
 </dd>
-<dt><strong>axis</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Axis position where new dimension is to be inserted. If None,
+<dt><strong>axis</strong><span class="classifier">int</span></dt><dd><p>Axis position where new dimension is to be inserted. If None,
 the dimension will be inserted at the end.</p>
 </dd>
-<dt><strong>reduce_index</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first">How to reduce the index of the split dimension.</p>
-<ul class="last simple">
-<li><code class="docutils literal notranslate"><span class="pre">'head'</span></code> : Take the first <cite>n</cite> values where <cite>n</cite> is the length of the
-dimension after splitting.</li>
-<li><code class="docutils literal notranslate"><span class="pre">'subsample'</span></code> : Take every <code class="docutils literal notranslate"><span class="pre">new_len</span></code> th value.</li>
+<dt><strong>reduce_index</strong><span class="classifier">str</span></dt><dd><p>How to reduce the index of the split dimension.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'head'</span></code> : Take the first <cite>n</cite> values where <cite>n</cite> is the length of the
+dimension after splitting.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'subsample'</span></code> : Take every <code class="docutils literal notranslate"><span class="pre">new_len</span></code> th value.</p></li>
 </ul>
 </dd>
-<dt><strong>new_index_func</strong> <span class="classifier-delimiter">:</span> <span class="classifier">callable</span></dt>
-<dd><p class="first last">A function that takes <code class="docutils literal notranslate"><span class="pre">new_len</span></code> as a parameter and returns a vector of
-length <code class="docutils literal notranslate"><span class="pre">new_len</span></code> to be used as the indices for the new dimension.</p>
+<dt><strong>new_index_func</strong><span class="classifier">callable</span></dt><dd><p>A function that takes <code class="docutils literal notranslate"><span class="pre">new_len</span></code> as a parameter and returns a vector
+of length <code class="docutils literal notranslate"><span class="pre">new_len</span></code> to be used as the indices for the new dimension.</p>
 </dd>
-<dt><strong>keep_coords_as</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or None</span></dt>
-<dd><p class="first last">If set, the coordinate of the split dimension will be kept as a
+<dt><strong>keep_coords_as</strong><span class="classifier">str or None</span></dt><dd><p>If set, the coordinate of the split dimension will be kept as a
 separate coordinate with this name. This allows <code class="docutils literal notranslate"><span class="pre">inverse_transform</span></code>
 to reconstruct the original coordinate.</p>
 </dd>
-<dt><strong>groupby</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or list, optional</span></dt>
-<dd><p class="first last">Name of coordinate or list of coordinates by which the groups are
+<dt><strong>groupby</strong><span class="classifier">str or list, optional</span></dt><dd><p>Name of coordinate or list of coordinates by which the groups are
 determined.</p>
 </dd>
-<dt><strong>group_dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
-<dd><p class="first last">Name of dimension along which the groups are indexed.</p>
+<dt><strong>group_dim</strong><span class="classifier">str, optional</span></dt><dd><p>Name of dimension along which the groups are indexed.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(X[,&nbsp;y])</td>
-<td>Fit estimator to data.</td>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(self, X[, y])</p></td>
+<td><p>Fit estimator to data.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(X[,&nbsp;y])</td>
-<td>Fit to data, then transform it.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(self, X[, y])</p></td>
+<td><p>Fit to data, then transform it.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
-<td>Get parameters for this estimator.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>(self[, deep])</p></td>
+<td><p>Get parameters for this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform</span></code>(X)</td>
-<td>Reverse the transformation.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform</span></code>(self, X)</p></td>
+<td><p>Reverse the transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</td>
-<td>Set the parameters of this estimator.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(self, **params)</p></td>
+<td><p>Set the parameters of this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(X)</td>
-<td>Transform input data.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(self, X)</p></td>
+<td><p>Transform input data.</p></td>
 </tr>
 </tbody>
 </table>
@@ -876,382 +767,296 @@ determined.</p>
 
 <dl class="class">
 <dt id="sklearn_xarray.preprocessing.Transposer">
-<em class="property">class </em><code class="descname">Transposer</code><span class="sig-paren">(</span><em>order=None</em>, <em>groupby=None</em>, <em>group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Transposer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Transposer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">Transposer</code><span class="sig-paren">(</span><em class="sig-param">order=None</em>, <em class="sig-param">groupby=None</em>, <em class="sig-param">group_dim='sample'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Transposer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Transposer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reorder data dimensions.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>order</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list or tuple</span></dt>
-<dd><p class="first last">The new order of the dimensions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>order</strong><span class="classifier">list or tuple</span></dt><dd><p>The new order of the dimensions.</p>
 </dd>
-<dt><strong>groupby</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or list, optional</span></dt>
-<dd><p class="first last">Name of coordinate or list of coordinates by which the groups are
+<dt><strong>groupby</strong><span class="classifier">str or list, optional</span></dt><dd><p>Name of coordinate or list of coordinates by which the groups are
 determined.</p>
 </dd>
-<dt><strong>group_dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
-<dd><p class="first last">Name of dimension along which the groups are indexed.</p>
+<dt><strong>group_dim</strong><span class="classifier">str, optional</span></dt><dd><p>Name of dimension along which the groups are indexed.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#sklearn_xarray.preprocessing.Transposer.fit" title="sklearn_xarray.preprocessing.Transposer.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[,&nbsp;y])</td>
-<td>Fit the estimator.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sklearn_xarray.preprocessing.Transposer.fit" title="sklearn_xarray.preprocessing.Transposer.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(self, X[, y])</p></td>
+<td><p>Fit the estimator.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(X[,&nbsp;y])</td>
-<td>Fit to data, then transform it.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(self, X[, y])</p></td>
+<td><p>Fit to data, then transform it.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
-<td>Get parameters for this estimator.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>(self[, deep])</p></td>
+<td><p>Get parameters for this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform</span></code>(X)</td>
-<td>Reverse the transformation.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform</span></code>(self, X)</p></td>
+<td><p>Reverse the transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</td>
-<td>Set the parameters of this estimator.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(self, **params)</p></td>
+<td><p>Set the parameters of this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(X)</td>
-<td>Transform input data.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code>(self, X)</p></td>
+<td><p>Transform input data.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="sklearn_xarray.preprocessing.Transposer.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Transposer.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Transposer.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em>, <em class="sig-param">**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#Transposer.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.Transposer.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the estimator.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The input data.</p>
 </dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
-<dd><p class="first last">For compatibility.</p>
+<dt><strong>y</strong><span class="classifier">None</span></dt><dd><p>For compatibility.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>self :</strong></dt>
-<dd><p class="first last">The estimator itself.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>self :</dt><dd><p>The estimator itself.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="sklearn_xarray.preprocessing.concatenate">
-<code class="descname">concatenate</code><span class="sig-paren">(</span><em>X</em>, <em>return_estimator=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#concatenate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.concatenate" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">concatenate</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">return_estimator=False</em>, <em class="sig-param">**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#concatenate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.concatenate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Concatenates variables along a dimension.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The input data.</p>
 </dd>
-<dt><strong>return_estimator</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
-<dd><p class="first last">Whether to return the fitted estimator along with the transformed data.</p>
+<dt><strong>return_estimator</strong><span class="classifier">bool</span></dt><dd><p>Whether to return the fitted estimator along with the transformed data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>Xt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The transformed data.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>Xt</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The transformed data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sklearn_xarray.preprocessing.featurize">
-<code class="descname">featurize</code><span class="sig-paren">(</span><em>X</em>, <em>return_estimator=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#featurize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.featurize" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">featurize</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">return_estimator=False</em>, <em class="sig-param">**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#featurize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.featurize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stacks all dimensions and variables except for sample dimension.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The input data.</p>
 </dd>
-<dt><strong>return_estimator</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
-<dd><p class="first last">Whether to return the fitted estimator along with the transformed data.</p>
+<dt><strong>return_estimator</strong><span class="classifier">bool</span></dt><dd><p>Whether to return the fitted estimator along with the transformed data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>Xt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The transformed data.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>Xt</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The transformed data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sklearn_xarray.preprocessing.preprocess">
-<code class="descname">preprocess</code><span class="sig-paren">(</span><em>X</em>, <em>function</em>, <em>groupby=None</em>, <em>group_dim='sample'</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#preprocess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.preprocess" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">preprocess</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">function</em>, <em class="sig-param">groupby=None</em>, <em class="sig-param">group_dim='sample'</em>, <em class="sig-param">**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#preprocess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.preprocess" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wraps preprocessing functions from sklearn for use with xarray types.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The input data.</p>
 </dd>
-<dt><strong>function</strong> <span class="classifier-delimiter">:</span> <span class="classifier">callable</span></dt>
-<dd><p class="first last">The function to apply to the data. Note that this function cannot
+<dt><strong>function</strong><span class="classifier">callable</span></dt><dd><p>The function to apply to the data. Note that this function cannot
 change the shape of the data.</p>
 </dd>
-<dt><strong>groupby</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or list, optional</span></dt>
-<dd><p class="first last">Name of coordinate or list of coordinates by which the groups are
+<dt><strong>groupby</strong><span class="classifier">str or list, optional</span></dt><dd><p>Name of coordinate or list of coordinates by which the groups are
 determined.</p>
 </dd>
-<dt><strong>group_dim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional</span></dt>
-<dd><p class="first last">Name of dimension along which the groups are indexed.</p>
+<dt><strong>group_dim</strong><span class="classifier">str, optional</span></dt><dd><p>Name of dimension along which the groups are indexed.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>Xt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The transformed data.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>Xt</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The transformed data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sklearn_xarray.preprocessing.reduce">
-<code class="descname">reduce</code><span class="sig-paren">(</span><em>X</em>, <em>return_estimator=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#reduce"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.reduce" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">reduce</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">return_estimator=False</em>, <em class="sig-param">**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#reduce"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.reduce" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reduces data along some dimension.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The input data.</p>
 </dd>
-<dt><strong>return_estimator</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
-<dd><p class="first last">Whether to return the fitted estimator along with the transformed data.</p>
+<dt><strong>return_estimator</strong><span class="classifier">bool</span></dt><dd><p>Whether to return the fitted estimator along with the transformed data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>Xt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The transformed data.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>Xt</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The transformed data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sklearn_xarray.preprocessing.resample">
-<code class="descname">resample</code><span class="sig-paren">(</span><em>X</em>, <em>return_estimator=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#resample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.resample" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">resample</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">return_estimator=False</em>, <em class="sig-param">**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#resample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.resample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resamples along some dimension.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The input data.</p>
 </dd>
-<dt><strong>return_estimator</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
-<dd><p class="first last">Whether to return the fitted estimator along with the transformed data.</p>
+<dt><strong>return_estimator</strong><span class="classifier">bool</span></dt><dd><p>Whether to return the fitted estimator along with the transformed data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>Xt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The transformed data.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>Xt</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The transformed data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sklearn_xarray.preprocessing.sanitize">
-<code class="descname">sanitize</code><span class="sig-paren">(</span><em>X</em>, <em>return_estimator=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#sanitize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.sanitize" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">sanitize</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">return_estimator=False</em>, <em class="sig-param">**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#sanitize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.sanitize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes elements containing NaNs.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The input data.</p>
 </dd>
-<dt><strong>return_estimator</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
-<dd><p class="first last">Whether to return the fitted estimator along with the transformed data.</p>
+<dt><strong>return_estimator</strong><span class="classifier">bool</span></dt><dd><p>Whether to return the fitted estimator along with the transformed data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>Xt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The transformed data.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>Xt</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The transformed data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sklearn_xarray.preprocessing.segment">
-<code class="descname">segment</code><span class="sig-paren">(</span><em>X</em>, <em>return_estimator=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#segment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.segment" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">segment</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">return_estimator=False</em>, <em class="sig-param">**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#segment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.segment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Segments X along some dimension.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The input data.</p>
 </dd>
-<dt><strong>return_estimator</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
-<dd><p class="first last">Whether to return the fitted estimator along with the transformed data.</p>
+<dt><strong>return_estimator</strong><span class="classifier">bool</span></dt><dd><p>Whether to return the fitted estimator along with the transformed data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>Xt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The transformed data.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>Xt</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The transformed data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sklearn_xarray.preprocessing.select">
-<code class="descname">select</code><span class="sig-paren">(</span><em>X</em>, <em>return_estimator=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#select"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.select" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">select</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">return_estimator=False</em>, <em class="sig-param">**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#select"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.select" title="Permalink to this definition">¶</a></dt>
 <dd><p>Selects a subset of the samples.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The input data.</p>
 </dd>
-<dt><strong>return_estimator</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
-<dd><p class="first last">Whether to return the fitted estimator along with the transformed data.</p>
+<dt><strong>return_estimator</strong><span class="classifier">bool</span></dt><dd><p>Whether to return the fitted estimator along with the transformed data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>Xt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The transformed data.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>Xt</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The transformed data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sklearn_xarray.preprocessing.split">
-<code class="descname">split</code><span class="sig-paren">(</span><em>X</em>, <em>return_estimator=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.split" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">split</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">return_estimator=False</em>, <em class="sig-param">**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.split" title="Permalink to this definition">¶</a></dt>
 <dd><p>Splits X along some dimension.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The input data.</p>
 </dd>
-<dt><strong>return_estimator</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
-<dd><p class="first last">Whether to return the fitted estimator along with the transformed data.</p>
+<dt><strong>return_estimator</strong><span class="classifier">bool</span></dt><dd><p>Whether to return the fitted estimator along with the transformed data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>Xt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The transformed data.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>Xt</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The transformed data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sklearn_xarray.preprocessing.transpose">
-<code class="descname">transpose</code><span class="sig-paren">(</span><em>X</em>, <em>return_estimator=False</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#transpose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.transpose" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">transpose</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">return_estimator=False</em>, <em class="sig-param">**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sklearn_xarray/preprocessing.html#transpose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn_xarray.preprocessing.transpose" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reorders data dimensions.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The input data.</p>
 </dd>
-<dt><strong>return_estimator</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
-<dd><p class="first last">Whether to return the fitted estimator along with the transformed data.</p>
+<dt><strong>return_estimator</strong><span class="classifier">bool</span></dt><dd><p>Whether to return the fitted estimator along with the transformed data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>Xt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray DataArray or Dataset</span></dt>
-<dd><p class="first last">The transformed data.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>Xt</strong><span class="classifier">xarray DataArray or Dataset</span></dt><dd><p>The transformed data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -1262,12 +1067,21 @@ determined.</p>
           </div>
           <footer>
   
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="model_selection.html" class="btn btn-neutral float-right" title="Model Selection" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="common.html" class="btn btn-neutral float-left" title="Top-level functions and classes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Peter Hausamann
+        &copy; Copyright 2020, Peter Hausamann
 
     </p>
   </div>
@@ -1284,26 +1098,16 @@ determined.</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

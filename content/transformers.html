@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Custom transformers &mdash; sklearn-xarray 0.3.0-alpha documentation</title>
+  <title>Custom transformers &mdash; sklearn-xarray 0.4.0 documentation</title>
   
 
   
@@ -17,35 +17,41 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="General examples" href="../auto_examples/index.html" />
     <link rel="prev" title="Pipelining and cross-validation" href="pipeline.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -59,7 +65,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.4.0
               </div>
             
           
@@ -171,23 +177,23 @@ for a full list.</p>
 <h2>Transformers changing the number of samples<a class="headerlink" href="#transformers-changing-the-number-of-samples" title="Permalink to this headline">¶</a></h2>
 <p>There are several transformers that change the number of samples in the data,
 namely:</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="api/preprocessing.html#sklearn_xarray.preprocessing.Resampler" title="sklearn_xarray.preprocessing.Resampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler</span></code></a></td>
-<td>Resample along some dimension.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/preprocessing.html#sklearn_xarray.preprocessing.Resampler" title="sklearn_xarray.preprocessing.Resampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler</span></code></a></p></td>
+<td><p>Resample along some dimension.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="api/preprocessing.html#sklearn_xarray.preprocessing.Sanitizer" title="sklearn_xarray.preprocessing.Sanitizer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sanitizer</span></code></a></td>
-<td>Remove elements containing NaNs.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/preprocessing.html#sklearn_xarray.preprocessing.Sanitizer" title="sklearn_xarray.preprocessing.Sanitizer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sanitizer</span></code></a></p></td>
+<td><p>Remove elements containing NaNs.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="api/preprocessing.html#sklearn_xarray.preprocessing.Segmenter" title="sklearn_xarray.preprocessing.Segmenter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Segmenter</span></code></a></td>
-<td>Split into segments along some dimension.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/preprocessing.html#sklearn_xarray.preprocessing.Segmenter" title="sklearn_xarray.preprocessing.Segmenter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Segmenter</span></code></a></p></td>
+<td><p>Split into segments along some dimension.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="api/preprocessing.html#sklearn_xarray.preprocessing.Splitter" title="sklearn_xarray.preprocessing.Splitter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Splitter</span></code></a></td>
-<td>Split along some dimension.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/preprocessing.html#sklearn_xarray.preprocessing.Splitter" title="sklearn_xarray.preprocessing.Splitter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Splitter</span></code></a></p></td>
+<td><p>Split along some dimension.</p></td>
 </tr>
 </tbody>
 </table>
@@ -198,22 +204,22 @@ circumvents this restriction with the <code class="xref py py-class docutils lit
 <p>We look at an example where the digits dataset is loaded but some of the
 samples are corrupted and contain <code class="docutils literal notranslate"><span class="pre">nan</span></code> values. The <a class="reference internal" href="api/preprocessing.html#sklearn_xarray.preprocessing.Sanitizer" title="sklearn_xarray.preprocessing.Sanitizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sanitizer</span></code></a>
 transformer removes these samples from the dataset:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn_xarray</span> <span class="k">import</span> <span class="n">wrap</span><span class="p">,</span> <span class="n">Target</span>
-<span class="kn">from</span> <span class="nn">sklearn_xarray.preprocessing</span> <span class="k">import</span> <span class="n">Sanitizer</span>
-<span class="kn">from</span> <span class="nn">sklearn_xarray.datasets</span> <span class="k">import</span> <span class="n">load_digits_dataarray</span>
-
-<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="k">import</span> <span class="n">Pipeline</span>
-<span class="kn">from</span> <span class="nn">sklearn.linear_model.logistic</span> <span class="k">import</span> <span class="n">LogisticRegression</span>
-
-<span class="n">X</span> <span class="o">=</span> <span class="n">load_digits_dataarray</span><span class="p">(</span><span class="n">nan_probability</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">Target</span><span class="p">(</span><span class="n">coord</span><span class="o">=</span><span class="s1">&#39;digit&#39;</span><span class="p">)(</span><span class="n">X</span><span class="p">)</span>
-
-<span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
-    <span class="p">(</span><span class="s1">&#39;san&#39;</span><span class="p">,</span> <span class="n">Sanitizer</span><span class="p">()),</span>
-    <span class="p">(</span><span class="s1">&#39;cls&#39;</span><span class="p">,</span> <span class="n">wrap</span><span class="p">(</span><span class="n">LogisticRegression</span><span class="p">(),</span> <span class="n">reshapes</span><span class="o">=</span><span class="s1">&#39;feature&#39;</span><span class="p">))</span>
-<span class="p">])</span>
-
-<span class="n">pipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn_xarray</span> <span class="kn">import</span> <span class="n">wrap</span><span class="p">,</span> <span class="n">Target</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn_xarray.preprocessing</span> <span class="kn">import</span> <span class="n">Sanitizer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn_xarray.datasets</span> <span class="kn">import</span> <span class="n">load_digits_dataarray</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model.logistic</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">load_digits_dataarray</span><span class="p">(</span><span class="n">nan_probability</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">Target</span><span class="p">(</span><span class="n">coord</span><span class="o">=</span><span class="s1">&#39;digit&#39;</span><span class="p">)(</span><span class="n">X</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="s1">&#39;san&#39;</span><span class="p">,</span> <span class="n">Sanitizer</span><span class="p">()),</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="s1">&#39;cls&#39;</span><span class="p">,</span> <span class="n">wrap</span><span class="p">(</span><span class="n">LogisticRegression</span><span class="p">(),</span> <span class="n">reshapes</span><span class="o">=</span><span class="s1">&#39;feature&#39;</span><span class="p">))</span>
+<span class="gp">... </span><span class="p">])</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> 
+<span class="go">Pipeline(...)</span>
 </pre></div>
 </div>
 <p>If we had used <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">X.digits</span></code> instead of the <code class="xref py py-class docutils literal notranslate"><span class="pre">Target</span></code> syntax, we
@@ -235,42 +241,41 @@ should do this in groups of subject/activity pairs, because otherwise we
 could get non-continuous samples from different recording times in the same
 segment. In order to perform transformations in a groupwise manner, we
 specify the <code class="docutils literal notranslate"><span class="pre">groupby</span></code> parameter:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn_xarray.datasets</span> <span class="k">import</span> <span class="n">load_wisdm_dataarray</span>
-<span class="kn">from</span> <span class="nn">sklearn_xarray.preprocessing</span> <span class="k">import</span> <span class="n">Segmenter</span>
-
-<span class="n">segmenter</span> <span class="o">=</span> <span class="n">Segmenter</span><span class="p">(</span>
-    <span class="n">new_len</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">new_dim</span><span class="o">=</span><span class="s1">&#39;timepoint&#39;</span><span class="p">,</span> <span class="n">groupby</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">,</span> <span class="s1">&#39;activity&#39;</span><span class="p">])</span>
-
-<span class="n">X</span> <span class="o">=</span> <span class="n">load_wisdm_dataarray</span><span class="p">()</span>
-<span class="n">Xt</span> <span class="o">=</span> <span class="n">segmenter</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-
-<span class="n">In</span> <span class="p">[]:</span> <span class="n">Xt</span>
-<span class="n">Out</span><span class="p">[]:</span>
-<span class="o">&lt;</span><span class="n">xarray</span><span class="o">.</span><span class="n">DataArray</span> <span class="p">(</span><span class="n">sample</span><span class="p">:</span> <span class="mi">54813</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="n">timepoint</span><span class="p">:</span> <span class="mi">20</span><span class="p">)</span><span class="o">&gt;</span>
-<span class="n">array</span><span class="p">([[[</span> <span class="o">-</span><span class="mf">0.15</span>    <span class="p">,</span>   <span class="mf">0.11</span>    <span class="p">,</span> <span class="o">...</span><span class="p">,</span>  <span class="o">-</span><span class="mf">2.26</span>    <span class="p">,</span>  <span class="o">-</span><span class="mf">1.46</span>    <span class="p">],</span>
-        <span class="p">[</span>  <span class="mf">9.15</span>    <span class="p">,</span>   <span class="mf">9.19</span>    <span class="p">,</span> <span class="o">...</span><span class="p">,</span>   <span class="mf">9.72</span>    <span class="p">,</span>   <span class="mf">9.81</span>    <span class="p">],</span>
-        <span class="p">[</span> <span class="o">-</span><span class="mf">0.34</span>    <span class="p">,</span>   <span class="mf">2.76</span>    <span class="p">,</span> <span class="o">...</span><span class="p">,</span>   <span class="mf">2.03</span>    <span class="p">,</span>   <span class="mf">2.15</span>    <span class="p">]],</span>
-       <span class="p">[[</span>  <span class="mf">0.27</span>    <span class="p">,</span>  <span class="o">-</span><span class="mf">3.06</span>    <span class="p">,</span> <span class="o">...</span><span class="p">,</span>  <span class="o">-</span><span class="mf">2.56</span>    <span class="p">,</span>  <span class="o">-</span><span class="mf">2.6</span>     <span class="p">],</span>
-        <span class="p">[</span> <span class="mf">12.57</span>    <span class="p">,</span>  <span class="mf">13.18</span>    <span class="p">,</span> <span class="o">...</span><span class="p">,</span>  <span class="mf">14.56</span>    <span class="p">,</span>   <span class="mf">8.96</span>    <span class="p">],</span>
-        <span class="p">[</span>  <span class="mf">5.37</span>    <span class="p">,</span>   <span class="mf">6.47</span>    <span class="p">,</span> <span class="o">...</span><span class="p">,</span>   <span class="mf">0.31</span>    <span class="p">,</span>  <span class="o">-</span><span class="mf">3.3</span>     <span class="p">]],</span>
-       <span class="o">...</span><span class="p">,</span>
-       <span class="p">[[</span> <span class="o">-</span><span class="mf">0.3</span>     <span class="p">,</span>   <span class="mf">0.27</span>    <span class="p">,</span> <span class="o">...</span><span class="p">,</span>   <span class="mf">0.42</span>    <span class="p">,</span>   <span class="mf">3.17</span>    <span class="p">],</span>
-        <span class="p">[</span>  <span class="mf">8.08</span>    <span class="p">,</span>   <span class="mf">6.63</span>    <span class="p">,</span> <span class="o">...</span><span class="p">,</span>  <span class="mf">10.5</span>     <span class="p">,</span>   <span class="mf">9.23</span>    <span class="p">],</span>
-        <span class="p">[</span>  <span class="mf">0.994285</span><span class="p">,</span>   <span class="mf">0.994285</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span>  <span class="o">-</span><span class="mf">5.175732</span><span class="p">,</span>  <span class="o">-</span><span class="mf">4.671779</span><span class="p">]],</span>
-       <span class="p">[[</span>  <span class="mf">5.33</span>    <span class="p">,</span>   <span class="mf">6.44</span>    <span class="p">,</span> <span class="o">...</span><span class="p">,</span>  <span class="o">-</span><span class="mf">4.14</span>    <span class="p">,</span>  <span class="o">-</span><span class="mf">4.9</span>     <span class="p">],</span>
-        <span class="p">[</span>  <span class="mf">8.39</span>    <span class="p">,</span>   <span class="mf">9.04</span>    <span class="p">,</span> <span class="o">...</span><span class="p">,</span>   <span class="mf">6.21</span>    <span class="p">,</span>   <span class="mf">6.55</span>    <span class="p">],</span>
-        <span class="p">[</span> <span class="o">-</span><span class="mf">4.794363</span><span class="p">,</span>  <span class="o">-</span><span class="mf">2.179256</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span>   <span class="mf">5.938472</span><span class="p">,</span>   <span class="mf">3.827318</span><span class="p">]]])</span>
-<span class="n">Coordinates</span><span class="p">:</span>
-  <span class="o">*</span> <span class="n">timepoint</span>  <span class="p">(</span><span class="n">timepoint</span><span class="p">)</span> <span class="n">int32</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">10</span> <span class="mi">11</span> <span class="mi">12</span> <span class="mi">13</span> <span class="mi">14</span> <span class="mi">15</span> <span class="mi">16</span> <span class="mi">17</span> <span class="o">...</span>
-  <span class="o">*</span> <span class="n">axis</span>       <span class="p">(</span><span class="n">axis</span><span class="p">)</span> <span class="o">&lt;</span><span class="n">U1</span> <span class="s1">&#39;x&#39;</span> <span class="s1">&#39;y&#39;</span> <span class="s1">&#39;z&#39;</span>
-  <span class="o">*</span> <span class="n">sample</span>     <span class="p">(</span><span class="n">sample</span><span class="p">)</span> <span class="n">timedelta64</span><span class="p">[</span><span class="n">ns</span><span class="p">]</span> <span class="mi">13</span><span class="p">:</span><span class="mi">25</span><span class="p">:</span><span class="mf">37.050000</span> <span class="mi">13</span><span class="p">:</span><span class="mi">25</span><span class="p">:</span><span class="mf">38.050000</span> <span class="o">...</span>
-    <span class="n">subject</span>    <span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">timepoint</span><span class="p">)</span> <span class="n">int64</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="o">...</span>
-    <span class="n">activity</span>   <span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">timepoint</span><span class="p">)</span> <span class="nb">object</span> <span class="s1">&#39;Downstairs&#39;</span> <span class="s1">&#39;Downstairs&#39;</span> <span class="o">...</span>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn_xarray.datasets</span> <span class="kn">import</span> <span class="n">load_wisdm_dataarray</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn_xarray.preprocessing</span> <span class="kn">import</span> <span class="n">Segmenter</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">segmenter</span> <span class="o">=</span> <span class="n">Segmenter</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">new_len</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">new_dim</span><span class="o">=</span><span class="s1">&#39;timepoint&#39;</span><span class="p">,</span> <span class="n">groupby</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">,</span> <span class="s1">&#39;activity&#39;</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">load_wisdm_dataarray</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Xt</span> <span class="o">=</span> <span class="n">segmenter</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Xt</span> 
+<span class="go">&lt;xarray.DataArray &#39;tmptmp&#39; (sample: 54813, axis: 3, timepoint: 20)&gt;</span>
+<span class="go">array([[[ -0.15    ,   0.11    , ...,  -2.26    ,  -1.46    ],</span>
+<span class="go">        [  9.15    ,   9.19    , ...,   9.72    ,   9.81    ],</span>
+<span class="go">        [ -0.34    ,   2.76    , ...,   2.03    ,   2.15    ]],</span>
+<span class="go">       [[  0.27    ,  -3.06    , ...,  -2.56    ,  -2.6     ],</span>
+<span class="go">        [ 12.57    ,  13.18    , ...,  14.56    ,   8.96    ],</span>
+<span class="go">        [  5.37    ,   6.47    , ...,   0.31    ,  -3.3     ]],</span>
+<span class="go">       ...,</span>
+<span class="go">       [[ -0.3     ,   0.27    , ...,   0.42    ,   3.17    ],</span>
+<span class="go">        [  8.08    ,   6.63    , ...,  10.5     ,   9.23    ],</span>
+<span class="go">        [  0.994285,   0.994285, ...,  -5.175732,  -4.671779]],</span>
+<span class="go">       [[  5.33    ,   6.44    , ...,  -4.14    ,  -4.9     ],</span>
+<span class="go">        [  8.39    ,   9.04    , ...,   6.21    ,   6.55    ],</span>
+<span class="go">        [ -4.794363,  -2.179256, ...,   5.938472,   3.827318]]])</span>
+<span class="go">Coordinates:</span>
+<span class="go">  * axis       (axis) &lt;U1 &#39;x&#39; &#39;y&#39; &#39;z&#39;</span>
+<span class="go">  * timepoint  (timepoint) int64 0 1 2 3 4 5 6 7 8 ... 12 13 14 15 16 17 18 19</span>
+<span class="go">  * sample     (sample) datetime64[ns] 1970-01-01T13:25:37.050000 ... 1970-01-01T03:12:42.100000</span>
+<span class="go">    subject    (sample, timepoint) int64 1 1 1 1 1 1 1 ... 36 36 36 36 36 36 36</span>
+<span class="go">    activity   (sample, timepoint) object &#39;Downstairs&#39; ... &#39;Walking&#39;</span>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Unfortunately, xarray does not support groupwise operations with multiple
+<p class="admonition-title">Note</p>
+<p>Unfortunately, xarray does not support groupwise operations with multiple
 coordinates to group over (yet). Therefore the samples are not guaranteed
 to be in the same order after applying a groupwise transformation.</p>
 </div>
@@ -294,7 +299,7 @@ also supports groupwise transformations.</p>
         <a href="../auto_examples/index.html" class="btn btn-neutral float-right" title="General examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pipeline.html" class="btn btn-neutral" title="Pipelining and cross-validation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pipeline.html" class="btn btn-neutral float-left" title="Pipelining and cross-validation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -303,7 +308,7 @@ also supports groupwise transformations.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Peter Hausamann
+        &copy; Copyright 2020, Peter Hausamann
 
     </p>
   </div>
@@ -320,26 +325,16 @@ also supports groupwise transformations.</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>
