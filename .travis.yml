@@ -19,7 +19,7 @@ env:
 jobs:
   include:
     - python: 3.6
-      env: COVERAGE="true" BLACK="true" FLAKE8="true" PAGES="true"
+      env: COVERAGE="true" BLACK="true" FLAKE8="true" PAGES="true" PYPI="true"
     - python: 3.7
     - python: 3.8
     - env: CONDA_BLD_PATH=~/conda-bld
@@ -28,7 +28,7 @@ jobs:
         - conda install -y conda-build anaconda-client
         - conda config --set anaconda_upload no
       script:
-        - conda build -c conda-forge build_tools/conda
+        - conda build build_tools/conda
       after_success:
         - chmod +x build_tools/travis/conda_upload.sh
 
@@ -59,6 +59,7 @@ deploy:
     password:
       secure: cRtfmsupJcyrZ1EU+NJ1eng0Abn9LeDVHLf1xZ1/1sg3qq6PwJwxNFJHTMin0sIJXERFAGG3btRnFqiwYsrxF7OdWObDYZN3G9riKKhS2Z5bSanWyrQk4XF/s9haONHKv2falsZ6nnux9GDMod+ojPzedNGagISLsLixHMRZmYFnUAJtdzDOm6PoNTui0+0C3bHoAIPu+FZJ1rPV1xmGM+4YGLg/j3yFt6SIY0XYY9d2torXSwD1E0+8V/kPxTcyNCQVE9LlFP3v9xLt2wYq7ehjGbetehSZyJxjchjtgABBMBkGTKqBwb3pgagaRmC9KVatpRVVVSLJRZAbFOmfK3QkZzrVzDVwOEloVhhUxUAm3rZDbZHmvHO0maS5VkpDAb3lE1edLziLiD0qqLBSuy5Tru+uELa6IO6gO8r/dA8usnKAcNWHIjrpLd3W7P+btjrmrSx8ReYs9PitKFiCLgleoAJGZFoSN0sOIAimCzvIsCvJyjlbHOvDyb+ziqvxu66yz/hBmupGibIT2529pyVW713gBOyrIvsLqzX3uDw6aYMTSi4aYp5+sfkCA5RE8Fc6PEPnqj6LbWjBF6bgelj3wUc9J4ZniuSWFMDKmBhk/p/j9CRg7RYQ5g+lK5E0oJma0vThqx8MKDivVk4oOMD8txcA0g1DJn8oE6i4ptc=
     on:
+      condition: "$PYPI = true"
       branch: master
       tags: true
 
