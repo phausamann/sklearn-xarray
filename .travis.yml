@@ -19,7 +19,7 @@ env:
 jobs:
   include:
     - python: 3.6
-      env: COVERAGE="true" BLACK="true" FLAKE8="true"
+      env: COVERAGE="true" BLACK="true" FLAKE8="true" PAGES="true"
     - python: 3.7
     - python: 3.8
     - env: CONDA_BLD_PATH=~/conda-bld
@@ -50,6 +50,7 @@ deploy:
     github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
     keep-history: true
     on:
+      condition: "$PAGES = true"
       branch: master
 
   - provider: pypi
@@ -62,9 +63,9 @@ deploy:
       tags: true
 
   - provider: script
+    skip_cleanup: true
     script: build_tools/travis/conda_upload.sh
     on:
       condition: "$CONDA_BLD_PATH = $HOME/conda-bld"
       branch: master
       tags: true
-    skip_cleanup: true
