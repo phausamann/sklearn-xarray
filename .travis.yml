@@ -65,6 +65,6 @@ deploy:
     script: build_tools/travis/conda_upload.sh
     on:
       condition: "$CONDA_BLD_PATH = $HOME/conda-bld"
-    # branch: master
+      all_branches: true
     # tags: true
     skip_cleanup: true
