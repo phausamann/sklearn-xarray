@@ -28,6 +28,7 @@ requirements:
 test:
   source_files:
     - tests
+    - .coveragerc
   requires:
     - pytest
     - pytest-cov
