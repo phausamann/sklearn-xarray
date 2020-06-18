@@ -1,12 +1,9 @@
 .. -*- mode: rst -*-
 
-|Travis|_ |AppVeyor|_ |Coverage|_ |PyPI|_
+|Travis|_ |Coverage|_ |PyPI|_
 
 .. |Travis| image:: https://travis-ci.org/phausamann/sklearn-xarray.svg?branch=master
 .. _Travis: https://travis-ci.org/phausamann/sklearn-xarray
-
-.. |AppVeyor| image:: https://ci.appveyor.com/api/projects/status/qe6ytlg0ja2mqcxr/branch/master?svg=true
-.. _AppVeyor: https://ci.appveyor.com/project/phausamann/sklearn-xarray/branch/master
 
 .. |Coverage| image:: https://coveralls.io/repos/github/phausamann/sklearn-xarray/badge.svg?branch=master
 .. _Coverage: https://coveralls.io/github/phausamann/sklearn-xarray?branch=master
