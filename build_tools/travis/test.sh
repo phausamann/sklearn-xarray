@@ -1,12 +1,12 @@
 set -e
 
 if [[ "$BLACK" == "true" ]]; then
-    conda install -c conda-forge black=19.10b0
+    conda install -y -c conda-forge black=19.10b0
     black --check .
 fi
 
 if [[ "$FLAKE8" == "true" ]]; then
-    conda install -c conda-forge flake8=3.7.9
+    conda install -y -c conda-forge flake8=3.7.9
     flake8 sklearn_xarray tests --ignore=E203,W503,W504 --exclude=**/externals
 fi
 
@@ -23,10 +23,6 @@ if [[ "$COVERAGE" == "true" ]]; then
     pytest --cov=$MODULE
 else
     pytest
-fi
-
-if [[ "$COVERAGE" == "true" ]]; then
-    pytest --cov=$MODULE
 fi
 
 cd $wd

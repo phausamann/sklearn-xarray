@@ -128,20 +128,20 @@ tools:
    $ pip install pytest pytest-cov
    $ pytest --cov=sklearn_xarray
 
--  No pyflakes warnings, check with::
+-  No flake8 warnings, check with::
 
-   $ pip install pyflakes
-   $ pyflakes path/to/module.py
+   $ pip install flake8
+   $ flake8 sklearn_xarray tests --ignore=E203,W503,W504 --exclude=**/externals
 
--  No PEP8 warnings, check with::
+-  Format code with black::
 
-   $ pip install pep8
-   $ pep8 path/to/module.py
+   $ pip install black==19.10b0
+   $ black .
 
--  AutoPEP8 can help you fix some of the easy redundant errors::
+-  pre-commit will run flake8 and black before each commit::
 
-   $ pip install autopep8
-   $ autopep8 path/to/pep8.py
+   $ pip install pre-commit
+   $ pre-commit install
 
 
 Filing bugs
