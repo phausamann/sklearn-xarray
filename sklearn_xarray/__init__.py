@@ -9,8 +9,6 @@ from sklearn_xarray.common.wrappers import (
 )
 from sklearn_xarray.target import Target
 
-from sklearn_xarray.version import __version__, __release__
-
 import os
 
 
@@ -24,3 +22,5 @@ __all__ = [
 ]
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+__version__ = "0.3.0"
