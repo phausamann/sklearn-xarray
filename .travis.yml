@@ -25,7 +25,7 @@ jobs:
     - env: CONDA_BLD_PATH=~/conda-bld
       install:
         - source build_tools/travis/install_conda.sh
-        - conda install conda-build anaconda-client
+        - conda install -y conda-build anaconda-client
         - conda config --set anaconda_upload no
       script:
         - conda build -c conda-forge build_tools/conda
@@ -34,7 +34,7 @@ jobs:
 
 install:
   - source build_tools/travis/install_conda.sh
-  - bash build_tools/travis/install.sh
+  - source build_tools/travis/install.sh
 
 script:
   - bash build_tools/travis/test.sh
