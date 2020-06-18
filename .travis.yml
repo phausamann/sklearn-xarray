@@ -24,7 +24,7 @@ jobs:
     - python: 3.8
     - env: CONDA_BLD_PATH=~/conda-bld
       install:
-        - bash build_tools/travis/install_conda.sh
+        - source build_tools/travis/install_conda.sh
         - conda install conda-build anaconda-client
         - conda config --set anaconda_upload no
       script:
@@ -33,7 +33,7 @@ jobs:
         - chmod +x ci/conda_recipe/conda_upload.sh
 
 install:
-  - bash build_tools/travis/install_conda.sh
+  - source build_tools/travis/install_conda.sh
   - bash build_tools/travis/install.sh
 
 script:
