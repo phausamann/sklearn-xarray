@@ -30,7 +30,7 @@ jobs:
       script:
         - conda build -c conda-forge build_tools/conda
       after_success:
-        - chmod +x ci/conda_recipe/conda_upload.sh
+        - chmod +x build_tools/travis/conda_upload.sh
 
 install:
   - source build_tools/travis/install_conda.sh
