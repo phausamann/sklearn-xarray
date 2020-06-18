@@ -1,6 +1,6 @@
 .. -*- mode: rst -*-
 
-|Travis|_ |Coverage|_ |PyPI|_
+|Travis|_ |Coverage|_ |PyPI|_ |Black|_
 
 .. |Travis| image:: https://travis-ci.org/phausamann/sklearn-xarray.svg?branch=master
 .. _Travis: https://travis-ci.org/phausamann/sklearn-xarray
@@ -10,6 +10,9 @@
 
 .. |PyPI| image:: https://badge.fury.io/py/sklearn-xarray.svg
 .. _PyPI: https://badge.fury.io/py/sklearn-xarray
+
+.. |Black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
+.. _Black: https://github.com/psf/black
 
 sklearn-xarray
 ==============

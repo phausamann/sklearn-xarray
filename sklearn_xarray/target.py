@@ -37,8 +37,15 @@ class Target(object):
         will be reduced to the first element in each of these dimensions.
     """
 
-    def __init__(self, coord=None, transform_func=None, transformer=None,
-                 lazy=False, dim=None, reduce_func=None):
+    def __init__(
+        self,
+        coord=None,
+        transform_func=None,
+        transformer=None,
+        lazy=False,
+        dim=None,
+        reduce_func=None,
+    ):
 
         self.transform_func = transform_func
         self.coord = coord
@@ -49,13 +56,15 @@ class Target(object):
         self.transformer = transformer
         if transformer is not None:
             import warnings
-            warnings.simplefilter('always', DeprecationWarning)
+
+            warnings.simplefilter("always", DeprecationWarning)
             warnings.warn(
-                'The transformer argument is deprecated and will be removed '
-                'in a future version. Use '
-                'transform_func=Transformer().fit_transform instead.',
-                DeprecationWarning)
-            warnings.simplefilter('ignore', DeprecationWarning)
+                "The transformer argument is deprecated and will be removed "
+                "in a future version. Use "
+                "transform_func=Transformer().fit_transform instead.",
+                DeprecationWarning,
+            )
+            warnings.simplefilter("ignore", DeprecationWarning)
             self.transform_func = self.transformer.fit_transform
 
         self.values = None
@@ -84,12 +93,15 @@ class Target(object):
 
         if self.values is None:
             if self.coord is None:
-                return 'Unassigned sklearn_xarray.Target without coordinate.'
+                return "Unassigned sklearn_xarray.Target without coordinate."
             else:
-                return 'Unassigned sklearn_xarray.Target with coordinate "' + \
-                       self.coord + '".'
+                return (
+                    'Unassigned sklearn_xarray.Target with coordinate "'
+                    + self.coord
+                    + '".'
+                )
         else:
-            return 'sklearn_xarray.Target with data:\n' + self.values.__str__()
+            return "sklearn_xarray.Target with data:\n" + self.values.__str__()
 
     def __repr__(self):
 
@@ -108,7 +120,7 @@ class Target(object):
         """ Check if this instance has been assigned data. """
 
         if self.values is None and self.lazy:
-            raise ValueError('This instance has not been assigned any data.')
+            raise ValueError("This instance has not been assigned any data.")
 
     def _reduce(self, values):
         """ Reduce values to dimension(s). """
@@ -136,8 +148,11 @@ class Target(object):
 
         self._check_assigned()
 
-        if self.lazy and self.transformer is not None \
-                and hasattr(self.transformer, 'get_transformed_shape'):
+        if (
+            self.lazy
+            and self.transformer is not None
+            and hasattr(self.transformer, "get_transformed_shape")
+        ):
             return self.transformer.get_transformed_shape(self.values)
         else:
             return self.__array__().shape
@@ -148,8 +163,11 @@ class Target(object):
 
         self._check_assigned()
 
-        if self.lazy and self.transformer is not None \
-                and hasattr(self.transformer, 'get_transformed_shape'):
+        if (
+            self.lazy
+            and self.transformer is not None
+            and hasattr(self.transformer, "get_transformed_shape")
+        ):
             return len(self.transformer.get_transformed_shape(self.values))
         else:
             return self.__array__().ndim

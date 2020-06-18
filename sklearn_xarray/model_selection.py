@@ -21,7 +21,7 @@ class CrossValidatorWrapper(object):
         determined.
     """
 
-    def __init__(self, cross_validator, dim='sample', groupby=None):
+    def __init__(self, cross_validator, dim="sample", groupby=None):
 
         self.cross_validator = cross_validator
         self.dim = dim
@@ -76,6 +76,7 @@ class CrossValidatorWrapper(object):
 
         if self.groupby is not None:
             from .utils import get_group_indices
+
             groups = np.zeros(len(X[self.dim]))
             group_idx = get_group_indices(X, self.groupby, self.dim)
             for i in range(len(group_idx)):

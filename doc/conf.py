@@ -39,39 +39,40 @@ except:
 # If your documentation needs a minimal Sphinx version, state it here.
 # needs_sphinx = '1.0'
 
-sys.path.append(os.path.join(os.path.dirname(__name__), '..'))
+sys.path.append(os.path.join(os.path.dirname(__name__), ".."))
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.doctest',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.todo',
-    'numpydoc',
-    'sphinx.ext.ifconfig',
-    'sphinx.ext.viewcode',
-    'sphinx_gallery.gen_gallery',
-    'sphinx.ext.autosummary'
+    "sphinx.ext.autodoc",
+    "sphinx.ext.doctest",
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.todo",
+    "numpydoc",
+    "sphinx.ext.ifconfig",
+    "sphinx.ext.viewcode",
+    "sphinx_gallery.gen_gallery",
+    "sphinx.ext.autosummary",
 ]
 
-if LooseVersion(sphinx.__version__) < LooseVersion('1.4'):
-    extensions.append('sphinx.ext.pngmath')
+if LooseVersion(sphinx.__version__) < LooseVersion("1.4"):
+    extensions.append("sphinx.ext.pngmath")
 else:
-    extensions.append('sphinx.ext.imgmath')
+    extensions.append("sphinx.ext.imgmath")
 
 sphinx_gallery_conf = {
     # path to your examples scripts
-    'examples_dirs': '../examples',
+    "examples_dirs": "../examples",
     # path where to save gallery generated examples
-    'gallery_dirs': 'auto_examples'}
+    "gallery_dirs": "auto_examples",
+}
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # The suffix of source filenames.
-source_suffix = '.rst'
+source_suffix = ".rst"
 
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
@@ -80,11 +81,11 @@ source_suffix = '.rst'
 plot_gallery = True
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = "index"
 
 # General information about the project.
-project = u'sklearn-xarray'
-copyright = u'2020, Peter Hausamann'
+project = u"sklearn-xarray"
+copyright = u"2020, Peter Hausamann"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -107,7 +108,7 @@ release = sklearn_xarray.__release__
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build']
+exclude_patterns = ["_build"]
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
@@ -125,7 +126,7 @@ add_module_names = False
 # show_authors = False
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = "sphinx"
 
 # A list of ignored prefixes for module index sorting.
 # modindex_common_prefix = []
@@ -138,7 +139,7 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'sphinx_rtd_theme'
+html_theme = "sphinx_rtd_theme"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -167,9 +168,9 @@ html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ["_static"]
 html_css_files = [
-    'custom.css',
+    "custom.css",
 ]
 
 # Add any extra paths that contain custom files (such as robots.txt or
@@ -219,17 +220,15 @@ html_css_files = [
 # html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'sklearn-xarraydoc'
+htmlhelp_basename = "sklearn-xarraydoc"
 
 # -- Options for LaTeX output ---------------------------------------------
 
 latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
     # 'papersize': 'letterpaper',
-
     # The font size ('10pt', '11pt' or '12pt').
     # 'pointsize': '10pt',
-
     # Additional stuff for the LaTeX preamble.
     # 'preamble': '',
 }
@@ -238,8 +237,13 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    ('index', 'sklearn-xarray.tex', u'sklearn-xarray Documentation',
-     u'Peter Hausamann', 'manual'),
+    (
+        "index",
+        "sklearn-xarray.tex",
+        u"sklearn-xarray Documentation",
+        u"Peter Hausamann",
+        "manual",
+    ),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -268,8 +272,13 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'sklearn-xarray', u'sklearn-xarray Documentation',
-     [u'Peter Hausamann'], 1)
+    (
+        "index",
+        "sklearn-xarray",
+        u"sklearn-xarray Documentation",
+        [u"Peter Hausamann"],
+        1,
+    )
 ]
 
 # If true, show URL addresses after external links.
@@ -282,9 +291,15 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    ('index', 'sklearn-xarray', u'sklearn-xarray Documentation',
-     u'Peter Hausamann', 'sklearn-xarray', 'Integrate xarray and sklearn.',
-     'Miscellaneous'),
+    (
+        "index",
+        "sklearn-xarray",
+        u"sklearn-xarray Documentation",
+        u"Peter Hausamann",
+        "sklearn-xarray",
+        "Integrate xarray and sklearn.",
+        "Miscellaneous",
+    ),
 ]
 
 
@@ -300,6 +315,8 @@ texinfo_documents = [
 
 def setup(app):
     app.add_javascript("copybutton.js")
+
+
 #     app.connect('autodoc-process-docstring', generate_example_rst)
 
 
@@ -317,4 +334,4 @@ def setup(app):
 
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'http://docs.python.org/': None}
+intersphinx_mapping = {"http://docs.python.org/": None}

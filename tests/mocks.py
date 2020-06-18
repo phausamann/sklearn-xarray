@@ -6,7 +6,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 class DummyEstimator(BaseEstimator):
     """ A dummy estimator that returns the input as a numpy array."""
 
-    def __init__(self, demo_param='demo_param'):
+    def __init__(self, demo_param="demo_param"):
 
         self.demo_param = demo_param
 
@@ -22,7 +22,7 @@ class DummyEstimator(BaseEstimator):
 class DummyTransformer(BaseEstimator):
     """ A dummy estimator that returns the input as a numpy array."""
 
-    def __init__(self, demo_param='demo_param'):
+    def __init__(self, demo_param="demo_param"):
 
         self.demo_param = demo_param
 
@@ -52,7 +52,7 @@ class ReshapingEstimator(BaseEstimator, TransformerMixin):
 
         Xt = np.array(X)
 
-        idx = [slice(None)]*Xt.ndim
+        idx = [slice(None)] * Xt.ndim
         for i in range(len(self.new_shape)):
             if self.new_shape[i] > 0:
                 idx[i] = slice(None, self.new_shape[i])
@@ -69,7 +69,7 @@ class ReshapingEstimator(BaseEstimator, TransformerMixin):
 
         Xt = np.zeros(self.shape_)
 
-        idx = [slice(None)]*Xt.ndim
+        idx = [slice(None)] * Xt.ndim
         for i in range(len(self.new_shape)):
             if self.new_shape[i] > 0:
                 idx[i] = slice(None, self.new_shape[i])
