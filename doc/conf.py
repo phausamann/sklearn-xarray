@@ -84,7 +84,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'sklearn-xarray'
-copyright = u'2017, Peter Hausamann'
+copyright = u'2020, Peter Hausamann'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -168,6 +168,9 @@ html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+html_css_files = [
+    'custom.css',
+]
 
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied
@@ -285,18 +288,19 @@ texinfo_documents = [
 ]
 
 
-def generate_example_rst(app, what, name, obj, options, lines):
-    # generate empty examples files, so that we don't get
-    # inclusion errors if there are no examples for a class / module
-    examples_path = os.path.join(app.srcdir, "modules", "generated",
-                                 "%s.examples" % name)
-    if not os.path.exists(examples_path):
-        # touch file
-        open(examples_path, 'w').close()
+# def generate_example_rst(app, what, name, obj, options, lines):
+#     # generate empty examples files, so that we don't get
+#     # inclusion errors if there are no examples for a class / module
+#     examples_path = os.path.join(app.srcdir, "modules", "generated",
+#                                  "%s.examples" % name)
+#     if not os.path.exists(examples_path):
+#         # touch file
+#         open(examples_path, 'w').close()
 
 
 def setup(app):
-    app.connect('autodoc-process-docstring', generate_example_rst)
+    app.add_javascript("copybutton.js")
+#     app.connect('autodoc-process-docstring', generate_example_rst)
 
 
 # Documents to append as an appendix to all manuals.
