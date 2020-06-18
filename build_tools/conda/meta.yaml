@@ -27,7 +27,7 @@ requirements:
 
 test:
   source_files:
-    - sklearn_xarray/tests
+    - tests
   requires:
     - pytest
     - pytest-cov
