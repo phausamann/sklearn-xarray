@@ -53,9 +53,9 @@ def wrap(estimator, reshapes=None, sample_dim=None, compat=False, **kwargs):
 
     reshapes : str or dict, optional
         The dimension(s) reshaped by this estimator. Any coordinates in the
-        DataArray along these dimensions will be dropped. If the estimator drops
-        this dimension (e.g. a binary classifier returning a 1D vector), the
-        dimension itself will also be dropped.
+        DataArray along these dimensions will be dropped. If the estimator
+        drops this dimension (e.g. a binary classifier returning a 1D vector),
+        the dimension itself will also be dropped.
 
         You can specify multiple dimensions mapping to multiple new dimensions
         with a dict whose items are lists of reshaped dimensions, e.g.
@@ -101,9 +101,9 @@ class EstimatorWrapper(_CommonEstimatorWrapper):
 
     reshapes : str or dict, optional
         The dimension(s) reshaped by this estimator. Any coordinates in the
-        DataArray along these dimensions will be dropped. If the estimator drops
-        this dimension (e.g. a binary classifier returning a 1D vector), the
-        dimension itself will also be dropped.
+        DataArray along these dimensions will be dropped. If the estimator
+        drops this dimension (e.g. a binary classifier returning a 1D vector),
+        the dimension itself will also be dropped.
 
         You can specify multiple dimensions mapping to multiple new dimensions
         with a dict whose items are lists of reshaped dimensions, e.g.
@@ -318,9 +318,9 @@ class CompatEstimatorWrapper(EstimatorWrapper):
 
     reshapes : str or dict, optional
         The dimension(s) reshaped by this estimator. Any coordinates in the
-        DataArray along these dimensions will be dropped. If the estimator drops
-        this dimension (e.g. a binary classifier returning a 1D vector), the
-        dimension itself will also be dropped.
+        DataArray along these dimensions will be dropped. If the estimator
+        drops this dimension (e.g. a binary classifier returning a 1D vector),
+        the dimension itself will also be dropped.
 
         You can specify multiple dimensions mapping to multiple new dimensions
         with a dict whose items are lists of reshaped dimensions, e.g.

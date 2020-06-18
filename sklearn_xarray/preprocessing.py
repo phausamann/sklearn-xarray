@@ -330,8 +330,8 @@ class Splitter(BaseTransformer):
         - ``'subsample'`` : Take every ``new_len`` th value.
 
     new_index_func : callable
-        A function that takes ``new_len`` as a parameter and returns a vector of
-        length ``new_len`` to be used as the indices for the new dimension.
+        A function that takes ``new_len`` as a parameter and returns a vector
+        of length ``new_len`` to be used as the indices for the new dimension.
 
     keep_coords_as : str or None
         If set, the coordinate of the split dimension will be kept as a
@@ -531,8 +531,8 @@ class Segmenter(BaseTransformer):
           of every segment.
 
     new_index_func : callable
-        A function that takes ``new_len`` as a parameter and returns a vector of
-        length ``new_len`` to be used as the indices for the new dimension.
+        A function that takes ``new_len`` as a parameter and returns a vector
+        of length ``new_len`` to be used as the indices for the new dimension.
 
     keep_coords_as : str or None
         If set, the coordinate of the split dimension will be kept as a

@@ -266,7 +266,7 @@ class _CommonEstimatorWrapper(BaseEstimator):
         return estimator.partial_fit(X_arr, y, **fit_params)
 
     def _fit_transform(self, estimator, X, y=None, **fit_params):
-        """ Fit and transform with ``estimator`` and update coords and dims. """
+        """ Fit & transform with ``estimator`` and update coords and dims. """
 
         if self.sample_dim is not None:
             # transpose to sample dim first, transform and transpose back

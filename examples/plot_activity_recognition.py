@@ -71,8 +71,8 @@ axarr[2].set_title("Acceleration along z-axis")
 #
 # The preprocessing consists of splitting the data into segments, removing
 # segments with `nan` values and standardizing. Since the accelerometer data is
-# three-dimensional but the standardizer and classifier expect a one-dimensional
-#  feature vector, we have to vectorize the samples.
+# three-dimensional but the standardizer and classifier expect a
+# one-dimensional feature vector, we have to vectorize the samples.
 #
 # Finally, we use PCA and a naive Bayes classifier for classification.
 

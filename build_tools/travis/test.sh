@@ -7,7 +7,7 @@ fi
 
 if [[ "$FLAKE8" == "true" ]]; then
     conda install -y -c conda-forge flake8=3.7.9
-    flake8 sklearn_xarray tests --ignore=E203,W503,W504 --exclude=**/externals
+    flake8 --ignore=E203,W503,W504 --exclude=**/externals
 fi
 
 # Get into a temp directory to run test from the installed package and
