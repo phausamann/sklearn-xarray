@@ -24,8 +24,8 @@ popd
 
 # Configure the conda environment and put it in the path using the
 # provided versions
-conda create -n testenv -y -c conda-forge python=$PYTHON_VERSION \
-    --file requirements.txt --file requirements_dev.txt dask-ml
+conda create -n testenv -y -c conda-forge python=$PYTHON_VERSION dask-ml \
+    --file requirements.txt --file requirements_dev.txt
 
 source activate testenv
 
