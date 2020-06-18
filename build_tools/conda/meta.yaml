@@ -9,7 +9,7 @@ source:
 
 build:
   noarch: python
-  number: 2
+  number: 0
   ignore_run_exports:
     - python_abi
 
@@ -18,7 +18,7 @@ requirements:
     - python
     - setuptools
   run:
-    - python
+    - python >=3.6
     - numpy
     - scipy
     - scikit-learn
