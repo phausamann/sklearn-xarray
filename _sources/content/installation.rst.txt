@@ -7,7 +7,7 @@ The package can be installed with ``pip``::
 
 or with ``conda``::
 
-    $ conda install -c phausamann -c conda-forge sklearn-xarray
+    $ conda install -c phausamann sklearn-xarray
 
 
 Testing
