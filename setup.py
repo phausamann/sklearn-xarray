@@ -2,8 +2,7 @@ from __future__ import print_function
 from setuptools import setup, find_packages
 from distutils.util import convert_path
 
-with open('requirements.txt') as f:
-    INSTALL_REQUIRES = [l.strip() for l in f.readlines() if l]
+INSTALL_REQUIRES = ["numpy", "scipy", "scikit-learn", "pandas", "xarray"]
 
 main_ns = {}
 ver_path = convert_path('sklearn_xarray/version.py')

@@ -8,7 +8,6 @@ dependencies:
   - scikit-learn
   - pandas
   - xarray
-  - six
   - pytest
   - matplotlib
   - sphinx

@@ -3,8 +3,6 @@
 import numpy as np
 import xarray as xr
 
-import six
-
 from sklearn.base import clone, BaseEstimator
 from sklearn.utils.validation import check_is_fitted, check_array, check_X_y
 
@@ -205,7 +203,7 @@ class _CommonEstimatorWrapper(BaseEstimator):
 
             if self.reshapes is not None:
                 data_vars = dict()
-                for v, e in six.iteritems(self.estimator_dict_):
+                for v, e in self.estimator_dict_.items():
                     yp_v, dims = self._call_array_method(e, method, X[v])
                     data_vars[v] = (dims, yp_v)
                 coords = self._update_coords(X)
@@ -213,7 +211,7 @@ class _CommonEstimatorWrapper(BaseEstimator):
             else:
                 data_vars = {
                     v: (X[v].dims, getattr(e, method)(X[v].data))
-                    for v, e in six.iteritems(self.estimator_dict_)}
+                    for v, e in self.estimator_dict_.items()}
                 return xr.Dataset(data_vars, coords=X.coords)
 
         elif self.type_ == 'other':
@@ -327,7 +325,7 @@ def partial_fit(self, X, y=None, **fit_params):
                 'This wrapper was not fitted for Dataset inputs.')
 
         # TODO: check if this needs to be removed for compat wrappers
-        for e_name, e in six.iteritems(self.estimator_dict_):
+        for e_name, e in self.estimator_dict_.items():
             for v in vars(e):
                 if v.endswith('_') and not v.startswith('_'):
                     if hasattr(self, v):
@@ -506,7 +504,7 @@ def fit_transform(self, X, y=None, **fit_params):
 
         if self.reshapes is not None:
             data_vars = dict()
-            for v, e in six.iteritems(self.estimator_dict_):
+            for v, e in self.estimator_dict_.items():
                 yp_v, dims = self._fit_transform(e, X[v], y, **fit_params)
                 data_vars[v] = (dims, yp_v)
             coords = self._update_coords(X)
@@ -514,7 +512,7 @@ def fit_transform(self, X, y=None, **fit_params):
         else:
             data_vars = {
                 v: (X[v].dims, e.fit_transform(X[v].data, y, **fit_params))
-                for v, e in six.iteritems(self.estimator_dict_)}
+                for v, e in self.estimator_dict_.items()}
             return xr.Dataset(data_vars, coords=X.coords)
 
     else:
@@ -584,7 +582,7 @@ def score(self, X, y, sample_weight=None):
 
         score_list = [
             e.score(X[v], y, sample_weight)
-            for v, e in six.iteritems(self.estimator_dict_)
+            for v, e in self.estimator_dict_.items()
         ]
 
         return np.mean(score_list)

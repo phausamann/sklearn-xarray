@@ -9,9 +9,9 @@ wd=$(pwd)
 cd $TEST_DIR
 
 if [[ "$COVERAGE" == "true" ]]; then
-    nosetests -s --with-coverage --cover-package=$MODULE $MODULE
+    pytest --cov=$MODULE
 else
-    nosetests -s $MODULE
+    pytest
 fi
 
 cd $wd
