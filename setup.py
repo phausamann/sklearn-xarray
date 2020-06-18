@@ -7,7 +7,7 @@ with open("README.rst") as f:
 
 setup(
     name="sklearn-xarray",
-    version="0.3.0",
+    version="0.4.0",
     description="xarray integration with sklearn",
     long_description=readme,
     author="Peter Hausamann",
