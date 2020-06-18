@@ -1,6 +1,16 @@
 set -e
 
-# Get into a temp directory to run test from the installed scikit learn and
+if [[ "$BLACK" == "true" ]]; then
+    conda install -c conda-forge black=19.10b0
+    black --check .
+fi
+
+if [[ "$FLAKE8" == "true" ]]; then
+    conda install -c conda-forge flake8=3.7.9
+    flake8 sklearn_xarray tests --ignore=E203,W503,W504 --exclude=**/externals
+fi
+
+# Get into a temp directory to run test from the installed package and
 # check if we do not leave artifacts
 mkdir -p $TEST_DIR
 cp .coveragerc $TEST_DIR/.coveragerc
@@ -13,6 +23,10 @@ if [[ "$COVERAGE" == "true" ]]; then
     pytest --cov=$MODULE
 else
     pytest
+fi
+
+if [[ "$COVERAGE" == "true" ]]; then
+    pytest --cov=$MODULE
 fi
 
 cd $wd

@@ -13,7 +13,7 @@ env:
   matrix:
   - DISTRIB="conda" PYTHON_VERSION="3.6"
   - DISTRIB="conda" PYTHON_VERSION="3.7"
-  - DISTRIB="conda" PYTHON_VERSION="3.8" COVERAGE="true"
+  - DISTRIB="conda" PYTHON_VERSION="3.8" COVERAGE="true" BLACK="true" FLAKE8="true"
 
 install: source build_tools/travis/install.sh
 script:
