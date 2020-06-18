@@ -4,7 +4,7 @@ set -e
 # check if we do not leave artifacts
 mkdir -p $TEST_DIR
 cp .coveragerc $TEST_DIR/.coveragerc
-cp tests $TEST_DIR
+cp -r tests $TEST_DIR
 
 wd=$(pwd)
 cd $TEST_DIR
