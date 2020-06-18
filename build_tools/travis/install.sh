@@ -25,12 +25,12 @@ popd
 # Configure the conda environment and put it in the path using the
 # provided versions
 conda create -n testenv -y -c conda-forge python=$PYTHON_VERSION \
-    --file requirements.txt --file requirements_dev.txt
+    --file requirements.txt --file requirements_dev.txt dask-ml
 
 source activate testenv
 
 if [[ "$COVERAGE" == "true" ]]; then
-    conda install -c conda-forge --yes pytest-cov coveralls
+    conda install -y -c conda-forge pytest-cov coveralls
 fi
 
 python --version

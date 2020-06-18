@@ -1,10 +1,8 @@
-makepip.cmd
-makedoc.cmd
 .idea/
 data/
-doc/modules/
-doc/_build/
-doc/auto_examples/
+docs/modules/
+docs/_build/
+docs/auto_examples/
 coverage/
 
 # So far, all html files are auto-generated

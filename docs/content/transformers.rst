@@ -29,24 +29,26 @@ circumvents this restriction with the :py:class:`Target` class.
 
 We look at an example where the digits dataset is loaded but some of the
 samples are corrupted and contain ``nan`` values. The :py:class:`Sanitizer`
-transformer removes these samples from the dataset::
+transformer removes these samples from the dataset:
 
-    from sklearn_xarray import wrap, Target
-    from sklearn_xarray.preprocessing import Sanitizer
-    from sklearn_xarray.datasets import load_digits_dataarray
+.. doctest::
 
-    from sklearn.pipeline import Pipeline
-    from sklearn.linear_model.logistic import LogisticRegression
-
-    X = load_digits_dataarray(nan_probability=0.1)
-    y = Target(coord='digit')(X)
-
-    pipeline = Pipeline([
-        ('san', Sanitizer()),
-        ('cls', wrap(LogisticRegression(), reshapes='feature'))
-    ])
-
-    pipeline.fit(X, y)
+    >>> from sklearn_xarray import wrap, Target
+    >>> from sklearn_xarray.preprocessing import Sanitizer
+    >>> from sklearn_xarray.datasets import load_digits_dataarray
+    >>> from sklearn.pipeline import Pipeline
+    >>> from sklearn.linear_model.logistic import LogisticRegression
+    >>>
+    >>> X = load_digits_dataarray(nan_probability=0.1)
+    >>> y = Target(coord='digit')(X)
+    >>>
+    >>> pipeline = Pipeline([
+    ...     ('san', Sanitizer()),
+    ...     ('cls', wrap(LogisticRegression(), reshapes='feature'))
+    ... ])
+    >>>
+    >>> pipeline.fit(X, y) # doctest:+ELLIPSIS
+    Pipeline(...)
 
 If we had used ``y = X.digits`` instead of the :py:class:`Target` syntax, we
 would have gotten::
@@ -68,20 +70,21 @@ example, we wanted to split this dataset into segments of 20 samples, we
 should do this in groups of subject/activity pairs, because otherwise we
 could get non-continuous samples from different recording times in the same
 segment. In order to perform transformations in a groupwise manner, we
-specify the ``groupby`` parameter::
+specify the ``groupby`` parameter:
 
-    from sklearn_xarray.datasets import load_wisdm_dataarray
-    from sklearn_xarray.preprocessing import Segmenter
+.. doctest::
 
-    segmenter = Segmenter(
-        new_len=20, new_dim='timepoint', groupby=['subject', 'activity'])
-
-    X = load_wisdm_dataarray()
-    Xt = segmenter.fit_transform(X)
-
-    In []: Xt
-    Out[]:
-    <xarray.DataArray (sample: 54813, axis: 3, timepoint: 20)>
+    >>> from sklearn_xarray.datasets import load_wisdm_dataarray
+    >>> from sklearn_xarray.preprocessing import Segmenter
+    >>>
+    >>> segmenter = Segmenter(
+    ...     new_len=20, new_dim='timepoint', groupby=['subject', 'activity']
+    ... )
+    >>>
+    >>> X = load_wisdm_dataarray()
+    >>> Xt = segmenter.fit_transform(X)
+    >>> Xt # doctest:+ELLIPSIS doctest:+NORMALIZE_WHITESPACE
+    <xarray.DataArray 'tmptmp' (sample: 54813, axis: 3, timepoint: 20)>
     array([[[ -0.15    ,   0.11    , ...,  -2.26    ,  -1.46    ],
             [  9.15    ,   9.19    , ...,   9.72    ,   9.81    ],
             [ -0.34    ,   2.76    , ...,   2.03    ,   2.15    ]],
@@ -96,11 +99,11 @@ specify the ``groupby`` parameter::
             [  8.39    ,   9.04    , ...,   6.21    ,   6.55    ],
             [ -4.794363,  -2.179256, ...,   5.938472,   3.827318]]])
     Coordinates:
-      * timepoint  (timepoint) int32 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 ...
       * axis       (axis) <U1 'x' 'y' 'z'
-      * sample     (sample) timedelta64[ns] 13:25:37.050000 13:25:38.050000 ...
-        subject    (sample, timepoint) int64 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 ...
-        activity   (sample, timepoint) object 'Downstairs' 'Downstairs' ...
+      * timepoint  (timepoint) int64 0 1 2 3 4 5 6 7 8 ... 12 13 14 15 16 17 18 19
+      * sample     (sample) datetime64[ns] 1970-01-01T13:25:37.050000 ... 1970-01-01T03:12:42.100000
+        subject    (sample, timepoint) int64 1 1 1 1 1 1 1 ... 36 36 36 36 36 36 36
+        activity   (sample, timepoint) object 'Downstairs' ... 'Walking'
 
 .. note::
     Unfortunately, xarray does not support groupwise operations with multiple

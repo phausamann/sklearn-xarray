@@ -2,6 +2,25 @@ What's New
 ==========
 
 
+v0.4.0 (June 18, 2020)
+-------------------------
+
+Breaking changes
+~~~~~~~~~~~~~~~~
+
+- Python <3.6 is no longer officially supported. The package might still work,
+  but we don't test against these versions anymore.
+
+
+Enhancements
+~~~~~~~~~~~~
+
+- The package can now be installed via conda::
+
+    conda install -c phausamann -c conda-forge sklearn-xarray
+
+
+
 v0.3.0 (November 5, 2018)
 -------------------------
 
