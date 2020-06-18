@@ -1,7 +1,5 @@
-scikit-learn>=0.19
-xarray>=0.10
-pandas>=0.20
-cython>=0.25
-numpy>=1.12
-scipy>=1.0
-six
+scikit-learn==0.23.1
+xarray==0.15.1
+pandas==1.0.4
+numpy==1.18.5
+scipy==1.4.1

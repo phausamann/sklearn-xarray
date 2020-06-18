@@ -25,7 +25,7 @@ from __future__ import print_function
 import numpy as np
 
 from sklearn_xarray import wrap, Target
-from sklearn_xarray.preprocessing import (Splitter, Sanitizer, Featurizer)
+from sklearn_xarray.preprocessing import Splitter, Sanitizer, Featurizer
 from sklearn_xarray.model_selection import CrossValidatorWrapper
 from sklearn_xarray.datasets import load_wisdm_dataarray
 
@@ -48,22 +48,22 @@ import matplotlib.pyplot as plt
 
 X = load_wisdm_dataarray()
 
-X_plot = X[np.logical_and(X.activity == 'Walking', X.subject == 1)]
+X_plot = X[np.logical_and(X.activity == "Walking", X.subject == 1)]
 X_plot = X_plot[:500] / 9.81
-X_plot['sample'] = (X_plot.sample - X_plot.sample[0]) / np.timedelta64(1, 's')
+X_plot["sample"] = (X_plot.sample - X_plot.sample[0]) / np.timedelta64(1, "s")
 
 f, axarr = plt.subplots(3, 1, sharex=True)
 
-axarr[0].plot(X_plot.sample, X_plot.sel(axis='x'), color='#1f77b4')
-axarr[0].set_title('Acceleration along x-axis')
+axarr[0].plot(X_plot.sample, X_plot.sel(axis="x"), color="#1f77b4")
+axarr[0].set_title("Acceleration along x-axis")
 
-axarr[1].plot(X_plot.sample, X_plot.sel(axis='y'), color='#ff7f0e')
-axarr[1].set_ylabel('Acceleration [g]')
-axarr[1].set_title('Acceleration along y-axis')
+axarr[1].plot(X_plot.sample, X_plot.sel(axis="y"), color="#ff7f0e")
+axarr[1].set_ylabel("Acceleration [g]")
+axarr[1].set_title("Acceleration along y-axis")
 
-axarr[2].plot(X_plot.sample, X_plot.sel(axis='z'), color='#2ca02c')
-axarr[2].set_xlabel('Time [s]')
-axarr[2].set_title('Acceleration along z-axis')
+axarr[2].plot(X_plot.sample, X_plot.sel(axis="z"), color="#2ca02c")
+axarr[2].set_xlabel("Time [s]")
+axarr[2].set_title("Acceleration along z-axis")
 
 
 ##############################################################################
@@ -71,20 +71,28 @@ axarr[2].set_title('Acceleration along z-axis')
 #
 # The preprocessing consists of splitting the data into segments, removing
 # segments with `nan` values and standardizing. Since the accelerometer data is
-# three-dimensional but the standardizer and classifier expect a one-dimensional
-#  feature vector, we have to vectorize the samples.
+# three-dimensional but the standardizer and classifier expect a
+# one-dimensional feature vector, we have to vectorize the samples.
 #
 # Finally, we use PCA and a naive Bayes classifier for classification.
 
-pl = Pipeline([
-    ('splitter', Splitter(
-        groupby=['subject', 'activity'], new_dim='timepoint', new_len=30)),
-    ('sanitizer', Sanitizer()),
-    ('featurizer', Featurizer()),
-    ('scaler', wrap(StandardScaler)),
-    ('pca', wrap(PCA, reshapes='feature')),
-    ('cls', wrap(GaussianNB, reshapes='feature'))
-])
+pl = Pipeline(
+    [
+        (
+            "splitter",
+            Splitter(
+                groupby=["subject", "activity"],
+                new_dim="timepoint",
+                new_len=30,
+            ),
+        ),
+        ("sanitizer", Sanitizer()),
+        ("featurizer", Featurizer()),
+        ("scaler", wrap(StandardScaler)),
+        ("pca", wrap(PCA, reshapes="feature")),
+        ("cls", wrap(GaussianNB, reshapes="feature")),
+    ]
+)
 
 ##############################################################################
 # Since we want to use cross-validated grid search to find the best model
@@ -94,7 +102,8 @@ pl = Pipeline([
 # training and validation set.
 
 cv = CrossValidatorWrapper(
-    GroupShuffleSplit(n_splits=2, test_size=0.5), groupby=['subject'])
+    GroupShuffleSplit(n_splits=2, test_size=0.5), groupby=["subject"]
+)
 
 ##############################################################################
 # The grid search will try different numbers of PCA components to find the best
@@ -105,25 +114,24 @@ cv = CrossValidatorWrapper(
 #     To use multi-processing, set ``n_jobs=-1``.
 
 gs = GridSearchCV(
-    pl, cv=cv, n_jobs=1, verbose=1, param_grid={
-        'pca__n_components': [10, 20]
-    })
+    pl, cv=cv, n_jobs=1, verbose=1, param_grid={"pca__n_components": [10, 20]}
+)
 
 ##############################################################################
 # The label to classify is the activity which we convert to an integer
 # representation for the classification.
 
-y = Target(coord='activity',
-           transform_func=LabelEncoder().fit_transform,
-           dim='sample')(X)
+y = Target(
+    coord="activity", transform_func=LabelEncoder().fit_transform, dim="sample"
+)(X)
 
 ##############################################################################
 # Finally, we run the grid search and print out the best parameter combination.
 
-if __name__ == '__main__':  # in order for n_jobs=-1 to work on Windows
+if __name__ == "__main__":  # in order for n_jobs=-1 to work on Windows
     gs.fit(X, y)
-    print('Best parameters: {0}'.format(gs.best_params_))
-    print('Accuracy: {0}'.format(gs.best_score_))
+    print("Best parameters: {0}".format(gs.best_params_))
+    print("Accuracy: {0}".format(gs.best_score_))
 
 ##############################################################################
 # .. note::

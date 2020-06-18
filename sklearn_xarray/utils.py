@@ -24,12 +24,7 @@ def is_dataarray(X, require_attrs=None):
     """
 
     if require_attrs is None:
-        require_attrs = [
-            'values',
-            'coords',
-            'dims',
-            'to_dataset'
-        ]
+        require_attrs = ["values", "coords", "dims", "to_dataset"]
 
     return all([hasattr(X, name) for name in require_attrs])
 
@@ -52,12 +47,7 @@ def is_dataset(X, require_attrs=None):
     """
 
     if require_attrs is None:
-        require_attrs = [
-            'data_vars',
-            'coords',
-            'dims',
-            'to_array'
-        ]
+        require_attrs = ["data_vars", "coords", "dims", "to_array"]
 
     return all([hasattr(X, name) for name in require_attrs])
 
@@ -81,12 +71,13 @@ def is_target(X, require_attrs=None):
 
     if require_attrs is None:
         require_attrs = (
-            name for name in vars(Target) if not name.startswith('_'))
+            name for name in vars(Target) if not name.startswith("_")
+        )
 
     return all([hasattr(X, name) for name in require_attrs])
 
 
-def convert_to_ndarray(X, new_dim_last=True, new_dim_name='variable'):
+def convert_to_ndarray(X, new_dim_last=True, new_dim_name="variable"):
     """ Convert xarray DataArray or Dataset to numpy ndarray.
 
     Parameters
@@ -163,7 +154,9 @@ def get_group_indices(X, groupby, group_dim=None):
     return [i for i in idx_all if np.any(i)]
 
 
-def segment_array(arr, axis, new_len, step=1, new_axis=None, return_view=False):
+def segment_array(
+    arr, axis, new_len, step=1, new_axis=None, return_view=False
+):
     """ Segment an array along some axis.
 
     Parameters
@@ -207,8 +200,9 @@ def segment_array(arr, axis, new_len, step=1, new_axis=None, return_view=False):
 
     old_shape = np.array(arr.shape)
 
-    assert new_len <= old_shape[axis], \
-        "new_len is bigger than input array in axis"
+    assert (
+        new_len <= old_shape[axis]
+    ), "new_len is bigger than input array in axis"
     seg_shape = old_shape.copy()
     seg_shape[axis] = new_len
 
@@ -223,8 +217,7 @@ def segment_array(arr, axis, new_len, step=1, new_axis=None, return_view=False):
     shape = tuple((old_shape - seg_shape) // steps + 1) + tuple(seg_shape)
     strides = tuple(arr_strides * steps) + tuple(arr_strides)
 
-    arr_seg = np.squeeze(
-        as_strided(arr, shape=shape, strides=strides))
+    arr_seg = np.squeeze(as_strided(arr, shape=shape, strides=strides))
 
     # squeeze will move the segmented axis to the first position
     arr_seg = np.moveaxis(arr_seg, 0, axis)

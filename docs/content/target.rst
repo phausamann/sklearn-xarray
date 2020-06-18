@@ -5,39 +5,36 @@ Using coordinates as targets
 
 With sklearn-xarray you can easily point an sklearn estimator to a
 coordinate in an xarray DataArray or Dataset in order to use it as a target
-for supervised learning. This is achieved with a :py:class:`Target` object::
+for supervised learning. This is achieved with a :py:class:`Target` object:
 
-    from sklearn_xarray import wrap, Target
-    from sklearn_xarray.datasets import load_digits_dataarray
+.. doctest::
 
-    from sklearn.linear_model.logistic import LogisticRegression
-
-    X = load_digits_dataarray()
-    y = Target(coord='digit')(X)
-
-    In []: X
-    Out[]:
+    >>> from sklearn_xarray import wrap, Target
+    >>> from sklearn_xarray.datasets import load_digits_dataarray
+    >>> from sklearn.linear_model.logistic import LogisticRegression
+    >>>
+    >>> X = load_digits_dataarray()
+    >>> y = Target(coord='digit')(X)
+    >>> X
     <xarray.DataArray (sample: 1797, feature: 64)>
-    array([[  0.,   0.,   5., ...,   0.,   0.,   0.],
-           [  0.,   0.,   0., ...,  10.,   0.,   0.],
-           [  0.,   0.,   0., ...,  16.,   9.,   0.],
+    array([[ 0.,  0.,  5., ...,  0.,  0.,  0.],
+           [ 0.,  0.,  0., ..., 10.,  0.,  0.],
+           [ 0.,  0.,  0., ..., 16.,  9.,  0.],
            ...,
-           [  0.,   0.,   1., ...,   6.,   0.,   0.],
-           [  0.,   0.,   2., ...,  12.,   0.,   0.],
-           [  0.,   0.,  10., ...,  12.,   1.,   0.]])
+           [ 0.,  0.,  1., ...,  6.,  0.,  0.],
+           [ 0.,  0.,  2., ..., 12.,  0.,  0.],
+           [ 0.,  0., 10., ..., 12.,  1.,  0.]])
     Coordinates:
-      * sample   (sample) int32 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 ...
-      * feature  (feature) int32 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 ...
-        digit    (sample) int32 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 ...
-
-    In []: y
-    Out[]:
+      * sample   (sample) int64 0 1 2 3 4 5 6 ... 1790 1791 1792 1793 1794 1795 1796
+      * feature  (feature) int64 0 1 2 3 4 5 6 7 8 9 ... 55 56 57 58 59 60 61 62 63
+        digit    (sample) int64 0 1 2 3 4 5 6 7 8 9 0 1 ... 7 9 5 4 8 8 4 9 0 8 9 8
+    >>> y
     sklearn_xarray.Target with data:
     <xarray.DataArray 'digit' (sample: 1797)>
     array([0, 1, 2, ..., 8, 9, 8])
     Coordinates:
-      * sample   (sample) int32 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 ...
-        digit    (sample) int32 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 ...
+      * sample   (sample) int64 0 1 2 3 4 5 6 ... 1790 1791 1792 1793 1794 1795 1796
+        digit    (sample) int64 0 1 2 3 4 5 6 7 8 9 0 1 ... 7 9 5 4 8 8 4 9 0 8 9 8
 
 
 The target can point to any DataArray or Dataset that contains the specified
@@ -46,13 +43,15 @@ argument. When you construct a target without specifying a coordinate, the
 target data will be the Dataset/DataArray itself.
 
 The Target object can be used as a target for a wrapped estimator in accordance
-with sklearn's usual syntax::
+with sklearn's usual syntax:
 
-    wrapper = wrap(LogisticRegression())
-    wrapper.fit(X, y)
+.. doctest::
 
-    In []: wrapper.score(X, y)
-    Out[]: 0.99332220367278801
+    >>> wrapper = wrap(LogisticRegression())
+    >>> wrapper.fit(X, y) # doctest:+ELLIPSIS
+    EstimatorWrapper(...)
+    >>> wrapper.score(X, y)
+    1.0
 
 .. note::
     You don't have to assign the Target to any data, the wrapper's fit method
@@ -65,16 +64,17 @@ In some cases, it is necessary to pre-process the coordinate before it can be
 used as a target. For this, the constructor takes a ``transform_func`` parameter
 which can be used with the ``fit_transform`` method of transformers in
 ``sklearn.preprocessing`` (and also any other object implementing the sklearn
-transformer interface)::
+transformer interface):
 
-    from sklearn.neural_network import MLPClassifier
-    from sklearn.preprocessing import LabelBinarizer
+.. doctest::
 
-    y = Target(coord='digit', transform_func=LabelBinarizer().fit_transform)(X)
-
-    wrapper = wrap(MLPClassifier())
-    wrapper.fit(X, y)
-
+    >>> from sklearn.neural_network import MLPClassifier
+    >>> from sklearn.preprocessing import LabelBinarizer
+    >>>
+    >>> y = Target(coord='digit', transform_func=LabelBinarizer().fit_transform)(X)
+    >>> wrapper = wrap(MLPClassifier())
+    >>> wrapper.fit(X, y) # doctest:+ELLIPSIS
+    EstimatorWrapper(...)
 
 Indexing
 --------

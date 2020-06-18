@@ -16,7 +16,7 @@ from .utils import get_group_indices, is_dataarray, is_dataset
 from .externals import numpy_groupies as npg
 
 
-def preprocess(X, function, groupby=None, group_dim='sample', **fit_params):
+def preprocess(X, function, groupby=None, group_dim="sample", **fit_params):
     """ Wraps preprocessing functions from sklearn for use with xarray types.
 
     Parameters
@@ -41,9 +41,9 @@ def preprocess(X, function, groupby=None, group_dim='sample', **fit_params):
         The transformed data.
     """
 
-    if hasattr(X, 'to_dataset'):
+    if hasattr(X, "to_dataset"):
         was_array = True
-        Xt = X.to_dataset(name='tmp_var')
+        Xt = X.to_dataset(name="tmp_var")
     else:
         was_array = False
         Xt = X
@@ -59,7 +59,7 @@ def preprocess(X, function, groupby=None, group_dim='sample', **fit_params):
         Xt = xr.concat(Xt_list, dim=group_dim)
 
     if was_array:
-        Xt = Xt['tmp_var'].rename(X.name)
+        Xt = Xt["tmp_var"].rename(X.name)
 
     return Xt
 
@@ -96,12 +96,13 @@ class BaseTransformer(BaseEstimator, TransformerMixin):
         """
 
         if is_dataset(X):
-            self.type_ = 'Dataset'
+            self.type_ = "Dataset"
         elif is_dataarray(X):
-            self.type_ = 'DataArray'
+            self.type_ = "DataArray"
         else:
             raise ValueError(
-                'The input appears to be neither a DataArray nor a Dataset.')
+                "The input appears to be neither a DataArray nor a Dataset."
+            )
 
         return self
 
@@ -119,14 +120,16 @@ class BaseTransformer(BaseEstimator, TransformerMixin):
             The transformed data.
         """
 
-        if self.type_ == 'Dataset' and not is_dataset(X):
+        if self.type_ == "Dataset" and not is_dataset(X):
             raise ValueError(
-                'This estimator was fitted for Dataset inputs, but the '
-                'provided X does not seem to be a Dataset.')
-        elif self.type_ == 'DataArray' and not is_dataarray(X):
+                "This estimator was fitted for Dataset inputs, but the "
+                "provided X does not seem to be a Dataset."
+            )
+        elif self.type_ == "DataArray" and not is_dataarray(X):
             raise ValueError(
-                'This estimator was fitted for DataArray inputs, but the '
-                'provided X does not seem to be a DataArray.')
+                "This estimator was fitted for DataArray inputs, but the "
+                "provided X does not seem to be a DataArray."
+            )
 
         if self.groupby is not None:
             return self._call_groupwise(self._transform, X)
@@ -169,7 +172,7 @@ class Transposer(BaseTransformer):
         Name of dimension along which the groups are indexed.
     """
 
-    def __init__(self, order=None, groupby=None, group_dim='sample'):
+    def __init__(self, order=None, groupby=None, group_dim="sample"):
 
         self.order = order
 
@@ -197,10 +200,11 @@ class Transposer(BaseTransformer):
 
         # we need to determine the initial order for each variable seperately
         # because they might have a different order than the dataset
-        if self.type_ == 'Dataset':
+        if self.type_ == "Dataset":
             self.initial_order_ = {
                 v: [d for d in X[v].dims if d in self.order]
-                for v in X.data_vars}
+                for v in X.data_vars
+            }
         else:
             self.initial_order_ = [d for d in X.dims if d in self.order]
 
@@ -246,23 +250,29 @@ class Transposer(BaseTransformer):
     def _transform(self, X):
         """ Transform. """
 
-        check_is_fitted(self, ['initial_order_'])
+        check_is_fitted(self, ["initial_order_"])
 
         if is_dataset(X):
-            return xr.Dataset({
-                v: self._transform_var(X[v]) for v in X.data_vars})
+            return xr.Dataset(
+                {v: self._transform_var(X[v]) for v in X.data_vars}
+            )
         else:
             return self._transform_var(X)
 
     def _inverse_transform(self, X):
         """ Reverse transform. """
 
-        check_is_fitted(self, ['initial_order_'])
+        check_is_fitted(self, ["initial_order_"])
 
         if is_dataset(X):
-            return xr.Dataset({
-                v: self._inverse_transform_var(X[v], self.initial_order_[v])
-                for v in X.data_vars})
+            return xr.Dataset(
+                {
+                    v: self._inverse_transform_var(
+                        X[v], self.initial_order_[v]
+                    )
+                    for v in X.data_vars
+                }
+            )
         else:
             return self._inverse_transform_var(X, self.initial_order_)
 
@@ -320,8 +330,8 @@ class Splitter(BaseTransformer):
         - ``'subsample'`` : Take every ``new_len`` th value.
 
     new_index_func : callable
-        A function that takes ``new_len`` as a parameter and returns a vector of
-        length ``new_len`` to be used as the indices for the new dimension.
+        A function that takes ``new_len`` as a parameter and returns a vector
+        of length ``new_len`` to be used as the indices for the new dimension.
 
     keep_coords_as : str or None
         If set, the coordinate of the split dimension will be kept as a
@@ -336,9 +346,18 @@ class Splitter(BaseTransformer):
         Name of dimension along which the groups are indexed.
     """
 
-    def __init__(self, dim='sample', new_dim=None, new_len=None, axis=None,
-                 reduce_index='subsample', new_index_func=np.arange,
-                 keep_coords_as=None, groupby=None, group_dim='sample'):
+    def __init__(
+        self,
+        dim="sample",
+        new_dim=None,
+        new_len=None,
+        axis=None,
+        reduce_index="subsample",
+        new_index_func=np.arange,
+        keep_coords_as=None,
+        groupby=None,
+        group_dim="sample",
+    ):
 
         self.dim = dim
         self.new_dim = new_dim
@@ -354,40 +373,44 @@ class Splitter(BaseTransformer):
     def _transpose_var(self, xt, order=None, dims=None):
         """ Transpose a single variable. """
 
-        xt = xt.to_dataset(name='tmptmp')
+        xt = xt.to_dataset(name="tmptmp")
 
         if dims is not None:
             if self.axis is None:
                 order = list(dims) + [self.new_dim]
             else:
-                order = list(dims)[:self.axis] + [self.new_dim] + \
-                        list(dims)[self.axis:]
+                order = (
+                    list(dims)[: self.axis]
+                    + [self.new_dim]
+                    + list(dims)[self.axis :]
+                )
 
-        return xt.transpose(*order)['tmptmp']
+        return xt.transpose(*order)["tmptmp"]
 
     def _transform(self, X):
         """ Transform. """
 
-        if self.type_ == 'DataArray':
-            Xt = X.to_dataset(name='tmp_var')
+        if self.type_ == "DataArray":
+            Xt = X.to_dataset(name="tmp_var")
         else:
             Xt = X
 
         if None in (self.new_dim, self.new_len):
-            raise ValueError('Name and length of new dimension must be '
-                             'specified')
+            raise ValueError(
+                "Name and length of new dimension must be " "specified"
+            )
 
         # temporary dimension name
-        tmp_dim = 'tmp'
+        tmp_dim = "tmp"
 
         # reduce indices of original dimension
-        trimmed_len = (len(Xt[self.dim])//self.new_len)*self.new_len
-        if self.reduce_index == 'subsample':
+        trimmed_len = (len(Xt[self.dim]) // self.new_len) * self.new_len
+        if self.reduce_index == "subsample":
             dim_idx = np.arange(0, trimmed_len, self.new_len)
-        elif self.reduce_index == 'head':
+        elif self.reduce_index == "head":
             dim_idx = np.arange(trimmed_len // self.new_len)
         else:
-            raise KeyError('Unrecognized mode for index reduction')
+            raise KeyError("Unrecognized mode for index reduction")
 
         dim_coord = Xt[self.dim][dim_idx]
 
@@ -397,13 +420,14 @@ class Splitter(BaseTransformer):
 
         # get indices of new dimension
         if self.new_index_func is None:
-            new_dim_coord = Xt[self.dim][:self.new_len]
+            new_dim_coord = Xt[self.dim][: self.new_len]
         else:
             new_dim_coord = self.new_index_func(self.new_len)
 
         # create MultiIndex
-        index = pd.MultiIndex.from_product((dim_coord, new_dim_coord),
-                                           names=(tmp_dim, self.new_dim))
+        index = pd.MultiIndex.from_product(
+            (dim_coord, new_dim_coord), names=(tmp_dim, self.new_dim)
+        )
 
         # trim length and reshape
         Xt = Xt.isel(**{self.dim: slice(len(index))})
@@ -411,13 +435,13 @@ class Splitter(BaseTransformer):
         Xt = Xt.rename({tmp_dim: self.dim})
 
         # move new dimension
-        if self.type_ == 'Dataset':
+        if self.type_ == "Dataset":
             # we have to transpose each variable individually
             for v in X.data_vars:
                 if self.new_dim in Xt[v].dims:
                     Xt[v] = self._transpose_var(Xt[v], dims=X[v].dims)
         else:
-            Xt = self._transpose_var(Xt['tmp_var'], dims=X.dims)
+            Xt = self._transpose_var(Xt["tmp_var"], dims=X.dims)
             Xt = Xt.rename(X.name)
 
         return Xt
@@ -426,7 +450,7 @@ class Splitter(BaseTransformer):
         """ Reverse transform. """
 
         # temporary dimension name
-        tmp_dim = 'tmp'
+        tmp_dim = "tmp"
 
         Xt = X.stack(**{tmp_dim: (self.dim, self.new_dim)})
 
@@ -436,7 +460,7 @@ class Splitter(BaseTransformer):
 
         # transpose to original dimensions
         Xt = Xt.rename({tmp_dim: self.dim})
-        if self.type_ == 'Dataset':
+        if self.type_ == "Dataset":
             # we have to transpose each variable individually
             for v in X.data_vars:
                 old_dims = list(X[v].dims)
@@ -507,8 +531,8 @@ class Segmenter(BaseTransformer):
           of every segment.
 
     new_index_func : callable
-        A function that takes ``new_len`` as a parameter and returns a vector of
-        length ``new_len`` to be used as the indices for the new dimension.
+        A function that takes ``new_len`` as a parameter and returns a vector
+        of length ``new_len`` to be used as the indices for the new dimension.
 
     keep_coords_as : str or None
         If set, the coordinate of the split dimension will be kept as a
@@ -528,10 +552,20 @@ class Segmenter(BaseTransformer):
 
     # TODO: put step calculation in fit()?
 
-    def __init__(self, dim='sample', new_dim=None, new_len=None, step=None,
-                 axis=None, reduce_index='subsample', new_index_func=np.arange,
-                 keep_coords_as=None, groupby=None, group_dim='sample',
-                 return_view=False):
+    def __init__(
+        self,
+        dim="sample",
+        new_dim=None,
+        new_len=None,
+        step=None,
+        axis=None,
+        reduce_index="subsample",
+        new_index_func=np.arange,
+        keep_coords_as=None,
+        groupby=None,
+        group_dim="sample",
+        return_view=False,
+    ):
 
         self.dim = dim
         self.new_dim = new_dim
@@ -549,16 +583,19 @@ class Segmenter(BaseTransformer):
     def _transpose_var(self, xt, order=None, dims=None):
         """ Transpose a single variable. """
 
-        xt = xt.to_dataset(name='tmptmp')
+        xt = xt.to_dataset(name="tmptmp")
 
         if dims is not None:
             if self.axis is None:
                 order = list(dims) + [self.new_dim]
             else:
-                order = list(dims)[:self.axis] + [self.new_dim] + \
-                        list(dims)[self.axis:]
+                order = (
+                    list(dims)[: self.axis]
+                    + [self.new_dim]
+                    + list(dims)[self.axis :]
+                )
 
-        return xt.transpose(*order)['tmptmp']
+        return xt.transpose(*order)["tmptmp"]
 
     def _segment_array(self, arr, axis, return_view):
         """ Segment an array along some axis. """
@@ -571,7 +608,8 @@ class Segmenter(BaseTransformer):
             step = self.step
 
         return segment_array(
-            arr, axis, self.new_len, step, self.axis, return_view)
+            arr, axis, self.new_len, step, self.axis, return_view
+        )
 
     def _rebuild_array(self, arr, axis):
         """ Rebuild an array along some axis. """
@@ -604,10 +642,13 @@ class Segmenter(BaseTransformer):
                 mg_ord = [0]
             idx = np.vstack(
                 self._segment_array(
-                    np.transpose(g, mg_ord), axis_old, True).flatten()
-                for g in np.meshgrid(*old_ranges))
+                    np.transpose(g, mg_ord), axis_old, True
+                ).flatten()
+                for g in np.meshgrid(*old_ranges)
+            )
             return npg.aggregate(
-                idx, arr.flatten().T, size=old_shape, func='mean')
+                idx, arr.flatten().T, size=old_shape, func="mean"
+            )
 
         else:
 
@@ -615,12 +656,14 @@ class Segmenter(BaseTransformer):
             arr_old = np.zeros(old_shape, dtype=arr.dtype)
 
             # get order of transposition for assigning slices to the new array
-            order = list(range(arr.ndim-1))
+            order = list(range(arr.ndim - 1))
             if self.axis is None:
                 order[-1], order[axis] = order[axis], order[-1]
             elif self.axis > axis:
-                order[self.axis-1], order[axis] = order[axis], \
-                                                  order[self.axis-1]
+                order[self.axis - 1], order[axis] = (
+                    order[axis],
+                    order[self.axis - 1],
+                )
 
             # setup up indices
             idx_old = [slice(None)] * len(old_shape)
@@ -631,7 +674,8 @@ class Segmenter(BaseTransformer):
                 idx_old[axis_old] = n * step + np.arange(self.new_len)
                 idx_new[axis] = n
                 arr_old[tuple(idx_old)] = np.transpose(
-                    arr[tuple(idx_new)], order)
+                    arr[tuple(idx_new)], order
+                )
 
             return arr_old
 
@@ -645,7 +689,8 @@ class Segmenter(BaseTransformer):
             else:
                 new_dims.insert(self.axis, self.new_dim)
             var_t = self._segment_array(
-                X.values, tuple(X.dims).index(self.dim), self.return_view)
+                X.values, tuple(X.dims).index(self.dim), self.return_view
+            )
         else:
             new_dims = X.dims
             var_t = X
@@ -659,7 +704,8 @@ class Segmenter(BaseTransformer):
             new_dims = list(X.dims)
             new_dims.remove(self.new_dim)
             var_t = self._rebuild_array(
-                X.values, tuple(X.dims).index(self.dim))
+                X.values, tuple(X.dims).index(self.dim)
+            )
         else:
             new_dims = X.dims
             var_t = X
@@ -676,24 +722,24 @@ class Segmenter(BaseTransformer):
 
         # get indices of new dimension
         if self.new_index_func is None:
-            new_dim_coords = X[self.dim][:self.new_len]
+            new_dim_coords = X[self.dim][: self.new_len]
         else:
             new_dim_coords = self.new_index_func(self.new_len)
 
         # reduce indices of original dimension
-        if self.reduce_index == 'subsample':
+        if self.reduce_index == "subsample":
+            dim_idx = np.arange(0, (len(X[self.dim]) - self.new_len + 1), step)
+        elif self.reduce_index == "head":
             dim_idx = np.arange(
-                0, (len(X[self.dim]) - self.new_len + 1), step)
-        elif self.reduce_index == 'head':
-            dim_idx = np.arange(
-                (len(X[self.dim]) - self.new_len + step) // step)
+                (len(X[self.dim]) - self.new_len + step) // step
+            )
         else:
-            raise KeyError('Unrecognized mode for index reduction')
+            raise KeyError("Unrecognized mode for index reduction")
 
         # assign coordinates
         coords_new = {
             self.dim: X[self.dim].values[dim_idx],
-            self.new_dim: new_dim_coords
+            self.new_dim: new_dim_coords,
         }
 
         for c in X.coords:
@@ -704,9 +750,13 @@ class Segmenter(BaseTransformer):
                 else:
                     new_dims.insert(self.axis, self.new_dim)
                 coords_new[c] = (
-                    new_dims, self._segment_array(
-                        X[c].values, tuple(X[c].dims).index(self.dim),
-                        self.return_view))
+                    new_dims,
+                    self._segment_array(
+                        X[c].values,
+                        tuple(X[c].dims).index(self.dim),
+                        self.return_view,
+                    ),
+                )
             elif c != self.dim:
                 coords_new[c] = (X[c].dims, X[c])
 
@@ -718,7 +768,8 @@ class Segmenter(BaseTransformer):
         coords_old = {
             self.dim: self._rebuild_array(
                 X[self.keep_coords_as].values,
-                tuple(X[self.keep_coords_as].dims).index(self.dim))
+                tuple(X[self.keep_coords_as].dims).index(self.dim),
+            )
         }
 
         X = X.drop(self.keep_coords_as)
@@ -728,8 +779,10 @@ class Segmenter(BaseTransformer):
                 new_dims = list(X[c].dims)
                 axis = new_dims.index(self.dim)
                 new_dims.remove(self.new_dim)
-                coords_old[c] = (new_dims,
-                                 self._rebuild_array(X[c].values, axis))
+                coords_old[c] = (
+                    new_dims,
+                    self._rebuild_array(X[c].values, axis),
+                )
             elif c not in (self.dim, self.new_dim):
                 coords_old[c] = (X[c].dims, X[c])
 
@@ -739,8 +792,9 @@ class Segmenter(BaseTransformer):
         """ Transform. """
 
         if None in (self.new_dim, self.new_len):
-            raise ValueError('Name and length of new dimension must be '
-                             'specified')
+            raise ValueError(
+                "Name and length of new dimension must be " "specified"
+            )
 
         Xt = X.copy()
 
@@ -748,7 +802,7 @@ class Segmenter(BaseTransformer):
         if self.keep_coords_as is not None:
             Xt.coords[self.keep_coords_as] = Xt[self.dim]
 
-        if self.type_ == 'Dataset':
+        if self.type_ == "Dataset":
             vars_t = dict()
             for v in Xt.data_vars:
                 vars_t[v] = self._transform_var(Xt[v])
@@ -760,7 +814,7 @@ class Segmenter(BaseTransformer):
             coords_t = self._update_coords(Xt)
             Xt = xr.DataArray(var_t, coords=coords_t, dims=new_dims)
 
-        if self.type_ == 'Dataset':
+        if self.type_ == "Dataset":
             # we have to transpose each variable individually
             for v in X.data_vars:
                 if self.new_dim in Xt[v].dims:
@@ -774,18 +828,22 @@ class Segmenter(BaseTransformer):
         """ Reverse transform. """
 
         if None in (self.new_dim, self.new_len):
-            raise ValueError('Name and length of new dimension must be '
-                             'specified')
+            raise ValueError(
+                "Name and length of new dimension must be " "specified"
+            )
 
         if self.keep_coords_as is None:
-            raise ValueError('keep_coords_as must be specified in order for '
-                             'inverse_transform to work.')
+            raise ValueError(
+                "keep_coords_as must be specified in order for "
+                "inverse_transform to work."
+            )
 
         Xt = X.copy()
 
-        if self.type_ == 'Dataset':
+        if self.type_ == "Dataset":
             vars_it = {
-                v: self._inverse_transform_var(Xt[v]) for v in Xt.data_vars}
+                v: self._inverse_transform_var(Xt[v]) for v in Xt.data_vars
+            }
             coords_it = self._restore_coords(Xt)
             Xt = xr.Dataset(vars_it, coords=coords_it)
 
@@ -795,7 +853,7 @@ class Segmenter(BaseTransformer):
             Xt = xr.DataArray(var_it, coords=coords_it, dims=new_dims)
 
         # transpose to original dimensions
-        if self.type_ == 'Dataset':
+        if self.type_ == "Dataset":
             # we have to transpose each variable individually
             for v in X.data_vars:
                 old_dims = list(X[v].dims)
@@ -856,8 +914,9 @@ class Resampler(BaseTransformer):
         Name of dimension along which the groups are indexed.
     """
 
-    def __init__(self, freq=None, dim='sample', groupby=None,
-                 group_dim='sample'):
+    def __init__(
+        self, freq=None, dim="sample", groupby=None, group_dim="sample"
+    ):
 
         self.freq = freq
         self.dim = dim
@@ -884,7 +943,7 @@ class Resampler(BaseTransformer):
 
         super(Resampler, self).fit(X, y, **fit_params)
 
-        if hasattr(X[self.dim], 'freq'):
+        if hasattr(X[self.dim], "freq"):
             self.initial_freq_ = X[self.dim].freq
         else:
             self.initial_freq_ = None
@@ -897,7 +956,7 @@ class Resampler(BaseTransformer):
         import scipy.signal as sig
         from fractions import Fraction
 
-        check_is_fitted(self, ['initial_freq_'])
+        check_is_fitted(self, ["initial_freq_"])
 
         if self.freq is None:
             return X
@@ -922,7 +981,7 @@ class Resampler(BaseTransformer):
             num += 1
 
         # resample data along resampling dimension
-        if self.type_ == 'Dataset':
+        if self.type_ == "Dataset":
 
             vars_t = dict()
             for v in X.data_vars:
@@ -952,7 +1011,8 @@ class Resampler(BaseTransformer):
         """ Reverse transform. """
 
         raise NotImplementedError(
-            'inverse_transform has not yet been implemented for this estimator')
+            "inverse_transform has not yet been implemented for this estimator"
+        )
 
 
 def resample(X, return_estimator=False, **fit_params):
@@ -1015,9 +1075,17 @@ class Concatenator(BaseTransformer):
         Name of dimension along which the groups are indexed.
     """
 
-    def __init__(self, dim='feature', new_dim=None, variables=None,
-                 new_var='Feature', new_index_func=None,
-                 return_array=False, groupby=None, group_dim='sample'):
+    def __init__(
+        self,
+        dim="feature",
+        new_dim=None,
+        variables=None,
+        new_var="Feature",
+        new_index_func=None,
+        return_array=False,
+        groupby=None,
+        group_dim="sample",
+    ):
 
         self.dim = dim
         self.new_dim = new_dim
@@ -1047,9 +1115,11 @@ class Concatenator(BaseTransformer):
         """
 
         if is_dataset(X):
-            self.type_ = 'Dataset'
+            self.type_ = "Dataset"
         else:
-            raise ValueError('The Concatenator can only be applied to Datasets')
+            raise ValueError(
+                "The Concatenator can only be applied to Datasets"
+            )
 
         self.data_vars_ = list(X.data_vars)
         self.dim_vals_ = X[self.dim].values
@@ -1061,7 +1131,8 @@ class Concatenator(BaseTransformer):
 
         if set(X.data_vars) != set(self.data_vars_):
             raise ValueError(
-                'This estimator was fitted for a different set of variables.')
+                "This estimator was fitted for a different set of variables."
+            )
 
         if self.variables is None:
 
@@ -1079,8 +1150,9 @@ class Concatenator(BaseTransformer):
 
             if self.return_array:
                 raise ValueError(
-                    'Cannot return a DataArray when a subset of variables is '
-                    'concatenated.')
+                    "Cannot return a DataArray when a subset of variables is "
+                    "concatenated."
+                )
 
             Xt = xr.concat([X[v] for v in self.variables], dim=self.dim)
 
@@ -1100,12 +1172,14 @@ class Concatenator(BaseTransformer):
 
         if is_dataarray(X) and not self.return_array:
             raise ValueError(
-                'This estimator can only inverse_transform Dataset inputs.')
+                "This estimator can only inverse_transform Dataset inputs."
+            )
         elif is_dataset(X) and self.return_array:
             raise ValueError(
-                'This estimator can only inverse_transform DataArray inputs.')
+                "This estimator can only inverse_transform DataArray inputs."
+            )
 
-        tmp_dim = 'tmp'
+        tmp_dim = "tmp"
 
         if self.variables is None:
             vars = self.data_vars_
@@ -1113,7 +1187,8 @@ class Concatenator(BaseTransformer):
             vars = self.variables
 
         ind = pd.MultiIndex.from_product(
-            (vars, self.dim_vals_), names=('variable', tmp_dim))
+            (vars, self.dim_vals_), names=("variable", tmp_dim)
+        )
 
         if self.new_dim is None:
             dim = self.dim
@@ -1127,12 +1202,17 @@ class Concatenator(BaseTransformer):
 
         Xt = Xt.assign(**{dim: ind}).unstack(dim)
         Xt = Xt.rename(**{tmp_dim: self.dim})
-        Xt = Xt[self.new_var].to_dataset(dim='variable')
+        Xt = Xt[self.new_var].to_dataset(dim="variable")
 
         if self.variables is not None:
             Xt = xr.merge(
-                [Xt] + [X[v].reindex({self.dim: self.dim_vals_})
-                        for v in X.data_vars if v != self.new_var])
+                [Xt]
+                + [
+                    X[v].reindex({self.dim: self.dim_vals_})
+                    for v in X.data_vars
+                    if v != self.new_var
+                ]
+            )
 
         return Xt
 
@@ -1192,9 +1272,16 @@ class Featurizer(BaseTransformer):
         Name of dimension along which the groups are indexed.
     """
 
-    def __init__(self, sample_dim='sample', feature_dim='feature',
-                 var_name='Features', order=None, return_array=False,
-                 groupby=None, group_dim='sample'):
+    def __init__(
+        self,
+        sample_dim="sample",
+        feature_dim="feature",
+        var_name="Features",
+        order=None,
+        return_array=False,
+        groupby=None,
+        group_dim="sample",
+    ):
 
         self.sample_dim = sample_dim
         self.feature_dim = feature_dim
@@ -1213,7 +1300,13 @@ class Featurizer(BaseTransformer):
         else:
             stack_dims = tuple(set(X.dims) - {self.sample_dim})
 
-        return X.stack(**{self.feature_dim: stack_dims})
+        if len(stack_dims) == 0:
+            # TODO write a test for this (nothing to stack)
+            Xt = X.copy()
+            Xt[self.feature_dim] = 0
+            return Xt
+        else:
+            return X.stack(**{self.feature_dim: stack_dims})
 
     def _inverse_transform_var(self, X):
         """ Inverse transform a single variable. """
@@ -1224,9 +1317,11 @@ class Featurizer(BaseTransformer):
         """ Transform. """
 
         # stack all dimensions except for sample dimension
-        if self.type_ == 'Dataset':
-            X = xr.concat([self._transform_var(X[v]) for v in X.data_vars],
-                          dim=self.feature_dim)
+        if self.type_ == "Dataset":
+            X = xr.concat(
+                [self._transform_var(X[v]) for v in X.data_vars],
+                dim=self.feature_dim,
+            )
             if self.return_array:
                 return X
             else:
@@ -1238,7 +1333,8 @@ class Featurizer(BaseTransformer):
         """ Reverse transform. """
 
         raise NotImplementedError(
-            'inverse_transform has not yet been implemented for this estimator')
+            "inverse_transform has not yet been implemented for this estimator"
+        )
 
 
 def featurize(X, return_estimator=False, **fit_params):
@@ -1287,11 +1383,12 @@ class Selector(BaseTransformer):
         Name of dimension along which the groups are indexed.
     """
 
-    def __init__(self, dim='sample', coord=None, groupby=None,
-                 group_dim='sample'):
+    def __init__(
+        self, dim="sample", coord=None, groupby=None, group_dim="sample"
+    ):
 
         if coord is None:
-            raise ValueError('coord must be specified.')
+            raise ValueError("coord must be specified.")
 
         self.dim = dim
         self.coord = coord
@@ -1304,8 +1401,10 @@ class Selector(BaseTransformer):
         X_c = X[self.coord]
 
         if self.dim not in X_c.dims:
-            raise ValueError('The specified coord does not contain the '
-                             'dimension ' + self.dim)
+            raise ValueError(
+                "The specified coord does not contain the "
+                "dimension " + self.dim
+            )
 
         X_c = X_c.isel(**{d: 0 for d in X_c.dims if d != self.dim})
 
@@ -1317,7 +1416,8 @@ class Selector(BaseTransformer):
         """ Reverse transform. """
 
         raise NotImplementedError(
-            'inverse_transform cannot be implemented for this estimator')
+            "inverse_transform cannot be implemented for this estimator"
+        )
 
 
 def select(X, return_estimator=False, **fit_params):
@@ -1363,7 +1463,7 @@ class Sanitizer(BaseTransformer):
         Name of dimension along which the groups are indexed.
     """
 
-    def __init__(self, dim='sample', groupby=None, group_dim='sample'):
+    def __init__(self, dim="sample", groupby=None, group_dim="sample"):
 
         self.dim = dim
 
@@ -1375,10 +1475,11 @@ class Sanitizer(BaseTransformer):
 
         idx_nan = np.zeros(X.sizes[self.dim], dtype=bool)
 
-        if self.type_ == 'Dataset':
+        if self.type_ == "Dataset":
             for v in X.data_vars:
-                axis = np.delete(np.arange(X[v].ndim),
-                                 X[v].dims.index(self.dim))
+                axis = np.delete(
+                    np.arange(X[v].ndim), X[v].dims.index(self.dim)
+                )
                 idx_nan = idx_nan | np.any(np.isnan(X[v]), axis=tuple(axis))
         else:
             axis = np.delete(np.arange(X.ndim), X.dims.index(self.dim))
@@ -1390,7 +1491,8 @@ class Sanitizer(BaseTransformer):
         """ Reverse transform. """
 
         raise NotImplementedError(
-            'inverse_transform cannot be implemented for this estimator')
+            "inverse_transform cannot be implemented for this estimator"
+        )
 
 
 def sanitize(X, return_estimator=False, **fit_params):
@@ -1439,8 +1541,13 @@ class Reducer(BaseTransformer):
         Name of dimension along which the groups are indexed.
     """
 
-    def __init__(self, dim='feature', func=np.linalg.norm, groupby=None,
-                 group_dim='sample'):
+    def __init__(
+        self,
+        dim="feature",
+        func=np.linalg.norm,
+        groupby=None,
+        group_dim="sample",
+    ):
 
         self.dim = dim
         self.func = func
@@ -1457,7 +1564,8 @@ class Reducer(BaseTransformer):
         """ Reverse transform. """
 
         raise NotImplementedError(
-            'inverse_transform cannot be implemented for this estimator')
+            "inverse_transform cannot be implemented for this estimator"
+        )
 
 
 def reduce(X, return_estimator=False, **fit_params):

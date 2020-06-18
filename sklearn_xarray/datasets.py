@@ -10,8 +10,8 @@ def load_dummy_dataarray():
 
     return xr.DataArray(
         np.random.random((100, 10)),
-        coords={'sample': range(100), 'feature': range(10)},
-        dims=('sample', 'feature')
+        coords={"sample": range(100), "feature": range(10)},
+        dims=("sample", "feature"),
     )
 
 
@@ -19,8 +19,8 @@ def load_dummy_dataset():
     """ Load a Dataset for demonstration purposes. """
 
     return xr.Dataset(
-        {'var_1': (['sample', 'feature'], np.random.random((100, 10)))},
-        coords={'sample': range(100), 'feature': range(10)}
+        {"var_1": (["sample", "feature"], np.random.random((100, 10)))},
+        coords={"sample": range(100), "feature": range(10)},
     )
 
 
@@ -52,11 +52,13 @@ def load_digits_dataarray(load_images=False, nan_probability=0):
 
         return xr.DataArray(
             data,
-            coords={'sample': range(data.shape[0]),
-                    'row': range(data.shape[1]),
-                    'col': range(data.shape[2]),
-                    'digit': (['sample'], bunch.target)},
-            dims=('sample', 'row', 'col')
+            coords={
+                "sample": range(data.shape[0]),
+                "row": range(data.shape[1]),
+                "col": range(data.shape[2]),
+                "digit": (["sample"], bunch.target),
+            },
+            dims=("sample", "row", "col"),
         )
 
     else:
@@ -70,17 +72,22 @@ def load_digits_dataarray(load_images=False, nan_probability=0):
 
         return xr.DataArray(
             data,
-            coords={'sample': range(data.shape[0]),
-                    'feature': range(data.shape[1]),
-                    'digit': (['sample'], target)},
-            dims=('sample', 'feature')
+            coords={
+                "sample": range(data.shape[0]),
+                "feature": range(data.shape[1]),
+                "digit": (["sample"], target),
+            },
+            dims=("sample", "feature"),
         )
 
 
-def load_wisdm_dataarray(url='http://www.cis.fordham.edu/wisdm/includes/'
-                             'datasets/latest/WISDM_ar_latest.tar.gz',
-                         file='WISDM_ar_v1.1/WISDM_ar_v1.1_raw.txt',
-                         folder='data/', tmp_file='widsm.tar.gz'):
+def load_wisdm_dataarray(
+    url="http://www.cis.fordham.edu/wisdm/includes/"
+    "datasets/latest/WISDM_ar_latest.tar.gz",
+    file="WISDM_ar_v1.1/WISDM_ar_v1.1_raw.txt",
+    folder="data/",
+    tmp_file="widsm.tar.gz",
+):
     """ Load the WISDM activity recognition dataset.
 
     Parameters
@@ -115,18 +122,23 @@ def load_wisdm_dataarray(url='http://www.cis.fordham.edu/wisdm/includes/'
         tar.close()
         os.remove(tmp_file)
 
-    column_names = ['subject', 'activity', 'timestamp', 'x', 'y', 'z']
-    df = pd.read_csv(os.path.join(folder, file), header=None,
-                     names=column_names, comment=';')
+    column_names = ["subject", "activity", "timestamp", "x", "y", "z"]
+    df = pd.read_csv(
+        os.path.join(folder, file),
+        header=None,
+        names=column_names,
+        comment=";",
+    )
 
-    time = pd.TimedeltaIndex(start=0, periods=df.shape[0], freq='50ms')
+    time = pd.date_range(start=0, periods=df.shape[0], freq="50ms")
 
-    coords = {'subject': ('sample', df.subject),
-              'activity': ('sample', df.activity),
-              'sample': time,
-              'axis': ['x', 'y', 'z']}
+    coords = {
+        "subject": ("sample", df.subject),
+        "activity": ("sample", df.activity),
+        "sample": time,
+        "axis": ["x", "y", "z"],
+    }
 
-    X = xr.DataArray(
-        df.iloc[:, 3:6], coords=coords, dims=('sample', 'axis'))
+    X = xr.DataArray(df.iloc[:, 3:6], coords=coords, dims=("sample", "axis"))
 
     return X

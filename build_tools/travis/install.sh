@@ -1,37 +1,15 @@
-# Deactivate the travis-provided virtual environment and setup a
-# conda-based environment instead
-deactivate
-
-# Use the miniconda installer for faster download / install of conda
-# itself
-pushd .
-cd
-mkdir -p download
-cd download
-echo "Cached in $HOME/download :"
-ls -l
-echo
-if [[ ! -f miniconda.sh ]]
-   then
-   wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh \
-       -O miniconda.sh
-   fi
-chmod +x miniconda.sh && ./miniconda.sh -b
-cd ..
-export PATH=/home/travis/miniconda3/bin:$PATH
-conda update --yes conda
-popd
-
 # Configure the conda environment and put it in the path using the
 # provided versions
-conda create -n testenv -y -c conda-forge python=$PYTHON_VERSION \
-    nose matplotlib sphinx pillow sphinx-gallery sphinx_rtd_theme numpydoc \
-    --file requirements.txt
+conda create -n testenv -y -c conda-forge \
+    python=$TRAVIS_PYTHON_VERSION \
+    dask-ml \
+    --file requirements.txt \
+    --file requirements_dev.txt
 
 source activate testenv
 
 if [[ "$COVERAGE" == "true" ]]; then
-    conda install -c conda-forge --yes coverage coveralls
+    conda install -y -c conda-forge pytest-cov coveralls
 fi
 
 python --version

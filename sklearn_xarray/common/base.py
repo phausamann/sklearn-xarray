@@ -3,8 +3,6 @@
 import numpy as np
 import xarray as xr
 
-import six
-
 from sklearn.base import clone, BaseEstimator
 from sklearn.utils.validation import check_is_fitted, check_array, check_X_y
 
@@ -23,7 +21,7 @@ class _CommonEstimatorWrapper(BaseEstimator):
         elif y.ndim == 1:
             y = np.array(y)
         else:
-            raise ValueError('Could not figure out how to transpose y.')
+            raise ValueError("Could not figure out how to transpose y.")
 
         return y
 
@@ -43,20 +41,23 @@ class _CommonEstimatorWrapper(BaseEstimator):
         dims_new = list(X_in.dims)
 
         # dict syntax
-        if hasattr(self.reshapes, 'items'):
+        if hasattr(self.reshapes, "items"):
 
             # check if new dims are dropped by estimator
             all_old_dims = []
             for _, old_dims in self.reshapes.items():
                 all_old_dims += old_dims
 
-            if X_out.ndim == X_in.ndim-len(all_old_dims)+len(self.reshapes):
+            if X_out.ndim == X_in.ndim - len(all_old_dims) + len(
+                self.reshapes
+            ):
                 drop_new_dims = False
-            elif X_out.ndim == X_in.ndim-len(all_old_dims):
+            elif X_out.ndim == X_in.ndim - len(all_old_dims):
                 drop_new_dims = True
             else:
                 raise ValueError(
-                    'Inconsistent dimensions returned by estimator')
+                    "Inconsistent dimensions returned by estimator"
+                )
 
             for new_dim, old_dims in self.reshapes.items():
                 for d in old_dims:
@@ -76,20 +77,23 @@ class _CommonEstimatorWrapper(BaseEstimator):
         """ Restore the dimensions of a reshaped DataArray. """
 
         # dict syntax
-        if hasattr(self.reshapes, 'items'):
+        if hasattr(self.reshapes, "items"):
 
             # check if new dims are dropped by estimator
             all_old_dims = []
             for _, old_dims in self.reshapes.items():
                 all_old_dims += old_dims
 
-            if X_in.ndim == X_out.ndim - len(all_old_dims) + len(self.reshapes):
+            if X_in.ndim == X_out.ndim - len(all_old_dims) + len(
+                self.reshapes
+            ):
                 drop_new_dims = False
             elif X_in.ndim == X_out.ndim - len(all_old_dims):
                 drop_new_dims = True
             else:
                 raise ValueError(
-                    'Inconsistent dimensions returned by estimator')
+                    "Inconsistent dimensions returned by estimator"
+                )
 
             # get new dims
             dims_new = list(X_in.dims)
@@ -122,7 +126,7 @@ class _CommonEstimatorWrapper(BaseEstimator):
         coords_new = dict()
 
         # dict syntax
-        if hasattr(self.reshapes, 'items'):
+        if hasattr(self.reshapes, "items"):
 
             all_old_dims = []
             for _, old_dims in self.reshapes.items():
@@ -165,7 +169,7 @@ class _CommonEstimatorWrapper(BaseEstimator):
             y = getattr(estimator, method)(X.data)
 
         # update dims
-        if method == 'inverse_transform':
+        if method == "inverse_transform":
             dims_new = self._restore_dims(X, y)
         else:
             dims_new = self._update_dims(X, y)
@@ -175,37 +179,44 @@ class _CommonEstimatorWrapper(BaseEstimator):
     def _call_fitted(self, method, X):
         """ Call a method of a fitted estimator (predict, transform, ...). """
 
-        check_is_fitted(self, ['type_'])
+        check_is_fitted(self, ["type_"])
 
-        if self.type_ == 'DataArray':
+        if self.type_ == "DataArray":
 
             if not is_dataarray(X):
                 raise ValueError(
-                    'This wrapper was fitted for DataArray inputs, but the '
-                    'provided X does not seem to be a DataArray.')
+                    "This wrapper was fitted for DataArray inputs, but the "
+                    "provided X does not seem to be a DataArray."
+                )
 
-            check_is_fitted(self, ['estimator_'])
+            check_is_fitted(self, ["estimator_"])
 
             if self.reshapes is not None:
-                data, dims = self._call_array_method(self.estimator_, method, X)
+                data, dims = self._call_array_method(
+                    self.estimator_, method, X
+                )
                 coords = self._update_coords(X)
                 return xr.DataArray(data, coords=coords, dims=dims)
             else:
-                return xr.DataArray(getattr(self.estimator_, method)(X.data),
-                                    coords=X.coords, dims=X.dims)
+                return xr.DataArray(
+                    getattr(self.estimator_, method)(X.data),
+                    coords=X.coords,
+                    dims=X.dims,
+                )
 
-        elif self.type_ == 'Dataset':
+        elif self.type_ == "Dataset":
 
             if not is_dataset(X):
                 raise ValueError(
-                    'This wrapper was fitted for Dataset inputs, but the '
-                    'provided X does not seem to be a Dataset.')
+                    "This wrapper was fitted for Dataset inputs, but the "
+                    "provided X does not seem to be a Dataset."
+                )
 
-            check_is_fitted(self, ['estimator_dict_'])
+            check_is_fitted(self, ["estimator_dict_"])
 
             if self.reshapes is not None:
                 data_vars = dict()
-                for v, e in six.iteritems(self.estimator_dict_):
+                for v, e in self.estimator_dict_.items():
                     yp_v, dims = self._call_array_method(e, method, X[v])
                     data_vars[v] = (dims, yp_v)
                 coords = self._update_coords(X)
@@ -213,17 +224,18 @@ class _CommonEstimatorWrapper(BaseEstimator):
             else:
                 data_vars = {
                     v: (X[v].dims, getattr(e, method)(X[v].data))
-                    for v, e in six.iteritems(self.estimator_dict_)}
+                    for v, e in self.estimator_dict_.items()
+                }
                 return xr.Dataset(data_vars, coords=X.coords)
 
-        elif self.type_ == 'other':
+        elif self.type_ == "other":
 
-            check_is_fitted(self, ['estimator_'])
+            check_is_fitted(self, ["estimator_"])
 
             return getattr(self.estimator_, method)(X)
 
         else:
-            raise ValueError('Unexpected type_.')
+            raise ValueError("Unexpected type_.")
 
     def _fit(self, X, y=None, **fit_params):
         """ Tranpose if necessary and fit. """
@@ -254,7 +266,7 @@ class _CommonEstimatorWrapper(BaseEstimator):
         return estimator.partial_fit(X_arr, y, **fit_params)
 
     def _fit_transform(self, estimator, X, y=None, **fit_params):
-        """ Fit and transform with ``estimator`` and update coords and dims. """
+        """ Fit & transform with ``estimator`` and update coords and dims. """
 
         if self.sample_dim is not None:
             # transpose to sample dim first, transform and transpose back
@@ -289,47 +301,51 @@ def partial_fit(self, X, y=None, **fit_params):
     """
 
     if self.estimator is None:
-        raise ValueError('You must specify an estimator instance to wrap.')
+        raise ValueError("You must specify an estimator instance to wrap.")
 
     if is_target(y):
         y = y(X)
 
     if is_dataarray(X):
 
-        if not hasattr(self, 'type_'):
-            self.type_ = 'DataArray'
+        if not hasattr(self, "type_"):
+            self.type_ = "DataArray"
             self.estimator_ = self._fit(X, y, **fit_params)
-        elif self.type_ == 'DataArray':
+        elif self.type_ == "DataArray":
             self.estimator_ = self._partial_fit(
-                self.estimator_, X, y, **fit_params)
+                self.estimator_, X, y, **fit_params
+            )
         else:
             raise ValueError(
-                'This wrapper was not fitted for DataArray inputs.')
+                "This wrapper was not fitted for DataArray inputs."
+            )
 
         # TODO: check if this needs to be removed for compat wrappers
         for v in vars(self.estimator_):
-            if v.endswith('_') and not v.startswith('_'):
+            if v.endswith("_") and not v.startswith("_"):
                 setattr(self, v, getattr(self.estimator_, v))
 
     elif is_dataset(X):
 
-        if not hasattr(self, 'type_'):
-            self.type_ = 'Dataset'
+        if not hasattr(self, "type_"):
+            self.type_ = "Dataset"
             self.estimator_dict_ = {
-                v: self._fit(X[v], y, **fit_params) for v in X.data_vars}
-        elif self.type_ == 'Dataset':
+                v: self._fit(X[v], y, **fit_params) for v in X.data_vars
+            }
+        elif self.type_ == "Dataset":
             self.estimator_dict_ = {
                 v: self._partial_fit(
-                    self.estimator_dict_[v], X[v], y, **fit_params)
-                for v in X.data_vars}
+                    self.estimator_dict_[v], X[v], y, **fit_params
+                )
+                for v in X.data_vars
+            }
         else:
-            raise ValueError(
-                'This wrapper was not fitted for Dataset inputs.')
+            raise ValueError("This wrapper was not fitted for Dataset inputs.")
 
         # TODO: check if this needs to be removed for compat wrappers
-        for e_name, e in six.iteritems(self.estimator_dict_):
+        for e_name, e in self.estimator_dict_.items():
             for v in vars(e):
-                if v.endswith('_') and not v.startswith('_'):
+                if v.endswith("_") and not v.startswith("_"):
                     if hasattr(self, v):
                         getattr(self, v).update({e_name: getattr(e, v)})
                     else:
@@ -337,22 +353,21 @@ def partial_fit(self, X, y=None, **fit_params):
 
     else:
 
-        if not hasattr(self, 'type_'):
-            self.type_ = 'other'
+        if not hasattr(self, "type_"):
+            self.type_ = "other"
             if y is None:
                 X = check_array(X)
             else:
                 X, y = check_X_y(X, y)
             self.estimator_ = clone(self.estimator).fit(X, y, **fit_params)
-        elif self.type_ == 'other':
+        elif self.type_ == "other":
             self.estimator_ = self.estimator_.partial_fit(X, y, **fit_params)
         else:
-            raise ValueError(
-                'This wrapper was not fitted for other inputs.')
+            raise ValueError("This wrapper was not fitted for other inputs.")
 
         # TODO: check if this needs to be removed for compat wrappers
         for v in vars(self.estimator_):
-            if v.endswith('_') and not v.startswith('_'):
+            if v.endswith("_") and not v.startswith("_"):
                 setattr(self, v, getattr(self.estimator_, v))
 
     return self
@@ -372,7 +387,7 @@ def predict(self, X):
         The predicted output.
     """
 
-    return self._call_fitted('predict', X)
+    return self._call_fitted("predict", X)
 
 
 def predict_proba(self, X):
@@ -389,7 +404,7 @@ def predict_proba(self, X):
         The predicted output.
     """
 
-    return self._call_fitted('predict_proba', X)
+    return self._call_fitted("predict_proba", X)
 
 
 def predict_log_proba(self, X):
@@ -406,7 +421,7 @@ def predict_log_proba(self, X):
         The predicted output.
     """
 
-    return self._call_fitted('predict_log_proba', X)
+    return self._call_fitted("predict_log_proba", X)
 
 
 def decision_function(self, X):
@@ -423,7 +438,7 @@ def decision_function(self, X):
         The predicted output.
     """
 
-    return self._call_fitted('decision_function', X)
+    return self._call_fitted("decision_function", X)
 
 
 def transform(self, X):
@@ -440,7 +455,7 @@ def transform(self, X):
         The transformed output.
     """
 
-    return self._call_fitted('transform', X)
+    return self._call_fitted("transform", X)
 
 
 def inverse_transform(self, X):
@@ -457,7 +472,7 @@ def inverse_transform(self, X):
         The transformed output.
     """
 
-    return self._call_fitted('inverse_transform', X)
+    return self._call_fitted("inverse_transform", X)
 
 
 def fit_transform(self, X, y=None, **fit_params):
@@ -478,35 +493,37 @@ def fit_transform(self, X, y=None, **fit_params):
     """
 
     if self.estimator is None:
-        raise ValueError('You must specify an estimator instance to wrap.')
+        raise ValueError("You must specify an estimator instance to wrap.")
 
     if is_target(y):
         y = y(X)
 
     if is_dataarray(X):
 
-        self.type_ = 'DataArray'
+        self.type_ = "DataArray"
         self.estimator_ = clone(self.estimator)
 
         if self.reshapes is not None:
             data, dims = self._fit_transform(
-                self.estimator_, X, y, **fit_params)
+                self.estimator_, X, y, **fit_params
+            )
             coords = self._update_coords(X)
             return xr.DataArray(data, coords=coords, dims=dims)
         else:
             return xr.DataArray(
                 self.estimator_.fit_transform(X.data, y, **fit_params),
-                coords=X.coords, dims=X.dims)
+                coords=X.coords,
+                dims=X.dims,
+            )
 
     elif is_dataset(X):
 
-        self.type_ = 'Dataset'
-        self.estimator_dict_ = {
-            v: clone(self.estimator) for v in X.data_vars}
+        self.type_ = "Dataset"
+        self.estimator_dict_ = {v: clone(self.estimator) for v in X.data_vars}
 
         if self.reshapes is not None:
             data_vars = dict()
-            for v, e in six.iteritems(self.estimator_dict_):
+            for v, e in self.estimator_dict_.items():
                 yp_v, dims = self._fit_transform(e, X[v], y, **fit_params)
                 data_vars[v] = (dims, yp_v)
             coords = self._update_coords(X)
@@ -514,12 +531,13 @@ def fit_transform(self, X, y=None, **fit_params):
         else:
             data_vars = {
                 v: (X[v].dims, e.fit_transform(X[v].data, y, **fit_params))
-                for v, e in six.iteritems(self.estimator_dict_)}
+                for v, e in self.estimator_dict_.items()
+            }
             return xr.Dataset(data_vars, coords=X.coords)
 
     else:
 
-        self.type_ = 'other'
+        self.type_ = "other"
         if y is None:
             X = check_array(X)
         else:
@@ -529,7 +547,7 @@ def fit_transform(self, X, y=None, **fit_params):
         Xt = self.estimator_.fit_transform(X, y, **fit_params)
 
         for v in vars(self.estimator_):
-            if v.endswith('_') and not v.startswith('_'):
+            if v.endswith("_") and not v.startswith("_"):
                 setattr(self, v, getattr(self.estimator_, v))
 
     return Xt
@@ -555,28 +573,30 @@ def score(self, X, y, sample_weight=None):
         Score of self.predict(X) wrt. y.
     """
 
-    if self.type_ == 'DataArray':
+    if self.type_ == "DataArray":
 
         if not is_dataarray(X):
             raise ValueError(
-                'This wrapper was fitted for DataArray inputs, but the '
-                'provided X does not seem to be a DataArray.')
+                "This wrapper was fitted for DataArray inputs, but the "
+                "provided X does not seem to be a DataArray."
+            )
 
-        check_is_fitted(self, ['estimator_'])
+        check_is_fitted(self, ["estimator_"])
 
         if is_target(y):
             y = y(X)
 
         return self.estimator_.score(X, y, sample_weight)
 
-    elif self.type_ == 'Dataset':
+    elif self.type_ == "Dataset":
 
         if not is_dataset(X):
             raise ValueError(
-                'This wrapper was fitted for Dataset inputs, but the '
-                'provided X does not seem to be a Dataset.')
+                "This wrapper was fitted for Dataset inputs, but the "
+                "provided X does not seem to be a Dataset."
+            )
 
-        check_is_fitted(self, ['estimator_dict_'])
+        check_is_fitted(self, ["estimator_dict_"])
 
         # TODO: this probably has to be done for each data_var individually
         if is_target(y):
@@ -584,19 +604,19 @@ def score(self, X, y, sample_weight=None):
 
         score_list = [
             e.score(X[v], y, sample_weight)
-            for v, e in six.iteritems(self.estimator_dict_)
+            for v, e in self.estimator_dict_.items()
         ]
 
         return np.mean(score_list)
 
-    elif self.type_ == 'other':
+    elif self.type_ == "other":
 
-        check_is_fitted(self, ['estimator_'])
+        check_is_fitted(self, ["estimator_"])
 
         return self.estimator_.score(X, y, sample_weight)
 
     else:
-        raise ValueError('Unexpected type_.')
+        raise ValueError("Unexpected type_.")
 
 
 # -- Wrapper mixins --

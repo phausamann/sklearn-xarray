@@ -18,14 +18,16 @@ Wrapping estimators for DataArrays
 .. py:currentmodule:: sklearn_xarray
 
 First, we look at a basic example that shows how to wrap an estimator from
-sklearn for use with a ``DataArray``::
+sklearn for use with a ``DataArray``:
 
-    from sklearn_xarray import wrap
-    from sklearn_xarray.datasets import load_dummy_dataarray
-    from sklearn.preprocessing import StandardScaler
+.. doctest::
 
-    X = load_dummy_dataarray()
-    Xt = wrap(StandardScaler()).fit_transform(X)
+    >>> from sklearn_xarray import wrap
+    >>> from sklearn_xarray.datasets import load_dummy_dataarray
+    >>> from sklearn.preprocessing import StandardScaler
+    >>>
+    >>> X = load_dummy_dataarray()
+    >>> Xt = wrap(StandardScaler()).fit_transform(X)
 
 The :py:func:`wrap` function will return an object with the corresponding
 methods for each type of estimator (e.g. ``predict`` for classifiers and
@@ -40,10 +42,11 @@ regressors).
     dimension.
 
 When we run the example, we see that the data in the array is scaled, but the
-coordinates and dimensions have not changed::
+coordinates and dimensions have not changed:
 
-    In []: X
-    Out[]:
+.. doctest::
+
+    >>> X # doctest:+SKIP
     <xarray.DataArray (sample: 100, feature: 10)>
     array([[ 0.565986,  0.196107,  0.935981, ...,  0.702356,  0.806494,  0.801178],
            [ 0.551611,  0.277749,  0.27546 , ...,  0.646887,  0.616391,  0.227552],
@@ -56,8 +59,9 @@ coordinates and dimensions have not changed::
       * sample   (sample) int32 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 ...
       * feature  (feature) int32 0 1 2 3 4 5 6 7 8 9
 
-    In []: Xt
-    Out[]:
+.. doctest::
+
+    >>> Xt # doctest:+SKIP
     <xarray.DataArray (sample: 100, feature: 10)>
     array([[ 0.128639, -0.947769,  1.625452, ...,  0.525571,  1.07678 ,  1.062118],
            [ 0.077973, -0.673463, -0.631625, ...,  0.321261,  0.408263, -0.942871],
@@ -78,14 +82,13 @@ Many sklearn estimators will change the number of features during
 transformation or prediction. In this case, the coordinates along the feature
 dimension no longer correspond to those of the original array. Therefore, the
 wrapper will omit the coordinates along this dimension. You can specify which
-dimension is changed with the ``reshapes`` parameter::
+dimension is changed with the ``reshapes`` parameter:
 
-    from sklearn.decomposition import PCA
+.. doctest::
 
-    Xt = wrap(PCA(n_components=5), reshapes='feature').fit_transform(X)
-
-    In []: Xt
-    Out[]:
+    >>> from sklearn.decomposition import PCA
+    >>> Xt = wrap(PCA(n_components=5), reshapes='feature').fit_transform(X)
+    >>> Xt # doctest:+SKIP
     <xarray.DataArray (sample: 100, feature: 5)>
     array([[ 0.438773, -0.100947,  0.106754,  0.236872, -0.128751],
            [-0.40433 , -0.580941,  0.588425, -0.305739, -0.120676],
@@ -107,20 +110,23 @@ Accessing fitted estimators
 
 The ``estimator`` attribute of the wrapper will always hold the unfitted
 estimator that was passed initially. After calling ``fit`` the fitted estimator
-will be stored in the ``estimator_`` attribute::
+will be stored in the ``estimator_`` attribute:
 
-    wrapper = wrap(StandardScaler())
-    wrapper.fit(X)
+.. doctest::
 
-    In []: wrapper.estimator_.mean_
-    Out[]:
+    >>> wrapper = wrap(StandardScaler())
+    >>> wrapper.fit(X)
+    EstimatorWrapper(copy=True, estimator=StandardScaler(), with_mean=True,
+                     with_std=True)
+    >>> wrapper.estimator_.mean_ # doctest:+SKIP
     array([ 0.46156856,  0.47165326,  0.48397815,  0.48958361,  0.4730579 ,
             0.522414  ,  0.46496134,  0.52299264,  0.48772645,  0.49043086])
 
-The wrapper also directly reflects the fitted attributes::
+The wrapper also directly reflects the fitted attributes:
 
-    In []: wrapper.mean_
-    Out[]:
+.. doctest::
+
+    >>> wrapper.mean_ # doctest:+SKIP
     array([ 0.46156856,  0.47165326,  0.48397815,  0.48958361,  0.4730579 ,
             0.522414  ,  0.46496134,  0.52299264,  0.48772645,  0.49043086])
 
@@ -132,24 +138,26 @@ Wrapping estimators for Datasets
 
 The syntax for Datasets is exactly the same as for DataArrays. Note that the
 wrapper will fit one estimator for each variable in the Dataset. The fitted
-estimators are stored in the attribute ``estimator_dict_``::
+estimators are stored in the attribute ``estimator_dict_``:
 
-    from sklearn_xarray import wrap
-    from sklearn_xarray.datasets import load_dummy_dataset
-    from sklearn.preprocessing import StandardScaler
+.. doctest::
 
-    X = load_dummy_dataset()
-    wrapper = wrap(StandardScaler())
-    wrapper.fit(X)
-
-    In []: wrapper.estimator_dict_
-    Out[]: {'var_1': StandardScaler(copy=True, with_mean=True, with_std=True)}
+    >>> from sklearn_xarray.datasets import load_dummy_dataset
+    >>>
+    >>> X = load_dummy_dataset()
+    >>> wrapper = wrap(StandardScaler())
+    >>> wrapper.fit(X)
+    EstimatorWrapper(copy=True, estimator=StandardScaler(), with_mean=True,
+                     with_std=True)
+    >>> wrapper.estimator_dict_
+    {'var_1': StandardScaler()}
 
 The wrapper also directly reflects the fitted attributes as dictionaries with
-one entry for each variable::
+one entry for each variable:
 
-    In []: wrapper.mean_['var_1']
-    Out[]:
+.. doctest::
+
+    >>> wrapper.mean_['var_1'] # doctest:+SKIP
     array([ 0.46156856,  0.47165326,  0.48397815,  0.48958361,  0.4730579 ,
             0.522414  ,  0.46496134,  0.52299264,  0.48772645,  0.49043086])
 
@@ -159,24 +167,23 @@ Wrapping dask-ml estimators
 
 The dask-ml_ package re-implements a number of scikit-learn estimators for
 use with dask_ on-disk arrays. You can wrap these estimators in the same way
-in order to work with dask-backed DataArrays and Datasets::
+in order to work with dask-backed DataArrays and Datasets:
 
-    from sklearn_xarray import wrap
-    from dask_ml.preprocessing import StandardScaler
-    import xarray as xr
-    import numpy as np
-    import dask.array as da
+.. doctest::
 
-    X = xr.DataArray(
-            da.from_array(np.random.random((100, 10)), chunks=(10, 10)),
-            coords={'sample': range(100), 'feature': range(10)},
-            dims=('sample', 'feature')
-        )
-
-    Xt = wrap(StandardScaler()).fit_transform(X)
-
-    In []: type(Xt.data)
-    Out[]: dask.array.core.Array
+    >>> from dask_ml.preprocessing import StandardScaler
+    >>> import xarray as xr
+    >>> import numpy as np
+    >>> import dask.array as da
+    >>>
+    >>> X = xr.DataArray(
+    ...     da.from_array(np.random.random((100, 10)), chunks=(10, 10)),
+    ...     coords={'sample': range(100), 'feature': range(10)},
+    ...     dims=('sample', 'feature')
+    ... )
+    >>> Xt = wrap(StandardScaler()).fit_transform(X)
+    >>> type(Xt.data)
+    <class 'dask.array.core.Array'>
 
 
 .. _dask-ml: http://dask-ml.readthedocs.io/en/latest/index.html
