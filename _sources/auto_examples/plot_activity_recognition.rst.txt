@@ -230,9 +230,9 @@ Finally, we run the grid search and print out the best parameter combination.
 
     Fitting 2 folds for each of 2 candidates, totalling 4 fits
     [Parallel(n_jobs=1)]: Using backend SequentialBackend with 1 concurrent workers.
-    [Parallel(n_jobs=1)]: Done   4 out of   4 | elapsed:   13.2s finished
+    [Parallel(n_jobs=1)]: Done   4 out of   4 | elapsed:   13.0s finished
     Best parameters: {'pca__n_components': 10}
-    Accuracy: 0.6750427836168943
+    Accuracy: 0.6831794474027272
 
 
 
@@ -245,7 +245,7 @@ Finally, we run the grid search and print out the best parameter combination.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  19.691 seconds)
+   **Total running time of the script:** ( 0 minutes  19.514 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_activity_recognition.py:
