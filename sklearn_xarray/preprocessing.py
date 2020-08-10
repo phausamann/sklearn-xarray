@@ -1249,12 +1249,18 @@ class Featurizer(BaseTransformer):
 
     Parameters
     ----------
-    sample_dim : str
-        Name of the sample dimension.
+    sample_dim : str, list, tuple
+        Name of the dimension used to define how the data is sampled. 
+        For instance, an individual's activity recorded over time would 
+        be sampled based on the dimension time. 
+        
+        If your sample dim has multiple dimensions, for instance x,y,time 
+        these can be passed as a list or tuple. Before stacking, a new 
+        multiindex z will be created for these dimensions. 
 
     feature_dim : str
-        Name of the feature dimension.
-
+        Name of the feature dimension created to store the stacked data.
+ 
     var_name : str
         Name of the new variable (for Datasets).
 
@@ -1281,6 +1287,7 @@ class Featurizer(BaseTransformer):
         return_array=False,
         groupby=None,
         group_dim="sample",
+
     ):
 
         self.sample_dim = sample_dim
@@ -1298,8 +1305,10 @@ class Featurizer(BaseTransformer):
         if self.order is not None:
             stack_dims = self.order
         else:
-            stack_dims = tuple(set(X.dims) - {self.sample_dim})
-
+            if isinstance(self.sample_dim, str):
+                self.sample_dim = [self.sample_dim]
+            stack_dims = tuple(set(X.dims) - set(self.sample_dim))
+            
         if len(stack_dims) == 0:
             # TODO write a test for this (nothing to stack)
             Xt = X.copy()
@@ -1318,6 +1327,11 @@ class Featurizer(BaseTransformer):
 
         # stack all dimensions except for sample dimension
         if self.type_ == "Dataset":
+            
+            if isinstance(self.sample_dim, list) or isinstance(self.sample_dim, tuple):
+                    X = X.stack(sample = self.sample_dim)
+                    self.sample_dim = 'sample'
+                        
             X = xr.concat(
                 [self._transform_var(X[v]) for v in X.data_vars],
                 dim=self.feature_dim,
@@ -1327,6 +1341,12 @@ class Featurizer(BaseTransformer):
             else:
                 return X.to_dataset(name=self.var_name)
         else:
+            
+            
+            if isinstance(self.sample_dim, list) or isinstance(self.sample_dim, tuple):
+                    X = X.stack(sample = self.sample_dim)
+                    self.sample_dim = 'sample'
+            
             return self._transform_var(X)
 
     def _inverse_transform(self, X):
