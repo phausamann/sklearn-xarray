@@ -1613,3 +1613,134 @@ def reduce(X, return_estimator=False, **fit_params):
         return Xt, estimator
     else:
         return Xt
+
+    
+ 
+class Stackerizer(BaseTransformer):
+
+    """ Transformer to handle higher dimensional data, for instance data
+        sampled in time and location ('x','y','time'), that must be stacked
+        before running Featurizer, and unstacked after prediction.
+
+    Parameters
+    ----------
+    sample_dim : list, tuple
+        List (tuple) of the dimensions used to define how the data is sampled. 
+    
+        If your sample dim has multiple dimensions, for instance x,y,time 
+        these can be passed as a list or tuple. Before stacking, a new 
+        multiindex 'sample' will be created for these dimensions. 
+
+    direction : str, optional
+        "stack" or "unstack" defines the direction of transformation. 
+        Default is "stack"
+    
+    sample_dim : str
+        Name of multiindex used to stack sample dims. Defaults to "sample"
+    
+    transposed : bool
+        Should the output be transposed after stacking. Default is True.
+        
+ 
+    Returns
+    -------
+    Xt : xarray DataArray or Dataset
+        The transformed data.
+    
+    """
+
+    def __init__(
+        self,
+        stack_dims=None,
+        direction="stack",
+        sample_dim ="sample",
+        transposed = True,
+        groupby=None,      # required by transformer, but not sure how you want to avoid
+
+    ):
+
+        self.stack_dims = stack_dims
+        self.direction = direction
+        self.sample_dim = sample_dim
+        self.transposed = transposed
+        self.groupby = groupby
+     
+
+    def _transform_var(self, X):
+        """ Stack along multiple dimensions. """
+
+        if isinstance(self.stack_dims, str):
+            self.stack_dims = [self.stack_dims]
+        
+        return X.stack(**{self.sample_dim: self.stack_dims})
+
+
+    def _inverse_transform_var(self, X):
+        """ Unstack along sample dimension """
+
+        return X.unstack(self.sample_dim)
+
+
+    def _transform(self, X):
+        """ Transform. """
+    
+        if self.direction not in ['stack','unstack']:
+            raise ValueError("direction must be one of %r." % ['stack','unstack'])
+
+        if  not all(item in X.dims for item in self.stack_dims):
+            raise ValueError("stack_dims must be one of %s." % (X.dims,))
+
+
+        if self.type_ == "Dataset":
+            # ! not sure how to test datasets !
+            
+            if self.direction == 'stack':
+   
+                if self.transposed:    
+                    return self._transform_var(X).T
+                else:
+                    return self._transform_var(X)
+                
+            else:
+                return self._inverse_transform_var(X)
+                
+        else:
+            
+            if self.direction == 'stack':
+   
+                if self.transposed:    
+                    return self._transform_var(X).T
+                else:
+                    return self._transform_var(X)
+                
+            else:
+                return self._inverse_transform_var(X)
+
+    
+
+def stackerizer(X, return_estimator=False, **fit_params):
+    
+    """ Stacks all dimensions and variables except for sample dimension.
+
+    Parameters
+    ----------
+    X : xarray DataArray or Dataset""
+        The input data.
+
+    return_estimator : bool
+        Whether to return the fitted estimator along with the transformed data.
+
+    Returns
+    -------
+    Xt : xarray DataArray or Dataset
+        The transformed data.
+    """
+
+    estimator = Stackerizer(**fit_params)
+
+    Xt = estimator.fit_transform(X)
+
+    if return_estimator:
+        return Xt, estimator
+    else:
+        return Xt
