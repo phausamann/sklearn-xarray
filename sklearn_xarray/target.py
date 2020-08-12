@@ -1,6 +1,7 @@
 """``sklearn_xarray.target``"""
 
 import numpy as np
+from sklearn.utils.validation import check_is_fitted, NotFittedError
 
 
 class Target(object):
@@ -13,22 +14,23 @@ class Target(object):
         specified, the target will be the entire DataArray/Dataset.
 
     transform_func : callable, optional
-        A function that transforms the coordinate values to an
-        sklearn-compatible type and shape. If not specified, the coordinate(s)
-        will be used as-is.
+        A function that transforms the data to an sklearn-compatible type and
+        shape. If not specified, the target data will be used as-is. Mutually
+        exclusive with the `transformer` argument.
 
     transformer : sklearn transformer, optional
-        **Deprecated**, use ``transform_func=Transformer().fit_transform``
-        instead.
+        Transforms the data into an sklearn compatible target representation.
+        If not specified, the target data will be used as-is. Mutually
+        exclusive with the `transform_func` argument.
 
     lazy : bool, optinonal
-        If true, the target coordinate is only transformed by the transformer
+        If true, the target data is only transformed by the transformer
         when needed. The transformer can implement a ``get_transformed_shape``
         method that returns the shape after the transformation of the provided
-        coordinate without actually transforming the data.
+        data without actually transforming it.
 
     dim : str or sequence of str, optional
-        When set, multi-dimensional coordinates will be reduced to this
+        If specified, multi-dimensional coordinates will be reduced to this
         dimension/these dimensions.
 
     reduce_func : callable, optional
@@ -48,24 +50,23 @@ class Target(object):
     ):
 
         self.transform_func = transform_func
+        self.transformer = transformer
         self.coord = coord
         self.lazy = lazy
         self.reduce_func = reduce_func
         self.dim = dim
 
-        self.transformer = transformer
-        if transformer is not None:
-            import warnings
-
-            warnings.simplefilter("always", DeprecationWarning)
-            warnings.warn(
-                "The transformer argument is deprecated and will be removed "
-                "in a future version. Use "
-                "transform_func=Transformer().fit_transform instead.",
-                DeprecationWarning,
-            )
-            warnings.simplefilter("ignore", DeprecationWarning)
-            self.transform_func = self.transformer.fit_transform
+        if self.transformer is not None:
+            if self.transform_func is not None:
+                raise ValueError(
+                    "You can specify either the 'transformer' or the "
+                    "'transform_func' argument, not both"
+                )
+            try:
+                check_is_fitted(self.transformer)
+                self.transform_func = self.transformer.transform
+            except NotFittedError:
+                self.transform_func = self.transformer.fit_transform
 
         self.values = None
 

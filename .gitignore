@@ -4,6 +4,7 @@ docs/modules/
 docs/_build/
 docs/auto_examples/
 coverage/
+scratch/
 
 # So far, all html files are auto-generated
 *.html

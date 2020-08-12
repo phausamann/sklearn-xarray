@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 import xarray as xr
 import numpy.testing as npt
 
@@ -25,12 +26,13 @@ def test_constructor():
 
     target = Target(transform_func=convert_to_ndarray)
     target.assign_to(X_ds)
-
     npt.assert_equal(target.values, np.array(X_ds.var_1))
 
     target = Target(coord="coord_1", transformer=LabelBinarizer())(X_ds)
-
     npt.assert_equal(target.values, LabelBinarizer().fit_transform(coord_1))
+
+    with pytest.raises(ValueError):
+        Target(transform_func=convert_to_ndarray, transformer=LabelBinarizer())
 
 
 def test_str():
