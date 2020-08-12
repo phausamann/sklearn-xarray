@@ -42,7 +42,7 @@ def test_preprocess():
 
     Xt_ds = preprocess(X_ds, scale)
 
-    xrt.assert_allclose(Xt_ds, X_ds.apply(scale))
+    xrt.assert_allclose(Xt_ds, X_ds.map(scale))
 
 
 def test_groupwise():
