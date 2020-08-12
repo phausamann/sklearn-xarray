@@ -49,13 +49,13 @@ def preprocess(X, function, groupby=None, group_dim="sample", **fit_params):
         Xt = X
 
     if groupby is None:
-        Xt = Xt.apply(function, **fit_params)
+        Xt = Xt.map(function, **fit_params)
     else:
         group_idx = get_group_indices(X, groupby, group_dim)
         Xt_list = []
         for i in group_idx:
             x = Xt.isel(**{group_dim: i})
-            Xt_list.append(x.apply(function, **fit_params))
+            Xt_list.append(x.map(function, **fit_params))
         Xt = xr.concat(Xt_list, dim=group_dim)
 
     if was_array:
@@ -412,7 +412,7 @@ class Splitter(BaseTransformer):
         else:
             raise KeyError("Unrecognized mode for index reduction")
 
-        dim_coord = Xt[self.dim][dim_idx]
+        dim_coord = Xt[self.dim][dim_idx].values
 
         # keep the original coord if desired
         if self.keep_coords_as is not None:
@@ -420,7 +420,7 @@ class Splitter(BaseTransformer):
 
         # get indices of new dimension
         if self.new_index_func is None:
-            new_dim_coord = Xt[self.dim][: self.new_len]
+            new_dim_coord = Xt[self.dim][: self.new_len].values
         else:
             new_dim_coord = self.new_index_func(self.new_len)
 
@@ -456,7 +456,7 @@ class Splitter(BaseTransformer):
 
         if self.keep_coords_as is not None:
             Xt[tmp_dim] = Xt[self.keep_coords_as]
-            Xt = Xt.drop(self.keep_coords_as)
+            Xt = Xt.drop_vars(self.keep_coords_as)
 
         # transpose to original dimensions
         Xt = Xt.rename({tmp_dim: self.dim})
@@ -641,10 +641,12 @@ class Segmenter(BaseTransformer):
             else:
                 mg_ord = [0]
             idx = np.vstack(
-                self._segment_array(
-                    np.transpose(g, mg_ord), axis_old, True
-                ).flatten()
-                for g in np.meshgrid(*old_ranges)
+                [
+                    self._segment_array(
+                        np.transpose(g, mg_ord), axis_old, True
+                    ).flatten()
+                    for g in np.meshgrid(*old_ranges)
+                ]
             )
             return npg.aggregate(
                 idx, arr.flatten().T, size=old_shape, func="mean"
@@ -772,7 +774,7 @@ class Segmenter(BaseTransformer):
             )
         }
 
-        X = X.drop(self.keep_coords_as)
+        X = X.drop_vars(self.keep_coords_as)
 
         for c in X.coords:
             if c not in (self.dim, self.new_dim) and self.dim in X[c].dims:
