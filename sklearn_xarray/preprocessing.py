@@ -1654,7 +1654,7 @@ class Stacker(BaseTransformer):
         stack_dims=None,
         direction="stack",
         new_dim="sample",
-        transposed = True,
+        transposed = False,
         groupby=None,      # required by transformer, but not sure how you want to avoid
 
     ):
