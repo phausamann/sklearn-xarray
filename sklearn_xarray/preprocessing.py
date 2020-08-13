@@ -1616,7 +1616,7 @@ def reduce(X, return_estimator=False, **fit_params):
 
     
  
-class Stackerizer(BaseTransformer):
+class Stacker(BaseTransformer):
 
     """ Transformer to handle higher dimensional data, for instance data
         sampled in time and location ('x','y','time'), that must be stacked
