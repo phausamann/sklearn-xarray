@@ -1718,7 +1718,7 @@ class Stacker(BaseTransformer):
 
     
 
-def stackerizer(X, return_estimator=False, **fit_params):
+def stack(X, return_estimator=False, **fit_params):
     
     """ Stacks all dimensions and variables except for sample dimension.
 
