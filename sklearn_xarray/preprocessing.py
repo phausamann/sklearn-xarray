@@ -1300,7 +1300,7 @@ class Featurizer(BaseTransformer):
         if self.order is not None:
             stack_dims = self.order
         else:
-            stack_dims = tuple(set(X.dims) - {self.sample_dim})
+            stack_dims = tuple(sorted(set(X.dims) - {self.sample_dim}))
 
         if len(stack_dims) == 0:
             # TODO write a test for this (nothing to stack)
@@ -1588,6 +1588,99 @@ def reduce(X, return_estimator=False, **fit_params):
     """
 
     estimator = Reducer(**fit_params)
+
+    Xt = estimator.fit_transform(X)
+
+    if return_estimator:
+        return Xt, estimator
+    else:
+        return Xt
+
+
+class Stacker(BaseTransformer):
+    """ Stack multiple dimensions into a single one.
+
+    Parameters
+    ----------
+    stack_dims : iterable of str
+        List (tuple) of the dimensions used to define how the data is sampled.
+        If your sample dim has multiple dimensions, for instance x,y,time
+        these can be passed as a list or tuple. Before stacking, a new
+        multiindex 'sample' will be created for these dimensions.
+
+    new_dim : str
+        Name of multi-index used to stack dims.
+
+    direction : str, optional
+        "stack" or "unstack" defines the direction of transformation.
+        Default is "stack".
+
+    groupby : str or list, optional
+        Name of coordinate or list of coordinates by which the groups are
+        determined.
+
+    group_dim : str, optional
+        Name of dimension along which the groups are indexed.
+    """
+
+    def __init__(
+        self,
+        stack_dims=None,
+        new_dim=None,
+        direction="stack",
+        groupby=None,
+        group_dim="sample",
+    ):
+        if stack_dims is None:
+            raise ValueError("stack_dims cannot be None.")
+
+        if new_dim is None:
+            raise ValueError("new_dim cannot be None.")
+
+        if direction not in ["stack", "unstack"]:
+            raise ValueError("direction must be 'stack' or 'unstack'.")
+
+        self.stack_dims = stack_dims
+        self.direction = direction
+        self.new_dim = new_dim
+        self.groupby = groupby
+        self.group_dim = group_dim
+
+    def _transform(self, X):
+        """ Transform. """
+
+        if self.direction == "stack":
+            return X.stack(**{self.new_dim: self.stack_dims})
+        else:
+            return X.unstack(self.new_dim)
+
+    def _inverse_transform(self, X):
+        """ Reverse transform. """
+
+        if self.direction == "unstack":
+            return X.stack(**{self.new_dim: self.stack_dims})
+        else:
+            return X.unstack(self.new_dim)
+
+
+def stack(X, return_estimator=False, **fit_params):
+    """ Stacks multiple dimensions into a single one.
+
+    Parameters
+    ----------
+    X : xarray DataArray or Dataset
+        The input data.
+
+    return_estimator : bool
+        Whether to return the fitted estimator along with the transformed data.
+
+    Returns
+    -------
+    Xt : xarray DataArray or Dataset
+        The transformed data.
+    """
+
+    estimator = Stacker(**fit_params)
 
     Xt = estimator.fit_transform(X)
 
