@@ -11,7 +11,7 @@ for supervised learning. This is achieved with a :py:class:`Target` object:
 
     >>> from sklearn_xarray import wrap, Target
     >>> from sklearn_xarray.datasets import load_digits_dataarray
-    >>> from sklearn.linear_model.logistic import LogisticRegression
+    >>> from sklearn.linear_model import LogisticRegression
     >>>
     >>> X = load_digits_dataarray()
     >>> y = Target(coord='digit')(X)
@@ -61,17 +61,52 @@ Pre-processing
 --------------
 
 In some cases, it is necessary to pre-process the coordinate before it can be
-used as a target. For this, the constructor takes a ``transform_func`` parameter
-which can be used with the ``fit_transform`` method of transformers in
-``sklearn.preprocessing`` (and also any other object implementing the sklearn
-transformer interface):
+used as a target. For this, the constructor takes a ``transformer`` parameter
+which can be used with transformers in ``sklearn.preprocessing`` (and also any
+other object implementing the sklearn transformer interface):
 
 .. doctest::
 
     >>> from sklearn.neural_network import MLPClassifier
     >>> from sklearn.preprocessing import LabelBinarizer
     >>>
-    >>> y = Target(coord='digit', transform_func=LabelBinarizer().fit_transform)(X)
+    >>> y = Target(coord='digit', transformer=LabelBinarizer(), reshapes="feature")
+    >>> wrapper = wrap(MLPClassifier(), reshapes="feature")
+    >>> wrapper.fit(X, y) # doctest:+ELLIPSIS
+    EstimatorWrapper(...)
+
+This approach makes it possible to reverse the pre-processing, e.g. after
+calling ``wrapper.predict``:
+
+.. doctest::
+
+    >>> yp = wrapper.predict(X)
+    >>> yp
+    <xarray.DataArray (sample: 1797, feature: 10)>
+    array([[1, 0, 0, ..., 0, 0, 0],
+           [0, 1, 0, ..., 0, 0, 0],
+           [0, 0, 1, ..., 0, 0, 0],
+           ...,
+           [0, 0, 0, ..., 0, 1, 0],
+           [0, 0, 0, ..., 0, 0, 1],
+           [0, 0, 0, ..., 0, 1, 0]])
+    Coordinates:
+      * sample   (sample) int64 0 1 2 3 4 5 6 ... 1790 1791 1792 1793 1794 1795 1796
+        digit    (sample) int64 0 1 2 3 4 5 6 7 8 9 0 1 ... 7 9 5 4 8 8 4 9 0 8 9 8
+    Dimensions without coordinates: feature
+    >>> y.inverse_transform(yp)
+    <xarray.DataArray (sample: 1797)>
+    array([0, 1, 2, ..., 8, 9, 8])
+    Coordinates:
+      * sample   (sample) int64 0 1 2 3 4 5 6 ... 1790 1791 1792 1793 1794 1795 1796
+        digit    (sample) int64 0 1 2 3 4 5 6 7 8 9 0 1 ... 7 9 5 4 8 8 4 9 0 8 9 8
+
+
+Alternatively, the constructor also accepts a ``transform_func`` parameter:
+
+.. doctest::
+
+    >>> y = Target(coord='digit', transform_func=LabelBinarizer().fit_transform)
     >>> wrapper = wrap(MLPClassifier())
     >>> wrapper.fit(X, y) # doctest:+ELLIPSIS
     EstimatorWrapper(...)
@@ -81,13 +116,13 @@ Indexing
 
 A :py:class:`Target` object can be indexed in the same way as the underlying
 coordinate and interfaces with ``numpy`` by providing an ``__array__``
-attribute which returns ``numpy.array()`` of the (transformed) coordinate.
+attribute which returns ``numpy.array()`` of the (transformed) data.
 
 
 Multi-dimensional coordinates
 -----------------------------
 
-In some cases, the target coordinates span multiple dimensions, but the
+In some cases, the target data spans multiple dimensions, but the
 transformer expects a lower-dimensional input. With  the ``dim`` parameter of
 the :py:class:`Target` class you can specify which of the dimensions to keep.
 You can also specify the callable ``reduce_func`` to perform the reduction of

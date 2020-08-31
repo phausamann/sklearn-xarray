@@ -9,7 +9,9 @@ Enhancements
 ~~~~~~~~~~~~
 
 - New ``Stacker`` transformer that provides a transformer interface to
-  xarray's ``stack``/``unstack`` methods.
+  xarray's ``stack``/``unstack`` methods (thanks to @mmann1123 for the input).
+- Un-deprecated the ``transformer`` parameter of the ``Target`` class and
+  added an ``inverse_transform`` method that reverses the transformation.
 
 
 v0.4.0 (June 18, 2020)
