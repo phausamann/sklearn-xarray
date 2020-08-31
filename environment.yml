@@ -10,7 +10,7 @@ dependencies:
   - xarray
   - pytest
   - matplotlib
-  - sphinx
+  - sphinx==2.4.4
   - pillow
   - sphinx-gallery
   - sphinx_rtd_theme
