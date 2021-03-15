@@ -3,6 +3,8 @@
 """
 
 import numpy as np
+import pandas as pd
+import xarray as xr
 
 
 class CrossValidatorWrapper(object):
@@ -83,3 +85,44 @@ class CrossValidatorWrapper(object):
                 groups[group_idx[i]] = i
 
         return self.cross_validator.split(X[self.dim], y=y, groups=groups)
+
+
+def wrap_gridsearch_results(gridsearch): 
+    """ extracts results from a fitted GridSearchCV into an xarray Dataset.
+
+    Parameters
+    ----------
+    gridsearch : fitted GridSearchCV
+
+    Returns
+    -------
+    ds : xarray.Dataset
+
+        Dataset where the coordinates are the hyperparameters used
+        in the GridSearchCV.
+
+    """
+
+    results = gridsearch.cv_results_
+
+    param_grid = gridsearch.param_grid
+    param_coords = {
+        param: results['param_' + param].data for param in param_grid.keys()
+        }
+
+    # Remove paramameter coordinates from results
+    results = {
+        key: results[key] for key in results.keys() if 'param' not in key
+        }
+
+    # Generate a multiindexed dataframe from the results and coordinates
+    mi = pd.MultiIndex.from_arrays(
+        list(param_coords.values()), names=param_grid.keys()
+        )
+    df = pd.DataFrame(results, index=mi)
+
+    # Convert the dataframe into a xarray Dataset
+    ds = xr.Dataset.from_dataframe(df)
+    ds = ds.unstack()
+
+    return ds
