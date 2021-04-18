@@ -5,7 +5,8 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Using coordinates as targets &mdash; sklearn-xarray 0.4.0 documentation</title>
@@ -169,7 +170,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="using-coordinates-as-targets">
+  <section id="using-coordinates-as-targets">
 <h1>Using coordinates as targets<a class="headerlink" href="#using-coordinates-as-targets" title="Permalink to this headline">¶</a></h1>
 <p>With sklearn-xarray you can easily point an sklearn estimator to a
 coordinate in an xarray DataArray or Dataset in order to use it as a target
@@ -220,7 +221,7 @@ with sklearn’s usual syntax:</p>
 <p>You don’t have to assign the Target to any data, the wrapper’s fit method
 will automatically call <code class="docutils literal notranslate"><span class="pre">y(X)</span></code>.</p>
 </div>
-<div class="section" id="pre-processing">
+<section id="pre-processing">
 <h2>Pre-processing<a class="headerlink" href="#pre-processing" title="Permalink to this headline">¶</a></h2>
 <p>In some cases, it is necessary to pre-process the coordinate before it can be
 used as a target. For this, the constructor takes a <code class="docutils literal notranslate"><span class="pre">transform_func</span></code> parameter
@@ -236,14 +237,14 @@ transformer interface):</p>
 <span class="go">EstimatorWrapper(...)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="indexing">
+</section>
+<section id="indexing">
 <h2>Indexing<a class="headerlink" href="#indexing" title="Permalink to this headline">¶</a></h2>
 <p>A <a class="reference internal" href="api/target.html#sklearn_xarray.target.Target" title="sklearn_xarray.target.Target"><code class="xref py py-class docutils literal notranslate"><span class="pre">Target</span></code></a> object can be indexed in the same way as the underlying
 coordinate and interfaces with <code class="docutils literal notranslate"><span class="pre">numpy</span></code> by providing an <code class="docutils literal notranslate"><span class="pre">__array__</span></code>
 attribute which returns <code class="docutils literal notranslate"><span class="pre">numpy.array()</span></code> of the (transformed) coordinate.</p>
-</div>
-<div class="section" id="multi-dimensional-coordinates">
+</section>
+<section id="multi-dimensional-coordinates">
 <h2>Multi-dimensional coordinates<a class="headerlink" href="#multi-dimensional-coordinates" title="Permalink to this headline">¶</a></h2>
 <p>In some cases, the target coordinates span multiple dimensions, but the
 transformer expects a lower-dimensional input. With  the <code class="docutils literal notranslate"><span class="pre">dim</span></code> parameter of
@@ -251,8 +252,8 @@ the <a class="reference internal" href="api/target.html#sklearn_xarray.target.Ta
 You can also specify the callable <code class="docutils literal notranslate"><span class="pre">reduce_func</span></code> to perform the reduction of
 the other dimensions (e.g. <code class="docutils literal notranslate"><span class="pre">numpy.mean</span></code>). Otherwise, the coordinate will
 be reduced to the first element along each dimension that is not <code class="docutils literal notranslate"><span class="pre">dim</span></code>.</p>
-</div>
-<div class="section" id="lazy-evaluation">
+</section>
+<section id="lazy-evaluation">
 <h2>Lazy evaluation<a class="headerlink" href="#lazy-evaluation" title="Permalink to this headline">¶</a></h2>
 <p>When you construct a target with a transformer and <code class="docutils literal notranslate"><span class="pre">lazy=True</span></code>, the
 transformation will only be performed when the target’s data is actually
@@ -264,8 +265,8 @@ pipeline.</p>
 <p>When you index a target with lazy evaluation, the transformation is
 performed regardless of whether <code class="docutils literal notranslate"><span class="pre">lazy</span></code> was set.</p>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

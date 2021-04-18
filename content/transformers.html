@@ -5,7 +5,8 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Custom transformers &mdash; sklearn-xarray 0.4.0 documentation</title>
@@ -168,12 +169,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="custom-transformers">
+  <section id="custom-transformers">
 <h1>Custom transformers<a class="headerlink" href="#custom-transformers" title="Permalink to this headline">¶</a></h1>
 <p>sklearn-xarray provides a wealth of newly defined transformers that exploit
 xarray’s powerful array manipulation syntax. Refer to <a class="reference internal" href="api.html#api-pre-processing"><span class="std std-ref">Pre-processing</span></a>
 for a full list.</p>
-<div class="section" id="transformers-changing-the-number-of-samples">
+<section id="transformers-changing-the-number-of-samples">
 <h2>Transformers changing the number of samples<a class="headerlink" href="#transformers-changing-the-number-of-samples" title="Permalink to this headline">¶</a></h2>
 <p>There are several transformers that change the number of samples in the data,
 namely:</p>
@@ -227,8 +228,8 @@ would have gotten:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ne">ValueError</span><span class="p">:</span> <span class="n">Found</span> <span class="nb">input</span> <span class="n">variables</span> <span class="k">with</span> <span class="n">inconsistent</span> <span class="n">numbers</span> <span class="n">of</span> <span class="n">samples</span><span class="p">:</span> <span class="p">[</span><span class="mi">1635</span><span class="p">,</span> <span class="mi">1797</span><span class="p">]</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="groupwise-transformations">
+</section>
+<section id="groupwise-transformations">
 <h2>Groupwise transformations<a class="headerlink" href="#groupwise-transformations" title="Permalink to this headline">¶</a></h2>
 <p>When you apply transformers to your data that change the number of samples,
 there are cases when you don’t want to apply the resampling operation to your
@@ -279,14 +280,14 @@ specify the <code class="docutils literal notranslate"><span class="pre">groupby
 coordinates to group over (yet). Therefore the samples are not guaranteed
 to be in the same order after applying a groupwise transformation.</p>
 </div>
-</div>
-<div class="section" id="wrapping-custom-functions">
+</section>
+<section id="wrapping-custom-functions">
 <h2>Wrapping custom functions<a class="headerlink" href="#wrapping-custom-functions" title="Permalink to this headline">¶</a></h2>
 <p>With <a class="reference internal" href="api/preprocessing.html#sklearn_xarray.preprocessing.preprocess" title="sklearn_xarray.preprocessing.preprocess"><code class="xref py py-func docutils literal notranslate"><span class="pre">preprocess()</span></code></a> you can wrap any function that doesn’t change the
 shape of the data and apply it to a <code class="docutils literal notranslate"><span class="pre">DataArray</span></code> or <code class="docutils literal notranslate"><span class="pre">Dataset</span></code>. The function
 also supports groupwise transformations.</p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
