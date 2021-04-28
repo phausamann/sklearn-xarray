@@ -14,3 +14,6 @@ dependencies:
   - sphinx-gallery
   - sphinx_rtd_theme
   - numpydoc
+  # install sklearn-xarray in development mode through pip
+  - pip:
+    - -e .
