@@ -2,6 +2,7 @@ import numpy as np
 import xarray as xr
 import xarray.testing as xrt
 import numpy.testing as npt
+import pytest
 
 from sklearn_xarray.preprocessing import (
     preprocess,
@@ -14,6 +15,7 @@ from sklearn_xarray.preprocessing import (
     select,
     sanitize,
     reduce,
+    stack,
     Splitter,
 )
 
@@ -42,7 +44,7 @@ def test_preprocess():
 
     Xt_ds = preprocess(X_ds, scale)
 
-    xrt.assert_allclose(Xt_ds, X_ds.apply(scale))
+    xrt.assert_allclose(Xt_ds, X_ds.map(scale))
 
 
 def test_groupwise():
@@ -386,3 +388,53 @@ def test_reduce():
     Xt_da = reduce(X_da)
 
     xrt.assert_allclose(Xt_da, X_da.reduce(np.linalg.norm, dim="feature"))
+
+
+def test_stack():
+
+    X_da = xr.DataArray(
+        np.random.random((100, 10, 10)),
+        coords={
+            "sample": range(100),
+            "feat_1": range(10),
+            "feat_2": range(10),
+        },
+        dims=("sample", "feat_1", "feat_2"),
+    )
+
+    Xt_da, stacker = stack(
+        X_da,
+        stack_dims=["feat_1", "feat_2"],
+        new_dim="feature",
+        return_estimator=True,
+    )
+
+    assert Xt_da.shape == (100, 100)
+    assert Xt_da.dims == ("sample", "feature")
+
+    xrt.assert_equal(stacker.inverse_transform(Xt_da), X_da)
+
+    # unstack
+    X_da_act, unstacker = stack(
+        Xt_da,
+        stack_dims=["feat_1", "feat_2"],
+        new_dim="feature",
+        direction="unstack",
+        return_estimator=True,
+    )
+
+    xrt.assert_equal(unstacker.inverse_transform(X_da_act), Xt_da)
+
+    with pytest.raises(ValueError):
+        stack(X_da, new_dim="feature")
+
+    with pytest.raises(ValueError):
+        stack(X_da, stack_dims=["feat_1", "feat_2"])
+
+    with pytest.raises(ValueError):
+        stack(
+            X_da,
+            new_dim="feature",
+            stack_dims=["feat_1", "feat_2"],
+            direction="not_a_direction",
+        )

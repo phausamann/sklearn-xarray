@@ -1,6 +1,8 @@
 """``sklearn_xarray.target``"""
 
 import numpy as np
+import xarray as xr
+from sklearn.utils.validation import check_is_fitted, NotFittedError
 
 
 class Target(object):
@@ -13,28 +15,29 @@ class Target(object):
         specified, the target will be the entire DataArray/Dataset.
 
     transform_func : callable, optional
-        A function that transforms the coordinate values to an
-        sklearn-compatible type and shape. If not specified, the coordinate(s)
-        will be used as-is.
+        A function that transforms the data to an sklearn-compatible type and
+        shape. If not specified, the target data will be used as-is. Mutually
+        exclusive with the `transformer` argument.
 
     transformer : sklearn transformer, optional
-        **Deprecated**, use ``transform_func=Transformer().fit_transform``
-        instead.
+        Transforms the data into an sklearn compatible target representation.
+        If not specified, the target data will be used as-is. Mutually
+        exclusive with the `transform_func` argument.
 
-    lazy : bool, optinonal
-        If true, the target coordinate is only transformed by the transformer
+    lazy : bool, default False
+        If True, the target data is only transformed by the transformer
         when needed. The transformer can implement a ``get_transformed_shape``
         method that returns the shape after the transformation of the provided
-        coordinate without actually transforming the data.
+        data without actually transforming it.
 
     dim : str or sequence of str, optional
-        When set, multi-dimensional coordinates will be reduced to this
+        If specified, multi-dimensional data will be reduced to this
         dimension/these dimensions.
 
     reduce_func : callable, optional
-        A callable that reduces the coordinate(s) to the dimension(s) in
-        ``dim``. If not specified, the values along dimensions not in ``dim``
-        will be reduced to the first element in each of these dimensions.
+        A callable that reduces the data to the dimension(s) in ``dim``. If not
+        specified, the values along dimensions not in ``dim`` will be reduced
+        to the first element in each of these dimensions.
     """
 
     def __init__(
@@ -42,30 +45,31 @@ class Target(object):
         coord=None,
         transform_func=None,
         transformer=None,
+        reshapes=None,
         lazy=False,
         dim=None,
         reduce_func=None,
     ):
 
-        self.transform_func = transform_func
         self.coord = coord
+        self.transform_func = transform_func
+        self.transformer = transformer
+        self.reshapes = reshapes
         self.lazy = lazy
         self.reduce_func = reduce_func
         self.dim = dim
 
-        self.transformer = transformer
-        if transformer is not None:
-            import warnings
-
-            warnings.simplefilter("always", DeprecationWarning)
-            warnings.warn(
-                "The transformer argument is deprecated and will be removed "
-                "in a future version. Use "
-                "transform_func=Transformer().fit_transform instead.",
-                DeprecationWarning,
-            )
-            warnings.simplefilter("ignore", DeprecationWarning)
-            self.transform_func = self.transformer.fit_transform
+        if self.transformer is not None:
+            if self.transform_func is not None:
+                raise ValueError(
+                    "You can specify either the 'transformer' or the "
+                    "'transform_func' argument, not both"
+                )
+            try:
+                check_is_fitted(self.transformer)
+                self.transform_func = self.transformer.transform
+            except NotFittedError:
+                self.transform_func = self.transformer.fit_transform
 
         self.values = None
 
@@ -142,6 +146,22 @@ class Target(object):
             other_dims = [d for d in values.dims if d not in dim]
             return values.reduce(self.reduce_func, dim=other_dims)
 
+    def _update_coords(self, X):
+        """ Update the coordinates of a reshaped DataArray. """
+
+        coords_new = dict()
+
+        # drop all coords along the reshaped dimensions
+        for c in X.coords:
+            if self.reshapes in X[c].dims and c != self.reshapes:
+                c_t = X[c].isel(**{self.reshapes: 0})
+                new_dims = [d for d in X[c].dims if d != self.reshapes]
+                coords_new[c] = (new_dims, c_t.drop(self.reshapes))
+            elif c != self.reshapes:
+                coords_new[c] = X[c]
+
+        return coords_new
+
     @property
     def shape(self):
         """ The shape of the transformed target. """
@@ -195,3 +215,34 @@ class Target(object):
             self.values = self.transform_func(self.values)
 
         return self
+
+    def inverse_transform(self, X):
+        """ Reverse the transformation performed by the transformer.
+
+        Parameters
+        ----------
+        X : xarray DataArray
+            The input data.
+
+        Returns
+        -------
+        Xt : xarray DataArray
+            The transformed data.
+        """
+        if self.transformer is None:
+            raise ValueError(
+                "Cannot use inverse_transform when the target was constructed "
+                "without the 'transformer' parameter"
+            )
+
+        data = self.transformer.inverse_transform(X)
+        if self.reshapes is not None:
+            coords = self._update_coords(X)
+        else:
+            coords = X.coords
+
+        dims = list(X.dims)
+        if data.ndim < X.ndim and self.reshapes is not None:
+            dims.remove(self.reshapes)
+
+        return xr.DataArray(data, coords, dims, name=X.name, attrs=X.attrs)

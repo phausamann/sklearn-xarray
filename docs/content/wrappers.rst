@@ -4,7 +4,7 @@ Wrappers for sklearn estimators
 sklearn-xarray provides wrappers that let you use sklearn estimators on
 xarray DataArrays and Datasets. The goal is to provide a seamless integration
 of both packages by only applying estimator methods on the raw data while
-metadata (coordinates in xarray) remains untouched whereever possible.
+metadata (coordinates in xarray) remains untouched whenever possible.
 
 There are two principal data types in xarray: ``DataArray`` and ``Dataset``.
 The wrappers provided in this package will determine automatically which

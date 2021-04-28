@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 import xarray as xr
 import numpy.testing as npt
 
@@ -25,12 +26,13 @@ def test_constructor():
 
     target = Target(transform_func=convert_to_ndarray)
     target.assign_to(X_ds)
-
     npt.assert_equal(target.values, np.array(X_ds.var_1))
 
     target = Target(coord="coord_1", transformer=LabelBinarizer())(X_ds)
-
     npt.assert_equal(target.values, LabelBinarizer().fit_transform(coord_1))
+
+    with pytest.raises(ValueError):
+        Target(transform_func=convert_to_ndarray, transformer=LabelBinarizer())
 
 
 def test_str():
@@ -63,11 +65,9 @@ def test_array():
         },
     )
 
-    target = Target(
-        coord="coord_1",
-        transform_func=LabelBinarizer().fit_transform,
-        lazy=True,
-    )(X_ds)
+    target = Target(coord="coord_1", transformer=LabelBinarizer(), lazy=True)(
+        X_ds
+    )
 
     npt.assert_equal(np.array(target), LabelBinarizer().fit_transform(coord_1))
 
@@ -159,9 +159,36 @@ def test_multidim_coord():
         transform_func=LabelBinarizer().fit_transform,
         dim="sample",
     )(X_ds)
+    npt.assert_equal(target_1, LabelBinarizer().fit_transform(coord_1[:, 0]))
+
     target_2 = Target(
         coord="coord_2", dim=["sample", "feat_1"], reduce_func=np.mean
     )(X_ds)
-
-    npt.assert_equal(target_1, LabelBinarizer().fit_transform(coord_1[:, 0]))
     npt.assert_equal(target_2, np.mean(coord_2, 2))
+
+
+def test_inverse_transform():
+
+    X_da = xr.DataArray(
+        np.random.random((100, 10)),
+        coords={
+            "sample": range(100),
+            "feature": range(10),
+            "coord_1": (["sample"], ["a"] * 34 + ["b"] * 33 + ["c"] * 33),
+        },
+        dims=("sample", "feature"),
+    )
+
+    target = Target(
+        coord="coord_1", transformer=LabelBinarizer(), reshapes="feature"
+    )(X_da)
+
+    y_da = xr.DataArray(
+        target.values,
+        coords={"sample": range(100)},
+        dims=("sample", "feature"),
+    )
+
+    yt_da = target.inverse_transform(y_da)
+    yt_exp = X_da.coord_1.drop("coord_1")
+    xr.testing.assert_equal(yt_da, yt_exp)

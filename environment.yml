@@ -2,7 +2,7 @@ name: sklearn-xarray
 channels:
   - conda-forge
 dependencies:
-  - python=3.6
+  - python=3.7
   - numpy
   - scipy
   - scikit-learn
@@ -10,12 +10,10 @@ dependencies:
   - xarray
   - pytest
   - matplotlib
-  - sphinx
-  - pillow
+  - sphinx==2.4.4
   - sphinx-gallery
   - sphinx_rtd_theme
   - numpydoc
-  - bump2version
-  - pre-commit
-  - flake8
-  - black=19.10b0
+  # install sklearn-xarray in development mode through pip
+  - pip:
+    - -e .

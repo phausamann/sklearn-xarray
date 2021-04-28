@@ -1,6 +1,4 @@
-.. _general_examples:
+.. _examples:
 
-General examples
-================
-
-Introductory examples.
+Examples
+========
